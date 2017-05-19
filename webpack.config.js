@@ -80,14 +80,16 @@ module.exports = {
   entry: { //使用开头字母排序，防止vendor随着app代玛改变而改变。hack this bug https://github.com/webpack/webpack/pull/2998
     a_out_lib: ['lodash'],
     b_react_vendor: [
-      'react',
-      'react-dom',
-      'react-router',
-      'redux',
-      'react-redux',
-      'react-router-redux'
+      'vue',
+      'vue-router'
+      // 'react',
+      // 'react-dom',
+      // 'react-router',
+      // 'redux',
+      // 'react-redux',
+      // 'react-router-redux'
     ],
-    z_app: "./app.jsx"
+    z_app: "./app.js"
   },
   output: {
     path: outputPath,
@@ -109,6 +111,10 @@ module.exports = {
       exclude: /node_modules/,
       loaders: jsxLoader
     },
+    {
+      test: /\.vue$/,
+      loader: 'vue-loader'
+    },
     {test: /\.css$/, loaders: ['style', 'css']},
     {
       test: /\.scss$/,
@@ -121,7 +127,7 @@ module.exports = {
     }]
   },
   resolve: {
-    extensions: ['', '.js', '.jsx'],
+    extensions: ['', '.js', '.jsx', '.vue'],
     alias: {
       '__ROOT__' : path.join(__dirname, './src')
     }

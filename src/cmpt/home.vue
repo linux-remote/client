@@ -3,14 +3,17 @@
 </style>
 
 <template>
-.title {{msg}}
+<div class='title'>
+title
+{{msg}}
+</div>
 </template>
 
 <script>
 export default {
   data(){
     return {
-      msg: 'hello Vue'
+      msg: 'hello Vue!'
     }
   }
 }
