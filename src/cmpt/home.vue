@@ -4,7 +4,6 @@
 
 <template>
 <div class='title'>
-title
 {{msg}}
 </div>
 </template>

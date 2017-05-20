@@ -3,6 +3,7 @@ import Router from 'vue-router'
 Vue.use(Router)
 
 import Home from './cmpt/home.vue'
+require('./css/style.scss');
 
 const router = new Router({
   routes: [
@@ -16,6 +17,5 @@ var app = new Vue({
 });
 
 router.onReady(() => {
-  // actually mount to DOM
   app.$mount('#app')
 })

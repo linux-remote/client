@@ -8,13 +8,12 @@
     "parser": "babel-eslint",
     "parserOptions": {
         "ecmaFeatures": {
-            "experimentalObjectRestSpread": true,
-            "jsx": true
+            "experimentalObjectRestSpread": true
         },
         "sourceType": "module"
     },
     "plugins": [
-        "react"
+        "html"
     ],
     "rules": {
         "indent": [
@@ -30,7 +29,6 @@
         "no-console": 0,
         "linebreak-style": 0,
         "quotes": 0,
-        "semi": 0,
-        "react/jsx-uses-vars": "error"
+        "semi": 0
     }
 }

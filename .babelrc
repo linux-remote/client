@@ -1,9 +1,9 @@
 {
-  "presets": ["es2015", "stage-0", "react"],
+  "presets": ["es2015", "stage-0"],
   "plugins": ["transform-runtime"],
   "env":{
     "production": {
-      "plugins": ["transform-runtime", "transform-remove-debugger", "transform-remove-console"]
+      "plugins": ["transform-runtime", "transform-remove-console"]
     }
   }
 }

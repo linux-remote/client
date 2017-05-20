@@ -25,15 +25,12 @@ indexData.VERSION = pageage.version;
 // ***************************** plugins *****************************
 var plugins = [
   new webpack.optimize.DedupePlugin(),
-  new webpack.ProvidePlugin({//不用在每个文件里import React from 'react'了
-    React : 'react'
-  }),
   //提取公共模块
   new webpack.optimize.CommonsChunkPlugin({
     names: [
           //当前版本webpackBUG: 它会对Object key 排序。所以这里用字母排序fixed.
           //顺序不要变，名字也不要变
-          'b_react_vendor',
+          'b_vue_vendor',
           'a_out_lib',
           'a_1_mainifest' //a_1_mainifest 必须在最后面
           ],
@@ -41,7 +38,7 @@ var plugins = [
 
 
   new webpack.DefinePlugin({
-    'process.env': {//React 要用的变量。
+    'process.env': {
       NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'development')
     }
   }),
@@ -55,13 +52,8 @@ var plugins = [
   })
 ]
 // ***************************** 环境适配 *****************************
-var jsxLoader = [
-  'react-hot',
-  'babel-loader'
-];
-if (isPro) {
-  jsxLoader.shift(); //正式环境不加载 react-hot-loader, 可以节省文件大小。
 
+if (isPro) {
   plugins.push(//正式环境下压缩
     new webpack.optimize.UglifyJsPlugin({
       compress: {
@@ -79,15 +71,9 @@ module.exports = {
   context: path.join(__dirname, './src'),
   entry: { //使用开头字母排序，防止vendor随着app代玛改变而改变。hack this bug https://github.com/webpack/webpack/pull/2998
     a_out_lib: ['lodash'],
-    b_react_vendor: [
+    b_vue_vendor: [
       'vue',
       'vue-router'
-      // 'react',
-      // 'react-dom',
-      // 'react-router',
-      // 'redux',
-      // 'react-redux',
-      // 'react-router-redux'
     ],
     z_app: "./app.js"
   },
@@ -100,16 +86,16 @@ module.exports = {
   module: {
     preLoaders: [ //代码检查
         {
-          test: /\.(js|jsx)$/,
+          test: /(\.js|\.vue)$/,
           loader: 'eslint-loader',
           include: [path.resolve(__dirname, "src")],
-          exclude: [/(node_modules|bower_components)/]
+          exclude: [/node_modules/]
         }
     ],
     loaders: [{
-      test: /\.(js|jsx)$/,
+      test: /\.js$/,
       exclude: /node_modules/,
-      loaders: jsxLoader
+      loader: 'babel-loader'
     },
     {
       test: /\.vue$/,
@@ -127,7 +113,7 @@ module.exports = {
     }]
   },
   resolve: {
-    extensions: ['', '.js', '.jsx', '.vue'],
+    extensions: ['', '.js', '.vue'],
     alias: {
       '__ROOT__' : path.join(__dirname, './src')
     }
