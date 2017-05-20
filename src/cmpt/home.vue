@@ -1,10 +1,12 @@
-<style scoped>
+<style module>
 .title{font-size: 50px}
+.title :global [.test] {color:red}
 </style>
 
-<template lang="jade">
 
-.title {{msg}}
+<template lang="jade">
+div(:class="$style.title")
+  .title {{msg}}
 
 </template>
 
