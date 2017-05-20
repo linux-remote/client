@@ -1,11 +1,11 @@
-<style>
+<style scoped>
 .title{font-size: 50px}
 </style>
 
-<template>
-<div class='title'>
-{{msg}}
-</div>
+<template lang="jade">
+
+.title {{msg}}
+
 </template>
 
 <script>
