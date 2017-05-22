@@ -5,9 +5,9 @@
 
 
 <template lang="jade">
-div(:class="$style.title")
-  .title {{msg}}
-
+div
+  .title layout
+  router-view
 </template>
 
 <script>
@@ -15,7 +15,7 @@ export default {
   data(){
     return {
       isRequest: false,
-      msg: 'Home'
+      msg: 'hello Vue!'
     }
   },
   created(){
@@ -23,7 +23,6 @@ export default {
       url: '',
       success(data){
         this.msg += data;
-        console.log('data', data);
       }
     })
   }
