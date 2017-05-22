@@ -15,6 +15,9 @@ var app = new Vue({
   router,
   render: h => h(Home)
 });
+// if(!sessionStorage.test){
+//   sessionStorage.test = 'test'
+// }
 
 router.onReady(() => {
   app.$mount('#app')

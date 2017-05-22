@@ -28,11 +28,10 @@ var plugins = [
   //提取公共模块
   new webpack.optimize.CommonsChunkPlugin({
     names: [
-          //当前版本webpackBUG: 它会对Object key 排序。所以这里用字母排序fixed.
           //顺序不要变，名字也不要变
-          'b_vue_vendor',
-          'a_out_lib',
-          'a_1_mainifest' //a_1_mainifest 必须在最后面
+          'b_2_vendor',
+          'b_1_lib',
+          'a_mainifest' //a_1_mainifest 必须在最后面
           ],
     filename: bundleName}),
 
@@ -70,8 +69,8 @@ if (isPro) {
 module.exports = {
   context: path.join(__dirname, './src'),
   entry: { //使用开头字母排序，防止vendor随着app代玛改变而改变。hack this bug https://github.com/webpack/webpack/pull/2998
-    a_out_lib: ['lodash'],
-    b_vue_vendor: [
+    b_1_lib: ['lodash'],
+    b_2_vendor: [
       'vue',
       'vue-router'
     ],

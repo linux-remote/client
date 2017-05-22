@@ -10,7 +10,7 @@ table td{border:1px solid #999}
 td{padding:5px}
 :global{
   html, body, .clear_app, .root{ height:100% }
-  .root{padding:50px}
+  .root{padding:50px;}
   .top{height:$navheight;position: fixed;width:100%;z-index: 2;}
   .bottom{height:100%;padding-top:$navheight; position: relative}
 }
