@@ -14,8 +14,18 @@ div(:class="$style.title")
 export default {
   data(){
     return {
+      isRequest: false,
       msg: 'hello Vue!'
     }
+  },
+  created(){
+    this.request({
+      url: '',
+      success(data){
+        this.msg += data;
+        console.log('data', data);
+      }
+    })
   }
 }
 </script>

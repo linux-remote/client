@@ -69,7 +69,7 @@ if (isPro) {
 module.exports = {
   context: path.join(__dirname, './src'),
   entry: { //使用开头字母排序，防止vendor随着app代玛改变而改变。hack this bug https://github.com/webpack/webpack/pull/2998
-    b_1_lib: ['lodash'],
+    b_1_lib: ['lodash', 'jquery'],
     b_2_vendor: [
       'vue',
       'vue-router'

@@ -27,10 +27,11 @@ function omitEmpty(obj){ //过滤掉空的参数
 
 function requestPreOpts(opts){
   const self = opts.context;
-  if(self.$get('isRequest')){ 
+  const $data = self.$data;
+  if($data.isRequest){
     return;
   }
-  self.$set('isRequest', true);
+  self.$set($data, 'isRequest', true);
 
   if(opts.poolKey){
     if(!self.$options._requestPool){
@@ -59,7 +60,7 @@ function requestPreOpts(opts){
   const error = opts.error || httpErrorHandler;
   const success2 = function(data){
     if(data.code === 0) {
-      success.call(self, data.data);
+      success && success.call(self, data.data);
     }else{
       codeError.call(self, data);
     }
@@ -76,11 +77,11 @@ function requestPreOpts(opts){
         return;
       }
     }
-    self.$set('isRequest', false);
+    self.$set($data, 'isRequest', false);
 
-    complete.call(self, xhr, status);
+    complete && complete.call(self, xhr, status);
     if(status !== 'success'){
-      error.call(self, xhr, status);
+      error && error.call(self, xhr, status);
     }else{
       success2.call(self, xhr.responseJSON, status);
     }
