@@ -18,10 +18,11 @@ export default {
       msg: 'hello Vue!'
     }
   },
-  created(){
+  getData(){
     this.request({
       url: '',
       success(data){
+        console.log('to');
         this.msg += data;
       }
     })

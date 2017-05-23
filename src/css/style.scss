@@ -11,12 +11,24 @@ div {
 table td{border:1px solid #999}
 td{padding:5px}
 
-$navheight: 50px;
+$color1: 50px;
 :global{
 
-html, body, .app, .desk, .h100{height:100%;}
+html, body, .app, .desk, .h100, .login-container{height:100%;}
 .desk{overflow: hidden;}
-.box{
+.flex-container{
   display:flex;
+}
+
+.login-container{
+    display:flex;
+  align-items: center;
+  justify-content: center;
+}
+.login-box{
+  width: 200px;
+  height:200px; 
+  border:1px solid #999;
+
 }
 }

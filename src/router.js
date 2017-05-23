@@ -2,11 +2,23 @@ import Vue from 'vue';
 import Router from 'vue-router';
 Vue.use(Router);
 
-import Home from './cmpt/home.vue';
+import Login from './cmpt/login.vue';
+import Root from './cmpt/root.vue';
+const data = require('./lib/data');
+
+const rootBeforeEnter = function(to, from, next){
+  if(!data.user){
+    console.log('next', next);
+    next('/login');
+  }else{
+    next();
+  }
+}
 
 const router = new Router({
   routes: [
-    { path: '/test', component: Home }
+    { path: '/login', component: Login },
+    { path: '', component: Root, beforeEnter: rootBeforeEnter},
   ]
 })
 

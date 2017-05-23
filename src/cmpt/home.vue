@@ -17,15 +17,6 @@ export default {
       isRequest: false,
       msg: 'Home'
     }
-  },
-  created(){
-    this.request({
-      url: '',
-      success(data){
-        this.msg += data;
-        console.log('data', data);
-      }
-    })
   }
 }
 </script>

@@ -3,11 +3,10 @@ import Vue from 'vue'
 require('./css/style.scss');
 require('./lib/request');
 import router from './router';
-import Layout from './cmpt/layout.vue';
-
+import Wtf from './cmpt/wtf.vue';
 var app = new Vue({
   router,
-  render: h => h(Layout)
+  render: h => h(Wtf)
 });
 
 router.onReady(() => {
