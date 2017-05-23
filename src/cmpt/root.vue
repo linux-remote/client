@@ -9,20 +9,19 @@ div
   .title layout
   router-view
 </template>
-
 <script>
+
+import data from '../lib/data';
+
 export default {
   data(){
-    return {
-      isRequest: false,
-      msg: 'hello Vue!'
-    }
+    return data
   },
-  getData(){
+  created(){
     this.request({
-      url: '',
+      url: '/touch',
       success(data){
-        console.log('to');
+        console.log('to', data);
         this.msg += data;
       }
     })

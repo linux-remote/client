@@ -1,5 +1,6 @@
 const $ = require('jquery');
 import Vue from 'vue';
+import {noop} from 'lodash';
 // ************************* requset *************************
 
 const API_ROOT = window.SERVER_CONFIG.API_ROOT;
@@ -25,29 +26,17 @@ function omitEmpty(obj){ //过滤掉空的参数
   return obj2;
 }
 
-function requestPreOpts(opts){
-  const self = opts.context;
-  const $data = self.$data;
-  if($data.isRequest){
+
+function request(opts, beforeStop = noop, afterStop = noop){
+  
+  if(beforeStop(opts)){
     return;
   }
-  self.$set($data, 'isRequest', true);
 
-  if(opts.poolKey){
-    if(!self.$options._requestPool){
-      self.$options._requestCurrPoolKey = opts.poolKey;
-      self.$options._requestPool = {};
-    }
-    const pool = self.$options._requestPool;
-    const key = opts.poolKey;
-    if(!pool[key]){
-      pool[key] = true;
-    }else{
-      return;
-    }
-  }
-  
+  const self = opts.context;
+
   opts.url = API_ROOT + opts.url;
+  opts.onError = opts.onError || noop;
   opts.data = opts.data ?  omitEmpty(opts.data) : {};
   opts.dataType = 'json';
   opts.contentType = 'application/json;charset=UTF-8';
@@ -62,39 +51,76 @@ function requestPreOpts(opts){
     if(data.code === 0) {
       success && success.call(self, data.data);
     }else{
+      opts.onError();
       codeError.call(self, data);
     }
   }
 
   //由于juqery的complete会在success之后执行，所以自已写了个让它在之前执行。
   opts.complete = function(xhr, status){
-    if(opts.poolKey){
-      const pool = self.$options._requestPool;
-      const key = opts.poolKey;
-      delete(pool[key]);
-      const currKey = self.$options._requestCurrPoolKey;
-      if(key !== currKey){
-        return;
-      }
+
+    if(afterStop(self, opts)){
+      return;
     }
-    self.$set($data, 'isRequest', false);
 
     complete && complete.call(self, xhr, status);
     if(status !== 'success'){
+      opts.onError();
       error && error.call(self, xhr, status);
     }else{
       success2.call(self, xhr.responseJSON, status);
     }
   }
+
   opts.success = null;
   opts.error = null;
 
-  return opts;
+  $.ajax(opts)
 }
 
-function request(opts){
+function _vueBefore(opts){
+  const self = opts.context;
+  const $data = self.$data;
+  if($data.isRequest){
+    return true;
+  }
+
+  self.$set($data, 'isRequest', true);
+
+  if(opts.poolKey){
+    if(!self.$options._requestPool){
+      self.$options._requestCurrPoolKey = opts.poolKey;
+      self.$options._requestPool = {};
+    }
+    const pool = self.$options._requestPool;
+    const key = opts.poolKey;
+    if(!pool[key]){
+      pool[key] = true;
+    }else{
+      return true;
+    }
+  }
+}
+
+
+function _vueAfterStop(opts){
+  const self = opts.context;
+  const $data = self.$data;
+  if(opts.poolKey){
+    const pool = self.$options._requestPool;
+    const key = opts.poolKey;
+    delete(pool[key]);
+    const currKey = self.$options._requestCurrPoolKey;
+    if(key !== currKey){
+      return;
+    }
+  }
+  self.$set($data, 'isRequest', false);
+}
+
+Vue.prototype.request = function(opts){
   opts.context = this;
-  $.ajax(requestPreOpts(opts))
+  request(opts, _vueBefore, _vueAfterStop);
 }
 
-Vue.prototype.request = request;
+export default request;

@@ -4,7 +4,7 @@ Vue.use(Router);
 
 import Login from './cmpt/login.vue';
 import Root from './cmpt/root.vue';
-const data = require('./lib/data');
+import data from './lib/data';
 
 const rootBeforeEnter = function(to, from, next){
   if(!data.user){
@@ -18,7 +18,9 @@ const rootBeforeEnter = function(to, from, next){
 const router = new Router({
   routes: [
     { path: '/login', component: Login },
-    { path: '', component: Root, beforeEnter: rootBeforeEnter},
+    { path: '', component: Root, 
+      //beforeEnter: rootBeforeEnter
+    },
   ]
 })
 

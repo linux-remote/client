@@ -1,2 +1,6 @@
-exports.user = null;
+export default {
+  sslSelfSigned: null,
+
+  user: null
+}
 

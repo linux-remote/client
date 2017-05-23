@@ -1,15 +1,19 @@
 <template lang="jade">
 .login-container
-  .login-box
+  fieldset.login-box
+    legend login
     input
+    br
     input(type='password')
+    br
+    button ok
 </template>
 
 <script>
+
 export default {
   data(){
     return {
-      isRequest: false,
       msg: 'login'
     }
   }
