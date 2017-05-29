@@ -13,7 +13,10 @@
     "dist"
   ],
   "author": "hezedu",
-  "dependencies": {},
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "jquery-ui": "^1.12.1"
+  },
   "devDependencies": {
     "babel-core": "^6.14.0",
     "babel-eslint": "^6.1.2",

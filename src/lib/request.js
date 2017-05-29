@@ -37,12 +37,15 @@ function request(opts, beforeStop = noop, afterStop = noop){
 
   opts.url = API_ROOT + opts.url;
   opts.onError = opts.onError || noop;
-  opts.data = opts.data ?  omitEmpty(opts.data) : {};
-  opts.dataType = 'json';
-  opts.contentType = 'application/json;charset=UTF-8';
-  opts.processData = false;
-  opts.data  = JSON.stringify(opts.data);
+  if(opts.data){
+    opts.data = omitEmpty(opts.data);
+  }
 
+  // opts.dataType = 'json';
+  // opts.contentType = 'application/json;charset=UTF-8';
+  // opts.processData = false;
+  // opts.data = JSON.stringify(opts.data);
+  opts.dataType = 'json';
   const codeError = opts.codeError || codeErrorHandler;
   const success = opts.success;
   const complete = opts.complete;
@@ -59,7 +62,7 @@ function request(opts, beforeStop = noop, afterStop = noop){
   //由于juqery的complete会在success之后执行，所以自已写了个让它在之前执行。
   opts.complete = function(xhr, status){
 
-    if(afterStop(self, opts)){
+    if(afterStop(opts)){
       return;
     }
 
@@ -116,6 +119,17 @@ function _vueAfterStop(opts){
     }
   }
   self.$set($data, 'isRequest', false);
+}
+Vue.prototype.apiGet = function(url, data, success){
+  if(typeof data === 'function'){
+    success = data;
+    data = {};
+  }
+  this.request({
+    url,
+    data,
+    success
+  })
 }
 
 Vue.prototype.request = function(opts){
