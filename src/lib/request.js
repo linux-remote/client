@@ -9,6 +9,10 @@ const API_ROOT = window.SERVER_CONFIG.API_ROOT;
 //const isIE = navigator.userAgent.indexOf('MSIE') !== -1;
 
 function httpErrorHandler(xhr, status, msg){
+  console.log('xhr' , xhr)
+  // if(xhr.status === 0){ //CA证书没有导入
+    
+  // }
   console.log(`http#${status}错误:${msg}`);
 }
 
@@ -45,7 +49,7 @@ function request(opts, beforeStop = noop, afterStop = noop){
   // opts.contentType = 'application/json;charset=UTF-8';
   // opts.processData = false;
   // opts.data = JSON.stringify(opts.data);
-  opts.dataType = 'json';
+  // opts.dataType = 'json';
   const codeError = opts.codeError || codeErrorHandler;
   const success = opts.success;
   const complete = opts.complete;

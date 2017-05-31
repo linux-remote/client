@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
-<% var data = htmlWebpackPlugin.options.indexData %>
+<% var opts = htmlWebpackPlugin.options, data = opts.indexData; %>
   <head>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
-    <link rel="shortcut icon" href="<%=data.BASE_STATIC %>/static/favicon.png">
+    <link rel="shortcut icon" href="/public/favicon.png">
+    <link type="text/css" rel="stylesheet" href="<%=opts.bootstrapStaticPath%>/css/bootstrap.min.css" >
     <title>clear前端架构</title>
   </head>
   <body>

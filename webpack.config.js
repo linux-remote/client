@@ -5,6 +5,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var confName = process.env.NODE_BUILD_CONF_NAME || 'dev';
 var conf = require('./config/' + confName);
 var pageage = require('./package.json');
+var devSetup = require('./static-server');
 var isPro = process.env.NODE_ENV === 'production';
 var bundleName = conf.bundleName;
 var chunkName = conf.chunkName;
@@ -19,6 +20,7 @@ if(confName === 'dev' && !isPro){ //使用 命令weblack
 }
 
 var indexData = conf.indexData || {};
+var bootstrapStaticPath = devSetup.bootstrapStaticPath;
 indexData.BASE_URL = conf.baseUrl;
 indexData.VERSION = pageage.version;
 
@@ -35,7 +37,10 @@ var plugins = [
           ],
     filename: bundleName}),
 
-
+  new webpack.ProvidePlugin({
+    $: "jquery",
+    jQuery: "jquery"
+    }),
   new webpack.DefinePlugin({
     'process.env': {
       NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'development')
@@ -46,6 +51,7 @@ var plugins = [
     chunksSortMode: 'dependency',
     filename: path.join(__dirname, conf.indexDir + '/index.html'),
     template: path.join(__dirname, '/src/index.ejs'),
+    bootstrapStaticPath,
     //tpl option
     indexData
   })
@@ -69,7 +75,7 @@ if (isPro) {
 module.exports = {
   context: path.join(__dirname, './src'),
   entry: { //使用开头字母排序，防止vendor随着app代玛改变而改变。hack this bug https://github.com/webpack/webpack/pull/2998
-    b_1_lib: ['lodash', 'jquery'],
+    b_1_lib: ['lodash', 'jquery', 'bootstrap'],
     b_2_vendor: [
       'vue',
       'vue-router'
@@ -124,6 +130,7 @@ module.exports = {
   ],
   plugins: plugins,
   devServer: {
+    setup: devSetup,
     contentBase: path.join(__dirname, conf.indexDir),
     hot: true
   }
