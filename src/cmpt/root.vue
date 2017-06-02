@@ -9,20 +9,20 @@ div
   .title layout
   router-view
 </template>
+
 <script>
-
-import data from '../lib/data';
-
 export default {
   data(){
-    return data
+    return {
+      msg: ''
+    }
   },
   created(){
     this.request({
-      url: '/touch',
+      url: '/',
       success(data){
-        console.log('to', data);
-        this.msg += data;
+        console.log('root', data);
+        //this.msg += data;
       }
     })
   }

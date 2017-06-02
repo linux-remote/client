@@ -1,4 +1,4 @@
-const $ = require('jquery');
+const $ = window.$;
 import Vue from 'vue';
 import {noop} from 'lodash';
 // ************************* requset *************************
@@ -13,11 +13,11 @@ function httpErrorHandler(xhr, status, msg){
   // if(xhr.status === 0){ //CA证书没有导入
     
   // }
-  console.log(`http#${status}错误:${msg}`);
+  console.log(`http#${status} 错误:${msg}`);
 }
 
-function codeErrorHandler(code, message){
-  console.log('code#' + code + '错误:' + message);
+function codeErrorHandler(data){
+  console.log('code#' + data.code + ' 错误:' + data.msg);
 }
 
 function omitEmpty(obj){ //过滤掉空的参数

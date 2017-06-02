@@ -22,6 +22,7 @@
         ],
         "no-unused-vars": "warn",
         "no-trailing-spaces": 0,
+        "no-unreachable": "warn",
         "no-multiple-empty-lines": "warn",
         "prefer-const": 0,
         "space-infix-ops": "warn",

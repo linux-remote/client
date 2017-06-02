@@ -1,32 +1,54 @@
-
-
-// module.exports = function(app){
-//   var b
-//   //首頁不緩存
-//   app.get('/', static(staticPath)); 
-
-//   //lib 和 vendor 緩存半年
-//   app.get('/bulid/b_*', static(staticPath,{maxAge:halfYearTime}));
-
-//   //其它緩存一月
-//   app.use(static(staticPath,{maxAge:oneMonth}));
-
-// }
 var eStatic = require('express').static;
 var path = require('path');
-var bootstrapMainPath = require.resolve('bootstrap');
-var v = path.resolve(bootstrapMainPath, '../../../package.json');
-v = require(v).version;
 
-const publicPath = '/nodeMouduleStatic/bootstrap' + v
-var distDir = path.resolve(bootstrapMainPath, '../..');
+const ROOT_URL = '/nodeMouduleStatic';
+
+function getDir(moduleName){
+  var rPath = require.resolve(moduleName);
+  var splitStr = 'node_modules' + path.sep;
+  var i = rPath.indexOf(splitStr)  + splitStr.length;
+  var name = rPath.substr(i);
+  name = name.substr(0, name.indexOf(path.sep));
+  var dir = rPath.substr(0, i);
+  return dir + name;
+}
+
+function getVersion(dir){
+  return require(dir + '/package.json').version;
+}
+
+function _getOpts(name){
+  var dir = getDir(name);
+  var v = getVersion(dir);
+  return {
+    url: ROOT_URL + '/' + name + v,
+    fsDir: path.join(dir + '/dist')
+  }
+}
+
+// var bootstrapMainPath = require.resolve('bootstrap');
+// var 
+// var v = path.resolve(bootstrapMainPath, '../../../package.json');
+// v = require(v).version;
+
+// const bootstrapPublicPath = '/nodeMouduleStatic/bootstrap' + v
+// var distDir = path.resolve(bootstrapMainPath, '../..');
 
 var DAY_TIME = 1000 * 60 * 60 * 24 //一天
 var MONTH_TIME  = DAY_TIME * 30 //一月
 var HALF_YEAR_TIME  = MONTH_TIME * 6; //半年 
-
+var bootstrapOpts = _getOpts('bootstrap');
+var jqueryOpts = _getOpts('jquery');
+console.log('jqueryOpts', jqueryOpts);
 function setup(app){
-  app.use(publicPath , eStatic(distDir, {maxAge:HALF_YEAR_TIME}));
+  app.use(jqueryOpts.url , eStatic(jqueryOpts.fsDir, {maxAge:HALF_YEAR_TIME}));
+  app.use(bootstrapOpts.url , eStatic(bootstrapOpts.fsDir, {maxAge:HALF_YEAR_TIME}));
 }
-setup.bootstrapStaticPath = publicPath;
+
+
+setup.nodeModuleStatic = {
+  jquery: jqueryOpts.url,
+  bootstrap: bootstrapOpts.url
+}
+
 module.exports = setup;
