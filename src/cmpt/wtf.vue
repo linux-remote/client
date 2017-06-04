@@ -10,7 +10,8 @@
 </style>
 <template lang="jade">
 #app.linux-remote-app
-  .dw-h100( :class="$style.warp" v-if='!CADownloadedCount')
+  .dw-h100(v-if='CADownloadedCount === -1')
+  .dw-h100( :class="$style.warp" v-else-if='CADownloadedCount === 0')
     div(:class="$style.box")
       h3 你的CA证书是自生成的。
       h5 请输入你config文件里设置的：
@@ -40,25 +41,32 @@ export default {
   },
   methods:{
     download(){
-      this.isClick = true;
-      window.open(window.SERVER_CONFIG.API_ROOT + '/downloadCACert/' + this.key);
-      //const self = this;
-      const loop = ()=>{
-        setTimeout(() => {
-          this.getData(function(data){
-            if(!data.CADownloadedCount){
-              loop();
-            }
-          })
-        }, 1000)
-      }
-      loop();
+      this.request({
+        url: '/verifyDownloadCACert',
+        type: 'post',
+        data: {
+          key: this.key
+        },
+        success(url){
+          this.request.download(url);
+          this.isClick = true;
+          const loop = ()=>{
+            setTimeout(() => {
+              this.getData(function(data){
+                if(!data.CADownloadedCount){
+                  loop();
+                }
+              })
+            }, 1000)
+          }
+          loop();
+        }
+      })
     },
     getData(callback){
       this.request({
         url: '/touch',
         success(data){
-          console.log('data', data)
           Object.assign(this.$data, data);
           if(callback) callback(data);
         }

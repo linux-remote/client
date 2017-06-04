@@ -1,5 +1,6 @@
 const $ = window.$;
 import Vue from 'vue';
+//import FileSaver from 'file-saver';
 import {noop} from 'lodash';
 // ************************* requset *************************
 
@@ -8,12 +9,12 @@ const API_ROOT = window.SERVER_CONFIG.API_ROOT;
 
 //const isIE = navigator.userAgent.indexOf('MSIE') !== -1;
 
-function httpErrorHandler(xhr, status, msg){
-  console.log('xhr' , xhr)
+function httpErrorHandler(xhr){
+  //console.log('xhr' , xhr)
   // if(xhr.status === 0){ //CA证书没有导入
-    
+  //   msg = '//CA证书没有导入'
   // }
-  console.log(`http#${status} 错误:${msg}`);
+  console.log(`http#${xhr.status} 错误:${xhr.responseText}`);
 }
 
 function codeErrorHandler(data){
@@ -32,7 +33,7 @@ function omitEmpty(obj){ //过滤掉空的参数
 
 
 function request(opts, beforeStop = noop, afterStop = noop){
-  
+
   if(beforeStop(opts)){
     return;
   }
@@ -56,6 +57,7 @@ function request(opts, beforeStop = noop, afterStop = noop){
   const error = opts.error || httpErrorHandler;
   const success2 = function(data){
     if(data.code === 0) {
+      if(data.DOWNLOAD_URL) return download(data.DOWNLOAD_URL);
       success && success.call(self, data.data);
     }else{
       opts.onError();
@@ -73,7 +75,7 @@ function request(opts, beforeStop = noop, afterStop = noop){
     complete && complete.call(self, xhr, status);
     if(status !== 'success'){
       opts.onError();
-      error && error.call(self, xhr, status);
+      error && error.call(self, xhr);
     }else{
       success2.call(self, xhr.responseJSON, status);
     }
@@ -136,9 +138,17 @@ Vue.prototype.apiGet = function(url, data, success){
   })
 }
 
-Vue.prototype.request = function(opts){
+
+function vRequest(opts){
   opts.context = this;
   request(opts, _vueBefore, _vueAfterStop);
 }
 
+function download(url){
+  $(`<form action="${API_ROOT}${url}" style="display:none"></form>`)
+  .appendTo('body').submit().remove();
+}
+
+vRequest.download = download;
+Vue.prototype.request = vRequest;
 export default request;

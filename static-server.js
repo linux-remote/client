@@ -39,7 +39,7 @@ var MONTH_TIME  = DAY_TIME * 30 //一月
 var HALF_YEAR_TIME  = MONTH_TIME * 6; //半年 
 var bootstrapOpts = _getOpts('bootstrap');
 var jqueryOpts = _getOpts('jquery');
-console.log('jqueryOpts', jqueryOpts);
+
 function setup(app){
   app.use(jqueryOpts.url , eStatic(jqueryOpts.fsDir, {maxAge:HALF_YEAR_TIME}));
   app.use(bootstrapOpts.url , eStatic(bootstrapOpts.fsDir, {maxAge:HALF_YEAR_TIME}));
