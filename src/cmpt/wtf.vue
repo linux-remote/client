@@ -52,9 +52,11 @@ export default {
           this.isClick = true;
           const loop = ()=>{
             setTimeout(() => {
-              this.getData(function(data){
-                if(!data.CADownloadedCount){
+              this.apiGet('/getDownloadCACertStatus', (data)=>{
+                if(data === 0){
                   loop();
+                }else{
+                  this.CADownloadedCount = data;
                 }
               })
             }, 1000)
