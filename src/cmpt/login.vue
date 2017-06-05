@@ -24,7 +24,7 @@ div(:class="$style.warp")
       .row(v-for="i in loginedList")
         .col-sm-9 {{i}}
         .col-sm-3
-          button.logined-item-right 注销
+          button.logined-item-right(v-on:click="logout(i)") 注销
 
   .form-horizontal(:class="$style.login_warp")
       h2(style="text-align:center") 登录
@@ -46,7 +46,9 @@ import store from './sess-store';
 export default {
   data(){
     return {
-      isRequest: false
+      isRequest: false,
+      username: 'dw',
+      password: 1
     }
   },
   computed: {
@@ -55,27 +57,29 @@ export default {
     }
   },
   methods: {
-    getLoginedList(){
-      this.apiGet('/login', (data) => {
-        console.log('data', data);
+    logout(username){
+      this.request({
+        url: '/logout',
+        type: 'post',
+        data: {
+          username
+        },
+        success(data){
+          store.commit('set', data);
+        }
       })
     },
     login(){
-      const username = 'dw';
+      const {username, password} = this;
       this.request({
         url: '/login',
         type: 'post',
         data: {
           username,
-          password: 1
+          password
         },
-        success(port){
-          console.log(port);
-          this.loginedList.push({
-            username,
-            port
-          });
-          sessionStorage.loginedList = JSON.stringify(this.loginedList);
+        success(data){
+          store.commit('set', data);
         }
       })
     }
