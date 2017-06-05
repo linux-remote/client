@@ -28,6 +28,7 @@
   router-view(v-else)
 </template>
 <script>
+import store from './sess-store';
 export default {
   data(){
     return {
@@ -35,8 +36,12 @@ export default {
       CADownloadedCount: -1,
       CACertPath: '',
       key:'',
-      isClick: false,
-      loginedList: []
+      isClick: false
+    }
+  },
+  computed: {
+    loginedList(){
+      return store.state.loginedList
     }
   },
   methods:{
@@ -69,7 +74,10 @@ export default {
       this.request({
         url: '/touch',
         success(data){
-          Object.assign(this.$data, data);
+
+          const loginedList = data.loginedList;
+          Object.assign(this, data);
+          store.commit('set', loginedList);
           if(callback) callback(data);
         }
       })

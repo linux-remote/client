@@ -80,7 +80,8 @@ module.exports = {
     b_1_lib: ['lodash', 'file-saver'],
     b_2_vendor: [
       'vue',
-      'vue-router'
+      'vue-router',
+      'vuex'
     ],
     z_app: "./app.js"
   },

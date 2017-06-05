@@ -1,6 +1,6 @@
 <style module>
 .warp{
-  display: flex; 
+  display: flex;
   //align-items: center;
   //-text-align:center;
   height:100%;
@@ -21,9 +21,8 @@ div(:class="$style.warp")
   .logined-list-warp(:class="$style.logined_list_warp" v-if="loginedList.length > 0")
     h2 已登录的用户
     .logined-list
-      .row(v-for="i in loginedList") 
-        .col-sm-9 {{i.username}}
-          {{i.port}}
+      .row(v-for="i in loginedList")
+        .col-sm-9 {{i}}
         .col-sm-3
           button.logined-item-right 注销
 
@@ -43,17 +42,16 @@ div(:class="$style.warp")
 </template>
 
 <script>
-
+import store from './sess-store';
 export default {
   data(){
-    let  loginedList = sessionStorage.loginedList;
-    loginedList = loginedList ?
-    JSON.parse(loginedList) :
-    [{username: 'test', port: 1000}];
     return {
-      isRequest: false,
-      loginedList: loginedList,
-      msg: 'login'
+      isRequest: false
+    }
+  },
+  computed: {
+    loginedList(){
+      return store.state.loginedList
     }
   },
   methods: {

@@ -1,4 +1,6 @@
-import Vue from 'vue'
+import Vue from 'vue';
+import Vuex from 'vuex';
+Vue.use(Vuex);
 
 require('./css/style.scss');
 require('./lib/request');

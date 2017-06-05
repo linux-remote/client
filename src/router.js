@@ -18,7 +18,7 @@ import Root from './cmpt/root.vue';
 const router = new Router({
   routes: [
     { path: '/', component: Login },
-    { path: '', component: Root, 
+    { path: '', component: Root,
       //beforeEnter: rootBeforeEnter
     },
   ]

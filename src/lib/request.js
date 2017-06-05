@@ -2,6 +2,14 @@ const $ = window.$;
 import Vue from 'vue';
 //import FileSaver from 'file-saver';
 import {noop} from 'lodash';
+
+//跨站ajax请求初始化.
+$.ajaxSetup({
+  xhrFields: {
+    withCredentials: true
+  }
+});
+
 // ************************* requset *************************
 
 const API_ROOT = window.SERVER_CONFIG.API_ROOT;
