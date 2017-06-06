@@ -4,6 +4,7 @@ Vue.use(Router);
 
 import Login from './cmpt/login.vue';
 import Root from './cmpt/root.vue';
+import NotFound from './cmpt/not-found.vue';
 //import data from './lib/data';
 
 // const rootBeforeEnter = function(to, from, next){
@@ -21,6 +22,7 @@ const router = new Router({
     { path: '', component: Root,
       //beforeEnter: rootBeforeEnter
     },
+    { path: '*', component: NotFound}
   ]
 })
 

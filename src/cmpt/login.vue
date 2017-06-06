@@ -22,7 +22,7 @@ div(:class="$style.warp")
     h2 已登录的用户
     .logined-list
       .row(v-for="i in loginedList")
-        .col-sm-9 {{i}}
+        .col-sm-9(v-on:click="routeTo(i)") {{i}}
         .col-sm-3
           button.logined-item-right(v-on:click="logout(i)") 注销
 
@@ -52,11 +52,16 @@ export default {
     }
   },
   computed: {
+
     loginedList(){
       return store.state.loginedList
     }
   },
   methods: {
+    routeTo(username){
+      //return console.log('this.$route', this.$router)
+      this.$router.push('/user/' + username);
+    },
     logout(username){
       this.request({
         url: '/logout',
@@ -80,6 +85,7 @@ export default {
         },
         success(data){
           store.commit('set', data);
+          this.routeTo(username);
         }
       })
     }
