@@ -7,10 +7,10 @@
   justify-content: center;
 }
 .login_box{
-  width:600px;
+  width:200px;
 }
 .login_warp{
-  width: 50%;
+  width:500px;
 }
 .logined_list_warp{
   width:300px; height:100%;
@@ -27,17 +27,17 @@ div(:class="$style.warp")
           button.logined-item-right(v-on:click="logout(i)") 注销
 
   .form-horizontal(:class="$style.login_warp")
-      h2(style="text-align:center") 登录
+      h2(style="text-align:center") login
       .form-group
         label.col-sm-2.control-label 用户名：
         .col-sm-10
-          input.form-control(placeholder='username')
+          input.form-control(placeholder='username' v-model='username')
       .form-group
         label.col-sm-2.control-label 密码：
         .col-sm-10
-          input.form-control(type='password' placeholder='password')
+          input.form-control(type='password' placeholder='password' v-model='password')
       .form-group
-        .col-sm-offset-2.col-sm-10
+        .col-sm-offset-6.col-sm-2
           button.btn.btn-default(@click='login') ok
 </template>
 
@@ -47,8 +47,8 @@ export default {
   data(){
     return {
       isRequest: false,
-      username: 'dw',
-      password: 1
+      username: '',
+      password: ''
     }
   },
   computed: {

@@ -47,7 +47,10 @@ function request(opts, beforeStop = noop, afterStop = noop){
   }
 
   const self = opts.context;
-
+  if(opts.url[0] === '~'){
+    opts.url = '/user/' + self.$route.params.username + opts.url.substr(1);
+    console.log('self.$route', self.$route);
+  }
   opts.url = API_ROOT + opts.url;
   opts.onError = opts.onError || noop;
   if(opts.data){
