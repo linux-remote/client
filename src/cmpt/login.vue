@@ -47,8 +47,8 @@ export default {
   data(){
     return {
       isRequest: false,
-      username: '',
-      password: ''
+      username: 'dw',
+      password: '1'
     }
   },
   computed: {
