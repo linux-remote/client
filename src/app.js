@@ -1,9 +1,9 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
-Vue.use(Vuex);
+import {Vue} from './store-global';
 
 require('./css/style.scss');
 require('./lib/request');
+
+
 import router from './router';
 import Wtf from './cmpt/wtf.vue';
 

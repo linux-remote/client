@@ -42,6 +42,7 @@ function omitEmpty(obj){ //过滤掉空的参数
 
 function request(opts, beforeStop = noop, afterStop = noop){
 
+  opts.requestKey = opts.requestKey || 'isRequest';
   if(beforeStop(opts)){
     return;
   }
@@ -49,7 +50,6 @@ function request(opts, beforeStop = noop, afterStop = noop){
   const self = opts.context;
   if(opts.url[0] === '~'){
     opts.url = '/user/' + self.$route.params.username + opts.url.substr(1);
-    console.log('self.$route', self.$route);
   }
   opts.url = API_ROOT + opts.url;
   opts.onError = opts.onError || noop;
@@ -100,12 +100,12 @@ function request(opts, beforeStop = noop, afterStop = noop){
 
 function _vueBefore(opts){
   const self = opts.context;
-  const $data = self.$data;
-  if($data.isRequest){
+  const requestKey = opts.requestKey;
+
+  if(self[requestKey]){
     return true;
   }
-
-  self.$set($data, 'isRequest', true);
+  self[requestKey] = true;
 
   if(opts.poolKey){
     if(!self.$options._requestPool){
@@ -125,7 +125,7 @@ function _vueBefore(opts){
 
 function _vueAfterStop(opts){
   const self = opts.context;
-  const $data = self.$data;
+  const requestKey = opts.requestKey;
   if(opts.poolKey){
     const pool = self.$options._requestPool;
     const key = opts.poolKey;
@@ -135,7 +135,7 @@ function _vueAfterStop(opts){
       return;
     }
   }
-  self.$set($data, 'isRequest', false);
+  self[requestKey] = false;
 }
 Vue.prototype.apiGet = function(url, data, success){
   if(typeof data === 'function'){

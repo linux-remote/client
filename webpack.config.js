@@ -40,9 +40,8 @@ var plugins = [
     filename: bundleName}),
 
   // new webpack.ProvidePlugin({
-  //   $: "jquery",
-  //   jQuery: "jquery"
-  //   }),
+  //   Vue: "vue"
+  // }),
   new webpack.DefinePlugin({
     'process.env': {
       NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'development')

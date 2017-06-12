@@ -75,6 +75,7 @@ export default {
       })
     },
     login(){
+      console.log('this.isRequest', this.isRequest);
       const {username, password} = this;
       this.request({
         url: '/login',
