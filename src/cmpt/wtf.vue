@@ -33,8 +33,6 @@ export default {
   data(){
     return {
       isRequest: false,
-      CADownloadedCount: -1,
-      CACertPath: '',
       key:'',
       isClick: false
     }
@@ -42,6 +40,12 @@ export default {
   computed: {
     loginedList(){
       return store.state.loginedList
+    },
+    CADownloadedCount(){
+      return store.state.CADownloadedCount
+    },
+    CACertPath(){
+      return store.state.CACertPath
     }
   },
   methods:{
@@ -61,7 +65,7 @@ export default {
                 if(data === 0){
                   loop();
                 }else{
-                  this.CADownloadedCount = data;
+                  store.commit('set', {CADownloadedCount: data});
                 }
               })
             }, 1000)
@@ -69,23 +73,7 @@ export default {
           loop();
         }
       })
-    },
-    getData(callback){
-      this.request({
-        url: '/touch',
-        success(data){
-
-          const loginedList = data.loginedList;
-          Object.assign(this, data);
-          store.commit('set', {loginedList});
-          if(callback) callback(data);
-        }
-      })
     }
-  },
-
-  created(){
-    this.getData();
   }
 }
 </script>

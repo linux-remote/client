@@ -7,6 +7,8 @@ import request from './lib/request';
 const store = new Vuex.Store({
   state: {
     loginedList: [],
+    CADownloadedCount: -1,
+    CACertPath: '',
     time: 0,
     timeZoneName: '',
     timeZoneOffset: 0
@@ -21,6 +23,8 @@ const store = new Vuex.Store({
 request({
   url: '/touch',
   success(data){
+
+    store.commit('set', data);
 
     const ws = new WebSocket('wss://192.168.56.101:3000?user=dw');
 

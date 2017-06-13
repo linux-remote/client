@@ -29,22 +29,16 @@ export default {
       return timeFormat(this.now - this.timeDiff);
     }
   },
-  // methods:{
-  //   getData(){
-  //     this.request({
-  //       url: '~/time',
-  //       success(data){
-  //         const d = new Date();
-  //         this.now = d.getTime();
-  //         const currServerTime = data.time + (d.getTimezoneOffset() - data.timeZone) * ONE_MIN;
-  //         this.timeDiff = this.now - currServerTime;
-  //         Object.assign(this, data);
-  //       }
-  //     })
-  //   }
-  // },
   created(){
-    this.nowDate = new Date();
+    //this.nowDate = new Date();
+    const self = this;
+    function loop(){
+      self.nowDate = new Date();
+      setTimeout(()=> {
+        loop()
+      }, 1000)
+    }
+    loop();
   }
 }
 </script>
