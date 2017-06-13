@@ -1,20 +1,29 @@
 import _Vue from 'vue';
 import Vuex from 'vuex';
 _Vue.use(Vuex);
+import request from './lib/request';
 
-const ws = new WebSocket('wss://192.168.56.101:3000');
+request({
+  url: '/touch',
+  success(data){
 
-ws.onmessage = function (event) {
-  // console.log('Message from server', event.data);
-  const data = JSON.parse(event.data);
-  console.log('data', data);
-  switch (data.type) {
-    case 'init':
-    case 'timeZoneNameChange':
-      store.commit('set', data.data);
-      break;
+    const ws = new WebSocket('wss://192.168.56.101:3000?user=dw');
+
+    ws.onmessage = function (event) {
+      // console.log('Message from server', event.data);
+      const data = JSON.parse(event.data);
+      console.log('data', data);
+      switch (data.type) {
+        case 'init':
+        case 'timeZoneNameChange':
+          store.commit('set', data.data);
+          break;
+      }
+    };
   }
-};
+})
+
+
 
 const store = new Vuex.Store({
   state: {
