@@ -9,10 +9,19 @@ const store = new Vuex.Store({
     loginedList: [],
     CADownloadedCount: -1,
     CACertPath: '',
+    username:'',
     time: 0,
     timeZoneName: '',
     timeZoneOffset: 0
   },
+  // actions: {
+  //   login({commit}, data){
+  //     console.log('data', data);
+  //   },
+  //   logout(){
+  //
+  //   }
+  // },
   mutations: {
     set (state, data) {
       Object.assign(state, data);
@@ -23,24 +32,9 @@ const store = new Vuex.Store({
 request({
   url: '/touch',
   success(data){
-
     store.commit('set', data);
-
-    const ws = new WebSocket('wss://192.168.56.101:3000?user=dw');
-
-    ws.onmessage = function (event) {
-      // console.log('Message from server', event.data);
-      const data = JSON.parse(event.data);
-      console.log('data', data);
-      switch (data.type) {
-        case 'init':
-        case 'timeZoneNameChange':
-          store.commit('set', data.data);
-          break;
-      }
-    };
   }
-})
- // Fiexd: must call Vue.use(Vuex) before creating a store instance.
+});
+
 export const Vue = _Vue;
 export default store;

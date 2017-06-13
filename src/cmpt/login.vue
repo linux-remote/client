@@ -43,6 +43,7 @@ div(:class="$style.warp")
 
 <script>
 import store from '../store-global';
+import {login, logout} from '../lib/login'
 export default {
   data(){
     return {
@@ -58,40 +59,10 @@ export default {
   },
   methods: {
     routeTo(username){
-      //return console.log('this.$route', this.$router)
       this.$router.push('/user/' + username);
     },
-    logout(username){
-      this.request({
-        url: '/logout',
-        type: 'post',
-        data: {
-          username
-        },
-        success(loginedList){
-          store.commit('set', {loginedList});
-        }
-      })
-    },
-    login(){
-      console.log('this.isRequest', this.isRequest);
-      const {username, password} = this;
-      this.request({
-        url: '/login',
-        type: 'post',
-        data: {
-          username,
-          password
-        },
-        success(data){
-          store.commit('set', data);
-          this.routeTo(username);
-        }
-      })
-    }
-  },
-  created(){
-    //this.getLoginedList();
+    logout,
+    login
   }
 }
 </script>

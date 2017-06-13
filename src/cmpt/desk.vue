@@ -13,8 +13,9 @@
   h1 desk {{info}}
 </template>
 <script>
-import store from './sess-store';
+// import store from '__ROOT__/store-global';
 import Watch from './watch';
+import {logout, createWs} from '__ROOT__/lib/login'
 export default {
   components: {Watch},
   data(){
@@ -31,19 +32,7 @@ export default {
     }
   },
   methods: {
-    logout(){
-      this.request({
-        url: '/logout',
-        type: 'post',
-        data: {
-          username: this.username
-        },
-        success(data){
-          store.commit('set', data);
-          this.$router.push('/');
-        }
-      })
-    },
+    logout,
     getData(){
       this.apiGet('~/info', function(data){
         Object.assign(this.$data, data);
@@ -52,6 +41,8 @@ export default {
     }
   },
   created(){
+    //store.commit('set', {username: this.username});
+    createWs(this.username);
     this.getData();
   }
 }
