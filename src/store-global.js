@@ -1,7 +1,22 @@
 import _Vue from 'vue';
 import Vuex from 'vuex';
 _Vue.use(Vuex);
+
 import request from './lib/request';
+
+const store = new Vuex.Store({
+  state: {
+    loginedList: [],
+    time: 0,
+    timeZoneName: '',
+    timeZoneOffset: 0
+  },
+  mutations: {
+    set (state, data) {
+      Object.assign(state, data);
+    }
+  }
+});
 
 request({
   url: '/touch',
@@ -22,25 +37,6 @@ request({
     };
   }
 })
-
-
-
-const store = new Vuex.Store({
-  state: {
-    time: 0,
-    timeZoneName: '',
-    timeZoneOffset: 0
-  },
-  actions: {
-
-  },
-  mutations: {
-    set (state, data) {
-      console.log('data', data);
-      Object.assign(state, data);
-    }
-  }
-});
  // Fiexd: must call Vue.use(Vuex) before creating a store instance.
 export const Vue = _Vue;
 export default store;

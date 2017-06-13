@@ -42,7 +42,7 @@ div(:class="$style.warp")
 </template>
 
 <script>
-import store from './sess-store';
+import store from '../store-global';
 export default {
   data(){
     return {
@@ -52,7 +52,6 @@ export default {
     }
   },
   computed: {
-
     loginedList(){
       return store.state.loginedList
     }
@@ -69,8 +68,8 @@ export default {
         data: {
           username
         },
-        success(data){
-          store.commit('set', data);
+        success(loginedList){
+          store.commit('set', {loginedList});
         }
       })
     },

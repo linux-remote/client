@@ -28,7 +28,7 @@
   router-view(v-else)
 </template>
 <script>
-import store from './sess-store';
+import store from '../store-global';
 export default {
   data(){
     return {
@@ -77,7 +77,7 @@ export default {
 
           const loginedList = data.loginedList;
           Object.assign(this, data);
-          store.commit('set', loginedList);
+          store.commit('set', {loginedList});
           if(callback) callback(data);
         }
       })
