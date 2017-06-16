@@ -2,9 +2,9 @@ import Vue from 'vue';
 import Router from 'vue-router';
 Vue.use(Router);
 
-import Login from './cmpt/login.vue';
-import Desk from './cmpt/desk.vue';
-import NotFound from './cmpt/not-found.vue';
+import Login from './page/login.vue';
+import Desk from './page/desk.vue';
+import NotFound from './page/not-found.vue';
 //import data from './lib/data';
 
 // const rootBeforeEnter = function(to, from, next){

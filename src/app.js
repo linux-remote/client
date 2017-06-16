@@ -5,11 +5,11 @@ require('./lib/request');
 
 
 import router from './router';
-import Wtf from './cmpt/wtf.vue';
+import Root from './page/root.vue';
 
 var app = new Vue({
   router,
-  render: h => h(Wtf)
+  render: h => h(Root)
 });
 
 router.onReady(() => {

@@ -1,5 +1,5 @@
 <template lang="jade">
-div {{watch}} {{timeZoneOffset}} {{timeZoneName}}
+b.lr-watch {{watch}} {{timeZoneOffset}} {{timeZoneName}}
 </template>
 
 <script>
@@ -8,10 +8,6 @@ import store from '__ROOT__/store-global';
 export default {
   data(){
     return {
-      // time: 0,
-      // timeZoneOffset: '',
-      // timeZoneName:'',
-      // timeDiff : 0,
       nowDate: null
     }
   },
