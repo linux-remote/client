@@ -7,11 +7,16 @@ _Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state: {
+    // global
     winH: $win.height(),
     winW: $win.width(),
+
+    // sess
     CADownloadedCount: -1,
     CACertPath: '',
     loginedList: [],
+
+    // desk
     username:'',
     hostname: '',
     arch: '',
@@ -19,6 +24,7 @@ const store = new Vuex.Store({
     timeZoneName: '',
     timeZoneOffset: 0,
 
+    // tasks
     tasks: [], // tasks stack
     latestTask: {}, // last created task
     currTask: {}, // focused task
@@ -102,18 +108,6 @@ const store = new Vuex.Store({
   }
 });
 store.commit('addTask', {name: 'test'});
-// import request from './lib/request';
-//
-// request({
-//   url: '/touch',
-//   success(data){
-//     store.commit('set', data);
-//   }
-// });
-
-// $(document).on('click', function(){
-//   store.commit('eventDocumentClick')
-// })
 
 export const Vue = _Vue;
 export default store;

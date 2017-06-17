@@ -42,12 +42,6 @@ export default {
   computed:{
     titleClass(){
       return this.focus ? 'lr-focus' : ''
-    },
-    winW(){
-      return store.state.winW
-    },
-    winH(){
-      return store.state.winH
     }
   }
 }

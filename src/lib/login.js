@@ -1,4 +1,5 @@
 import store from '../store-global';
+const DOC_TITLE = document.title;
 
 var ws;
 export function createWs(username){
@@ -11,30 +12,12 @@ export function createWs(username){
     //     store.commit('set', data.data);
     //     break;
     // }
-    //console.log('data', data)
+    console.log('data', data);
     if(data.type === 'init'){
       document.title = username + '@' + data.data.hostname;
     }
     store.commit('set', data.data);
   };
-}
-
-export function login(){
-  const {username, password} = this;
-  this.request({
-    url: '/login',
-    type: 'post',
-    data: {
-      username,
-      password
-    },
-    success(data){
-      // data.username = username;
-      // createWs(username);
-      store.commit('set', data);
-      this.routeTo(username);
-    }
-  })
 }
 
 export function logout(){
@@ -46,9 +29,9 @@ export function logout(){
     },
     success(loginedList){
       store.commit('set', {loginedList});
-
       ws.close();
       this.$router.push('/');
+      document.title = DOC_TITLE;
     }
   })
 }

@@ -21,7 +21,6 @@
 
 <script>
 import store from '../store-global';
-import {login, logout} from '../lib/login'
 export default {
   data(){
     return {
@@ -30,19 +29,33 @@ export default {
       password: '1'
     }
   },
-  computed: {
-    loginedList(){
-      return store.state.loginedList
-    }
-  },
+  // computed: {
+  //   loginedList(){
+  //     return store.state.loginedList
+  //   }
+  // },
   methods: {
+    login(){
+      const {username, password} = this;
+      this.request({
+        url: '/login',
+        type: 'post',
+        data: {
+          username,
+          password
+        },
+        success(data){
+          // data.username = username;
+          // createWs(username);
+          store.commit('set', data);
+          this.routeTo(username);
+        }
+      })
+    },
     routeTo(username){
       this.$router.push('/user/' + username);
-    },
-    logout,
-    login
-  },
-  created(){
+    }
+    // logout,
   }
 }
 </script>
