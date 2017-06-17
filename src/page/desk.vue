@@ -16,7 +16,7 @@
   br
   br
   <tasks-bar />
-  <tasks-window v-for='(item, index) in tasks' :key='item.id' :index='index' :testF='item.focus' />
+  <tasks-window v-for='(item, index) in tasks' :key='item.id' :index='index' />
 </template>
 <script>
 import store from '__ROOT__/store-global';

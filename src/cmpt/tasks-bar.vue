@@ -1,7 +1,7 @@
 <template lang="jade">
 .lr-task-bar
-  .lr-task-item(v-for='i in tasks')
-    {{i.name}}
+  .lr-task-item(v-for='i in tasks', @click.stop= 'handleClick(i)', :class='{lr_focus: i.focus}')
+    {{i.name}} {{i.focus}}
 </template>
 
 <script>
@@ -10,6 +10,11 @@ export default {
   data(){
     return {
       nowDate: null
+    }
+  },
+  methods: {
+    handleClick(task){
+      store.commit('taskWindowFocus', task);
     }
   },
   computed:{

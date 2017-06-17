@@ -19,11 +19,10 @@ const store = new Vuex.Store({
     timeZoneName: '',
     timeZoneOffset: 0,
 
-    tasks: [],
-    lastTask: {},
-    currTask: {},
-    preTask: {},
-    taskMaxZindex: 2,
+    tasks: [], // tasks stack
+    lastTask: {}, // last created task
+    currTask: {}, // focused task
+    taskMaxZindex: 0,
     currTaskPositionTop: 0,
     currTaskPositionLeft: 0
   },
@@ -39,11 +38,11 @@ const store = new Vuex.Store({
     addTask(state, data){
       let margin = null;
       if(state.tasks.length){
-        data.offsetTop = state.currTaskPositionTop +=  50;
-        data.offsetLeft = state.currTaskPositionLeft += 50;
+        data.positionTop = state.currTaskPositionTop +=  50;
+        data.positionLeft = state.currTaskPositionLeft += 50;
       }else{
-        data.offsetTop = 0;
-        data.offsetLeft = 0;
+        data.positionTop = 0;
+        data.positionLeft = 0;
         margin = 'auto';
       }
 
@@ -75,7 +74,6 @@ const store = new Vuex.Store({
       state.currTaskPositionLeft = data.left;
     },
     eventDocumentClick(state){
-      console.log('eventDocumentClick')
       const {lastTask, currTask} = state;
       if(currTask._omitBlur){
         return currTask._omitBlur = false;
@@ -90,7 +88,6 @@ const store = new Vuex.Store({
         task.focus = true;
         return;
       }
-      state.preTask = state.currTask;
       state.taskMaxZindex = state.taskMaxZindex + 1;
       state.currTask.focus = false;
       task.focus = true;

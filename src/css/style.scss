@@ -80,9 +80,9 @@ button{
     }
   }
   .lr-fs-icon{
-    width:30px; height:30px; font-size:30px;margin-left:20px;
+     font-size:30px;margin-left:20px; padding: 20px;
     &:hover{
-      background-color:$color;
+      background-color:#000; color:$color;
     }
   }
   .lr-task-bar{
@@ -91,6 +91,10 @@ button{
   }
   .lr-task-item{
     height:100%;line-height: 35px;padding: 0 5px;background: #000; color:yellow;margin:0 1px;
+    cursor: default;
+    &.lr_focus{
+      color: $color32;
+    }
   }
   .lr-task-window{
     position: absolute;z-index: 2; width: 400px; height: 400px; top:0;
