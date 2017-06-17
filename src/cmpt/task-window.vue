@@ -1,5 +1,5 @@
 <template lang="jade">
-.lr-task-window(@click.stop='handleClick',  :style='{zIndex: zIndex, top: positionTop + "px", left: positionLeft  + "px", margin: margin}')
+.lr-task-window(@click.stop='handleClick',  :style='{width:width, height: height, zIndex: zIndex, top: positionTop + "px", left: positionLeft  + "px"}', draggable='true', @dragstart='handleDragStart', @dragend='handleDragEnd')
   .lr-title(:class='titleClass')
     .lr-title-content {{name}} {{zIndex}} #index:{{index}} #id:{{id}}
     .lr-title-close(@click.stop='removeTask')
@@ -21,6 +21,22 @@ export default {
     },
     handleClick(){
       store.commit('taskWindowFocus', this.$data);
+    },
+    handleDragStart(e){
+      if(!this.focus){
+        store.commit('taskWindowFocus', this.$data);
+      }
+
+      e.dataTransfer._startClient = {
+        x: e.clientX,
+        y: e.clientY
+      }
+
+    },
+    handleDragEnd(e){
+      const startClient = e.dataTransfer._startClient;
+      this.positionLeft += (e.clientX - startClient.x);
+      this.positionTop += (e.clientY - startClient.y);
     }
   },
   computed:{
@@ -33,19 +49,6 @@ export default {
     winH(){
       return store.state.winH
     }
-  },
-  mounted(){
-    const $el = window.$(this.$el);
-    const offset = $el.offset();
-    const width = $el.width();
-    const height = $el.height();
-    if(offset.top + height >= this.winH){
-      offset.top = 0;
-    }
-    if(offset.left + width >= this.winW){
-      offset.left = 0;
-    }
-    store.commit('reportTaskPosition', offset);
   }
 }
 </script>

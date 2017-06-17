@@ -45,6 +45,17 @@ export default {
     }
   },
   methods: {
+    // handleDrop(e){
+    //   const arr = event.dataTransfer.getData("text/plain").split(',');
+    //   const index = arr[2];
+    //   const task = this.tasks[index];
+    //   task.positionTop = (e.clientY + parseInt(arr[1], 10));
+    //   task.positionLeft = (e.clientX + parseInt(arr[0], 10));
+    //   return false;
+    // },
+    // handleDragOver(){
+    //   return false;
+    // },
     logout,
     createdTask(){
       store.commit('addTask', {
@@ -58,6 +69,7 @@ export default {
       });
     }
   },
+
   created(){
     //store.commit('set', {username: this.username});
     createWs(this.username);
