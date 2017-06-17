@@ -36,7 +36,7 @@ const store = new Vuex.Store({
     addTask(state, data){
       data.width = data.width || 400;
       data.height = data.height || 400;
-
+      data.draggable = false;
       if(state.tasks.length){
 
         const currTask = state.currTask;
@@ -107,7 +107,7 @@ const store = new Vuex.Store({
     }
   }
 });
-store.commit('addTask', {name: 'test'});
+store.commit('addTask', {name: 'test', height: 500, width: 600});
 
 export const Vue = _Vue;
 export default store;
