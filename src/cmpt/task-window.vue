@@ -35,8 +35,17 @@ export default {
     }
   },
   mounted(){
-    const data = window.$(this.$el).offset();
-    store.commit('reportTaskPosition', data);
+    const $el = window.$(this.$el);
+    const offset = $el.offset();
+    const width = $el.width();
+    const height = $el.height();
+    if(offset.top + height >= this.winH){
+      offset.top = 0;
+    }
+    if(offset.left + width >= this.winW){
+      offset.left = 0;
+    }
+    store.commit('reportTaskPosition', offset);
   }
 }
 </script>

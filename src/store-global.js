@@ -26,14 +26,6 @@ const store = new Vuex.Store({
     currTaskPositionTop: 0,
     currTaskPositionLeft: 0
   },
-  // actions: {
-  //   login({commit}, data){
-  //     console.log('data', data);
-  //   },
-  //   logout(){
-  //
-  //   }
-  // },
   mutations: {
     addTask(state, data){
       let margin = null;
@@ -60,7 +52,6 @@ const store = new Vuex.Store({
     },
     removeTask(state, task){
       if(task.zIndex === state.currTask.zIndex){
-        console.log('task === state.currTask')
         const preTask = find(state.tasks, {zIndex: task.zIndex - 1});
         if(preTask){
           preTask.focus = true;
@@ -83,7 +74,6 @@ const store = new Vuex.Store({
       }
     },
     taskWindowFocus(state, task){
-      console.log('taskWindowFocus')
       if(state.currTask === task){
         task.focus = true;
         return;
