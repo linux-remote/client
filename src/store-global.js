@@ -2,6 +2,7 @@ import _Vue from 'vue';
 import Vuex from 'vuex';
 const $ = window.$;
 const $win = $(window);
+const {find} = require('lodash');
 _Vue.use(Vuex);
 
 const store = new Vuex.Store({
@@ -19,9 +20,12 @@ const store = new Vuex.Store({
     timeZoneOffset: 0,
 
     tasks: [],
+    lastTask: {},
+    currTask: {},
+    preTask: {},
     taskMaxZindex: 2,
-    currTasksPositionTop: 0,
-    currTasksPositionLeft: 0
+    currTaskPositionTop: 0,
+    currTaskPositionLeft: 0
   },
   // actions: {
   //   login({commit}, data){
@@ -33,18 +37,65 @@ const store = new Vuex.Store({
   // },
   mutations: {
     addTask(state, data){
-      state.taskMaxZindex = state.taskMaxZindex + 1;
-      // state.currTasksPositionTop = state.currTasksPositionTop + 25;
-      // state.currTasksPositionLeft = state.currTasksPositionLeft + 25;
+      let margin = null;
+      if(state.tasks.length){
+        data.offsetTop = state.currTaskPositionTop +=  50;
+        data.offsetLeft = state.currTaskPositionLeft += 50;
+      }else{
+        data.offsetTop = 0;
+        data.offsetLeft = 0;
+        margin = 'auto';
+      }
+
+      data.margin = margin;
+
+      store.commit('taskWindowFocus', data);
+
+      data._omitBlur = true;
+      state.lastTask._omitBlur = false;
+      data.id = state.taskMaxZindex;
+      //state.currTask = data;
+      state.lastTask = data;
       state.tasks.push(data);
+
     },
-    removeTask(state, index){
-      //state.taskMaxZindex = state.taskMaxZindex - 1;
-      state.tasks.splice(index, 1);
+    removeTask(state, task){
+      if(task.zIndex === state.currTask.zIndex){
+        console.log('task === state.currTask')
+        const preTask = find(state.tasks, {zIndex: task.zIndex - 1});
+        if(preTask){
+          preTask.focus = true;
+          state.currTask = preTask;
+        }
+      }
+      state.tasks.splice(task.index, 1);
     },
-    reportTaskPosition(state, offset){
-      state.currTasksPositionTop = offset.top;
-      state.currTasksPositionLeft = offset.left;
+    reportTaskPosition(state, data){
+      state.currTaskPositionTop = data.top ;
+      state.currTaskPositionLeft = data.left;
+    },
+    eventDocumentClick(state){
+      console.log('eventDocumentClick')
+      const {lastTask, currTask} = state;
+      if(currTask._omitBlur){
+        return currTask._omitBlur = false;
+      }
+      if(lastTask !== currTask || !currTask._omitBlur){
+        currTask.focus = false;
+      }
+    },
+    taskWindowFocus(state, task){
+      console.log('taskWindowFocus')
+      if(state.currTask === task){
+        task.focus = true;
+        return;
+      }
+      state.preTask = state.currTask;
+      state.taskMaxZindex = state.taskMaxZindex + 1;
+      state.currTask.focus = false;
+      task.focus = true;
+      task.zIndex = state.taskMaxZindex;
+      state.currTask = task;
     },
     set (state, data) {
       Object.assign(state, data);
@@ -60,6 +111,10 @@ const store = new Vuex.Store({
 //     store.commit('set', data);
 //   }
 // });
+
+// $(document).on('click', function(){
+//   store.commit('eventDocumentClick')
+// })
 
 export const Vue = _Vue;
 export default store;

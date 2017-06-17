@@ -3,3 +3,4 @@
 /dist/dev
 /dist/pro
 !/dist/pro/a_vendor_bundle.js
+/public/jquery-ui-1.12.1.custom
