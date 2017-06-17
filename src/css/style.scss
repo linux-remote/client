@@ -118,7 +118,7 @@ button{
     flex-grow:1; padding: 0 10px;
   }
   .lr-window-body{
-    flex-grow:1;
+    flex-grow:1;background:navajowhite;
   }
   .lr-title-close{
     display: block;width: 25px;background: #000; height: 25px;position: absolute;
@@ -129,7 +129,7 @@ button{
   }
 
   .lr-fs-bar{
-    height: 30px; background: green;
+    height: 30px; background: lightgreen;
   }
 
   // #yin-yang, #yin-yang::before, #yin-yang::after{

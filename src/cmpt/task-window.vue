@@ -3,13 +3,17 @@
   .lr-title(:class='titleClass' @mousedown='handleTitleMousedown' @mouseup='disableDraggable')
     .lr-title-content {{name}} {{zIndex}} #index:{{index}} #id:{{id}}
     .lr-title-close(@click.stop='removeTask')
-  .lr-window-body( style='background:green')
-    slot Empty
+  fs-body(v-if='type==="fs"')
+  .lr-window-body(v-else-if='!type') Empty
 </template>
 
 <script>
 import store from '__ROOT__/store-global';
+import FsBody from './window-body/fs';
 export default {
+  components: {
+    FsBody
+  },
   props: ['index'],
   data(){
     return store.state.tasks[this.index];
@@ -27,23 +31,18 @@ export default {
         zIndex: this.zIndex
       });
     },
-    handleNothing(e){
-      console.log('handleNothing', e);
-      return false
-    },
+    // handleNothing(e){
+    //   return false
+    // },
     handleClick(){
       store.commit('taskWindowFocus', this.$data);
     },
     handleDragStart(e){
-      // e.cancelBubble=true;
-      // e.returnValue=false;
-      // console.log('handleDragStart', e);
-      //e.target = this.$el
-       //e.dataTransfer.fromElement = this.$el
       if(!this.draggable){
         e.preventDefault();
         return false;
       }
+
       if(!this.focus){
         store.commit('taskWindowFocus', this.$data);
       }
@@ -59,7 +58,6 @@ export default {
       this.positionLeft += (e.clientX - startClient.x);
       this.positionTop += (e.clientY - startClient.y);
       this.draggable = false;
-      return false;
     }
   },
   computed:{

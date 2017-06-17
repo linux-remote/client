@@ -16,7 +16,8 @@
   br
   br
   <tasks-bar />
-  <tasks-window v-for='(item, index) in tasks' :key='item.id' :index='index' />
+  <tasks-window v-for='(item, index) in tasks' :key='item.id' :index='index'>
+  </tasks-window>
 </template>
 <script>
 import store from '__ROOT__/store-global';
@@ -24,6 +25,7 @@ import Watch from '__ROOT__/cmpt/watch';
 import TasksBar from '__ROOT__/cmpt/tasks-bar';
 import TasksWindow from '__ROOT__/cmpt/task-window';
 import {logout, createWs} from '__ROOT__/lib/login';
+
 export default {
   components: {
     Watch,
@@ -48,7 +50,9 @@ export default {
     logout,
     createdTask(){
       store.commit('addTask', {
-        name: 'test:' + Date.now()
+        name: 'test:' + Date.now(),
+        type: 'fs',
+        height: 500, width: 600
       });
     },
     getData(){
@@ -63,6 +67,7 @@ export default {
     //store.commit('set', {username: this.username});
     createWs(this.username);
     this.getData();
+    this.createdTask();
   }
 }
 </script>

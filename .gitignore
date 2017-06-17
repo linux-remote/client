@@ -4,3 +4,5 @@
 /dist/pro
 !/dist/pro/a_vendor_bundle.js
 /public/jquery-ui-1.12.1.custom
+/src/page/desk0drop.bak.vue
+/src/store/sess.js
