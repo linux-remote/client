@@ -1,5 +1,5 @@
 <template lang="jade">
-.dw-h100(style="position:relative;height:100%; overflow: hidden;")
+.dw-h100(style="position:relative;height:100%; overflow: hidden;" v-if='deskInited')
   .lr-top
     div(style="width:33%;padding-left:10px;")
       b {{hostname}}
@@ -9,11 +9,9 @@
       b {{username}}
       button(@click='logout') logout
       router-link.btn.btn-link(to='/') use other account login in
-  div(style="") test
-  h1 desk {{info}}
-  //-#yin-yang
-  .lr-fs-icon.glyphicon.glyphicon-hdd(@click="createdTask")
   br
+  .lr-fs-icon.glyphicon.glyphicon-hdd(@click="createdTask")
+
   br
   <tasks-bar />
   <tasks-window v-for='(item, index) in tasks' :key='item.id' :index='index'>
@@ -33,18 +31,7 @@ export default {
     TasksWindow
   },
   data(){
-    return {
-      isRequest: false,
-      isTimeRequest: false,
-      hostname: '',
-      username: this.$route.params.username,
-      info: ''
-    }
-  },
-  computed: {
-    tasks(){
-      return store.state.tasks
-    }
+    return store.state;
   },
   methods: {
     logout,
@@ -55,19 +42,25 @@ export default {
         height: 500, width: 600
       });
     },
-    getData(){
+    init(){
+      const username = this.$route.params.username;
       this.apiGet('~/info', function(data){
-        Object.assign(this.$data, data);
-        //this.info = data;
-      });
+        data.deskInited = true;
+        data.username = username;
+        document.title = username + '@' + data.hostname;
+        store.commit('set', data);
+      })
+
+      createWs(username);
     }
   },
 
-  created(){
-    //store.commit('set', {username: this.username});
-    createWs(this.username);
-    this.getData();
-    this.createdTask();
+  mounted(){
+    if(!this.deskInited){
+      this.init();
+      this.createdTask();
+    }
   }
 }
+
 </script>

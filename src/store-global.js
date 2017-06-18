@@ -17,9 +17,11 @@ const store = new Vuex.Store({
     loginedList: [],
 
     // desk
+    deskInited: false,
     username:'',
     hostname: '',
-    arch: '',
+    homedir: '',
+    //arch: '',
     time: 0,
     timeZoneName: '',
     timeZoneOffset: 0,

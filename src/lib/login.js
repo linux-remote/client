@@ -12,10 +12,11 @@ export function createWs(username){
     //     store.commit('set', data.data);
     //     break;
     // }
-    console.log('data', data);
-    if(data.type === 'init'){
-      document.title = username + '@' + data.data.hostname;
-    }
+    // console.log('data', data);
+    // if(data.type === 'init'){
+    //   data.data.deskInited = true;
+    //   document.title = username + '@' + data.data.hostname;
+    // }
     store.commit('set', data.data);
   };
 }

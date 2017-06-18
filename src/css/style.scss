@@ -118,7 +118,7 @@ button{
     flex-grow:1; padding: 0 10px;
   }
   .lr-window-body{
-    flex-grow:1;background:navajowhite;
+    flex-grow:1;background:navajowhite; display: flex; flex-direction: column;
   }
   .lr-title-close{
     display: block;width: 25px;background: #000; height: 25px;position: absolute;
@@ -129,7 +129,42 @@ button{
   }
 
   .lr-fs-bar{
-    height: 30px; background: lightgreen;
+    background: #fff; border: 2px inset #999;display: flex;align-items: center;
+    // .lr-2-nav{
+    //   display: flex;
+    // }
+    .lr-2-address{
+      flex-grow:1; height: 25px;
+    }
+    .lr-3-item{
+      width: 30px; font-size: 25px;height: 30px; line-height: 30px;
+      &:hover{
+        background: #000;color:$color;
+      }
+    }
+  }
+  .lr-fs-body{
+    display: flex; flex-grow:1; flex-wrap: wrap; padding: 2px;
+    overflow-y: auto;
+  }
+  .lr-file{
+    width: 80px; height: 74px; overflow: hidden; position: relative;
+    .lr-2-icon{
+      width: 100%; height: 50px; font-size: 30px; text-align: center;
+       line-height: 50px;
+    }
+    .lr-2-name{
+      text-align: center; font-size: 12px;
+      // &:hover{
+      //   word-break:break-all;z-index: 99999999;position: absolute;width: 100%;
+      // }
+    }
+    &:hover{
+      background-color: #000; color:$color;overflow:visible;word-break:break-all;
+      .lr-2-name{
+        background-color: red;z-index: 1;position: relative;
+      }
+    }
   }
 
   // #yin-yang, #yin-yang::before, #yin-yang::after{
