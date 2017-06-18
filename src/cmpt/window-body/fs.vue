@@ -7,7 +7,7 @@
       input.lr-2-address(v-model='address')
       .lr-3-item.glyphicon.glyphicon-play
     .lr-fs-body
-      .lr-file(v-for='item in data')
+      .lr-file(v-for='item in data', :class='{lr_2_file_link: item.isSymbolicLink}')
         .lr-2-icon.glyphicon.glyphicon-file(v-if='!item.isDirectory')
         .lr-2-icon.glyphicon.glyphicon-folder-close(v-else-if='item.isDirectory')
         .lr-2-name {{item.name}}
