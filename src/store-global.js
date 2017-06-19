@@ -5,6 +5,13 @@ const $win = $(window);
 const {find} = require('lodash');
 _Vue.use(Vuex);
 
+$win.on('resize', function(){
+  store.commit('set', {
+    winH: $win.height(),
+    winW: $win.width()
+  })
+});
+
 const store = new Vuex.Store({
   state: {
     // global

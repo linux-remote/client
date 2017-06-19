@@ -4,15 +4,18 @@
     .lr-title-content {{name}} {{zIndex}} #index:{{index}} #id:{{id}}
     .lr-title-close(@click.stop='removeTask')
   fs-body(v-if='type==="fs"')
-  .lr-window-body(v-else-if='!type') Empty
+  edit-body(v-else-if='type==="edit"' ,:address='address')
+  .lr-window-body(v-else='!type') Empty
 </template>
 
 <script>
 import store from '__ROOT__/store-global';
 import FsBody from './window-body/fs';
+import EditBody from './window-body/edit';
 export default {
   components: {
-    FsBody
+    FsBody,
+    EditBody
   },
   props: ['index'],
   data(){

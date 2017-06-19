@@ -23,7 +23,7 @@ button{
 }
 :global{
   .lr-app, .lr-page{
-    height: 100%;
+    height: 100%; position: relative;
   }
   .lr-page{
     display: flex;
@@ -119,6 +119,7 @@ button{
   }
   .lr-window-body{
     flex-grow:1;background:navajowhite; display: flex; flex-direction: column;
+    position: relative;
   }
   .lr-title-close{
     display: block;width: 25px;background: #000; height: 25px;position: absolute;
@@ -149,7 +150,7 @@ button{
   }
   .lr-fs-body{
     display: flex; flex-grow:1; flex-wrap: wrap; padding: 2px;
-    align-content:flex-start;
+    align-content:flex-start; position: relative;
     overflow-y: auto;
   }
   .lr-file{
@@ -164,7 +165,7 @@ button{
       //   word-break:break-all;z-index: 99999999;position: absolute;width: 100%;
       // }
     }
-    &:hover{
+    &:hover, &.lr_2_focus{
       background-color: #000; color:$color;overflow:visible;word-break:break-all;
       .lr-2-name{
         background-color: red;z-index: 1;position: relative;
@@ -173,6 +174,31 @@ button{
     &.lr_2_file_link{
       color: violet;
     }
+  }
+  .lr-contextmenu{
+    position: absolute;z-index: 9999999999; border: 1px outset #eee;
+    background: #eee; height: 200px; width: 100px; top:0; left:0;
+    .lr-2-item{
+      padding: 5px 10px; border-bottom: 1px solid #999; cursor: pointer;
+      &:hover{
+        background-color: green; color:#fff;
+      }
+    }
+  }
+
+  .lr-hourglass{
+    position: absolute;top:0;left:0;right: 0;bottom: 0;margin: auto;
+    height: 30px; width: 30px; font-size: 25px;text-align: center;line-height: 30px;
+    z-index: 3; color:#888; opacity: .6;
+  }
+  .lr-edit-body{
+    display: flex; flex-grow: 1; flex-direction: column;
+  }
+  .lr-edit-bar{
+    height: 30px; background-color: #eee; line-height: 30px;padding: 0 10px;
+  }
+  .lr_edit_textarea{
+    height: 100%; width: 100%; display: block;flex-grow: 1;
   }
 
   // #yin-yang, #yin-yang::before, #yin-yang::after{

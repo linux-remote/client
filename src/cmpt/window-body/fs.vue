@@ -1,5 +1,6 @@
 <template lang="jade">
-.lr-window-body
+.lr-window-body(@click='handleBodyClick')
+    .lr-hourglass.glyphicon.glyphicon-hourglass(v-show='isRequest')
     .lr-fs-bar
       .lr-3-item.glyphicon.glyphicon-arrow-left(@click='handleArrowLeftClick', :class='{lr_2_disabled:backStack.length === 0}')
       .lr-3-item.glyphicon.glyphicon-arrow-up(@click='handleArrowUpClick', :class='{lr_2_disabled:address === "/"}')
@@ -9,18 +10,19 @@
       .lr-3-item.glyphicon.glyphicon-play(v-else @click='handleGoClick')
     .lr-fs-body(v-if='error')
       h2(v-html='data' style='color:red')
-    .lr-fs-body(v-else)
-      .lr-file(v-for='item in data', @click='handleItemClick(item)', :class='{lr_2_file_link: item.isSymbolicLink}')
+    .lr-fs-body(v-else @contextmenu.prevent='handleFsBodyContextmenu' @click='handleFsBodyClick')
+      .lr-file(v-for='item in data', :key='item.name' @dblclick='handleItemClick(item)', @click.prevent.stop='handleItemMousedown(item)', :class='{lr_2_file_link: item.isSymbolicLink, lr_2_focus: item.focus}', @contextmenu.prevent.stop='handleFsItemContextmenu(item, $event)')
         .lr-2-icon.glyphicon.glyphicon-file(v-if='!item.isDirectory')
-        .lr-2-icon.glyphicon.glyphicon-folder-close(v-else-if='item.isDirectory')
+        .lr-2-icon.glyphicon.glyphicon-folder-close(v-else='item.isDirectory')
         .lr-2-name {{item.name}}
 </template>
 
 <script>
 import store from '__ROOT__/store-global';
+import contextmenuStore from '__ROOT__/store/contextmenu';
 export default {
   data(){
-    const pData = this.$parent;
+    // const pData = this.$parent;
     // const address = pData.address || store.state.homedir;
     return {
       isRequest: false,
@@ -29,7 +31,10 @@ export default {
       addressArr: ['/'],
       data: [],
       backStack: [],
-      goStack: []
+      goStack: [],
+      currFocusItem: {}
+      // newFileIndex: 0,
+      // newFolderIndex: 0
     }
   },
   watch: {
@@ -47,6 +52,105 @@ export default {
     }
   },
   methods: {
+    handleItemMousedown(item){
+      //console.log('handleItemMousedown')
+      this.itemFocus(item);
+      contextmenuStore.commit('close');
+      return false;
+    },
+    itemFocus(item){
+      this.currFocusItem.focus = false;
+      item.focus = true;
+      this.currFocusItem = item;
+    },
+    handleBodyClick(){
+      //console.log('handleBodyClick')
+      contextmenuStore.commit('close');
+      return false;
+    },
+    handleFsBodyClick(){
+      this.currFocusItem.focus = false;
+      //return false;
+    },
+    handleFsItemContextmenu(item, e){
+      const self = this;
+      this.itemFocus(item);
+      contextmenuStore.commit('open', {
+        data: [
+          {
+            name: 'Open',
+            handleClick(){
+              self.handleItemClick(item)
+              console.log('handleClick open');
+            }
+          },
+          {
+            name: 'Delete',
+            handleClick(){
+              self.request({
+                type: 'delete',
+                url: '~/fs' + self.address + '/' + item.name + '?type=file',
+                success(){
+                  //self.newFileIndex += 1;
+                  self.getData();
+                }
+              })
+            }
+          }
+        ],
+        top: e.clientY,
+        left: e.clientX
+      });
+      return false;
+    },
+    handleFsBodyContextmenu(e){
+      const self = this;
+      contextmenuStore.commit('open', {
+        data: [{
+          name: 'New File',
+          handleClick(){
+            self.request({
+              type: 'POST',
+              url: '~/fs' + self.address,
+              data: {
+                name: 'new-file-' + Date.now(),
+                type: 'file'
+              },
+              success(){
+                //self.newFileIndex += 1;
+                self.getData();
+              }
+            })
+          }
+        },
+        {
+          name: 'New Folder',
+          handleClick(){
+            self.request({
+              type: 'POST',
+              url: '~/fs' + self.address,
+              data: {
+                name: 'new-file' + Date.now(),
+                type: 'folder'
+              },
+              success(){
+                //self.newFolderIndex += 1;
+                self.getData();
+              }
+            })
+          }
+        },
+        {
+          name: 'Refresh',
+          handleClick(){
+            self.getData();
+          }
+        }],
+        top: e.clientY,
+        left: e.clientX
+
+      });
+    },
     setAddress(path){
       const arr = path.split('/');
       const arr2 = [];
@@ -56,11 +160,7 @@ export default {
         }
       });
       this.addressArr = arr2;
-      //this.address = '/' + arr2.join('/');
     },
-    // setAddressByArr(){
-    //   this.address = '/' + this.addressArr.join('/');
-    // },
     handleArrowLeftClick(){
       if(!this.backStack.length) return;
       this.goStack.push(this.addressArr);
@@ -87,8 +187,15 @@ export default {
       if(item.isDirectory){
         this.backStack.push(this.addressArr);
         this.setAddress(this.address + '/' + item.name);
+      }else{
 
-        //this.address = this.address + '/' + item.name;
+        store.commit('addTask', {
+          type: 'edit',
+          name: item.name,
+          width: 500,
+          height:500,
+          address: this.address + '/' + item.name
+        })
       }
     },
     getData(){
@@ -97,6 +204,10 @@ export default {
         //poolKey: this.address,
         data: {dir: true},
         success(data){
+          data.map( v => {
+            v.focus = false;
+            return v;
+          });
           this.data = data;
         },
         error(xhr){
