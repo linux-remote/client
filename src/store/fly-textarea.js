@@ -7,6 +7,7 @@ const store = new Vuex.Store({
     left: 0,
     width: 0,
     height: 0,
+    lineHeight: 0,
     open: false,
     value: ''
   },
@@ -14,11 +15,13 @@ const store = new Vuex.Store({
     open (state, data) {
       const $el = window.$(data.target);
       const offset = $el.offset();
+      const lineHeight = $el.css('lineHeight');
       const data2 = {
         top: offset.top,
         left: offset.left,
         width: $el.width(),
         height: $el.height(),
+        lineHeight: lineHeight,
         value: $el.text(),
         open: true,
         handleBlur : data.handleBlur

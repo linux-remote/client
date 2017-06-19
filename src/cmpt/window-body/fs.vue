@@ -11,7 +11,7 @@
     .lr-fs-body(v-if='error')
       h2(v-html='data' style='color:red')
     .lr-fs-body(v-else @contextmenu.prevent='handleFsBodyContextmenu' @click='handleFsBodyClick')
-      .lr-file(v-for='item in data', :key='item.name' @dblclick='handleItemClick(item)', @click.prevent.stop='handleItemMousedown(item)', :class='{lr_2_file_link: item.isSymbolicLink, lr_2_focus: item.focus}', @contextmenu.prevent.stop='handleFsItemContextmenu(item, $event)')
+      .lr-file(v-for='item in data', :key='item.name' @dblclick='handleItemClick(item)', @click.prevent.stop='handleItemMousedown(item)', :class='{lr_2_file_link: item.isSymbolicLink, lr_2_hidden: item.name[0] === ".", lr_2_focus: item.focus}', @contextmenu.prevent.stop='handleFsItemContextmenu(item, $event)')
         .lr-2-icon.glyphicon.glyphicon-file(v-if='!item.isDirectory')
         .lr-2-icon.glyphicon.glyphicon-folder-close(v-else='item.isDirectory')
         .lr-2-name(@click='handleItemNameClick(item, $event)') {{item.name}}
@@ -57,16 +57,26 @@ export default {
       const data = {
         target: e.target,
         //value: item.name,
-        handleBlur : function(e2){
-          self.renameItem(item, e2.value);
+        handleBlur : function(newName){
+          if(item.name === newName) return;
+          self.renameItem(item, newName);
         }
       }
       flyTextAreaStore.commit('open', data);
-      //this.currFocusItem.focus = false;
-      //return false;
     },
     renameItem(item, newName){
-      console.log('renameItem', item.name, newName);
+      // console.log('oldName', item.name, newName);
+      // return;
+      this.request({
+        url: '~/fs' + this.address,
+        type: 'post',
+        data: {type: 'rename', oldName: item.name, newName},
+        success(){
+          item.name = newName;
+          console.log('rename success');
+        }
+      })
+      //console.log('renameItem', item.name, newName);
     },
     handleItemMousedown(item){
       //console.log('handleItemMousedown')
@@ -101,13 +111,15 @@ export default {
               console.log('handleClick open');
             }
           },
-          {
-            name: 'Rename',
-            handleClick(){
-              // self.handleItemClick(item)
-              console.log('handleClick Rename');
-            }
-          },
+          // {
+          //   name: 'Rename',
+          //   handleClick(e){
+          //     // self.newName(item)
+          //     console.log(window.$(self.$el).children().last())
+          //     window.$(e.target).children().last().click();
+          //     console.log('handleClick Rename');
+          //   }
+          // },
           {
             name: 'Delete',
             handleClick(){
@@ -228,11 +240,29 @@ export default {
         //poolKey: this.address,
         data: {dir: true},
         success(data){
-          data.map( v => {
-            v.focus = false;
-            return v;
+          const folderArr = [], fileArr = [], hiddenArr = [];
+          data.forEach( v => {
+            if(v.name === this.currFocusItem.name){
+              this.itemFocus(v);
+            }else{
+              v.focus = false;
+            }
+
+            if(v.name[0] === '.'){
+              v.isHidden = true;
+              hiddenArr.push(v);
+            }else{
+              v.isHidden = false;
+              if(v.isDirectory){
+                folderArr.push(v)
+              }else{
+                fileArr.push(v);
+              }
+            }
+            //return v;
           });
-          this.data = data;
+          this.data = folderArr.concat(fileArr).concat(hiddenArr);
+          //this.data = data;
         },
         error(xhr){
           this.data = `http ${xhr.status} 错误: <br>${xhr.responseText}`

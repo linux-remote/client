@@ -202,9 +202,12 @@ button{
   .lr_edit_textarea{
     height: 100%; width: 100%; display: block;flex-grow: 1;
   }
-
+  .lr_2_hidden{
+    opacity: .5;
+  }
   .lr_fly_textarea{
-    position: absolute; z-index: $topZindex; resize: none; display: block;overflow: hidden;line-height: 1; font-size: 12px;
+    position: absolute; z-index: $topZindex; resize: none; display: block;overflow: hidden; font-size: 12px; border:0; text-align: center;padding: 0;
+    outline: none; word-wrap: normal;white-space:normal; word-break: break-all;
   }
   // #yin-yang, #yin-yang::before, #yin-yang::after{
   //   box-sizing: content-box;
