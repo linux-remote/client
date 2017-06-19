@@ -4,13 +4,13 @@
     div(style="width:33%;padding-left:10px;")
       b {{hostname}}
     div(style="width:33%;text-align:center;")
-      <watch></watch>
+      <watch/>
     div(style="width:34%; text-align:right;padding-right:10px;")
       b {{username}}
       button(@click='logout') logout
       router-link.btn.btn-link(to='/') use other account login in
   br
-  .lr-fs-icon.glyphicon.glyphicon-hdd(@click="createdTask")
+  .lr-fs-icon.glyphicon.glyphicon-hdd(@dblclick="createdTask")
 
   br
   <tasks-bar />
