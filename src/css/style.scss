@@ -4,6 +4,7 @@ $color31: #199EFF;
 $color32: #CC1814;
 $borderColor: #999;
 $bg: #fff;
+$topZindex : 9999999999;
 
 * ,*::before, *::after{
   box-sizing: border-box;
@@ -175,8 +176,9 @@ button{
       color: violet;
     }
   }
+
   .lr-contextmenu{
-    position: absolute;z-index: 9999999999; border: 1px outset #eee;
+    position: absolute; z-index:$topZindex; border: 1px outset #eee;
     background: #eee; height: 200px; width: 100px; top:0; left:0;
     .lr-2-item{
       padding: 5px 10px; border-bottom: 1px solid #999; cursor: pointer;
@@ -201,6 +203,9 @@ button{
     height: 100%; width: 100%; display: block;flex-grow: 1;
   }
 
+  .lr_fly_textarea{
+    position: absolute; z-index: $topZindex; resize: none; display: block;overflow: hidden;line-height: 1; font-size: 12px;
+  }
   // #yin-yang, #yin-yang::before, #yin-yang::after{
   //   box-sizing: content-box;
   // }

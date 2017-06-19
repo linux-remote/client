@@ -14,16 +14,15 @@
       .lr-file(v-for='item in data', :key='item.name' @dblclick='handleItemClick(item)', @click.prevent.stop='handleItemMousedown(item)', :class='{lr_2_file_link: item.isSymbolicLink, lr_2_focus: item.focus}', @contextmenu.prevent.stop='handleFsItemContextmenu(item, $event)')
         .lr-2-icon.glyphicon.glyphicon-file(v-if='!item.isDirectory')
         .lr-2-icon.glyphicon.glyphicon-folder-close(v-else='item.isDirectory')
-        .lr-2-name {{item.name}}
+        .lr-2-name(@click='handleItemNameClick(item, $event)') {{item.name}}
 </template>
 
 <script>
 import store from '__ROOT__/store-global';
 import contextmenuStore from '__ROOT__/store/contextmenu';
+import flyTextAreaStore from '__ROOT__/store/fly-textarea';
 export default {
   data(){
-    // const pData = this.$parent;
-    // const address = pData.address || store.state.homedir;
     return {
       isRequest: false,
       inputAddress: null,
@@ -52,6 +51,23 @@ export default {
     }
   },
   methods: {
+    handleItemNameClick(item, e){
+      if(item !== this.currFocusItem) return;
+      const self = this;
+      const data = {
+        target: e.target,
+        //value: item.name,
+        handleBlur : function(e2){
+          self.renameItem(item, e2.value);
+        }
+      }
+      flyTextAreaStore.commit('open', data);
+      //this.currFocusItem.focus = false;
+      //return false;
+    },
+    renameItem(item, newName){
+      console.log('renameItem', item.name, newName);
+    },
     handleItemMousedown(item){
       //console.log('handleItemMousedown')
       this.itemFocus(item);
@@ -72,6 +88,7 @@ export default {
       this.currFocusItem.focus = false;
       //return false;
     },
+
     handleFsItemContextmenu(item, e){
       const self = this;
       this.itemFocus(item);
@@ -82,6 +99,13 @@ export default {
             handleClick(){
               self.handleItemClick(item)
               console.log('handleClick open');
+            }
+          },
+          {
+            name: 'Rename',
+            handleClick(){
+              // self.handleItemClick(item)
+              console.log('handleClick Rename');
             }
           },
           {
