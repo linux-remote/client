@@ -237,6 +237,7 @@ export default {
     getData(){
       this.request({
         url: '~/fs' + this.address,
+        requestKey: 'isRequest',
         //poolKey: this.address,
         data: {dir: true},
         success(data){

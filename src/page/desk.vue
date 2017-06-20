@@ -33,6 +33,13 @@ export default {
   data(){
     return store.state;
   },
+  watch: {
+    $route(val){
+      if(val.params.username !== this.username){ //hold url.
+        return this.$router.replace('/user/' + this.username);
+      }
+    }
+  },
   methods: {
     logout,
     createdTask(){
@@ -43,15 +50,23 @@ export default {
       });
     },
     init(){
+      store.commit('set', {deskInited: true}); //dev use.
       const username = this.$route.params.username;
       this.apiGet('~/info', function(data){
-        data.deskInited = true;
         data.username = username;
         document.title = username + '@' + data.hostname;
         store.commit('set', data);
-      })
-
+      });
+      const TTL_TIME = 1000 * 60 * 9;
+      const TTL = () => {
+        setTimeout(()=>{
+          this.apiGet('~/live');
+          TTL();
+        }, TTL_TIME)
+      }
+      TTL();
       createWs(username);
+
     }
   },
 

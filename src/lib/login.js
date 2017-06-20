@@ -28,8 +28,8 @@ export function logout(){
     data: {
       username: this.username
     },
-    success(loginedList){
-      store.commit('set', {loginedList});
+    success(){
+      //store.commit('set', {username: null});
       ws.close();
       this.$router.push('/');
       document.title = DOC_TITLE;

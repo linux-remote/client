@@ -20,12 +20,12 @@
 </template>
 
 <script>
-import store from '../store-global';
+//import store from '../store-global';
 export default {
   data(){
     return {
-      isRequest: false,
-      username: 'dw',
+      //isRequest: false,
+      username: this.$route.query.user || 'dw',
       password: '1'
     }
   },
@@ -44,10 +44,10 @@ export default {
           username,
           password
         },
-        success(data){
+        success(){
           // data.username = username;
           // createWs(username);
-          store.commit('set', data);
+          //store.commit('set', data);
           this.routeTo(username);
         }
       })

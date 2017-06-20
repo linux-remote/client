@@ -41,8 +41,6 @@ function omitEmpty(obj){ //过滤掉空的参数
 
 
 function request(opts, beforeStop = noop, afterStop = noop){
-
-  opts.requestKey = opts.requestKey || 'isRequest';
   if(beforeStop(opts)){
     return;
   }
@@ -56,7 +54,6 @@ function request(opts, beforeStop = noop, afterStop = noop){
   if(opts.data){
     opts.data = omitEmpty(opts.data);
   }
-
   // opts.dataType = 'json';
   // opts.contentType = 'application/json;charset=UTF-8';
   // opts.processData = false;
@@ -88,7 +85,11 @@ function request(opts, beforeStop = noop, afterStop = noop){
       opts.onError();
       error && error.call(self, xhr);
     }else{
-      success2.call(self, xhr.responseJSON, status);
+      if(!xhr.responseJSON){
+        success && success.call(self, xhr.responseText);
+      }else{
+        success2.call(self, xhr.responseJSON, status);
+      }
     }
   }
 
@@ -101,11 +102,13 @@ function request(opts, beforeStop = noop, afterStop = noop){
 function _vueBefore(opts){
   const self = opts.context;
   const requestKey = opts.requestKey;
-
-  if(self[requestKey]){
-    return true;
+  if(requestKey){
+    if(self[requestKey]){
+      return true;
+    }
+    self[requestKey] = true;
   }
-  self[requestKey] = true;
+
 
   if(opts.poolKey){
     if(!self.$options._requestPool){
@@ -135,7 +138,10 @@ function _vueAfterStop(opts){
       return;
     }
   }
-  self[requestKey] = false;
+
+  if(requestKey){
+    self[requestKey] = false;
+  }
 }
 Vue.prototype.apiGet = function(url, data, success){
   if(typeof data === 'function'){
