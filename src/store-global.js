@@ -1,9 +1,10 @@
 import _Vue from 'vue';
 import Vuex from 'vuex';
+_Vue.use(Vuex);
+
 const $ = window.$;
 const $win = $(window);
 const {find} = require('lodash');
-_Vue.use(Vuex);
 
 $win.on('resize', function(){
   store.commit('set', {
@@ -11,6 +12,10 @@ $win.on('resize', function(){
     winW: $win.width()
   })
 });
+
+window.APP = {
+  $win
+}
 
 const store = new Vuex.Store({
   state: {
@@ -95,16 +100,12 @@ const store = new Vuex.Store({
       state.currTaskPositionTop = data.top;
       state.currTaskPositionLeft = data.left;
     },
-    eventDocumentClick(state){
-      const {latestTask, currTask} = state;
-      if(currTask._omitBlur){
-        return currTask._omitBlur = false;
-      }
-      if(latestTask !== currTask || !currTask._omitBlur){
-        currTask.focus = false;
-      }
+    currTaskWindowUnFocus(state){
+      state.currTask.focus = false;
     },
     taskWindowFocus(state, task){
+      if(task.focus === true) return;
+
       if(state.currTask === task){
         task.focus = true;
         return;

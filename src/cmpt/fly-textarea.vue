@@ -10,7 +10,7 @@ export default {
   },
   watch:{
     open(val, oldVal){
-      console.log('new: %s, old: %s', val, oldVal)
+      //console.log('new: %s, old: %s', val, oldVal)
       if(val){
         setTimeout(() => {
           window.$(this.$el).focus();

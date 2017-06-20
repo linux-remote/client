@@ -50,9 +50,9 @@ export default {
       });
     },
     init(){
-      store.commit('set', {deskInited: true}); //dev use.
       const username = this.$route.params.username;
       this.apiGet('~/info', function(data){
+        data.deskInited = true; //dev use.
         data.username = username;
         document.title = username + '@' + data.hostname;
         store.commit('set', data);
@@ -66,14 +66,12 @@ export default {
       }
       TTL();
       createWs(username);
-
+      this.createdTask();
     }
   },
-
-  mounted(){
+  created(){
     if(!this.deskInited){
       this.init();
-      this.createdTask();
     }
   }
 }

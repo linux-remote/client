@@ -1,5 +1,5 @@
 <template lang="jade">
-.lr-task-window(@click.stop='handleClick',  :style='{width:width + "px", height: height  + "px", zIndex: zIndex, top: positionTop + "px", left: positionLeft  + "px"}' , :draggable='draggable', @dragstart.stop='handleDragStart', @dragend.stop='handleDragEnd')
+.lr-task-window(@mousedown.stop='taskFocus',  :style='{width:width + "px", height: height  + "px", zIndex: zIndex, top: positionTop + "px", left: positionLeft  + "px"}' , :draggable='draggable', @dragstart.stop='handleDragStart', @dragend.stop='handleDragEnd')
   .lr-title(:class='titleClass' @mousedown='handleTitleMousedown' @mouseup='disableDraggable')
     .lr-title-content {{name}} {{zIndex}} #index:{{index}} #id:{{id}}
     .lr-title-close(@click.stop='removeTask')
@@ -37,7 +37,7 @@ export default {
     // handleNothing(e){
     //   return false
     // },
-    handleClick(){
+    taskFocus(){
       store.commit('taskWindowFocus', this.$data);
     },
     handleDragStart(e){

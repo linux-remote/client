@@ -9,6 +9,16 @@ const store = new Vuex.Store({
   mutations: {
     open (state, data) {
       Object.assign(state, data);
+
+      window.APP.$elMain
+      .addEventListener('mousedown', function(){
+        console.log('contextmenu out mousedown');
+        store.commit('close');
+      }, {
+        once: true,
+        capture: true
+      });
+
     },
     close(state){
       state.data = empty;

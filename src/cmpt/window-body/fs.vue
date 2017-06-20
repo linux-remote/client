@@ -1,5 +1,5 @@
 <template lang="jade">
-.lr-window-body(@click='handleBodyClick')
+.lr-window-body
     .lr-hourglass.glyphicon.glyphicon-hourglass(v-show='isRequest')
     .lr-fs-bar
       .lr-3-item.glyphicon.glyphicon-arrow-left(@click='handleArrowLeftClick', :class='{lr_2_disabled:backStack.length === 0}')
@@ -10,8 +10,14 @@
       .lr-3-item.glyphicon.glyphicon-play(v-else @click='handleGoClick')
     .lr-fs-body(v-if='error')
       h2(v-html='data' style='color:red')
-    .lr-fs-body(v-else @contextmenu.prevent='handleFsBodyContextmenu' @click='handleFsBodyClick')
-      .lr-file(v-for='item in data', :key='item.name' @dblclick='handleItemClick(item)', @click.prevent.stop='handleItemMousedown(item)', :class='{lr_2_file_link: item.isSymbolicLink, lr_2_hidden: item.name[0] === ".", lr_2_focus: item.focus}', @contextmenu.prevent.stop='handleFsItemContextmenu(item, $event)')
+    .lr-fs-body(v-else @contextmenu.prevent='handleFsBodyContextmenu')
+
+      .lr-file(v-for='item in data',
+        :key='item.name',
+        @dblclick='openItem(item)', @click.stop='focusItem(item)',
+        @contextmenu.prevent.stop='handleFsItemContextmenu(item, $event)',
+        :class='{lr_2_file_link: item.isSymbolicLink, lr_2_hidden: item.name[0] === ".", lr_2_focus: item.focus}')
+
         .lr-2-icon.glyphicon.glyphicon-file(v-if='!item.isDirectory')
         .lr-2-icon.glyphicon.glyphicon-folder-close(v-else='item.isDirectory')
         .lr-2-name(@click='handleItemNameClick(item, $event)') {{item.name}}
@@ -51,6 +57,9 @@ export default {
     }
   },
   methods: {
+    testmouse(){
+      console.log('mouse down');
+    },
     handleItemNameClick(item, e){
       if(item !== this.currFocusItem) return;
       const self = this;
@@ -78,25 +87,17 @@ export default {
       })
       //console.log('renameItem', item.name, newName);
     },
-    handleItemMousedown(item){
-      //console.log('handleItemMousedown')
+    focusItem(item){
       this.itemFocus(item);
-      contextmenuStore.commit('close');
-      return false;
     },
     itemFocus(item){
       this.currFocusItem.focus = false;
       item.focus = true;
       this.currFocusItem = item;
     },
-    handleBodyClick(){
-      //console.log('handleBodyClick')
-      contextmenuStore.commit('close');
-      return false;
-    },
-    handleFsBodyClick(){
+
+    handleFsBodyMousedown(){
       this.currFocusItem.focus = false;
-      //return false;
     },
 
     handleFsItemContextmenu(item, e){
@@ -107,7 +108,7 @@ export default {
           {
             name: 'Open',
             handleClick(){
-              self.handleItemClick(item)
+              self.openItem(item)
               console.log('handleClick open');
             }
           },
@@ -219,7 +220,7 @@ export default {
       const i = this.address.lastIndexOf('/');
       this.setAddress(this.address.substr(0, i));
     },
-    handleItemClick(item){
+    openItem(item){
       if(item.isDirectory){
         this.backStack.push(this.addressArr);
         this.setAddress(this.address + '/' + item.name);

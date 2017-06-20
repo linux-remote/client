@@ -1,16 +1,17 @@
 <template lang="jade">
-#app.lr-app(@click.prevent='handleClick')
-  .lr-page(v-if='CADownloadedCount === -1')
-  .ca-download(v-else-if='CADownloadedCount === 0')
-  router-view(v-else)
+#app.lr-h100
+  #main.lr-h100(@mousedown='handleMousedown')
+    .lr-page(v-if='CADownloadedCount === -1')
+    .ca-download(v-else-if='CADownloadedCount === 0')
+    router-view(v-else)
   <contextmenu />
   <fly-textarea />
 </template>
 <script>
 import store from '../store-global';
-import contextmenuStore from '../store/contextmenu';
 import Contextmenu from '__ROOT__/cmpt/contextmenu';
 import flyTextarea from '__ROOT__/cmpt/fly-textarea';
+
 export default {
   components:{
     Contextmenu,
@@ -27,15 +28,17 @@ export default {
     }
   },
   methods:{
-    handleClick(){
-      store.commit('eventDocumentClick');
-      contextmenuStore.commit('close');
+    handleMousedown(){
+      store.commit('currTaskWindowUnFocus');
     },
     getData(){
       this.apiGet('/touch', data => {
         store.commit('set', data);
       })
     }
+  },
+  mounted(){
+    window.APP.$elMain = document.getElementById('main');
   },
   created(){
     this.getData();
