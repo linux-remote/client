@@ -9,7 +9,7 @@ export default {
     return store.state
   },
   watch:{
-    open(val, oldVal){
+    open(val){
       //console.log('new: %s, old: %s', val, oldVal)
       if(val){
         setTimeout(() => {

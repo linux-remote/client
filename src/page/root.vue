@@ -11,7 +11,6 @@
 import store from '../store-global';
 import Contextmenu from '__ROOT__/cmpt/contextmenu';
 import flyTextarea from '__ROOT__/cmpt/fly-textarea';
-
 export default {
   components:{
     Contextmenu,
@@ -41,6 +40,7 @@ export default {
     window.APP.$elMain = document.getElementById('main');
   },
   created(){
+    window.APP.$router = this.$router;
     this.getData();
   }
 }

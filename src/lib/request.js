@@ -2,7 +2,7 @@ const $ = window.$;
 import Vue from 'vue';
 //import FileSaver from 'file-saver';
 import {noop} from 'lodash';
-
+import store from '__ROOT__/store-global';
 //跨站ajax请求初始化.
 $.ajaxSetup({
   xhrFields: {
@@ -26,6 +26,9 @@ function httpErrorHandler(xhr){
 }
 
 function codeErrorHandler(data){
+  if(data.code === 5){
+    store.commit('needRelogin');
+  }
   console.log('code#' + data.code + ' 错误:' + data.msg);
 }
 

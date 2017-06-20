@@ -1,5 +1,9 @@
 <template lang="jade">
 .lr-page.lr-login-warp
+  h1(v-if='queryUser', :style='{color:"red"}')
+    b {{queryUser}}
+    | 的session失效了，请重新登录。
+  br
   fieldset.lr-box
       //h1 linux-remote
       legend.title login
@@ -23,9 +27,11 @@
 //import store from '../store-global';
 export default {
   data(){
+    const queryUser = this.$route.query.user;
     return {
       //isRequest: false,
-      username: this.$route.query.user || 'dw',
+      queryUser,
+      username: queryUser || 'dw',
       password: '1'
     }
   },

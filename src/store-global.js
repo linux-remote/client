@@ -44,9 +44,15 @@ const store = new Vuex.Store({
     currTask: {}, // focused task
     taskMaxZindex: 0,
     currTaskPositionTop: 0,
-    currTaskPositionLeft: 0
+    currTaskPositionLeft: 0,
+
+    sessError: false
   },
   mutations: {
+    needRelogin(state){
+      console.log('needRelogin');
+      state.sessError = true;
+    },
     addTask(state, data){
       data.width = data.width || 400;
       data.height = data.height || 400;

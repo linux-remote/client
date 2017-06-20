@@ -31,7 +31,12 @@ export function logout(){
     success(){
       //store.commit('set', {username: null});
       ws.close();
-      this.$router.push('/');
+      let route = '/';
+      if(store.state.sessError){
+        route += ('?user=' + this.$route.params.username);
+        store.commit('set', {sessError: false});
+      }
+      this.$router.push(route);
       document.title = DOC_TITLE;
     }
   })

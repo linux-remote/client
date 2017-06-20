@@ -11,7 +11,7 @@
       router-link.btn.btn-link(to='/') use other account login in
   br
   .lr-fs-icon.glyphicon.glyphicon-hdd(@dblclick="createdTask")
-
+  button.btn.btn-default(@click='test500') test500
   br
   <tasks-bar />
   <tasks-window v-for='(item, index) in tasks' :key='item.id' :index='index'>
@@ -38,9 +38,18 @@ export default {
       if(val.params.username !== this.username){ //hold url.
         return this.$router.replace('/user/' + this.username);
       }
+    },
+    sessError(val){
+      console.log('watch sessError', val);
+      if(val){
+        this.logout();
+      }
     }
   },
   methods: {
+    test500(){
+      this.apiGet('~/test500')
+    },
     logout,
     createdTask(){
       store.commit('addTask', {
