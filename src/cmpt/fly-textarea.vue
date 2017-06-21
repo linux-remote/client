@@ -4,6 +4,7 @@ textarea.lr_fly_textarea(v-show='open' , :style='{top:top + "px", left: left  + 
 
 <script>
 import store from '__ROOT__/store/fly-textarea';
+import $ from 'jquery';
 export default {
   data(){
     return store.state
@@ -13,14 +14,14 @@ export default {
       //console.log('new: %s, old: %s', val, oldVal)
       if(val){
         setTimeout(() => {
-          window.$(this.$el).focus();
+          $(this.$el).focus();
         })
       }
     }
   },
   methods:{
     handleKeyDown(){
-      window.$(this.$el).blur();
+      $(this.$el).blur();
     },
     close(){
       store.commit('close');
@@ -29,11 +30,8 @@ export default {
       return false;
     },
     select(){
-      window.$(this.$el).select();
+      $(this.$el).select();
     }
-  },
-  // mounted(){
-  //   window.$(this.$el).focus();
-  // }
+  }
 }
 </script>

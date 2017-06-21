@@ -1,4 +1,4 @@
-const $ = window.$;
+import $ from 'jquery';
 import Vue from 'vue';
 //import FileSaver from 'file-saver';
 import {noop} from 'lodash';

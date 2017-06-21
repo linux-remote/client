@@ -1,4 +1,5 @@
 import Vuex from 'vuex';
+import $ from 'jquery';
 const noop = () => {}
 const store = new Vuex.Store({
   state: {
@@ -13,7 +14,7 @@ const store = new Vuex.Store({
   },
   mutations: {
     open (state, data) {
-      const $el = window.$(data.target);
+      const $el = $(data.target);
       const offset = $el.offset();
       const lineHeight = $el.css('lineHeight');
       const data2 = {

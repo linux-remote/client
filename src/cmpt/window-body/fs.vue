@@ -116,8 +116,6 @@ export default {
           //   name: 'Rename',
           //   handleClick(e){
           //     // self.newName(item)
-          //     console.log(window.$(self.$el).children().last())
-          //     window.$(e.target).children().last().click();
           //     console.log('handleClick Rename');
           //   }
           // },

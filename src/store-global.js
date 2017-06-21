@@ -2,7 +2,7 @@ import _Vue from 'vue';
 import Vuex from 'vuex';
 _Vue.use(Vuex);
 
-const $ = window.$;
+import $ from 'jquery';
 const $win = $(window);
 const {find} = require('lodash');
 
