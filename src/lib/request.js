@@ -22,13 +22,16 @@ function httpErrorHandler(xhr){
   // if(xhr.status === 0){ //CA证书没有导入
   //   msg = '//CA证书没有导入'
   // }
+  if(xhr.responseText === 'LINUX_REMOTE_USER_SERVER_ERROR'){
+    store.commit('needRelogin');
+  }
   console.log(`http#${xhr.status} 错误:${xhr.responseText}`);
 }
 
 function codeErrorHandler(data){
-  if(data.code === 5){
-    store.commit('needRelogin');
-  }
+  // if(data.code === 5){
+  //   store.commit('needRelogin');
+  // }
   console.log('code#' + data.code + ' 错误:' + data.msg);
 }
 

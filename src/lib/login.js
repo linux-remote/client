@@ -32,11 +32,13 @@ export function logout(){
       //store.commit('set', {username: null});
       ws.close();
       let route = '/';
+      const storeData = {deskInited: false};
       if(store.state.sessError){
         route += ('?user=' + this.$route.params.username);
-        store.commit('set', {sessError: false});
+        storeData.sessError = false;
       }
       this.$router.push(route);
+      store.commit('set', storeData);
       document.title = DOC_TITLE;
     }
   })

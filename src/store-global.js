@@ -17,6 +17,7 @@ window.APP = {
   $win
 }
 
+
 const store = new Vuex.Store({
   state: {
     // global
@@ -34,6 +35,7 @@ const store = new Vuex.Store({
     hostname: '',
     homedir: '',
     //arch: '',
+
     time: 0,
     timeZoneName: '',
     timeZoneOffset: 0,
@@ -43,8 +45,6 @@ const store = new Vuex.Store({
     latestTask: {}, // last created task
     currTask: {}, // focused task
     taskMaxZindex: 0,
-    currTaskPositionTop: 0,
-    currTaskPositionLeft: 0,
 
     sessError: false
   },
@@ -59,7 +59,7 @@ const store = new Vuex.Store({
       data.type = data.type || null;
       console.log('data.type', data.type)
       data.draggable = false;
-
+      data.isMin = false;
 
       if(state.tasks.length){
 
@@ -92,6 +92,9 @@ const store = new Vuex.Store({
       state.latestTask = data;
       state.tasks.push(data);
     },
+    hiddenTask(state){
+      state.currTask.isMin = true;
+    },
     removeTask(state, task){
       if(task.zIndex === state.currTask.zIndex){
         const preTask = find(state.tasks, {zIndex: task.zIndex - 1});
@@ -101,10 +104,6 @@ const store = new Vuex.Store({
         }
       }
       state.tasks.splice(task.index, 1);
-    },
-    reportTaskPosition(state, data){
-      state.currTaskPositionTop = data.top;
-      state.currTaskPositionLeft = data.left;
     },
     currTaskWindowUnFocus(state){
       state.currTask.focus = false;
@@ -124,7 +123,8 @@ const store = new Vuex.Store({
     },
     set (state, data) {
       Object.assign(state, data);
-    }
+    },
+
   }
 });
 

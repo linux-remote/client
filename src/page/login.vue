@@ -4,16 +4,25 @@
     b {{queryUser}}
     | 的session失效了，请重新登录。
   br
-  fieldset.lr-box
+
+  .lr-login
       //h1 linux-remote
-      legend.title login
-      .lr-content
-          label Account:
-          input.form-control(placeholder='username' v-model='username')
-          label Password:
-          input.form-control(type='password' placeholder='password' v-model='password')
-      .lr-footer
-        button.btn.btn-default(@click='login') ok
+
+      h1 login
+      hr
+      .lr-2-content
+        table
+          tr
+            td Account:
+            td
+              input(placeholder='username' v-model='username')
+          tr
+            td Password:
+            td
+              input(type='password' placeholder='password' v-model='password')
+
+      .lr-2-footer
+        button(@click='login') ok
   //- .lr-logined_list_warp(v-if="loginedList.length > 0")
   //-   h2 已登录的用户
   //-   .logined-list

@@ -2,7 +2,10 @@
 .lr-task-window(@mousedown.stop='taskFocus',  :style='{width:width + "px", height: height  + "px", zIndex: zIndex, top: positionTop + "px", left: positionLeft  + "px"}' , :draggable='draggable', @dragstart.stop='handleDragStart', @dragend.stop='handleDragEnd')
   .lr-title(:class='titleClass' @mousedown='handleTitleMousedown' @mouseup='disableDraggable')
     .lr-title-content {{name}} {{zIndex}} #index:{{index}} #id:{{id}}
-    .lr-title-close(@click.stop='removeTask')
+    .lr-2-control
+      .lr-title-min(@click.stop='hiddenTask')
+      .lr-title-max(@click.stop='hiddenTask')
+      .lr-title-close(@click.stop='removeTask')
   fs-body(v-if='type==="fs"')
   edit-body(v-else-if='type==="edit"' ,:address='address')
   .lr-window-body(v-else='!type') Empty
@@ -27,6 +30,12 @@ export default {
     },
     disableDraggable(){
       this.draggable = false;
+    },
+    hiddenTask(){
+      store.commit('hiddenTask', {
+        index: this.index,
+        zIndex: this.zIndex
+      });
     },
     removeTask(){
       store.commit('removeTask', {
@@ -54,12 +63,20 @@ export default {
         x: e.clientX,
         y: e.clientY
       }
-
     },
     handleDragEnd(e){
       const startClient = e.dataTransfer._startClient;
+      if(!startClient) return;
+      const positionTop = this.positionTop + (e.clientY - startClient.y);
+
+      if(positionTop < 0) {
+        this.positionTop = 0;
+      }else{
+        this.positionTop = positionTop;
+      }
+
       this.positionLeft += (e.clientX - startClient.x);
-      this.positionTop += (e.clientY - startClient.y);
+
       this.draggable = false;
     }
   },
