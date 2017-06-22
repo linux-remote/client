@@ -60,7 +60,8 @@ const store = new Vuex.Store({
       console.log('data.type', data.type)
       data.draggable = false;
       data.isMin = false;
-
+      data.isMax = false;
+      data.bakBeforeMax = null;
       if(state.tasks.length){
 
         const currTask = state.currTask;
@@ -95,15 +96,20 @@ const store = new Vuex.Store({
     hiddenTask(state){
       state.currTask.isMin = true;
     },
-    removeTask(state, task){
-      if(task.zIndex === state.currTask.zIndex){
-        const preTask = find(state.tasks, {zIndex: task.zIndex - 1});
+
+    focusNextTask(state, zIndex){
+      if(zIndex === state.currTask.zIndex){
+        const preTask = find(state.tasks,
+          {zIndex: zIndex - 1});
         if(preTask){
           preTask.focus = true;
           state.currTask = preTask;
         }
       }
-      state.tasks.splice(task.index, 1);
+    },
+    removeTask(state, taskPosition){
+      store.commit('focusNextTask', taskPosition.zIndex);
+      state.tasks.splice(taskPosition.index, 1);
     },
     currTaskWindowUnFocus(state){
       state.currTask.focus = false;

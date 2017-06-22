@@ -1,6 +1,6 @@
 <template lang="jade">
 .lr-user
-  .lr-user-name(@click='show') {{user}}
+  .lr-user-name(@click='show', :class='{lr_2_hover:showDrop}') {{user}}
     <svg-triangle svgClass='lr-triangle' width='10' height='5' />
   .lr-2-drop(v-show='showDrop')
     .lr-3-p(style='font-size: 14px')

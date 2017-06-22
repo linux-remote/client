@@ -64,11 +64,12 @@ html, body{
     background: #fff;max-width:66%;
     flex-shrink: 0;display: flex;
     align-self:flex-end;border: 1px solid #000; background-color: black;
-    color:#fff;
     position: fixed;right: $rightCtrlWidth; height: 30px;
+    color:#fff;
   }
 
   .lr-watch{
+
     display: flex; align-items: center; border-right: 1px solid #fff;padding: 0 5px;border-left: 1px solid #fff;
     .lr-2-left{
       font-size: 24px; line-height: 30px;
@@ -86,9 +87,9 @@ html, body{
     .lr-user-name{
       display: flex; align-items: center;
       cursor: pointer;
-      line-height: 30px;padding: 0 10px;
-      &:hover{
-        background-color: yellow;
+      line-height: 30px;padding: 0 5px;
+      &:hover, &.lr_2_hover{
+        background-color: #888;
       }
       >.lr-triangle{
         margin: 0 3px;
@@ -104,18 +105,22 @@ html, body{
 
     .lr-2-drop{
       position: absolute; width: 200px; right:0;
-      top: 100%;background:red; display: block;padding: 5px 0;
+      top: 100%; display: block;padding: 5px 0;
+      border:2px outset #000;
+      color:#000;
       .lr-3-p{
         padding: 0 10px;
         &:hover{
           color: green;
         }
       }
-      .lr-3-logout{cursor: pointer;}
+      .lr-3-logout{
+        cursor: pointer;
+      }
     }
-    .lr-2-drop a , .lr-2-drop{
-      color: yellow;
-    }
+    // .lr-2-drop a , .lr-2-drop{
+    //   color: yellow;
+    // }
   }
 
   //************* top bar end ***************
@@ -144,6 +149,7 @@ html, body{
   .lr-desk-icon-text{
 
   }
+
   .lr-task-bar{
     height:35px;background-color:yellow;flex-shrink: 0;
     display:flex;justify-content: center;
@@ -192,12 +198,23 @@ html, body{
     content: 'X';
   }
   .lr-title-max{
-    padding: 2px;
+    padding: 3px; position: relative;
+    &.lr_2_shrink{
+      &::after{
+        content: '';display: block; position: absolute;bottom: 3px; left:3px; border:1px solid #fff;
+        width: 60%; height: 60%;
+      }
+      &::before{
+        position: absolute;top: 3px; right:3px; border:1px solid #fff;
+        width: 60%; height: 60%;
+      }
+    }
   }
   .lr-title-max::before{
     content: '';display: block;border:1px solid #fff;
     width: 100%; height: 100%;
   }
+
   .lr-title-min::before{
     content: '-';
   }

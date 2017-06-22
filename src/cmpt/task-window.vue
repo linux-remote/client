@@ -1,10 +1,15 @@
 <template lang="jade">
-.lr-task-window(@mousedown.stop='taskFocus',  :style='{width:width + "px", height: height  + "px", zIndex: zIndex, top: positionTop + "px", left: positionLeft  + "px"}' , :draggable='draggable', @dragstart.stop='handleDragStart', @dragend.stop='handleDragEnd')
+.lr-task-window(v-show='!isMin',
+  @mousedown.stop='taskFocus',
+:style='{width:width + "px", height: height  + "px", zIndex: zIndex, top: positionTop + "px", left: positionLeft  + "px"}' ,
+:draggable='draggable',
+ @dragstart.stop='handleDragStart',
+ @dragend.stop='handleDragEnd')
   .lr-title(:class='titleClass' @mousedown='handleTitleMousedown' @mouseup='disableDraggable')
     .lr-title-content {{name}} {{zIndex}} #index:{{index}} #id:{{id}}
     .lr-2-control
       .lr-title-min(@click.stop='hiddenTask')
-      .lr-title-max(@click.stop='hiddenTask')
+      .lr-title-max(@click.stop='maxToggle', :class='{lr_2_shrink: bakBeforeMax}')
       .lr-title-close(@click.stop='removeTask')
   fs-body(v-if='type==="fs"')
   edit-body(v-else-if='type==="edit"' ,:address='address')
@@ -31,11 +36,34 @@ export default {
     disableDraggable(){
       this.draggable = false;
     },
+    maxToggle(){
+      if(this.bakBeforeMax){
+        Object.assign(this, this.bakBeforeMax);
+        this.bakBeforeMax = null;
+      }else{
+        this.bakBeforeMax = {
+          height: this.height,
+          width: this.width,
+          positionTop: this.positionTop,
+          positionLeft: this.positionLeft
+        }
+        this.height = this.winH;
+        this.width = this.winW;
+        this.positionTop = 0;
+        this.positionLeft = 0;
+      }
+
+    },
+    normalTask(){
+      console.log('maxTask');
+      // this.height = this.winH;
+      // this.width = this.winW;
+      // this.positionTop = 0;
+      // this.positionLeft = 0;
+    },
     hiddenTask(){
-      store.commit('hiddenTask', {
-        index: this.index,
-        zIndex: this.zIndex
-      });
+      this.isMin = true;
+      store.commit('focusNextTask', this.zIndex);
     },
     removeTask(){
       store.commit('removeTask', {
@@ -83,6 +111,12 @@ export default {
   computed:{
     titleClass(){
       return this.focus ? 'lr-focus' : ''
+    },
+    winW(){
+      return store.state.winW
+    },
+    winH(){
+      return store.state.winH
     }
   }
 }
