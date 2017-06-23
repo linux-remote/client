@@ -14,7 +14,8 @@ $win.on('resize', function(){
 });
 
 window.APP = {
-  $win
+  $win,
+  $elMain: null
 }
 
 
@@ -57,13 +58,13 @@ const store = new Vuex.Store({
       data.width = data.width || 400;
       data.height = data.height || 400;
       data.type = data.type || null;
-      console.log('data.type', data.type)
       data.draggable = false;
       data.isMin = false;
       data.isMax = false;
       data.bakBeforeMax = null;
-      if(state.tasks.length){
+      data.resizeStartData = null;
 
+      if(state.tasks.length){
         const currTask = state.currTask;
         const top = currTask.positionTop + 50;
         const left = currTask.positionLeft + 50;

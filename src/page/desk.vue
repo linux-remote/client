@@ -16,7 +16,7 @@ import store from '__ROOT__/store-global';
 import TasksBar from '__ROOT__/cmpt/tasks-bar';
 import TasksWindow from '__ROOT__/cmpt/task-window';
 import TopBar from '__ROOT__/cmpt/top-bar';
-import {createWs} from '__ROOT__/lib/login';
+import {createWs, logout} from '__ROOT__/lib/login';
 
 export default {
   components: {
@@ -41,6 +41,7 @@ export default {
     }
   },
   methods: {
+    logout,
     test500(){
       this.apiGet('~/test500')
     },
@@ -58,7 +59,6 @@ export default {
         data.username = username;
 
         document.title = username + '@' + data.hostname;
-        console.log('document.title', document.title);
         store.commit('set', data);
       });
       const TTL_TIME = 1000 * 60 * 9;

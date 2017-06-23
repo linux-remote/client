@@ -39,7 +39,8 @@ html, body{
 
   //************* login ***************
   .lr-login-warp{
-    justify-content: center;
+    justify-content:center;
+    flex-direction: column;
     align-items: center;
   }
   .lr-login{
@@ -161,12 +162,57 @@ html, body{
       color: $color32;
     }
   }
+
+  $resize: 5px;
+  .lr-resize-warp{
+    position:absolute; top:0; bottom:0;width:100%; height:100%; background:blue; z-index: -9;
+  }
   .lr-task-window{
     position: absolute;z-index: 2; top:0;
     border: 1px outset #000;
     display: flex;
     flex-direction: column;
     bottom: 0; left: 0; right: 0;background: #F5DEB3; box-shadow: 3px 3px 3px 3px #888;
+    .lr-2-resize-top , .lr-2-resize-bottom, .lr-2-resize-left, .lr-2-resize-right{
+      position: absolute;
+      //background: red;
+    }
+    .lr-2-resize-top, .lr-2-resize-bottom{
+      width: 100%;height: $resize;
+    }
+    .lr-2-resize-top{
+      bottom:100%;cursor: n-resize;
+    }
+    .lr-2-resize-bottom{
+      top: 100%; cursor: s-resize;
+    }
+    .lr-2-resize-right, .lr-2-resize-left{
+       width: $resize; height: 100%;
+    }
+    .lr-2-resize-right{
+      left: 100%;cursor: e-resize;
+    }
+    .lr-2-resize-left{
+      right: 100%; cursor: w-resize;
+    }
+    .lr-2-resize-rb, .lr-2-resize-tl, .lr-2-resize-tr, .lr-2-resize-lb{
+      width: $resize; height: $resize;
+      //background: green; 
+      position: absolute;
+      z-index: 2;
+    }
+    .lr-2-resize-rb{
+      right: -$resize; bottom: -$resize; cursor: se-resize;
+    }
+    .lr-2-resize-tl{
+      top: -$resize; left: -$resize; cursor: nw-resize;
+    }
+    .lr-2-resize-tr{
+      top: -$resize; right: -$resize; cursor: ne-resize;
+    }
+    .lr-2-resize-lb{
+      bottom: -$resize; left: -$resize; cursor: sw-resize;
+    }
   }
   .lr-task-first{
     margin: auto;
@@ -206,7 +252,7 @@ html, body{
       }
       &::before{
         position: absolute;top: 3px; right:3px; border:1px solid #fff;
-        width: 60%; height: 60%;
+        width: 60%; height: 60%;z-index: 1;
       }
     }
   }

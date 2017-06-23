@@ -1,7 +1,7 @@
 <template lang="jade">
 .lr-page.lr-login-warp
-  h1(v-if='queryUser', :style='{color:"red"}')
-    b {{queryUser}}
+  h3(v-if='queryUser', :style='{color:"red"}')
+    big {{queryUser}}
     | 的session失效了，请重新登录。
   br
 
