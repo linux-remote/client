@@ -15,6 +15,7 @@ $rightCtrlWidth: 77px;
 }
 html, body{
   height: 100%;padding: 0;margin:0;
+  user-select: none;
 }
 
 // a{
@@ -128,7 +129,7 @@ html, body{
   //************* top bar end ***************
 
   .lr-desk-wrap{
-    flex-direction: column;
+    flex-direction: column;height: 100%;overflow: hidden;
   }
 
 
@@ -161,7 +162,18 @@ html, body{
   $taskColor: #fff;
   .lr-task-bar{
     height:$taskBarH;background-color:#ddd;flex-shrink: 0;
-    display:flex;justify-content: center;
+    display:flex;
+    .lr-2-body{
+      flex-grow: 1;
+      display:flex;
+      justify-content: center;
+    }
+    .lr-2-control{
+      width: $taskBarH; flex-shrink: 0;border: 2px outset #aaa;
+      background: #999;  line-height: 1;
+      text-align: center; cursor: pointer; font-size: $taskBarH - 4;
+      color: #fff;
+    }
   }
   .lr-task-item{
     height:$taskBarH;line-height: $taskBarH;
@@ -190,6 +202,10 @@ html, body{
     background: $taskBg; height: 25px; line-height: 25px;
      display: flex;cursor: default;
      color:$taskColor; border:0; padding: 0; margin: 0;flex-shrink: 0;
+     .lr-2-control{
+       display: flex;
+       flex-shrink: 0; width: $rightCtrlWidth; justify-content: space-between;
+     }
   }
   .lr-title.lr-focus{
     background: $taskFocusBg; color: $taskFocusColor;
@@ -202,10 +218,7 @@ html, body{
     position: relative;
   }
 
-  .lr-2-control{
-    display: flex;
-    flex-shrink: 0; width: $rightCtrlWidth; justify-content: space-between;
-  }
+
   .lr-title-close, .lr-title-min, .lr-title-max{
     width: 25px;background: #000; height: 25px; text-align: center; color:#fff; margin-left:1px;
   }
@@ -282,7 +295,7 @@ html, body{
 
   .lr-contextmenu{
     position: absolute; z-index:$topZindex; border: 1px outset #eee;
-    background: #eee; height: 200px; width: 100px; top:0; left:0;
+    background: #eee;width: 100px; top:0; left:0;
     .lr-2-item{
       padding: 5px 10px; border-bottom: 1px solid #999; cursor: pointer;
       &:hover{
