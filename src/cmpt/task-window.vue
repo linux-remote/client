@@ -122,16 +122,8 @@ export default {
       }
 
     },
-    normalTask(){
-      console.log('maxTask');
-      // this.height = this.winH;
-      // this.width = this.winW;
-      // this.positionTop = 0;
-      // this.positionLeft = 0;
-    },
     hiddenTask(){
-      this.isMin = true;
-      store.commit('focusNextTask', this.zIndex);
+      store.commit('hiddenTask', this.$data);
     },
     removeTask(){
       store.commit('removeTask', {

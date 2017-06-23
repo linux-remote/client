@@ -1,6 +1,6 @@
 <template lang="jade">
 .lr-task-bar
-  .lr-task-item(v-for='i in tasks', @click.stop= 'handleClick(i)', :class='{lr_focus: i.focus}')
+  .lr-task-item(v-for='i in tasks', @click.stop= 'handleClick(i)', :class='{lr_focus: i.focus, lr_close: i.isMin}')
     {{i.name}} {{i.focus}}
 </template>
 
@@ -14,7 +14,12 @@ export default {
   },
   methods: {
     handleClick(task){
-      store.commit('taskWindowFocus', task);
+      if(!task.isMin){
+        store.commit('hiddenTask', task);
+      }else{
+        store.commit('showTask', task);
+      }
+
     }
   },
   computed:{

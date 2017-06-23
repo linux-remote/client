@@ -61,11 +61,12 @@ html, body{
   //************* login end ***************
 
   //************* top bar ***************
+  $topBarH :30px;
   .lr-top{
     background: #fff;max-width:66%;
     flex-shrink: 0;display: flex;
     align-self:flex-end;border: 1px solid #000; background-color: black;
-    position: fixed;right: $rightCtrlWidth; height: 30px;
+    position: fixed;right: $rightCtrlWidth; height: $topBarH;
     color:#fff;
   }
 
@@ -73,7 +74,7 @@ html, body{
 
     display: flex; align-items: center; border-right: 1px solid #fff;padding: 0 5px;border-left: 1px solid #fff;
     .lr-2-left{
-      font-size: 24px; line-height: 30px;
+      font-size: 24px; line-height: $topBarH;
     }
     .lr-2-right{
       display: flex;flex-direction: column;line-height: 1; font-size: 10px;
@@ -88,7 +89,7 @@ html, body{
     .lr-user-name{
       display: flex; align-items: center;
       cursor: pointer;
-      line-height: 30px;padding: 0 5px;
+      line-height: 30px;padding: 0 3px 0 5px;
       &:hover, &.lr_2_hover{
         background-color: #888;
       }
@@ -151,85 +152,53 @@ html, body{
 
   }
 
+
+  // *********** task ************
+  $taskBarH : $topBarH;
+  $taskFocusBg: black;
+  $taskFocusColor: #fff;
+  $taskBg: #666;
+  $taskColor: #fff;
   .lr-task-bar{
-    height:35px;background-color:yellow;flex-shrink: 0;
+    height:$taskBarH;background-color:#ddd;flex-shrink: 0;
     display:flex;justify-content: center;
   }
   .lr-task-item{
-    height:100%;line-height: 35px;padding: 0 5px;background: #000; color:yellow;margin:0 1px;
+    height:$taskBarH;line-height: $taskBarH;
+    padding: 0 5px;
+    background: $taskBg;
+    color:$taskColor;
+    margin:0 1px;
     cursor: default;
+    font-size: 14px;
     &.lr_focus{
-      color: $color32;
+      color: $taskFocusColor; background: $taskFocusBg;
+    }
+    &.lr_close{
+      font-size: 12px;
     }
   }
 
-  $resize: 5px;
-  .lr-resize-warp{
-    position:absolute; top:0; bottom:0;width:100%; height:100%; background:blue; z-index: -9;
-  }
   .lr-task-window{
     position: absolute;z-index: 2; top:0;
     border: 1px outset #000;
     display: flex;
     flex-direction: column;
-    bottom: 0; left: 0; right: 0;background: #F5DEB3; box-shadow: 3px 3px 3px 3px #888;
-    .lr-2-resize-top , .lr-2-resize-bottom, .lr-2-resize-left, .lr-2-resize-right{
-      position: absolute;
-      //background: red;
-    }
-    .lr-2-resize-top, .lr-2-resize-bottom{
-      width: 100%;height: $resize;
-    }
-    .lr-2-resize-top{
-      bottom:100%;cursor: n-resize;
-    }
-    .lr-2-resize-bottom{
-      top: 100%; cursor: s-resize;
-    }
-    .lr-2-resize-right, .lr-2-resize-left{
-       width: $resize; height: 100%;
-    }
-    .lr-2-resize-right{
-      left: 100%;cursor: e-resize;
-    }
-    .lr-2-resize-left{
-      right: 100%; cursor: w-resize;
-    }
-    .lr-2-resize-rb, .lr-2-resize-tl, .lr-2-resize-tr, .lr-2-resize-lb{
-      width: $resize; height: $resize;
-      //background: green; 
-      position: absolute;
-      z-index: 2;
-    }
-    .lr-2-resize-rb{
-      right: -$resize; bottom: -$resize; cursor: se-resize;
-    }
-    .lr-2-resize-tl{
-      top: -$resize; left: -$resize; cursor: nw-resize;
-    }
-    .lr-2-resize-tr{
-      top: -$resize; right: -$resize; cursor: ne-resize;
-    }
-    .lr-2-resize-lb{
-      bottom: -$resize; left: -$resize; cursor: sw-resize;
-    }
-  }
-  .lr-task-first{
-    margin: auto;
+    bottom: 0; left: 0; right: 0; box-shadow: 3px 3px 3px 3px #888;
   }
   .lr-title{
-    background: #666; height: 25px; line-height: 25px;
-     font-weight: bold;display: flex;cursor: default;
-     color:$color32; border:0; padding: 0; margin: 0;flex-shrink: 0;
+    background: $taskBg; height: 25px; line-height: 25px;
+     display: flex;cursor: default;
+     color:$taskColor; border:0; padding: 0; margin: 0;flex-shrink: 0;
   }
   .lr-title.lr-focus{
-    background: yellow;
+    background: $taskFocusBg; color: $taskFocusColor;
   }
   .lr-title-content{
     flex-grow:1; padding: 0 10px;
   }
   .lr-window-body{
-    flex-grow:1;background:navajowhite; display: flex; flex-direction: column;
+    flex-grow:1; display: flex; flex-direction: column;
     position: relative;
   }
 
@@ -262,7 +231,7 @@ html, body{
   }
 
   .lr-title-min::before{
-    content: '-';
+    content: '−';
   }
   .lr-fs-bar{
     background: #fff; border: 2px inset #999;display: flex;align-items: center;
@@ -343,43 +312,53 @@ html, body{
     position: absolute; z-index: $topZindex; resize: none; display: block;overflow: hidden; font-size: 12px; border:0; text-align: center;padding: 0;
     outline: none; word-wrap: normal;white-space:normal; word-break: break-all;
   }
-  // #yin-yang, #yin-yang::before, #yin-yang::after{
-  //   box-sizing: content-box;
-  // }
-  // #yin-yang {
-  // width: 96px;
-  // height: 48px;
-  // background: #eee;
-  // border-color: red;
-  // border-style: solid;
-  // border-width: 2px 2px 50px 2px;
-  // border-radius: 100%;
-  // position: relative;
-  // }
-  // #yin-yang:before {
-  // content: "";
-  // position: absolute;
-  // top: 50%;
-  // left: 0;
-  // background: #eee;
-  // border: 18px solid red;
-  // border-radius: 100%;
-  // width: 12px;
-  // height: 12px;
-  // }
-  // #yin-yang:after {
-  // content: "";
-  // position: absolute;
-  // top: 50%;
-  // left: 50%;
-  // background: red;
-  // border: 18px solid #eee;
-  // border-radius:100%;
-  // width: 12px;
-  // height: 12px;
-  // }
-  // .lr-info{
-  //   color:red; font-size: 1.2em;padding:3px;
-  // }
+
+  //*************** resizable ***************
+  $resize: 5px;
+  .lr-resize-warp{
+    position:absolute; top:0; bottom:0;width:100%; height:100%; background:blue; z-index: -9;
+  }
+  .lr-2-resize-top , .lr-2-resize-bottom, .lr-2-resize-left, .lr-2-resize-right{
+    position: absolute;
+    //background: red;
+  }
+  .lr-2-resize-top, .lr-2-resize-bottom{
+    width: 100%;height: $resize;
+  }
+  .lr-2-resize-top{
+    bottom:100%;cursor: n-resize;
+  }
+  .lr-2-resize-bottom{
+    top: 100%; cursor: s-resize;
+  }
+  .lr-2-resize-right, .lr-2-resize-left{
+     width: $resize; height: 100%;
+  }
+  .lr-2-resize-right{
+    left: 100%;cursor: e-resize;
+  }
+  .lr-2-resize-left{
+    right: 100%; cursor: w-resize;
+  }
+  .lr-2-resize-rb, .lr-2-resize-tl, .lr-2-resize-tr, .lr-2-resize-lb{
+    width: $resize; height: $resize;
+    //background: green;
+    position: absolute;
+    z-index: 2;
+  }
+  .lr-2-resize-rb{
+    right: -$resize; bottom: -$resize; cursor: se-resize;
+  }
+  .lr-2-resize-tl{
+    top: -$resize; left: -$resize; cursor: nw-resize;
+  }
+  .lr-2-resize-tr{
+    top: -$resize; right: -$resize; cursor: ne-resize;
+  }
+  .lr-2-resize-lb{
+    bottom: -$resize; left: -$resize; cursor: sw-resize;
+  }
+
+  //*************** resizable end ***************
 
 }

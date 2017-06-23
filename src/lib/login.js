@@ -32,7 +32,10 @@ export function logout(){
       //store.commit('set', {username: null});
       ws.close();
       let route = '/';
-      const storeData = {deskInited: false};
+      const storeData = {
+        deskInited: false,
+        tasks: []
+      };
       if(store.state.sessError){
         route += ('?user=' + this.$route.params.username);
         storeData.sessError = false;

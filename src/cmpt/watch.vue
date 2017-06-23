@@ -33,16 +33,16 @@ export default {
     },
     watch(){
       const d = new Date(this.now - this.timeDiff);
-
+      let min = d.getMinutes();
+      min = (min < 10) ? ('0' + min) : min;
       return {
         year: d.getFullYear(),
         mounth: d.getMonth() + 1,
         day: d.getDate(),
         hours: d.getHours(),
-        minutes: d.getMinutes(),
+        minutes: min,
         seconds: d.getSeconds()
       }
-      //return timeFormat(this.now - this.timeDiff);
     }
   },
   methods:{

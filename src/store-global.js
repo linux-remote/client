@@ -94,10 +94,14 @@ const store = new Vuex.Store({
       state.latestTask = data;
       state.tasks.push(data);
     },
-    hiddenTask(state){
-      state.currTask.isMin = true;
+    hiddenTask(state, task){
+      task.isMin = true;
+      store.commit('focusNextTask', task.zIndex);
     },
-
+    showTask(state, task){
+      task.isMin = false;
+      store.commit('taskWindowFocus', task);
+    },
     focusNextTask(state, zIndex){
       if(zIndex === state.currTask.zIndex){
         const preTask = find(state.tasks,
