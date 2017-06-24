@@ -5,10 +5,20 @@ $color32: #CC1814;
 $borderColor: #999;
 $bg: #fff;
 $topZindex : 9999999999;
-
-$barBg : yellow;
 $barTitleColor: red;
+
 $rightCtrlWidth: 77px;
+
+$barH: 25px;
+$barBg : black;
+$barColor: #fff;
+$topBarH :$barH;
+
+
+
+
+
+
 
 * ,*::before, *::after{
   box-sizing: border-box;
@@ -122,23 +132,38 @@ html, body{
   //************* login end ***************
 
   //************* top bar ***************
-  $topBarH :30px;
+  .lr-top-bg{
+    height: $topBarH;
+    background-color: #eee;
+    color:#aaa;padding-left: 10px;
+    //background-color: rgba(0,0,0,.5);
+  }
   .lr-top{
-    background: #fff;max-width:66%;
-    flex-shrink: 0;display: flex;
-    align-self:flex-end;border: 1px solid #000; background-color: black;
-    position: fixed;right: $rightCtrlWidth; height: $topBarH;
+    max-width:66%;
+    height: $topBarH;
+    display: flex;
+    flex-shrink: 0;
+    position: fixed;
+    //top: 1px;
+    right: $rightCtrlWidth + 10;
+    background-color: #000;
     color:#fff;
+    z-index: $topZindex;
+    // border-right: 1px solid #fff;
+    // border-left: 1px solid #fff;
+    line-height: $topBarH;
+    //box-shadow: 1px 1px 1px 1px #777;
+    //overflow: hidden;
   }
 
   .lr-watch{
-
-    display: flex; align-items: center; border-right: 1px solid #fff;padding: 0 5px;border-left: 1px solid #fff;
+    display: flex; align-items: center;
+    border-right: 1px solid #fff;padding: 0 5px;
     .lr-2-left{
-      font-size: 24px; line-height: $topBarH;
+      font-size: 24px;
     }
     .lr-2-right{
-      display: flex;flex-direction: column;line-height: 1; font-size: 10px;
+      display: flex;flex-direction: column;line-height: 10px; font-size: 10px;
       text-align: center; margin-left: 5px; align-items: center;
     }
   }
@@ -150,7 +175,7 @@ html, body{
     .lr-user-name{
       display: flex; align-items: center;
       cursor: pointer;
-      line-height: 30px;padding: 0 3px 0 5px;
+      padding: 0 3px 0 5px;
       &:hover, &.lr_2_hover{
         background-color: #888;
       }
@@ -169,6 +194,7 @@ html, body{
     .lr-2-drop{
       position: absolute; width: 200px; right:0;
       top: 100%; display: block;padding: 5px 0;
+      background-color: #fff;
       border:2px outset #000;
       color:#000;
       .lr-3-p{
@@ -191,7 +217,7 @@ html, body{
   .lr-desk-wrap{
     flex-direction: column;height: 100%;overflow: hidden;
     //background-color: #F5DEB3;
-    background-color: #F2D88F;
+    //background-color: #F2D88F;
     //background-color: #F5AD3B;
 
     //background-color: #f3f3bd;
@@ -200,40 +226,60 @@ html, body{
 
 
   .lr-desk{
-    flex-grow: 1; position: relative; overflow: hidden;
+    flex-grow: 1; position: relative;
   }
 
+
   .lr-desk-icon-wrap{
-    position: absolute;display: inline-block;width: 80px;height: 80px;
-  }
-  .lr-desk-icon{
-     font-size:50px;font-weight: bold;background-color: yellow; border: 1px solid black;cursor: pointer;
-     text-align: center;line-height: 80px;
-     margin: 10px;
+    display: flex; flex-direction: column;
+    width: 80px;margin: 5px;
+    padding: 5px;
+    align-items: center;
+    cursor: pointer;
     &:hover{
       background-color:#000; color:$color;
     }
   }
+  .lr-desk-icon{
+     height: 50px; width: 50px;
+     margin: 0 auto;
+     line-height: 50px;
+     font-size:30px;
+    //  border:2px outset #888;
+    //  background-color: yellow;
+    //  border: 1px solid black;
+    //  font-weight: bold;
+    &.small{
+      font-size: 20px;
+    }
+  }
 
   .lr-desk-icon-text{
-
+    font-size: 12px; text-align: center;max-height: 24px; line-height: 1;
   }
 
 
   // *********** task ************
   $taskBarH : $topBarH;
-  $taskFocusBg: chocolate;
-  $taskFocusColor: #fff;
-  $taskBg: #F2D88F;
-  $taskColor: #fff;
+  $taskFocusBg: $barBg;
+  $taskFocusColor: yellow;
+  $taskBg: $barBg;
+  $taskColor: $barColor;
+
   .lr-task-bar{
-    height:$taskBarH;background-color:#ddd;flex-shrink: 0;
+    height:$taskBarH;flex-shrink: 0;
+    background-color: #eee;
+    position: relative;
+    z-index: $topZindex;
     display:flex;
     .lr-2-body{
       flex-grow: 1;
       display:flex;
       justify-content: center;
-
+      overflow: hidden;
+    }
+    .lr-2-control-wrap{
+      flex-shrink: 0; width: $taskBarH * 2; display: flex;
     }
     .lr-2-control{
       width: $taskBarH; flex-shrink: 0;border: 2px outset #aaa;
@@ -244,7 +290,13 @@ html, body{
   }
   .lr-task-item{
     height:$taskBarH;line-height: $taskBarH;
-    padding: 0 5px;
+    padding: 0 2px;
+    flex-shrink:1;
+    min-width: 20px;
+    max-width: 220px;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
     background: $taskBg;
     color:$taskColor;
     margin:0 1px;
@@ -254,7 +306,10 @@ html, body{
       color: $taskFocusColor; background: $taskFocusBg;
     }
     &.lr_close{
-      opacity: .5; color:#000;
+      font-size: 10px;
+    }
+    &.lr_2_max{
+      border-bottom:2px solid yellow;
     }
     // &:hover{
     //   color:#000;
@@ -267,12 +322,16 @@ html, body{
     display: flex;
     background: #fff;
     flex-direction: column;
-    bottom: 0; left: 0; right: 0; box-shadow: 3px 3px 3px 3px #888;
+    bottom: 0; left: 0; right: 0;box-shadow: 3px 3px 3px 3px #888;
+    &.lr_2_max{
+      box-shadow: none; width: 100%; height: 100%; top: -$barH;
+      border:0;
+    }
   }
   .lr-title{
     background: $taskBg; height: 25px; line-height: 25px;
      display: flex;cursor: default;
-     color:$taskColor; border:0; padding: 0; margin: 0;flex-shrink: 0;
+     color:$taskColor; border:0; padding: 0; margin:0;flex-shrink: 0;
      .lr-2-control{
        display: flex;
        flex-shrink: 0; width: $rightCtrlWidth; justify-content: space-between;
@@ -318,8 +377,8 @@ html, body{
     content: '−';
   }
   .lr-fs-bar{
-    background: #fff; border: 2px inset #999;display: flex;align-items: center;
-    height: 30px; line-height: 30px;flex-shrink: 0;
+    background: #666; border-bottom: 1px solid #000;display: flex;align-items: center;
+    height: 31px; line-height: 30px;flex-shrink: 0;
     // .lr-2-nav{
     //   display: flex;
     // }
@@ -327,31 +386,69 @@ html, body{
       flex-grow:1; height: 25px;
     }
     .lr-3-item{
-      width: 30px; font-size: 25px;
+      width: 30px; height: 30px;
+      background-size: 80%;
+      background-position: center;
+      background-repeat: no-repeat;
       &:hover{
-        background: #000;color:$color;
+        background-color: #000;
       }
       &.lr_2_disabled{
-        color: #888;
+         opacity: .5;
+      }
+
+      &.lr-3-up{
+        background-image: url('/public/arrow-up.svg');
+      }
+      &.lr-3-left{
+        background-image: url('/public/arrow-left.svg');
+      }
+      &.lr-3-right{
+        background-image: url('/public/arrow-right.svg');
+      }
+      &.lr-3-go{
+        background-image: url('/public/go.svg');
+      }
+      &.lr-3-reload{
+        background-image: url('/public/reload.svg');
       }
     }
   }
+  $linkFileColor: violet;
   .lr-fs-body{
-    display: flex; flex-grow:1; flex-wrap: wrap; padding: 2px;
+    display: flex; flex-grow:1; flex-wrap: wrap; padding: 10px 2px 10px 2px;
     align-content:flex-start; position: relative;
     overflow-y: auto;
   }
+  .lr-fs-status{
+    height: 30px; flex-shrink: 0;background: #eee; line-height: 30px;
+    font-size: 12px;
+    span{margin: 0 2px; padding: 0 2px;}
+    .v-2-link{color: $linkFileColor}
+  }
   .lr-file{
-    width: 80px; height: 74px; overflow: hidden; position: relative;
+    width: 80px; height: 80px; overflow: hidden; position: relative;
+    cursor: pointer;
     .lr-2-icon{
-      width: 100%; height: 50px; font-size: 30px; text-align: center;
-       line-height: 50px;
+      width: 100%; height: 50px;
+      // text-align: center;
+      //  line-height: 50px;
+       background-size: 100% 100%;
+       background-position: center;
+       background-repeat: no-repeat;
+       &.lr-2-file{
+         background-size: 90% 90%;
+         background-image: url('/public/file.svg');
+       }
+       &.lr-2-folder{
+         background-image: url('/public/folder.svg');
+       }
+       &.lr-2-unknown{
+         background-image: url('/public/unknown.svg');
+       }
     }
     .lr-2-name{
-      text-align: center; font-size: 12px;
-      // &:hover{
-      //   word-break:break-all;z-index: 99999999;position: absolute;width: 100%;
-      // }
+       font-size: 12px;text-align: center; cursor: text;
     }
     &:hover, &.lr_2_focus{
       background-color: #000; color:$color;overflow:visible;word-break:break-all;
@@ -360,7 +457,7 @@ html, body{
       }
     }
     &.lr_2_file_link{
-      color: violet;
+      color: $linkFileColor;
     }
   }
 
@@ -377,8 +474,10 @@ html, body{
 
   .lr-hourglass{
     position: absolute;top:0;left:0;right: 0;bottom: 0;margin: auto;
+    background-image: url('/public/hourglass.svg');
+    background-size: 100%;
     height: 30px; width: 30px; font-size: 25px;text-align: center;line-height: 30px;
-    z-index: 3; color:#888; opacity: .6;
+    z-index: 3; color:#888;
   }
   .lr-edit-body{
     display: flex; flex-grow: 1; flex-direction: column;
@@ -387,13 +486,13 @@ html, body{
     height: 30px; background-color: #eee; line-height: 30px;padding: 0 10px;
   }
   .lr_edit_textarea{
-    height: 100%; width: 100%; display: block;flex-grow: 1;
+    height: 100%; width: 100%; display: block;flex-grow: 1;outline: none;
   }
   .lr_2_hidden{
     opacity: .5;
   }
   .lr_fly_textarea{
-    position: absolute; z-index: $topZindex; resize: none; display: block;overflow: hidden; font-size: 12px; border:0; text-align: center;padding: 0;
+    position: absolute; z-index: $topZindex; resize: none; display: block;overflow: hidden; font-size: 12px; border:0; text-align: center;padding-left: 0; padding-right:0;
     outline: none; word-wrap: normal;white-space:normal; word-break: break-all;
   }
 

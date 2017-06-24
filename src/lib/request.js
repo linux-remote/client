@@ -22,7 +22,8 @@ function httpErrorHandler(xhr){
   // if(xhr.status === 0){ //CA证书没有导入
   //   msg = '//CA证书没有导入'
   // }
-  if(xhr.responseText === 'LINUX_REMOTE_USER_SERVER_ERROR'){
+  console.log('xhr', xhr.status === 403);
+  if(xhr.status === 403 || xhr.responseText === 'LINUX_REMOTE_USER_SERVER_ERROR'){
     store.commit('needRelogin');
   }
   console.log(`http#${xhr.status} 错误:${xhr.responseText}`);
@@ -160,7 +161,9 @@ Vue.prototype.apiGet = function(url, data, success){
     success
   })
 }
-
+Vue.prototype.noopStop = function(e){
+  e.stopPropagation();
+}
 
 function vRequest(opts){
   opts.context = this;

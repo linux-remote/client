@@ -1,11 +1,14 @@
 <template lang="jade">
-.lr-task-bar(@mousedown.stop='noop')
+.lr-task-bar
   .lr-2-body
-    .lr-task-item(v-for='i in tasks', @click.stop.prevent = 'handleClick(i)',
-    @contextmenu.prevent.stop = 'contextmenu(i, $event)',
-     :class='{lr_focus: i.focus, lr_close: i.isMin}')
+    .lr-task-item(v-for='(i,index) in tasks', @mousedown='noopStop', @click.stop.prevent = 'handleClick(i)',
+    @contextmenu.prevent.stop = 'contextmenu(i, index, $event)',
+     :class='{lr_focus: i.focus, lr_close: i.isMin, lr_2_max: i.isMax}')
       {{i.name}}
-  .lr-2-control(title='Close All', @click='closeAll') X
+  .lr-2-control-wrap
+    .lr-2-control(title='Minimize All',@mousedown='noopStop' @click.stop='minAll') −
+    .lr-2-control(title='Close All', @click='closeAll') X
+
 </template>
 
 <script>
@@ -18,19 +21,25 @@ export default {
     }
   },
   methods: {
-    noop(){
-
+    minAll(){
+      store.commit('minAll');
     },
     closeAll(){
       store.commit('set', {tasks: []});
     },
-    contextmenu(task, e){
+    contextmenu(task, index, e){
       contextmenuStore.commit('open', {
         data: [
+          // {
+          //   name: 'Copy',
+          //   handleClick(){
+          //     store.commit('copyTask', task);
+          //   }
+          // },
           {
             name: 'Close',
             handleClick(){
-              store.commit('removeTask', task);
+              store.commit('removeTask', index);
             }
           }
         ],
@@ -39,11 +48,9 @@ export default {
       });
     },
     handleClick(task){
-      console.log('task', task.focus)
       if(task.isMin){
         store.commit('showTask', task);
       }else if(task.focus){
-        console.log('hiddenTask')
         store.commit('hiddenTask', task);
       }else{
         store.commit('taskWindowFocus', task);

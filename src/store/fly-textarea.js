@@ -10,19 +10,23 @@ const store = new Vuex.Store({
     height: 0,
     lineHeight: 0,
     open: false,
-    value: ''
+    value: '',
+    fontSize: ''
   },
   mutations: {
     open (state, data) {
       const $el = $(data.target);
       const offset = $el.offset();
       const lineHeight = $el.css('lineHeight');
+      const fontSize = $el.css('fontSize');
+      console.log('lineHeight', lineHeight);
       const data2 = {
         top: offset.top,
         left: offset.left,
         width: $el.width(),
         height: $el.height(),
-        lineHeight: lineHeight,
+        lineHeight,
+        fontSize,
         value: $el.text(),
         open: true,
         handleBlur : data.handleBlur

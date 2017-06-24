@@ -1,9 +1,20 @@
 <template lang="jade">
 .lr-page.lr-desk-wrap(v-if='deskInited')
-  .lr-desk
-    <top-bar />
+  <top-bar />
+  .lr-top-bg LR {{hostname}}
+  #lr-desk.lr-desk
     .lr-desk-icon-wrap
-      .lr-desk-icon(@dblclick="createdTask") FS
+      img.lr-desk-icon(src='/public/server.svg')
+      .lr-desk-icon-text Server Info
+    .lr-desk-icon-wrap
+      img.lr-desk-icon(src='/public/user.svg')
+      .lr-desk-icon-text User Info
+    .lr-desk-icon-wrap(@dblclick="createdTask")
+      img.lr-desk-icon(src='/public/file-tree.svg')
+      .lr-desk-icon-text File System
+    //- .lr-desk-icon-wrap(@dblclick="createdTask")
+    //-   img.lr-desk-icon(src='/public/dustbin.svg')
+    //-   .lr-desk-icon-text Dustbin
 
     //-button.btn.btn-default(@click='test500') test500
 
@@ -48,8 +59,8 @@ export default {
     createdTask(){
       store.commit('addTask', {
         name: 'test:' + Date.now(),
-        type: 'fs',
-        height: 500, width: 600
+        address: '/',
+        type: 'fs'
       });
     },
     init(){
@@ -71,6 +82,9 @@ export default {
       createWs(username);
       this.createdTask();
     }
+  },
+  mounted(){
+    window.APP.$elDesk = this.$el;
   },
   created(){
     if(!this.deskInited){

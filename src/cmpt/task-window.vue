@@ -2,10 +2,12 @@
 .lr-task-window(v-show='!isMin',
   @mousedown.stop='taskFocus',
 :style='{width:width + "px", height: height  + "px", zIndex: zIndex, top: positionTop + "px", left: positionLeft  + "px"}' ,
+:class='{lr_2_max: isMax}',
 :draggable='draggable',
  @dragstart.stop='handleDragStart',
  @dragend.stop='handleDragEnd')
-  .lr-title(:class='titleClass' @mousedown='handleTitleMousedown'     @mouseup='disableDraggable')
+  .lr-title(:class='titleClass', @mousedown='handleTitleMousedown',
+  @dblclick='maxToggle',     @mouseup='disableDraggable')
     .lr-title-content {{name}} {{zIndex}} #index:{{index}} #id:{{id}}
     .lr-2-control
       .lr-title-min(@click.stop='hiddenTask')
@@ -115,9 +117,9 @@ export default {
         }
 
         this.isMax = true;
-        this.height = this.winH;
+        this.height = this.winH - 25;
         this.width = this.winW;
-        this.positionTop = 0;
+        this.positionTop = -25;
         this.positionLeft = 0;
       }
 
@@ -126,10 +128,7 @@ export default {
       store.commit('hiddenTask', this.$data);
     },
     removeTask(){
-      store.commit('removeTask', {
-        index: this.index,
-        zIndex: this.zIndex
-      });
+      store.commit('removeTask', this.index);
     },
     // handleNothing(e){
     //   return false
@@ -138,7 +137,7 @@ export default {
       store.commit('taskWindowFocus', this.$data);
     },
     handleDragStart(e){
-      if(!this.draggable){
+      if(!this.draggable || this.isMax){
         e.preventDefault();
         return false;
       }
@@ -179,36 +178,9 @@ export default {
       return store.state.winH
     }
   },
-  destroyed(){
-
-    // const obj = this.$options.resizeObj;
-    // console.log('destroyed moveId', obj.moveId)
-    // window.APP.$elMain.removeEventListener('mousemove', obj[obj.moveId])
-    // window.APP.$elMain.removeEventListener('mouseup', obj[obj.upId])
-  },
-  created(){
-
-    // const moveId = 'resizeMove' + this.id;
-    // const upId = 'resizeUp' + this.id;
-    // console.log('created moveId23', moveId);
-    // const obj = {
-    //   moveId,
-    //   upId,
-    //   [moveId](){
-    //     console.log('moveId', moveId)
-    //   },
-    //   [upId](){
-    //     console.log('upId2', moveId);
-    //   }
-    // }
-    // var test = function(){
-    //
-    // };
-    // test.name = moveId;
-    // console.log('test.name', test.name)
-    // this.$options.resizeObj = obj;
-    // window.APP.$elMain.addEventListener('mousemove', obj[moveId])
-    // window.APP.$elMain.addEventListener('mouseup', obj[upId])
-  }
+  // destroyed(){
+  // },
+  // created(){
+  // }
 }
 </script>

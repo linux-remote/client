@@ -4,7 +4,7 @@ _Vue.use(Vuex);
 
 import $ from 'jquery';
 const $win = $(window);
-const {findLast, sortBy} = require('lodash');
+const {findLast, sortBy, cloneDeep} = require('lodash');
 
 $win.on('resize', function(){
   store.commit('set', {
@@ -15,7 +15,8 @@ $win.on('resize', function(){
 
 window.APP = {
   $win,
-  $elMain: null
+  $elMain: null,
+  $elDesk: null
 }
 
 
@@ -44,7 +45,8 @@ const store = new Vuex.Store({
 
     // tasks
     tasks: [], // tasks stack
-    showTasks: [],
+    _tmpMinAllTasks: [],
+    _tmpMinAllCurrTasksFocus: false,
     latestTask: {}, // last created task
     currTask: {}, // focused task
     taskMaxZindex: 0,
@@ -53,12 +55,15 @@ const store = new Vuex.Store({
   },
   mutations: {
     needRelogin(state){
-      console.log('needRelogin');
       state.sessError = true;
     },
     addTask(state, data){
-      data.width = data.width || 400;
-      data.height = data.height || 400;
+      //console.log('data.width', data.width, state.currTask.width);
+      data.width = state.currTask.width || data.width ||  600;
+      data.height = state.currTask.height || data.height ||  600;
+      // if(data.notFollow){
+      //
+      // }
       data.type = data.type || null;
       data.draggable = false;
       data.isMin = false;
@@ -68,23 +73,6 @@ const store = new Vuex.Store({
 
       if(state.tasks.length){
         store.commit('taskGetPosition', data);
-
-        // const currTask = state.currTask;
-        // const top = currTask.positionTop + 50;
-        // const left = currTask.positionLeft + 50;
-        //
-        // if(top + data.height >= state.winH){
-        //   data.positionTop = 0;
-        // }else{
-        //   data.positionTop = top;
-        // }
-        //
-        // if(left + data.width >= state.winW){
-        //   data.positionLeft = 0;
-        // }else{
-        //   data.positionLeft = left;
-        // }
-
       }else{ // Appear in center
         data.positionTop = (state.winH - data.height) / 2;
         data.positionLeft = (state.winW - data.width) / 2;
@@ -117,12 +105,35 @@ const store = new Vuex.Store({
       task.focus = false;
       store.commit('focusNextTask');
     },
+    minAll(state){
+      if(state._tmpMinAllTasks.length){
+        state._tmpMinAllTasks.forEach(function(v){
+          v.isMin = false;
+        });
+        state.currTask.focus = state._tmpMinAllCurrTasksFocus;
+        return state._tmpMinAllTasks = [];
+      }
+
+      state._tmpMinAllCurrTasksFocus = state.currTask.focus;
+      state.tasks.forEach(v => {
+        if(!v.isMin){
+          state._tmpMinAllTasks.push(v);
+          v.isMin = true;
+        }
+      });
+      state.currTask.focus = false;
+    },
     showTask(state, task){
       task.isMin = false;
-      if(task !== state.currTask && task.positionLeft === state.currTask.positionLeft && task.positionTop === state.currTask.positionTop){
+      if(task !== state.currTask && !state.currTask.isMax && task.positionLeft === state.currTask.positionLeft && task.positionTop === state.currTask.positionTop){
         store.commit('taskGetPosition', task);
       }
       store.commit('taskWindowFocus', task);
+    },
+    copyTask(state, task){
+      const cloneTask = cloneDeep(task);
+      cloneTask.focus = false;
+      store.commit('addTask', cloneTask);
     },
     focusNextTask(state){
       const test = sortBy(state.tasks, 'zIndex');
@@ -134,8 +145,8 @@ const store = new Vuex.Store({
         console.log('preTask is hidden')
       }
     },
-    removeTask(state, taskPosition){
-      state.tasks.splice(taskPosition.index, 1);
+    removeTask(state, index){
+      state.tasks.splice(index, 1);
       store.commit('focusNextTask');
     },
     currTaskWindowUnFocus(state){
@@ -143,7 +154,10 @@ const store = new Vuex.Store({
     },
     taskWindowFocus(state, task){
       if(task.focus === true) return;
-
+      if(state._tmpMinAllTasks.length){
+        //store.commit('minAll');
+        state._tmpMinAllTasks = [];
+      }
       if(state.currTask === task){
         task.focus = true;
         return;
@@ -157,7 +171,6 @@ const store = new Vuex.Store({
     set (state, data) {
       Object.assign(state, data);
     },
-
   }
 });
 

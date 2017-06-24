@@ -1,13 +1,13 @@
 <template lang="jade">
 .lr-window-body
-    .lr-hourglass.glyphicon.glyphicon-hourglass(v-show='isRequest')
+    .lr-hourglass(v-show='isRequest')
     .lr-fs-bar
-      .lr-3-item.glyphicon.glyphicon-arrow-left(@click='handleArrowLeftClick', :class='{lr_2_disabled:backStack.length === 0}')
-      .lr-3-item.glyphicon.glyphicon-arrow-up(@click='handleArrowUpClick', :class='{lr_2_disabled:address === "/"}')
-      .lr-3-item.glyphicon.glyphicon-arrow-right(@click='handleArrowRightClick', :class='{lr_2_disabled:goStack.length === 0}')
+      .lr-3-item.lr-3-left(@click='handleArrowLeftClick', :class='{lr_2_disabled:backStack.length === 0}')
+      .lr-3-item.lr-3-up(@click='handleArrowUpClick', :class='{lr_2_disabled:address === "/"}')
+      .lr-3-item.lr-3-right(@click='handleArrowRightClick', :class='{lr_2_disabled:goStack.length === 0}')
       input.lr-2-address(v-model='inputAddress' @keydown.13='handleGoClick')
-      .lr-3-item.glyphicon.glyphicon-repeat(v-if='address===inputAddress' @click='getData')
-      .lr-3-item.glyphicon.glyphicon-play(v-else @click='handleGoClick')
+      .lr-3-item.lr-3-reload(v-if='address===inputAddress' @click='getData')
+      .lr-3-item.lr-3-go(v-else @click='handleGoClick')
     .lr-fs-body(v-if='error')
       h2(v-html='data' style='color:red')
     .lr-fs-body(v-else @contextmenu.prevent='handleFsBodyContextmenu')
@@ -17,10 +17,20 @@
         @dblclick='openItem(item)', @click.stop='focusItem(item)',
         @contextmenu.prevent.stop='handleFsItemContextmenu(item, $event)',
         :class='{lr_2_file_link: item.isSymbolicLink, lr_2_hidden: item.name[0] === ".", lr_2_focus: item.focus}')
-
-        .lr-2-icon.glyphicon.glyphicon-file(v-if='!item.isDirectory')
-        .lr-2-icon.glyphicon.glyphicon-folder-close(v-else='item.isDirectory')
+        .lr-2-icon.lr-2-folder(v-if='item.isDirectory')
+        .lr-2-icon.lr-2-file(v-else-if='item.isFile')
+        .lr-2-icon.lr-2-unknown(v-else)
         .lr-2-name(@click='handleItemNameClick(item, $event)') {{item.name}}
+    .lr-fs-status(v-if='currFocusItem.focus')
+      span size:
+        b {{this.viewSize(currFocusItem.size)}}
+        b(v-if='currFocusItem.blocks && currFocusItem.blksize > currFocusItem.size') /{{this.viewSize(currFocusItem.blksize)}}
+      span(v-if='currFocusItem.isSymbolicLink') link:
+        b.v-2-link {{currFocusItem.linkString}}
+      span(v-if='currFocusItem.isDirectory') files:
+        b {{currFocusItem.nlink}}
+      span(v-else-if='!currFocusItem.isFile') type:
+        b {{currFocusItem._type}}
 </template>
 
 <script>
@@ -57,9 +67,26 @@ export default {
     }
   },
   methods: {
-    testmouse(){
-      console.log('mouse down');
+    viewSize(size){
+      let m = 'B';
+      if(size > 1024){
+        size = (size / 1024);
+        m = 'KB';
+      }
+
+      if(size > 1024){
+        size = (size / 1024);
+        m = 'MB';
+      }
+      if(size > 1024){
+        size = (size / 1024);
+        m = 'GB';
+      }
+      return size.toFixed(2) + m;
     },
+    // testmouse(){
+    //   console.log('mouse down');
+    // },
     handleItemNameClick(item, e){
       if(item !== this.currFocusItem) return;
       const self = this;
@@ -103,36 +130,31 @@ export default {
     handleFsItemContextmenu(item, e){
       const self = this;
       this.itemFocus(item);
-      contextmenuStore.commit('open', {
-        data: [
-          {
-            name: 'Open',
-            handleClick(){
-              self.openItem(item)
-              console.log('handleClick open');
-            }
-          },
-          // {
-          //   name: 'Rename',
-          //   handleClick(e){
-          //     // self.newName(item)
-          //     console.log('handleClick Rename');
-          //   }
-          // },
-          {
-            name: 'Delete',
-            handleClick(){
-              self.request({
-                type: 'delete',
-                url: '~/fs' + self.address + '/' + item.name + '?type=file',
-                success(){
-                  //self.newFileIndex += 1;
-                  self.getData();
-                }
-              })
-            }
+      const data = [];
+      if(item.isFile){
+        data.push({
+          name: 'Open',
+          handleClick(){
+            self.openItem(item)
+            console.log('handleClick open');
           }
-        ],
+        })
+      }
+      data.push({
+          name: 'Delete',
+          handleClick(){
+            self.request({
+              type: 'delete',
+              url: '~/fs' + self.address + '/' + item.name + '?type=file',
+              success(){
+                //self.newFileIndex += 1;
+                self.getData();
+              }
+            })
+          }
+      });
+      contextmenuStore.commit('open', {
+        data,
         top: e.clientY,
         left: e.clientX
       });
@@ -218,18 +240,38 @@ export default {
       const i = this.address.lastIndexOf('/');
       this.setAddress(this.address.substr(0, i));
     },
+    getAddress(item){
+      console.log('item', item);
+      let address;
+      if(item.isSymbolicLink){
+
+        address = '/' + item.linkString;
+      }else{
+        address = this.address + '/' + item.name
+      }
+      return address;
+    },
     openItem(item){
+      const address = this.getAddress(item);
       if(item.isDirectory){
         this.backStack.push(this.addressArr);
-        this.setAddress(this.address + '/' + item.name);
-      }else{
+        // let address;
+        // if(item.isSymbolicLink){
+        //   address = item.linkString;
+        // }else{
+        //   address = this.address + '/' + item.name
+        // }
+
+        this.setAddress(address);
+
+      }else if(item.isFile){
 
         store.commit('addTask', {
           type: 'edit',
-          name: item.name,
+          name: item.name + '**' + this.address + '**',
           width: 500,
           height:500,
-          address: this.address + '/' + item.name
+          address
         })
       }
     },
