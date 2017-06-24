@@ -161,9 +161,6 @@ Vue.prototype.apiGet = function(url, data, success){
     success
   })
 }
-Vue.prototype.noopStop = function(e){
-  e.stopPropagation();
-}
 
 function vRequest(opts){
   opts.context = this;

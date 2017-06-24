@@ -421,7 +421,7 @@ html, body{
     overflow-y: auto;
   }
   .lr-fs-status{
-    height: 30px; flex-shrink: 0;background: #eee; line-height: 30px;
+    height: 24px; flex-shrink: 0;border-top: 1px solid #000; line-height: 24px;
     font-size: 12px;
     span{margin: 0 2px; padding: 0 2px;}
     .v-2-link{color: $linkFileColor}

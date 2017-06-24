@@ -10,10 +10,13 @@
       .lr-3-item.lr-3-go(v-else @click='handleGoClick')
     .lr-fs-body(v-if='error')
       h2(v-html='data' style='color:red')
-    .lr-fs-body(v-else @contextmenu.prevent='handleFsBodyContextmenu')
+    .lr-fs-body(v-else-if='data.length === 0')
+      h2(style='color:#eee;margin:0') Empty
+    .lr-fs-body(v-else @contextmenu.prevent='handleFsBodyContextmenu', @mousedown='handleFsBodyMousedown')
 
       .lr-file(v-for='item in data',
         :key='item.name',
+        @mousedown='noopStop',
         @dblclick='openItem(item)', @click.stop='focusItem(item)',
         @contextmenu.prevent.stop='handleFsItemContextmenu(item, $event)',
         :class='{lr_2_file_link: item.isSymbolicLink, lr_2_hidden: item.name[0] === ".", lr_2_focus: item.focus}')
@@ -31,6 +34,9 @@
         b {{currFocusItem.nlink}}
       span(v-else-if='!currFocusItem.isFile') type:
         b {{currFocusItem._type}}
+    .lr-fs-status(v-else)
+      span files:
+        b {{data.length}}
 </template>
 
 <script>
@@ -121,6 +127,14 @@ export default {
       this.currFocusItem.focus = false;
       item.focus = true;
       this.currFocusItem = item;
+
+      window.APP.$elMain.addEventListener('mousedown', () => {
+        console.log('document mousedown');
+        this.currFocusItem.focus = false;
+      }, {
+        once: true,
+        //capture: true
+      })
     },
 
     handleFsBodyMousedown(){

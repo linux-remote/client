@@ -134,6 +134,7 @@ export default {
     //   return false
     // },
     taskFocus(){
+
       store.commit('taskWindowFocus', this.$data);
     },
     handleDragStart(e){
