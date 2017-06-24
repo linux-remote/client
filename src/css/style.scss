@@ -38,6 +38,66 @@ html, body{
 
 
 
+  //************* old pro *************
+    button, select{padding: 0 8px}
+    button{
+      height: 30px;
+      position: relative;
+      cursor: pointer;
+      font-size: 14px;
+
+    }
+    button:disabled{
+      cursor: not-allowed;
+      color:gray;
+      opacity: .5;
+    }
+
+    button.disable{background: #999;border-color:#999/1.1;color:#fff}
+
+    button.loading{
+      cursor: auto;
+    }
+
+    button.loading::before, .spinner {
+      padding:0;
+      margin:0;
+      position: absolute;
+      top:0;
+      bottom:0;
+      right:0;
+      left:0;
+      margin:auto;
+      height: 14px;
+      width: 14px;
+      font-size: 0;
+      animation: rotate 0.8s infinite linear;
+      border: 3px solid darkgoldenrod;
+      border-right-color: yellow;
+      border-radius: 50%;
+
+    }
+    .spinner{
+      width: 40px; height: 40px;border: 4px solid $color;
+      border-right-color:#fff;
+      z-index: 11;
+    }
+
+    .lr-modal-warp{
+      background-color: rgba(255, 255, 255, .7);height: 100%;
+      width: 100%; position: absolute; z-index: 10; top:0; left:0;
+    }
+
+    button.loading::before{
+      content: '';
+    }
+
+    @keyframes :global(rotate) { //loading 动画
+      0%    { transform: rotate(0deg); }
+      100%  { transform: rotate(360deg); }
+    }
+    //************* old pro end *************
+
   //************* login ***************
   .lr-login-warp{
     justify-content:center;
@@ -130,6 +190,10 @@ html, body{
 
   .lr-desk-wrap{
     flex-direction: column;height: 100%;overflow: hidden;
+    //background-color: #F5DEB3;
+    background-color: #F2D88F;
+    //background-color: #f3f3bd;
+    //background-color: #FAF9DE;
   }
 
 
@@ -167,6 +231,7 @@ html, body{
       flex-grow: 1;
       display:flex;
       justify-content: center;
+
     }
     .lr-2-control{
       width: $taskBarH; flex-shrink: 0;border: 2px outset #aaa;
@@ -195,6 +260,7 @@ html, body{
     position: absolute;z-index: 2; top:0;
     border: 1px outset #000;
     display: flex;
+    background: #fff;
     flex-direction: column;
     bottom: 0; left: 0; right: 0; box-shadow: 3px 3px 3px 3px #888;
   }

@@ -26,10 +26,11 @@ const store = new Vuex.Store({
     winW: $win.width(),
 
     // sess
+    isSelfSigned: false,
     CADownloadedCount: -1,
     CACertPath: '',
     loginedList: [],
-
+    indexNotice: '',
     // desk
     deskInited: false,
     username:'',

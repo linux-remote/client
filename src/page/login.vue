@@ -22,7 +22,15 @@
               input(type='password' placeholder='password' v-model='password')
 
       .lr-2-footer
-        button(@click='login') ok
+        button(@click='login', :class='{loading:isRequest}') ok
+
+
+    small(v-html='indexNotice' style="width: 282px; text-align:right")
+
+
+  div(style='position:absolute;bottom:0; width: 600px; margin: 0 auto;')
+    small(style='color: #999') Power by:
+      a(href='https://github.com/linux-remote' target='_blank') linux-remote
   //- .lr-logined_list_warp(v-if="loginedList.length > 0")
   //-   h2 已登录的用户
   //-   .logined-list
@@ -33,26 +41,33 @@
 </template>
 
 <script>
-//import store from '../store-global';
+import store from '../store-global';
 export default {
   data(){
     const queryUser = this.$route.query.user;
     return {
-      //isRequest: false,
+      isRequest: false,
       queryUser,
       username: queryUser || 'dw',
       password: '1'
     }
   },
-  // computed: {
-  //   loginedList(){
-  //     return store.state.loginedList
-  //   }
-  // },
+  computed: {
+    isSelfSigned(){
+      return store.state.isSelfSigned
+    },
+    indexNotice(){
+      return store.state.indexNotice
+    }
+    // loginedList(){
+    //   return store.state.loginedList
+    // }
+  },
   methods: {
     login(){
       const {username, password} = this;
       this.request({
+        requestKey: 'isRequest',
         url: '/login',
         type: 'post',
         data: {
