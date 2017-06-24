@@ -192,7 +192,7 @@ html, body{
     flex-direction: column;height: 100%;overflow: hidden;
     //background-color: #F5DEB3;
     background-color: #F2D88F;
-    //background-color: khaki;
+    //background-color: #F5AD3B;
 
     //background-color: #f3f3bd;
     //background-color: #FAF9DE;
@@ -222,9 +222,9 @@ html, body{
 
   // *********** task ************
   $taskBarH : $topBarH;
-  $taskFocusBg: black;
+  $taskFocusBg: chocolate;
   $taskFocusColor: #fff;
-  $taskBg: #666;
+  $taskBg: #F2D88F;
   $taskColor: #fff;
   .lr-task-bar{
     height:$taskBarH;background-color:#ddd;flex-shrink: 0;
@@ -250,12 +250,15 @@ html, body{
     margin:0 1px;
     cursor: default;
     font-size: 14px;
-    &.lr_focus{
+    &:hover, &.lr_focus{
       color: $taskFocusColor; background: $taskFocusBg;
     }
     &.lr_close{
-      font-size: 12px;
+      opacity: .5; color:#000;
     }
+    // &:hover{
+    //   color:#000;
+    // }
   }
 
   .lr-task-window{

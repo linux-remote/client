@@ -57,7 +57,6 @@ export default {
       this.apiGet('~/info', function(data){
         data.deskInited = true; //dev use.
         data.username = username;
-
         document.title = username + '@' + data.hostname;
         store.commit('set', data);
       });

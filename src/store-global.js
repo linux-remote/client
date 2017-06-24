@@ -4,7 +4,7 @@ _Vue.use(Vuex);
 
 import $ from 'jquery';
 const $win = $(window);
-const {find} = require('lodash');
+const {findLast, sortBy} = require('lodash');
 
 $win.on('resize', function(){
   store.commit('set', {
@@ -44,6 +44,7 @@ const store = new Vuex.Store({
 
     // tasks
     tasks: [], // tasks stack
+    showTasks: [],
     latestTask: {}, // last created task
     currTask: {}, // focused task
     taskMaxZindex: 0,
@@ -66,21 +67,23 @@ const store = new Vuex.Store({
       data.resizeStartData = null;
 
       if(state.tasks.length){
-        const currTask = state.currTask;
-        const top = currTask.positionTop + 50;
-        const left = currTask.positionLeft + 50;
+        store.commit('taskGetPosition', data);
 
-        if(top + data.height >= state.winH){
-          data.positionTop = 0;
-        }else{
-          data.positionTop = top;
-        }
-
-        if(left + data.width >= state.winW){
-          data.positionLeft = 0;
-        }else{
-          data.positionLeft = left;
-        }
+        // const currTask = state.currTask;
+        // const top = currTask.positionTop + 50;
+        // const left = currTask.positionLeft + 50;
+        //
+        // if(top + data.height >= state.winH){
+        //   data.positionTop = 0;
+        // }else{
+        //   data.positionTop = top;
+        // }
+        //
+        // if(left + data.width >= state.winW){
+        //   data.positionLeft = 0;
+        // }else{
+        //   data.positionLeft = left;
+        // }
 
       }else{ // Appear in center
         data.positionTop = (state.winH - data.height) / 2;
@@ -88,34 +91,52 @@ const store = new Vuex.Store({
       }
 
       store.commit('taskWindowFocus', data);
-
-      data._omitBlur = true;
-      state.latestTask._omitBlur = false;
       data.id = state.taskMaxZindex;
       state.latestTask = data;
       state.tasks.push(data);
     },
+    taskGetPosition(state, data){
+      const currTask = state.currTask;
+      const top = currTask.positionTop + 50;
+      const left = currTask.positionLeft + 50;
+
+      if(top + data.height >= state.winH){
+        data.positionTop = 0;
+      }else{
+        data.positionTop = top;
+      }
+
+      if(left + data.width >= state.winW){
+        data.positionLeft = 0;
+      }else{
+        data.positionLeft = left;
+      }
+    },
     hiddenTask(state, task){
       task.isMin = true;
-      store.commit('focusNextTask', task.zIndex);
+      task.focus = false;
+      store.commit('focusNextTask');
     },
     showTask(state, task){
       task.isMin = false;
+      if(task !== state.currTask && task.positionLeft === state.currTask.positionLeft && task.positionTop === state.currTask.positionTop){
+        store.commit('taskGetPosition', task);
+      }
       store.commit('taskWindowFocus', task);
     },
-    focusNextTask(state, zIndex){
-      if(zIndex === state.currTask.zIndex){
-        const preTask = find(state.tasks,
-          {zIndex: zIndex - 1});
-        if(preTask){
-          preTask.focus = true;
-          state.currTask = preTask;
-        }
+    focusNextTask(state){
+      const test = sortBy(state.tasks, 'zIndex');
+      const preTask = findLast(test,
+        {isMin: false});
+      if(preTask){
+        store.commit('taskWindowFocus', preTask);
+      }else{
+        console.log('preTask is hidden')
       }
     },
     removeTask(state, taskPosition){
-      store.commit('focusNextTask', taskPosition.zIndex);
       state.tasks.splice(taskPosition.index, 1);
+      store.commit('focusNextTask');
     },
     currTaskWindowUnFocus(state){
       state.currTask.focus = false;

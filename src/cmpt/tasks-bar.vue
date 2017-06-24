@@ -1,10 +1,10 @@
 <template lang="jade">
-.lr-task-bar
+.lr-task-bar(@mousedown.stop='noop')
   .lr-2-body
-    .lr-task-item(v-for='i in tasks', @click.stop= 'handleClick(i)',
+    .lr-task-item(v-for='i in tasks', @click.stop.prevent = 'handleClick(i)',
     @contextmenu.prevent.stop = 'contextmenu(i, $event)',
      :class='{lr_focus: i.focus, lr_close: i.isMin}')
-      {{i.name}} {{i.focus}}
+      {{i.name}}
   .lr-2-control(title='Close All', @click='closeAll') X
 </template>
 
@@ -18,6 +18,9 @@ export default {
     }
   },
   methods: {
+    noop(){
+
+    },
     closeAll(){
       store.commit('set', {tasks: []});
     },
@@ -36,10 +39,14 @@ export default {
       });
     },
     handleClick(task){
-      if(!task.isMin){
+      console.log('task', task.focus)
+      if(task.isMin){
+        store.commit('showTask', task);
+      }else if(task.focus){
+        console.log('hiddenTask')
         store.commit('hiddenTask', task);
       }else{
-        store.commit('showTask', task);
+        store.commit('taskWindowFocus', task);
       }
 
     }
