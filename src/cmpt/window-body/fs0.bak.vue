@@ -19,15 +19,12 @@
         @mousedown='noopStop',
         @dblclick='openItem(item)', @click.stop='focusItem(item)',
         @contextmenu.prevent.stop='handleFsItemContextmenu(item, $event)',
-        :class='{lr_2_file_link: item.isSymbolicLink, lr_2_hidden: item.name[0] === ".", lr_2_focus: item.focus, ["lr_file_type_" + item._type ]: item._type}')
-        .lr-file-icon(:class='{lr_2_file: item.isFile, lr_2_folder:item.isDirectory}')
-          span(v-if='item.suffix') {{item.suffix}}
-          .lr-3-icon.lr-3-link(v-if='item.isSymbolicLink')
-
+        :class='{lr_2_file_link: item.isSymbolicLink, lr_2_hidden: item.name[0] === ".", lr_2_focus: item.focus}')
+        .lr-2-icon.lr-2-folder(v-if='item.isDirectory')
+        .lr-2-icon.lr-2-file(v-else-if='item.isFile')
+        .lr-2-icon.lr-2-unknown(v-else)
         .lr-2-name(@click='handleItemNameClick(item, $event)') {{item.name}}
     .lr-fs-status(v-if='currFocusItem.focus')
-
-
       span size:
         b {{this.viewSize(currFocusItem.size)}}
         b(v-if='currFocusItem.blocks && currFocusItem.blksize > currFocusItem.size') /{{this.viewSize(currFocusItem.blksize)}}
@@ -119,19 +116,10 @@ export default {
         data: {type: 'rename', oldName: item.name, newName},
         success(){
           item.name = newName;
-          if(item.isFile){
-            item.suffix = this.getNameSuffix(item.name);
-          }
           console.log('rename success');
         }
       })
       //console.log('renameItem', item.name, newName);
-    },
-    getNameSuffix(name){
-      const index = name.lastIndexOf('.');
-      if(index !==0 && index !== -1){
-        return name.substr(index + 1);
-      }
     },
     focusItem(item){
       this.itemFocus(item);
@@ -273,7 +261,7 @@ export default {
       let address;
       if(item.isSymbolicLink){
 
-        address = item.linkString;
+        address = '/' + item.linkString;
       }else{
         address = this.address + '/' + item.name
       }
@@ -318,7 +306,6 @@ export default {
               v.focus = false;
             }
 
-
             // v.goodSize = this.viewSize(v.size);
             // v.lessBlkSize = (v.blocks > 0) &&  (v.blksize > v.size);
             // if(v.lessBlkSize){
@@ -334,7 +321,6 @@ export default {
                 folderArr.push(v)
               }else{
                 fileArr.push(v);
-                v.suffix = this.getNameSuffix(v.name);
               }
             }
             //return v;

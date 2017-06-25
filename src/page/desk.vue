@@ -59,7 +59,7 @@ export default {
     createdTask(){
       store.commit('addTask', {
         name: 'test:' + Date.now(),
-        address: '/',
+        address: '/dev',
         type: 'fs'
       });
     },

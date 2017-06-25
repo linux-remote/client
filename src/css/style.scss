@@ -24,10 +24,13 @@ $topBarH :$barH;
   box-sizing: border-box;
 }
 html, body{
-  height: 100%;padding: 0;margin:0;
   user-select: none;
+  height: 100%;padding: 0;margin:0;
 }
 
+body{
+  overflow: hidden;
+}
 // a{
 //   color: $color31;
 // };
@@ -133,6 +136,7 @@ html, body{
 
   //************* top bar ***************
   .lr-top-bg{
+    user-select: text;
     height: $topBarH;
     background-color: #eee;
     color:#aaa;padding-left: 10px;
@@ -157,6 +161,7 @@ html, body{
   }
 
   .lr-watch{
+    user-select: text;
     display: flex; align-items: center;
     border-right: 1px solid #fff;padding: 0 5px;
     .lr-2-left{
@@ -231,6 +236,7 @@ html, body{
 
 
   .lr-desk-icon-wrap{
+
     display: flex; flex-direction: column;
     width: 80px;margin: 5px;
     padding: 5px;
@@ -332,16 +338,19 @@ html, body{
     background: $taskBg; height: 25px; line-height: 25px;
      display: flex;cursor: default;
      color:$taskColor; border:0; padding: 0; margin:0;flex-shrink: 0;
+
      .lr-2-control{
        display: flex;
-       flex-shrink: 0; width: $rightCtrlWidth; justify-content: space-between;
+       flex-shrink: 0; width: $rightCtrlWidth;
+       justify-content: space-between;
      }
   }
   .lr-title.lr-focus{
     background: $taskFocusBg; color: $taskFocusColor;
   }
   .lr-title-content{
-    flex-grow:1; padding: 0 10px;
+    flex-grow:1; padding: 0 10px;overflow: hidden;
+    text-overflow: ellipsis;
   }
   .lr-window-body{
     flex-grow:1; display: flex; flex-direction: column;
@@ -422,33 +431,61 @@ html, body{
   }
   .lr-fs-status{
     height: 24px; flex-shrink: 0;border-top: 1px solid #000; line-height: 24px;
-    font-size: 12px;
+    font-size: 12px; user-select: text;
     span{margin: 0 2px; padding: 0 2px;}
     .v-2-link{color: $linkFileColor}
   }
   .lr-file{
     width: 80px; height: 80px; overflow: hidden; position: relative;
     cursor: pointer;
-    .lr-2-icon{
+    >.lr-file-icon{
       width: 100%; height: 50px;
+      position: relative;
       // text-align: center;
-      //  line-height: 50px;
+      // line-height: 50px;
+
+      span{
+        position: absolute;left: 17px;top: 8px;
+        text-overflow: ellipsis;white-space: nowrap; width: 26px;
+        text-align: center;overflow: hidden;
+        background: red; color:#fff;padding: 0 1px;font-size: 10px;
+      }
        background-size: 100% 100%;
        background-position: center;
        background-repeat: no-repeat;
-       &.lr-2-file{
+       &.lr_2_file{
          background-size: 90% 90%;
          background-image: url('/public/file.svg');
        }
-       &.lr-2-folder{
+       &.lr_2_folder{
          background-image: url('/public/folder.svg');
        }
-       &.lr-2-unknown{
-         background-image: url('/public/unknown.svg');
+
+       >.lr-3-link{
+         width: 40%; height: 40%;position: absolute;bottom:-5px; z-index: 2;
+         right:8px;background-size: 100% 100%;
+         background-image: url('/public/link.svg');
        }
     }
+
+    &.lr_file_type_socket > .lr-file-icon{
+      background-image: url('/public/socket.svg');
+    }
+    &.lr_file_type_unknown > .lr-file-icon{
+      background-image: url('/public/unknown.svg');
+    }
+    &.lr_file_type_characterDevice > .lr-file-icon{
+      background-image: url('/public/device.svg');
+    }
+    &.lr_file_type_blockDevice > .lr-file-icon{
+      background-image: url('/public/device-block.svg');
+    }
+    &.lr_file_type_FIFO > .lr-file-icon{
+      background-size: auto 80%;
+      background-image: url('/public/FIFO.png');
+    }
     .lr-2-name{
-       font-size: 12px;text-align: center; cursor: text;
+       font-size: 12px;text-align: center;cursor: text;
     }
     &:hover, &.lr_2_focus{
       background-color: #000; color:$color;overflow:visible;word-break:break-all;
@@ -492,8 +529,10 @@ html, body{
     opacity: .5;
   }
   .lr_fly_textarea{
-    position: absolute; z-index: $topZindex; resize: none; display: block;overflow: hidden; font-size: 12px; border:0; text-align: center;padding-left: 0; padding-right:0;
-    outline: none; word-wrap: normal;white-space:normal; word-break: break-all;
+    position: absolute; z-index: $topZindex; resize: none; display: block;overflow: hidden; font-size: 12px; border:0; text-align: center;padding:0;margin:0;
+    outline: none;
+    word-wrap: normal;white-space:normal;
+    word-break: break-all;
   }
 
   //*************** resizable ***************
