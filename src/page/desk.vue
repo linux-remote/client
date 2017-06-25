@@ -58,8 +58,8 @@ export default {
     },
     createdTask(){
       store.commit('addTask', {
-        name: 'test:' + Date.now(),
-        address: '/dev',
+        name: 'File System',
+        address: '/',
         type: 'fs'
       });
     },

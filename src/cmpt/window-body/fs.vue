@@ -129,7 +129,7 @@ export default {
     },
     getNameSuffix(name){
       const index = name.lastIndexOf('.');
-      if(index !==0 && index !== -1){
+      if(index !== 0 && index !== -1){
         return name.substr(index + 1);
       }
     },
@@ -269,10 +269,8 @@ export default {
       this.setAddress(this.address.substr(0, i));
     },
     getAddress(item){
-      console.log('item', item);
       let address;
       if(item.isSymbolicLink){
-
         address = item.linkString;
       }else{
         address = this.address + '/' + item.name

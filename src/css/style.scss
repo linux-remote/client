@@ -31,6 +31,11 @@ html, body{
 body{
   overflow: hidden;
 }
+a {
+  color: green;
+  //text-decoration: none; 
+  cursor:pointer
+}
 // a{
 //   color: $color31;
 // };
@@ -192,29 +197,25 @@ body{
         }
       }
     }
-    &:hover>.lr-2-drop{
+    &:hover>.lr-user-drop{
       display: block;
     }
 
-    .lr-2-drop{
+    >.lr-user-drop{
+      font-size: 14px;
       position: absolute; width: 200px; right:0;
       top: 100%; display: block;padding: 5px 0;
       background-color: #fff;
-      border:2px outset #000;
+      border:1px outset #999;
       color:#000;
-      .lr-3-p{
+      >.lr-user-p{
         padding: 0 10px;
-        &:hover{
-          color: green;
-        }
       }
       .lr-3-logout{
         cursor: pointer;
+        color: green;
       }
     }
-    // .lr-2-drop a , .lr-2-drop{
-    //   color: yellow;
-    // }
   }
 
   //************* top bar end ***************

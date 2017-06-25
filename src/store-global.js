@@ -62,9 +62,11 @@ const store = new Vuex.Store({
       state.sessError = true;
     },
     addTask(state, data){
+      const isMax = state.currTask.isMax;
+      data.width = (isMax ? data.width : state.currTask.width) || 600;
+
       //console.log('data.width', data.width, state.currTask.width);
-      data.width = state.currTask.width || data.width ||  600;
-      data.height = state.currTask.height || data.height ||  600;
+      data.height = (isMax ? data.height : state.currTask.height) || 600;
       // if(data.notFollow){
       //
       // }
@@ -88,7 +90,10 @@ const store = new Vuex.Store({
       state.tasks.push(data);
     },
     taskGetPosition(state, data){
-      const currTask = state.currTask;
+      let currTask = state.currTask;
+      if(data.isMax){
+        currTask = data.bakBeforeMax;
+      }
       const top = currTask.positionTop + 50;
       const left = currTask.positionLeft + 50;
 

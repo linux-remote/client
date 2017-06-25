@@ -1,12 +1,21 @@
 <template lang="jade">
 .lr-user
-  .lr-user-name(@click='show', :class='{lr_2_hover:showDrop}') {{user}}
+  .lr-user-name(@click='show', :class='{lr_2_hover:showDrop}') {{user.username}}
     <svg-triangle svgClass='lr-triangle' width='10' height='5' />
-  .lr-2-drop(v-show='showDrop')
-    .lr-3-p(style='font-size: 14px')
+  .lr-user-drop(v-show='showDrop' )
+    .lr-user-p(style='user-select:text' @click='noopStop')
+      small uid:
+      b {{user.uid}}
+      small(style='margin-left:1em') gid:
+      b {{user.gid}}
+    .lr-user-p(style='user-select:text')
+      small homedir:
+      button(style='margin-left:1em' @click='openHome(user.homedir)') {{user.homedir}}
+    hr
+    .lr-user-p
       router-link.btn.btn-link(to='/' target='_blank') login with other account
     hr
-    .lr-3-p.lr-3-logout(@click='logout') logout
+    button.lr-user-p.lr-3-logout(@click='logout') logout
 
 </template>
 
@@ -25,10 +34,17 @@ export default {
   },
   computed:{
     user(){
-      return store.state.username
+      return store.state.userInfo
     },
   },
   methods:{
+    openHome(dir){
+      store.commit('addTask', {
+        name: dir,
+        address: dir,
+        type: 'fs'
+      })
+    },
     show(){
       if(this.showDrop) return;
       this.showDrop = true;
