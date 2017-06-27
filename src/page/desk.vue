@@ -66,22 +66,24 @@ export default {
     init(){
       const username = this.$route.params.username;
       this.apiGet('~/info', function(data){
+        data.isLogin = true;
         data.deskInited = true; //dev use.
         data.username = username;
         document.title = username + '@' + data.hostname;
         store.commit('set', data);
       });
       const TTL_TIME = 1000 * 60 * 9;
-      const TTL = () => {
-        setTimeout(()=>{
-          this.apiGet('~/live');
-          TTL();
-        }, TTL_TIME)
-      }
-      TTL();
+      this.$options._liveTTL = setInterval(()=>{
+        if(!store.state.isLogin) return;
+        this.apiGet('~/live');
+      }, TTL_TIME)
+
       createWs(username);
       this.createdTask();
     }
+  },
+  destroyed(){
+    clearInterval(this.$options._liveTTL);
   },
   mounted(){
     window.APP.$elDesk = this.$el;

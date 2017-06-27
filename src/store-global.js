@@ -31,6 +31,7 @@ const store = new Vuex.Store({
     winW: $win.width(),
 
     // sess
+    isLogin: false,
     isSelfSigned: false,
     CADownloadedCount: -1,
     CACertPath: '',

@@ -26,7 +26,7 @@ export function logout(){
     url: '/logout',
     type: 'post',
     data: {
-      username: this.username
+      username: store.state.username
     },
     success(){
       //store.commit('set', {username: null});
@@ -34,6 +34,7 @@ export function logout(){
       let route = '/';
       const storeData = {
         deskInited: false,
+        isLogin: false,
         tasks: []
       };
       if(store.state.sessError){

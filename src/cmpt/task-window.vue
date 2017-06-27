@@ -8,7 +8,8 @@
  @dragend.stop='handleDragEnd')
   .lr-title(:class='titleClass', @mousedown='handleTitleMousedown',
   @dblclick='maxToggle',     @mouseup='disableDraggable')
-    .lr-title-content {{name}} {{zIndex}} #index:{{index}} #id:{{id}}
+    .lr-title-content {{name}}
+    // {{zIndex}} #index:{{index}} #id:{{id}}
     .lr-2-control
       .lr-title-min(@click.stop='hiddenTask')
       .lr-title-max(@click.stop='maxToggle', :class='{lr_2_shrink: isMax}')

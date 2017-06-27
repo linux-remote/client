@@ -26,8 +26,6 @@
 
         .lr-2-name(@click='handleItemNameClick(item, $event)') {{item.name}}
     .lr-fs-status(v-if='currFocusItem.focus')
-
-
       span size:
         b {{this.viewSize(currFocusItem.size)}}
         b(v-if='currFocusItem.blocks && currFocusItem.blksize > currFocusItem.size') /{{this.viewSize(currFocusItem.blksize)}}
@@ -35,8 +33,12 @@
         b.v-2-link {{currFocusItem.linkString}}
       span(v-if='currFocusItem.isDirectory') files:
         b {{currFocusItem.nlink}}
-      span(v-else-if='!currFocusItem.isFile') type:
+      span(v-else-if = '!currFocusItem.isFile') type:
         b {{currFocusItem._type}}
+      span auth:
+        b {{currFocusItem.permissions}}
+      span relation:
+        b {{currFocusItem._relation}}
     .lr-fs-status(v-else)
       span files:
         b {{data.length}}
@@ -71,6 +73,9 @@ export default {
   computed: {
     error(){
       return !Array.isArray(this.data);
+    },
+    userInfo(){
+      return store.state.userInfo
     },
     address(){
       return '/' + this.addressArr.join('/');
@@ -287,7 +292,7 @@ export default {
         // }else{
         //   address = this.address + '/' + item.name
         // }
-
+        //this.$parent.name = item.name;
         this.setAddress(address);
 
       }else if(item.isFile){
@@ -300,6 +305,74 @@ export default {
           address
         });
       }
+    },
+    initRelation(item){
+      const u = this.userInfo;
+      if(item.uid === u.uid){
+        item._relation = 'owner';
+      }else if(item.gid === u.gid){
+        item._relation = 'group';
+      }else{
+        item._relation = 'other';
+      }
+    },
+    getModeInfo(mode){
+      const data = {
+        owner: {
+          x: mode & parseInt('100', 8) ? 'x' : '-',
+          w: mode & parseInt('200', 8) ? 'w' : '-',
+          r: mode & parseInt('400', 8) ? 'r' : '-',
+        },
+        group: {
+          x: mode & parseInt('10', 8) ? 'x' : '-',
+          w: mode & parseInt('20', 8) ? 'w' : '-',
+          r: mode & parseInt('40', 8) ? 'r' : '-',
+        },
+        other: {
+          x: mode & 1 ? 'x' : '-',
+          w: mode & 2 ? 'w' : '-',
+          r: mode & 4 ? 'r' : '-',
+        }
+      };
+
+      function out(obj){
+        return `${obj.r}${obj.w}${obj.x}`
+      }
+
+      const ext = {
+        s : mode & parseInt('4000', 8) ? 's' : null,
+        gs : mode & parseInt('2000', 8) ? 's' : null,
+        t : mode & parseInt('1000', 8) ? 't' : null
+      }
+      let mask = mode & parseInt('700', 8) ;
+
+
+      console.log('ext', ext, mode);
+      //let t = 't';
+      if(ext.t){
+        if(data.other.x === '-'){
+          data.other.x = 'T'
+        }else{
+          data.other.x = 't';
+        }
+      }
+      if(ext.gs){
+        if(data.group.x === '-'){
+          data.group.x = 'S'
+        }else{
+          data.group.x = 's';
+        }
+      }
+
+      if(ext.s){
+        if(data.owner.x === '-'){
+          data.owner.x = 'S'
+        }else{
+          data.owner.x = 's';
+        }
+      }
+
+      return out(data.owner) + out(data.group) + out(data.other);
     },
     getData(){
       this.request({
@@ -316,12 +389,19 @@ export default {
               v.focus = false;
             }
 
-
             // v.goodSize = this.viewSize(v.size);
             // v.lessBlkSize = (v.blocks > 0) &&  (v.blksize > v.size);
             // if(v.lessBlkSize){
             //   v.goodBlkSize = this.viewSize(v.blksize);
             // }
+            //console.log(v.mode);
+            //
+            // if(item._relation === 'own'){
+            //
+            // }
+
+            this.initRelation(v);
+            v.permissions = this.getModeInfo(v.mode);
 
             if(v.name[0] === '.'){
               v.isHidden = true;

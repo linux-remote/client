@@ -29,7 +29,12 @@ export default {
   },
   data(){
     return {
-      showDrop: false
+      showDrop: false,
+      uid:null,
+      gid:null,
+      uname:null,
+      gname: null,
+      otherGroup: []
     }
   },
   computed:{
@@ -38,9 +43,24 @@ export default {
     },
   },
   methods:{
+    parseData(data){
+      //data = data.split('/n');
+      //console.log('data', ansicolor.parse(data));
+    },
+    getData(){
+      this.request({
+        url: '~/exec',
+        data: {
+          cmd: 'ls -l --color=always /home/dw/test/f3'
+        },
+        success(data){
+          this.parseData(data);
+        }
+      })
+    },
     openHome(dir){
       store.commit('addTask', {
-        name: dir,
+        name: 'Home',
         address: dir,
         type: 'fs'
       })
@@ -57,6 +77,10 @@ export default {
       })
     },
     logout
+  },
+  created(){
+    //console.log('created')
+    //this.getData();
   }
 }
 </script>
