@@ -27,7 +27,7 @@
         "no-multiple-empty-lines": "warn",
         "prefer-const": 0,
         "space-infix-ops": "warn",
-        "camelcase": "error",
+        "camelcase": 0,
         "no-console": 0,
         "linebreak-style": 0,
         "quotes": 0,

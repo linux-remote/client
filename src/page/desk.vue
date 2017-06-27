@@ -3,6 +3,9 @@
   <top-bar />
   .lr-top-bg LR {{hostname}}
   #lr-desk.lr-desk
+    .lr-desk-icon-wrap(@dblclick="openDustBin")
+      img.lr-desk-icon(src='/public/dustbin.svg')
+      .lr-desk-icon-text Dustbin
     .lr-desk-icon-wrap
       img.lr-desk-icon(src='/public/server.svg')
       .lr-desk-icon-text Server Info
@@ -12,9 +15,7 @@
     .lr-desk-icon-wrap(@dblclick="createdTask")
       img.lr-desk-icon(src='/public/file-tree.svg')
       .lr-desk-icon-text File System
-    //- .lr-desk-icon-wrap(@dblclick="createdTask")
-    //-   img.lr-desk-icon(src='/public/dustbin.svg')
-    //-   .lr-desk-icon-text Dustbin
+
 
     //-button.btn.btn-default(@click='test500') test500
 
@@ -52,6 +53,13 @@ export default {
     }
   },
   methods: {
+    openDustBin(){
+      store.commit('addTask', {
+        name: 'File System',
+        address: '/var/tmp/linux-remote/dustbin',
+        type: 'fs'
+      });
+    },
     logout,
     test500(){
       this.apiGet('~/test500')
@@ -59,7 +67,7 @@ export default {
     createdTask(){
       store.commit('addTask', {
         name: 'File System',
-        address: '/',
+        address: '/home/dw',
         type: 'fs'
       });
     },

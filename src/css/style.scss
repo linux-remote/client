@@ -431,33 +431,71 @@ a {
     overflow-y: auto;
   }
   .lr-fs-status{
-    height: 24px; flex-shrink: 0;border-top: 1px solid #000; line-height: 24px;
+    height: 18px; flex-shrink: 0;border-top: 1px solid #000; line-height: 18px;
     font-size: 12px; user-select: text;
-    span{margin: 0 2px; padding: 0 2px;}
+    span{
+      margin: 0 2px; padding: 0 2px;
+    }
+    b{margin-left: 2px;}
     .v-2-link{color: $linkFileColor}
   }
   .lr-file{
-    width: 80px; height: 80px; overflow: hidden; position: relative;
+    width: 80px; height: 80px; overflow: hidden;
+    position: relative;
+    margin: 1px;
     cursor: pointer;
     >.lr-file-icon{
       width: 100%; height: 50px;
+      display: flex;
       position: relative;
       // text-align: center;
       // line-height: 50px;
+      >.lr-file-icon-front{
+        width: 100%; height: 100%;
+        position: absolute;top:0; left:0; z-index: 2;
+        background-size: 100% 100%;
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+      .lr-per-relation-wrap{
+        width: 50px; height: 50px;margin: 0 auto;
+        display: flex;
+      }
+      .lr-per-relation{
+        flex-grow: 1;
+        display: flex;
+        //background: #000;
+        flex-direction: column;
 
+        .lr-per-item{
+          flex-grow: 1;font-size: 10px;
+          display: flex; align-items: center;justify-content: center;
+          opacity: 0; color:#fff;
+          //margin:1px;
+        }
+        // .lr_per_item_on{
+        //   background-color: #eee;
+        // }
+        &.lr_per_is{
+          >.lr_per_item_on{
+            background-color: rgba(green, .3);opacity: 1;
+          }
+        }
+        &.lr_per_i{
+          >.lr_per_item_on{
+            background-color: rgba(green, .5);opacity: 1;
+          }
+
+        }
+
+      }
       span{
-        position: absolute;left: 17px;top: 8px;
+        position: absolute;left: 17px;top: 8px;z-index: 3;
         text-overflow: ellipsis;white-space: nowrap; width: 26px;
         text-align: center;overflow: hidden;
         background: red; color:#fff;padding: 0 1px;font-size: 10px;
       }
-       background-size: 100% 100%;
-       background-position: center;
-       background-repeat: no-repeat;
-       &.lr_2_file{
-         background-size: 90% 90%;
-         background-image: url('/public/file.svg');
-       }
+
 
        >.lr-3-link{
          width: 40%; height: 40%;position: absolute;bottom:-5px; z-index: 2;
@@ -465,46 +503,56 @@ a {
          background-image: url('/public/link.svg');
        }
     }
-    &.lr_file_type_directory > .lr-file-icon{
+    &.lr_file_type_directory > .lr-file-icon > .lr-file-icon-front{
       background-image: url('/public/folder.svg');
     }
-    &.lr_file_type_file > .lr-file-icon{
+    &.lr_file_type_file > .lr-file-icon > .lr-file-icon-front{
       background-size: 90% 90%;
       background-image: url('/public/file.svg');
     }
-    &.lr_file_type_socket > .lr-file-icon{
+    &.lr_file_type_socket > .lr-file-icon > .lr-file-icon-front{
       background-image: url('/public/socket.svg');
     }
-    &.lr_file_type_unknown > .lr-file-icon{
+    &.lr_file_type_unknown > .lr-file-icon > .lr-file-icon-front{
       background-image: url('/public/unknown.svg');
     }
-    &.lr_file_type_characterDevice > .lr-file-icon{
+
+    &.lr_file_type_error > .lr-file-icon > .lr-file-icon-front{
+      background-image: url('/public/error.svg');
+    }
+
+    &.lr_file_type_characterDevice > .lr-file-icon > .lr-file-icon-front{
       background-image: url('/public/device.svg');
     }
-    &.lr_file_type_blockDevice > .lr-file-icon{
+    &.lr_file_type_blockDevice > .lr-file-icon > .lr-file-icon-front{
       background-image: url('/public/device-block.svg');
     }
-    &.lr_file_type_FIFO > .lr-file-icon{
+    &.lr_file_type_FIFO > .lr-file-icon > .lr-file-icon-front{
       background-size: auto 80%;
       background-image: url('/public/FIFO.png');
     }
 
     .lr-2-name{
-       font-size: 12px;text-align: center;cursor: text;
+       font-size: 12px;text-align: center;cursor: text;z-index: 4;
     }
     &:hover, &.lr_2_focus{
-      background-color: #000; color:$color;overflow:visible;word-break:break-all;
+      background-color: #000; color:$color;word-break:break-all;
       .lr-2-name{
-        background-color: red;z-index: 1;position: relative;
+        background-color: red;position: relative;
       }
+    }
+    &.lr_2_focus{
+      overflow:visible;
     }
   }
 
   .lr-contextmenu{
     position: absolute; z-index:$topZindex; border: 1px outset #eee;
-    background: #eee;width: 100px; top:0; left:0;
+    background: #eee; top:0; left:0;
+    font-size: 14px;
     .lr-2-item{
       padding: 5px 10px; border-bottom: 1px solid #999; cursor: pointer;
+      
       &:hover{
         background-color: green; color:#fff;
       }
