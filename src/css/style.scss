@@ -33,7 +33,7 @@ body{
 }
 a {
   color: green;
-  //text-decoration: none; 
+  //text-decoration: none;
   cursor:pointer
 }
 // a{
@@ -458,9 +458,6 @@ a {
          background-size: 90% 90%;
          background-image: url('/public/file.svg');
        }
-       &.lr_2_folder{
-         background-image: url('/public/folder.svg');
-       }
 
        >.lr-3-link{
          width: 40%; height: 40%;position: absolute;bottom:-5px; z-index: 2;
@@ -468,7 +465,13 @@ a {
          background-image: url('/public/link.svg');
        }
     }
-
+    &.lr_file_type_directory > .lr-file-icon{
+      background-image: url('/public/folder.svg');
+    }
+    &.lr_file_type_file > .lr-file-icon{
+      background-size: 90% 90%;
+      background-image: url('/public/file.svg');
+    }
     &.lr_file_type_socket > .lr-file-icon{
       background-image: url('/public/socket.svg');
     }
@@ -485,6 +488,7 @@ a {
       background-size: auto 80%;
       background-image: url('/public/FIFO.png');
     }
+
     .lr-2-name{
        font-size: 12px;text-align: center;cursor: text;
     }
@@ -493,9 +497,6 @@ a {
       .lr-2-name{
         background-color: red;z-index: 1;position: relative;
       }
-    }
-    &.lr_2_file_link{
-      color: $linkFileColor;
     }
   }
 

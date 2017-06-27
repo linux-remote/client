@@ -19,8 +19,8 @@
         @mousedown='noopStop',
         @dblclick='openItem(item)', @click.stop='focusItem(item)',
         @contextmenu.prevent.stop='handleFsItemContextmenu(item, $event)',
-        :class='{lr_2_file_link: item.isSymbolicLink, lr_2_hidden: item.name[0] === ".", lr_2_focus: item.focus, ["lr_file_type_" + item._type ]: item._type}')
-        .lr-file-icon(:class='{lr_2_file: item.isFile, lr_2_folder:item.isDirectory}')
+        :class='{lr_2_hidden: item.name[0] === ".", lr_2_focus: item.focus, ["lr_file_type_" + item.type ]: item.type}')
+        .lr-file-icon
           span(v-if='item.suffix') {{item.suffix}}
           .lr-3-icon.lr-3-link(v-if='item.isSymbolicLink')
 
@@ -29,16 +29,17 @@
       span size:
         b {{this.viewSize(currFocusItem.size)}}
         b(v-if='currFocusItem.blocks && currFocusItem.blksize > currFocusItem.size') /{{this.viewSize(currFocusItem.blksize)}}
-      span(v-if='currFocusItem.isSymbolicLink') link:
-        b.v-2-link {{currFocusItem.linkString}}
-      span(v-if='currFocusItem.isDirectory') files:
+      span type:
+        b {{currFocusItem.isSymbolicLink ? 'symbolicLink' : currFocusItem.type}}
+      span(v-if='currFocusItem.isSymbolicLink') linkTo: 
+        b.v-2-link {{currFocusItem.linkPath}}
+      span(v-if='currFocusItem.isDirectory') nlink:
         b {{currFocusItem.nlink}}
-      span(v-else-if = '!currFocusItem.isFile') type:
-        b {{currFocusItem._type}}
-      span auth:
-        b {{currFocusItem.permissions}}
-      span relation:
-        b {{currFocusItem._relation}}
+
+      //- span auth:
+      //-   b {{currFocusItem.permissions}}
+      //- span relation:
+      //-   b {{currFocusItem._relation}}
     .lr-fs-status(v-else)
       span files:
         b {{data.length}}
@@ -86,16 +87,16 @@ export default {
       let m = 'B';
       if(size > 1024){
         size = (size / 1024);
-        m = 'KB';
+        m = 'K';
       }
 
       if(size > 1024){
         size = (size / 1024);
-        m = 'MB';
+        m = 'M';
       }
       if(size > 1024){
         size = (size / 1024);
-        m = 'GB';
+        m = 'G';
       }
       return size.toFixed(2) + m;
     },
@@ -276,7 +277,7 @@ export default {
     getAddress(item){
       let address;
       if(item.isSymbolicLink){
-        address = item.linkString;
+        address = item.linkPath;
       }else{
         address = this.address + '/' + item.name
       }
@@ -288,7 +289,7 @@ export default {
         this.backStack.push(this.addressArr);
         // let address;
         // if(item.isSymbolicLink){
-        //   address = item.linkString;
+        //   address = item.linkPath;
         // }else{
         //   address = this.address + '/' + item.name
         // }
@@ -344,10 +345,6 @@ export default {
         gs : mode & parseInt('2000', 8) ? 's' : null,
         t : mode & parseInt('1000', 8) ? 't' : null
       }
-      let mask = mode & parseInt('700', 8) ;
-
-
-      console.log('ext', ext, mode);
       //let t = 't';
       if(ext.t){
         if(data.other.x === '-'){
