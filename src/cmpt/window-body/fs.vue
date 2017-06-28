@@ -19,33 +19,29 @@
         @mousedown='noopStop',
         @dblclick='openItem(item)', @click.stop='focusItem(item)',
         @contextmenu.prevent.stop='handleFsItemContextmenu(item, $event)',
-        :class='{lr_2_hidden: item.name[0] === ".", lr_2_focus: item.focus, ["lr_file_type_" + item.type ]: item.type}')
-        .lr-file-icon
-          .lr-file-icon-front
-          .lr-per-relation-wrap
-            .lr-per-relation(v-for='(v, k) in item.PER',
-             :class='{lr_per_is: item["is_" + k], lr_per_i: item._relation === k}')
-              .lr-per-item(v-for='(v, k2) in v' , :class='{lr_per_item_on: v}')
-
-
-
-          span(v-if='item.suffix') {{item.suffix}}
-          .lr-3-icon.lr-3-link(v-if='item.isSymbolicLink')
-
+        :class='{lr_2_hidden: item.name[0] === ".",lr_file_stick: item.isSticky, lr_2_focus: item.focus, ["lr_file_type_" + item.type ]: item.type}')
+        <fs-icon :item='item' />
         .lr-2-name(@click='handleItemNameClick(item, $event)') {{item.name}}
+
+
+
+
     .lr-fs-status(v-if='currItem.focus')
-      span size:
-        b {{this.viewSize(currItem.size)}}
-        b(v-if='currItem.blocks && currItem.blksize > currItem.size') /{{this.viewSize(currItem.blksize)}}
-      span type:
-        b {{currItem.isSymbolicLink ? 'symbolicLink' : currItem.type}}
+      span {{currItem.isSymbolicLink ? 'SymbolicLink' : currItem.type}}
+      span {{wellCurrSize}}
+      span {{currItem.permission}}
+      span {{currItem.owner}}
+      span {{currItem.group}}
+        //- b(v-if='currItem.blocks && currItem.blksize > currItem.size') /{{wellSize(currItem.blksize)}}
       span(v-if='currItem.isSymbolicLink') linkTo:
         b.v-2-link {{currItem.linkPath}}
-      //- span(v-else) nlink:
-      //-   b {{currItem.nlink}}
-
-      span per:
-        b {{currItem.permissions}}
+      //- span owner
+      //-   b {{currItem.owner}}
+      //- //- span(v-else) nlink:
+      //- //-   b {{currItem.nlink}}
+      //-
+      //- span per:
+      //-   b {{currItem.permission}}
       //- span relation:
       //-   b {{currItem._relation}}
     .lr-fs-status(v-else)
@@ -57,8 +53,13 @@
 import store from '__ROOT__/store-global';
 import contextmenuStore from '__ROOT__/store/contextmenu';
 import flyTextAreaStore from '__ROOT__/store/fly-textarea';
+import FsIcon from './fs-icon';
+import {perFormet, getNameSuffix} from './fs-util';
 //import FsItem from './fs-item';
 export default {
+  components:{
+    FsIcon
+  },
   data(){
     return {
       isRequest: false,
@@ -83,37 +84,24 @@ export default {
     }
   },
   computed: {
+    wellCurrSize(){
+      return this.currItem.size
+      //wellSize(this.currItem.size)
+    },
     error(){
       return !Array.isArray(this.data);
     },
-    userInfo(){
-      return store.state.userInfo
+    username(){
+      return store.state.username
+    },
+    groups(){
+      return store.state.groups
     },
     address(){
       return '/' + this.addressArr.join('/');
     }
   },
   methods: {
-    viewSize(size){
-      let m = 'B';
-      if(size > 1024){
-        size = (size / 1024);
-        m = 'K';
-      }
-
-      if(size > 1024){
-        size = (size / 1024);
-        m = 'M';
-      }
-      if(size > 1024){
-        size = (size / 1024);
-        m = 'G';
-      }
-      return size.toFixed(2) + m;
-    },
-    // testmouse(){
-    //   console.log('mouse down');
-    // },
     handleItemNameClick(item, e){
       if(item !== this.currItem) return;
       const self = this;
@@ -137,18 +125,12 @@ export default {
         success(){
           item.name = newName;
           if(item.isFile){
-            item.suffix = this.getNameSuffix(item.name);
+            item.suffix = getNameSuffix(item.name);
           }
           console.log('rename success');
         }
       })
       //console.log('renameItem', item.name, newName);
-    },
-    getNameSuffix(name){
-      const index = name.lastIndexOf('.');
-      if(index !== 0 && index !== -1){
-        return name.substr(index + 1);
-      }
     },
     focusItem(item){
       this.itemFocus(item);
@@ -170,9 +152,6 @@ export default {
 
     handleFsBodyMousedown(){
       this.currItem.focus = false;
-    },
-    focusNew(){
-
     },
     handleFsItemContextmenu(item, e){
       const self = this;
@@ -211,7 +190,7 @@ export default {
         }
       ];
 
-      if(item.isFile || item.isDirectory){
+      if(item.type === 'file' || item.type === 'directory'){
         data.unshift({
           name: 'Open',
           handleClick(){
@@ -226,7 +205,6 @@ export default {
         top: e.clientY,
         left: e.clientX
       });
-      return false;
     },
     handleFsBodyContextmenu(e){
       const self = this;
@@ -324,7 +302,7 @@ export default {
     },
     openItem(item){
       const address = this.getAddress(item);
-      if(item.isDirectory){
+      if(item.type === 'Directory'){
         this.backStack.push(this.addressArr);
         // let address;
         // if(item.isSymbolicLink){
@@ -335,7 +313,7 @@ export default {
         //this.$parent.name = item.name;
         this.setAddress(address);
 
-      }else if(item.isFile){
+      }else if(item.type === 'RegularFile'){
 
         store.commit('addTask', {
           type: 'edit',
@@ -347,9 +325,8 @@ export default {
       }
     },
     initRelation(item){
-      const u = this.userInfo;
-      const isInGroup = (item.gid === u.gid);
-      if(item.uid === u.uid){
+      const isInGroup = (this.groups.indexOf(item.group) !== -1);
+      if(item.owner === this.username){
         item.is_owner = true;
         item._relation = 'owner';
       }else if(isInGroup){
@@ -362,81 +339,21 @@ export default {
       }
       item.is_other = true;
     },
-    // initCanBe(item){
-    //   const relation = this._relation;
-    //   const I_PER = this.PER[relation];
-    //   I_PER.myPlace = true;
-    //   const OTHER_PER = this.PER['other'];
-    //   if(relation === 'group'){
-    //     OTHER_PER.crossPlace = true;
-    //   }
-    //
-    // },
-    getModeInfo(mode){
-      const data = {
-        owner: {
-          r: mode & parseInt('400', 8) ? 1 : 0,
-          w: mode & parseInt('200', 8) ? 1 : 0,
-          x: mode & parseInt('100', 8) ? 1 : 0,
-
-
-        },
-        group: {
-          r: mode & parseInt('40', 8) ? 1 : 0,
-          w: mode & parseInt('20', 8) ? 1 : 0,
-          x: mode & parseInt('10', 8) ? 1 : 0,
-        },
-        other: {
-          r: mode & 4 ? 1 : 0,
-          w: mode & 2 ? 1 : 0,
-          x: mode & 1 ? 1 : 0,
-        }
-      };
-      return data;
-      //this.PER = data;
-
-      function out(obj){
-        return `${obj.r || '-'}${obj.w || '-'}${obj.x || '-'}`
-      }
-
-      function initExt(mode, data){
-        const ext = {
-          s : mode & parseInt('4000', 8) ? 's' : null,
-          gs : mode & parseInt('2000', 8) ? 's' : null,
-          t : mode & parseInt('1000', 8) ? 't' : null
-        }
-        //let t = 't';
-        if(ext.t){
-          if(data.other.x){
-            data.other.x = 'T'
-          }else{
-            data.other.x = 't';
-          }
-        }
-        if(ext.gs){
-          if(data.group.x){
-            data.group.x = 'S'
-          }else{
-            data.group.x = 's';
-          }
-        }
-
-        if(ext.s){
-          if(data.owner.x){
-            data.owner.x = 'S'
-          }else{
-            data.owner.x = 's';
-          }
-        }
-      }
-
-
-
-      // this.perGroup = data.group;
-      // this.perOther = data.other;
-      return out(data.owner) + out(data.group) + out(data.other);
+    dataFormat(item){
+      const per = item.permission;
+      const obj = perFormet(per);
+      Object.assign(item, obj);
     },
-
+    focusNewItem(v){
+      if(this.newItemName && v.name === this.newItemName){
+        this.itemFocus(v);
+        this.newItemName = null;
+      }else if(v.name === this.currItem.name && this.currItem.focus){
+        this.itemFocus(v);
+      }else{
+        v.focus = false;
+      }
+    },
     getData(){
       this.request({
         url: '~/fs' + this.address,
@@ -446,43 +363,44 @@ export default {
         success(data){
           const folderArr = [], fileArr = [], hiddenArr = [];
           data.forEach( v => {
-            if(this.newItemName && v.name === this.newItemName){
-              this.itemFocus(v);
-              this.newItemName = null;
-            }else if(v.name === this.currItem.name && this.currItem.focus){
-              this.itemFocus(v);
-            }else{
-              v.focus = false;
+
+
+            const _syl = v.symbolicLink;
+            if(_syl){
+              v.isSymbolicLink = true;
+              v.linkPath = _syl.linkPath;
+              v.linkTargetError = _syl.linkTargetError;
+              if(!v.linkTargetError){
+                v.permission = _syl.permission;
+                v.owner = _syl.owner;
+                v.group = _syl.group;
+              }
             }
 
-            // v.goodSize = this.viewSize(v.size);
-            // v.lessBlkSize = (v.blocks > 0) &&  (v.blksize > v.size);
-            // if(v.lessBlkSize){
-            //   v.goodBlkSize = this.viewSize(v.blksize);
-            // }
-            //console.log(v.mode);
-            //
-            // if(item._relation === 'own'){
-            //
-            // }
+            this.dataFormat(v);
 
             this.initRelation(v);
-            this.getModeInfo(v.mode);
-            v.PER = this.getModeInfo(v.mode);
 
+            // if(v.name === '.'){
+            //   if(v.is_owner || v.is_group || !v.isSticky){
+            //
+            //   }
+            // }
+            if(v.name === '.' || v.name === '..') return;
+
+            this.focusNewItem(v);
             if(v.name[0] === '.'){
               v.isHidden = true;
               hiddenArr.push(v);
             }else{
               v.isHidden = false;
-              if(v.isDirectory){
+              if(v.type === 'Directory'){
                 folderArr.push(v)
               }else{
                 fileArr.push(v);
-                v.suffix = this.getNameSuffix(v.name);
+                v.suffix = getNameSuffix(v.name);
               }
             }
-            //return v;
           });
           this.data = folderArr.concat(fileArr).concat(hiddenArr);
           //this.data = data;

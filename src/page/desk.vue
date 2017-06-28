@@ -55,9 +55,8 @@ export default {
   methods: {
     openDustBin(){
       store.commit('addTask', {
-        name: 'File System',
-        address: '/var/tmp/linux-remote/dustbin',
-        type: 'fs'
+        name: 'Dustbin',
+        type: 'dustbin'
       });
     },
     logout,

@@ -17,3 +17,21 @@ export const timeFormat = (date, fmt) => {
 }
 export const ONE_SEC = 1000;
 export const ONE_MIN = ONE_SEC * 60;
+
+export const wellSize = (size) => {
+  let m = 'B';
+  if(size > 1024){
+    size = (size / 1024);
+    m = 'K';
+  }
+
+  if(size > 1024){
+    size = (size / 1024);
+    m = 'M';
+  }
+  if(size > 1024){
+    size = (size / 1024);
+    m = 'G';
+  }
+  return size.toFixed(2) + m;
+}

@@ -55,7 +55,9 @@ a {
 
 
 
+  .lr-dustbin-bar{
 
+  }
   //************* old pro *************
     button, select{padding: 0 8px}
     button{
@@ -430,6 +432,7 @@ a {
     align-content:flex-start; position: relative;
     overflow-y: auto;
   }
+
   .lr-fs-status{
     height: 18px; flex-shrink: 0;border-top: 1px solid #000; line-height: 18px;
     font-size: 12px; user-select: text;
@@ -442,8 +445,14 @@ a {
   .lr-file{
     width: 80px; height: 80px; overflow: hidden;
     position: relative;
+    //background-color: gray;
     margin: 1px;
     cursor: pointer;
+
+    &.lr_file_stick{
+      background-color: burlywood
+    }
+
     >.lr-file-icon{
       width: 100%; height: 50px;
       display: flex;
@@ -496,41 +505,69 @@ a {
         background: red; color:#fff;padding: 0 1px;font-size: 10px;
       }
 
-
        >.lr-3-link{
          width: 40%; height: 40%;position: absolute;bottom:-5px; z-index: 2;
          right:8px;background-size: 100% 100%;
          background-image: url('/public/link.svg');
        }
     }
-    &.lr_file_type_directory > .lr-file-icon > .lr-file-icon-front{
+
+    &.lr_file_type_Directory > .lr-file-icon > .lr-file-icon-front{
       background-image: url('/public/folder.svg');
     }
-    &.lr_file_type_file > .lr-file-icon > .lr-file-icon-front{
+    &.lr_file_type_RegularFile > .lr-file-icon > .lr-file-icon-front{
       background-size: 90% 90%;
       background-image: url('/public/file.svg');
     }
-    &.lr_file_type_socket > .lr-file-icon > .lr-file-icon-front{
+    &.lr_file_type_Socket > .lr-file-icon > .lr-file-icon-front{
       background-image: url('/public/socket.svg');
     }
-    &.lr_file_type_unknown > .lr-file-icon > .lr-file-icon-front{
+    &.lr_file_type_Unknown > .lr-file-icon > .lr-file-icon-front{
       background-image: url('/public/unknown.svg');
     }
-
-    &.lr_file_type_error > .lr-file-icon > .lr-file-icon-front{
-      background-image: url('/public/error.svg');
-    }
-
-    &.lr_file_type_characterDevice > .lr-file-icon > .lr-file-icon-front{
+    &.lr_file_type_CharacterDevice > .lr-file-icon > .lr-file-icon-front{
       background-image: url('/public/device.svg');
     }
-    &.lr_file_type_blockDevice > .lr-file-icon > .lr-file-icon-front{
+    &.lr_file_type_BlockDevice > .lr-file-icon > .lr-file-icon-front{
       background-image: url('/public/device-block.svg');
     }
-    &.lr_file_type_FIFO > .lr-file-icon > .lr-file-icon-front{
+    &.lr_file_type_NamedPipe > .lr-file-icon > .lr-file-icon-front{
       background-size: auto 80%;
       background-image: url('/public/FIFO.png');
     }
+    &.lr_file_type_Door > .lr-file-icon > .lr-file-icon-front{
+      background-size: auto 80%;
+      background-image: url('/public/door.png');
+    }
+    .lr-error-icon{
+      z-index: 20;
+
+      background-image: url('/public/error.svg');
+
+    }
+    .lr-mask-icon, .lr-error-icon{
+      background-size: 100% 100%;
+      background-position: center;
+      background-repeat: no-repeat;
+      position: absolute;
+      width: 100%; height: 100%; top:0; left: 0;
+    }
+
+    .lr-mask-icon{
+      z-index: 10;
+      background-size: 50% 50%;
+      background-image: url('/public/mask.svg');
+    }
+    // &.lr_file_type_SymbolicLink > .lr-file-icon > .lr-file-icon-front{
+    //   background-size: auto 80%;
+    //   background-image: url('/public/door.png');
+    // }
+    // &.lr_file_type_error > .lr-file-icon > .lr-file-icon-front{
+    //   z-index: 10;
+    //   background-image: url('/public/error.svg');
+    // }
+
+
 
     .lr-2-name{
        font-size: 12px;text-align: center;cursor: text;z-index: 4;
@@ -552,7 +589,7 @@ a {
     font-size: 14px;
     .lr-2-item{
       padding: 5px 10px; border-bottom: 1px solid #999; cursor: pointer;
-      
+
       &:hover{
         background-color: green; color:#fff;
       }
@@ -585,6 +622,16 @@ a {
     word-break: break-all;
   }
 
+  .lr-error{
+    position: absolute; width: 50%; margin: 0 auto; top: 50px;
+    z-index: $topZindex + 1;
+    left: 0; right:0;
+    background-color: red;
+  }
+  .lr-error-item{
+    color:#fff;margin: 10px;
+    border-bottom: 1px solid #999;
+  }
   //*************** resizable ***************
   $resize: 5px;
   .lr-resize-warp{

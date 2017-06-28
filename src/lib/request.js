@@ -2,31 +2,31 @@ import $ from 'jquery';
 import Vue from 'vue';
 //import FileSaver from 'file-saver';
 import {noop} from 'lodash';
+import errorStore from '__ROOT__/store/error';
 import store from '__ROOT__/store-global';
-//跨站ajax请求初始化.
-$.ajaxSetup({
-  xhrFields: {
-    withCredentials: true
-  }
-});
+
 
 // ************************* requset *************************
 
 const API_ROOT = window.SERVER_CONFIG.API_ROOT;
 //const POOL = {};
+//跨站ajax请求初始化.
+if(API_ROOT.indexOf('http') === 0){
+  $.ajaxSetup({
+    xhrFields: {
+      withCredentials: true
+    }
+  });
+}
 
 //const isIE = navigator.userAgent.indexOf('MSIE') !== -1;
 
 function httpErrorHandler(xhr){
-  //console.log('xhr' , xhr)
-  // if(xhr.status === 0){ //CA证书没有导入
-  //   msg = '//CA证书没有导入'
-  // }
-  console.log('xhr', xhr.status === 403);
+
   if(xhr.status === 403 || xhr.responseText === 'LINUX_REMOTE_USER_SERVER_ERROR'){
-    store.commit('needRelogin');
+    return store.commit('needRelogin');
   }
-  console.log(`http#${xhr.status} 错误:${xhr.responseText}`);
+  errorStore.commit('show', `http ${xhr.status} ${xhr.responseText}`);
 }
 
 function codeErrorHandler(data){

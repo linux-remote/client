@@ -16,6 +16,7 @@
       .lr-title-close(@click.stop='removeTask')
   fs-body(v-if='type==="fs"')
   edit-body(v-else-if='type==="edit"' ,:address='address')
+  dustbin-body(v-else-if='type==="dustbin"')
   .lr-window-body(v-else='!type') Empty
   .lr-2-resize-top(@mousedown.stop.prevent='resizeStart("t", $event)')
   .lr-2-resize-bottom(@mousedown.stop.prevent='resizeStart("b", $event)')
@@ -31,10 +32,12 @@
 import store from '__ROOT__/store-global';
 import FsBody from './window-body/fs';
 import EditBody from './window-body/edit';
+import DustbinBody from './window-body/dustbin';
 export default {
   components: {
     FsBody,
-    EditBody
+    EditBody,
+    DustbinBody
   },
   props: ['index'],
   data(){

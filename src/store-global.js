@@ -40,8 +40,10 @@ const store = new Vuex.Store({
     // desk
     deskInited: false,
     username:'',
-    hostname: '',
+    groups: [],
     homedir: '',
+    hostname: '',
+
     //arch: '',
 
     time: 0,

@@ -4,16 +4,19 @@
     .lr-page(v-if='CADownloadedCount === -1')
     .ca-download(v-else-if='CADownloadedCount === 0')
     router-view(v-else)
-  <contextmenu />
-  <fly-textarea />
+  contextmenu
+  fly-textarea
+  error
 </template>
 <script>
 import store from '../store-global';
 import Contextmenu from '__ROOT__/cmpt/contextmenu';
 import flyTextarea from '__ROOT__/cmpt/fly-textarea';
+import Error from '__ROOT__/cmpt/error';
 export default {
   components:{
     Contextmenu,
+    Error,
     flyTextarea
   },
   data(){

@@ -1,29 +1,23 @@
 import Vuex from 'vuex';
-const empty = [];
+
 const store = new Vuex.Store({
   state: {
-    data: empty,
-    top: 0,
-    left: 0
+    message: []
   },
   mutations: {
-    open (state, data) {
-      Object.assign(state, data);
-
-      window.APP.$elMain
-      .addEventListener('mousedown', function(){
+    show(state, message) {
+      window.APP.$elMain.addEventListener('mousedown', () => {
         store.commit('close');
-      }, {
+      },{
         once: true,
         capture: true
       });
-
+      state.message.push(message);
     },
     close(state){
-      state.data = empty;
+      state.message = [];
     }
   }
 });
-
 
 export default store;
