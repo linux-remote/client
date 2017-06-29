@@ -63,6 +63,7 @@ const store = new Vuex.Store({
     },
     computerInfoUniqueFocus: false,
     dustbinUniqueFocus: false,
+    userInfoUniqueFocus: false,
     onFsDel: null,
     onDustbinRecycle: null,
     sessError: false

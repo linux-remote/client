@@ -9,7 +9,7 @@
     .lr-desk-icon-wrap(@dblclick="openOsInfo" , :class="{lr_desk_icon_focus: computerInfoUniqueFocus}")
       img.lr-desk-icon(src='/public/server.svg')
       .lr-desk-icon-text Computer
-    .lr-desk-icon-wrap
+    .lr-desk-icon-wrap(@dblclick="openUserInfo" , :class="{lr_desk_icon_focus: userInfoUniqueFocus}")
       img.lr-desk-icon(src='/public/user.svg')
       .lr-desk-icon-text User Info
     .lr-desk-icon-wrap(@dblclick="createdTask")
@@ -61,6 +61,13 @@ export default {
   //   }
   // },
   methods: {
+    openUserInfo(){
+      store.commit('addTask', {
+        name: 'User Info',
+        type: 'userInfo',
+        unique: true
+      });
+    },
     openOsInfo(){
       store.commit('addTask', {
         name: 'Computer Info',
@@ -82,7 +89,7 @@ export default {
     createdTask(){
       store.commit('addTask', {
         name: 'File System',
-        address: '/home/dw',
+        address: '/',
         type: 'fs'
       });
     },

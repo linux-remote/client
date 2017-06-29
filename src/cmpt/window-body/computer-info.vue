@@ -1,6 +1,6 @@
 <template lang="jade">
 .lr-window-body(style='user-select:text')
-  //-.lr-hourglass(v-show='isRequest')
+  .lr-hourglass(v-show='isRequest')
 
   table.lr-computer-table(v-if='platform')
     tr

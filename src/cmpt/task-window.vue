@@ -18,6 +18,7 @@
   edit-body(v-else-if='type==="edit"' ,:address='address')
   dustbin-body(v-else-if='type==="dustbin"')
   computer-info-body(v-else-if='type==="computerInfo"')
+  user-info-body(v-else-if='type==="userInfo"')
   .lr-window-body(v-else='!type') Empty
   .lr-2-resize-top(@mousedown.stop.prevent='resizeStart("t", $event)')
   .lr-2-resize-bottom(@mousedown.stop.prevent='resizeStart("b", $event)')
@@ -35,12 +36,14 @@ import FsBody from './window-body/fs';
 import EditBody from './window-body/edit';
 import DustbinBody from './window-body/dustbin';
 import ComputerInfoBody from './window-body/computer-info';
+import UserInfoBody from './window-body/user-info';
 export default {
   components: {
     FsBody,
     EditBody,
     DustbinBody,
-    ComputerInfoBody
+    ComputerInfoBody,
+    UserInfoBody
   },
   props: ['index'],
   data(){

@@ -2,6 +2,7 @@
 .lr-window-body
   .lr-hourglass(v-show='isRequest')
   h2(v-html='error' style='color:red' v-if='!data')
+  h2(v-if='data.length === 0' style='color:gray') Empty
   .lr-dustbin-wrap(v-else)
     .lr-fs-bar
       button(@click='clearAll') Clear All
