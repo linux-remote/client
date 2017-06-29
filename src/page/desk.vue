@@ -86,7 +86,8 @@ export default {
       }, TTL_TIME)
 
       createWs(username);
-      this.createdTask();
+      //this.createdTask();
+      this.openDustBin();
     }
   },
   destroyed(){

@@ -54,10 +54,31 @@ a {
   }
 
 
-
-  .lr-dustbin-bar{
-
+  .lr-table{
+    width: 100%;
+    font-size: 14px;
+    border-spacing: 0;
+    border-collapse: collapse;
+    user-select: text;
+    th{
+      text-align: left;
+    }
+    td{
+      border-bottom: 1px solid #ddd;
+    }
+    tr:nth-of-type(even){
+      background-color: #eee;
+    }
+    tr.lrDustbinCovered{
+      background-color: red; color:#fff;
+    }
+    tr:hover{
+      background-color: #888; color:#fff; cursor: default;
+    }
   }
+  // .lr-dustbin-bar{
+  //
+  // }
   //************* old pro *************
     button, select{padding: 0 8px}
     button{
@@ -101,11 +122,6 @@ a {
       width: 40px; height: 40px;border: 4px solid $color;
       border-right-color:#fff;
       z-index: 11;
-    }
-
-    .lr-modal-warp{
-      background-color: rgba(255, 255, 255, .7);height: 100%;
-      width: 100%; position: absolute; z-index: 10; top:0; left:0;
     }
 
     button.loading::before{
@@ -636,10 +652,10 @@ a {
     z-index: $topZindex + 1;
     left: 0; right:0;
     user-select: text;
-    background-color: firebrick;
+    background-color: red;
   }
   .lr-error-item{
-    color:#fff;margin: 10px;
+    color:#eee;margin: 10px;
     border-bottom: 1px solid #999;
   }
   //*************** resizable ***************
