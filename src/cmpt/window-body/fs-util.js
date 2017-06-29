@@ -103,3 +103,14 @@ export const getNameSuffix = (name) => {
     return name.substr(index + 1);
   }
 }
+
+// export const folderPer = (item) => {
+//   const rwxs = item.rwxs;
+//   item.readable = rwxs.other.r || rwxs.group.r || rwxs.owner.r
+//   item.writeable = rwxs.other.w || rwxs.group.w || rwxs.owner.w
+//   console.log('rwxs', rwxs)
+//   console.log('item.readable', item.readable)
+//   console.log('item.writeable', item.writeable);
+//   //item.executable = rwxs.other.x || rwxs.group.x || rwxs.owner.x
+//
+// }

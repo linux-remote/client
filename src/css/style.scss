@@ -432,7 +432,22 @@ a {
     align-content:flex-start; position: relative;
     overflow-y: auto;
   }
-
+  .lr-fs-dir-sticky{
+    background-color: burlywood
+  }
+  .lr-fs-dir-unwriteable{
+    background-color: gray;
+    color:#fff;
+  }
+  .lr-fs-dir-unreadable{
+    background-color: black;
+    color:#fff;
+    &::before{
+      content: 'permission:unreadable';
+      color: #fff;
+      font-size: 2em;
+    }
+  }
   .lr-fs-status{
     height: 18px; flex-shrink: 0;border-top: 1px solid #000; line-height: 18px;
     font-size: 12px; user-select: text;
@@ -445,13 +460,10 @@ a {
   .lr-file{
     width: 80px; height: 80px; overflow: hidden;
     position: relative;
-    //background-color: gray;
+    //background-color: #fff;
     margin: 1px;
     cursor: pointer;
 
-    &.lr_file_stick{
-      background-color: burlywood
-    }
 
     >.lr-file-icon{
       width: 100%; height: 50px;
@@ -468,7 +480,7 @@ a {
       }
       .lr-per-relation-wrap{
         width: 50px; height: 50px;margin: 0 auto;
-        display: flex;
+        display: flex; position: relative;
       }
       .lr-per-relation{
         flex-grow: 1;
@@ -497,6 +509,11 @@ a {
 
         }
 
+      }
+      .lr-per-sticky{
+        position: absolute; background: rgba(sienna, .5);
+        right:0; bottom: 0; width: 33.33%; height: 33.33%;
+        //z-index: 2;
       }
       span{
         position: absolute;left: 17px;top: 8px;z-index: 3;
@@ -558,14 +575,6 @@ a {
       background-size: 50% 50%;
       background-image: url('/public/mask.svg');
     }
-    // &.lr_file_type_SymbolicLink > .lr-file-icon > .lr-file-icon-front{
-    //   background-size: auto 80%;
-    //   background-image: url('/public/door.png');
-    // }
-    // &.lr_file_type_error > .lr-file-icon > .lr-file-icon-front{
-    //   z-index: 10;
-    //   background-image: url('/public/error.svg');
-    // }
 
 
 
@@ -626,7 +635,8 @@ a {
     position: absolute; width: 50%; margin: 0 auto; top: 50px;
     z-index: $topZindex + 1;
     left: 0; right:0;
-    background-color: red;
+    user-select: text;
+    background-color: firebrick;
   }
   .lr-error-item{
     color:#fff;margin: 10px;

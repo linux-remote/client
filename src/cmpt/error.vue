@@ -1,6 +1,6 @@
 <template lang="jade">
 .lr-error(@mousedown='noopStop' v-show='message.length > 0')
-  .lr-error-item(v-for='v in message') {{v}}
+  .lr-error-item(v-for='v in message' v-html='v')
 
 </template>
 

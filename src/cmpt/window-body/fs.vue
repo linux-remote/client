@@ -10,16 +10,14 @@
       .lr-3-item.lr-3-go(v-else @click='handleGoClick')
     .lr-fs-body(v-if='error')
       h2(v-html='data' style='color:red')
-    .lr-fs-body(v-else-if='data.length === 0')
-      h2(style='color:#eee;margin:0') Empty
-    .lr-fs-body(v-else @contextmenu.prevent='handleFsBodyContextmenu', @mousedown='handleFsBodyMousedown')
-
+    .lr-fs-body(v-else @contextmenu.prevent='handleFsBodyContextmenu', @mousedown='handleFsBodyMousedown', :class='bodyClass')
+      h2(style='color:#eee;margin:0', v-if='data.length === 0') Empty
       .lr-file(v-for='item in data',
         :key='item.name',
         @mousedown='noopStop',
         @dblclick='openItem(item)', @click.stop='focusItem(item)',
         @contextmenu.prevent.stop='handleFsItemContextmenu(item, $event)',
-        :class='{lr_2_hidden: item.name[0] === ".",lr_file_stick: item.isSticky, lr_2_focus: item.focus, ["lr_file_type_" + item.type ]: item.type}')
+        :class='{lr_2_hidden: item.name[0] === ".", lr_2_focus: item.focus, ["lr_file_type_" + item.type ]: item.type}')
         <fs-icon :item='item' />
         .lr-2-name(@click='handleItemNameClick(item, $event)') {{item.name}}
 
@@ -45,8 +43,14 @@
       //- span relation:
       //-   b {{currItem._relation}}
     .lr-fs-status(v-else)
-      span files:
-        b {{data.length}}
+      span Items: {{data.length}}
+      //span DIR
+      span {{dir.permission}}
+      span {{dir.owner}}
+      span {{dir.group}}
+      span(v-if='!dir.readable') readable: {{dir.readable}}
+      span(v-if='!dir.writeable') writeable: {{dir.writeable}}
+      span(v-if='dir.isSticky') sticky:{{dir.isSticky}}
 </template>
 
 <script>
@@ -70,6 +74,9 @@ export default {
       backStack: [],
       goStack: [],
       currItem: {},
+
+      //dirIsSticky : false,
+      dir: {},
 
       newItemName: null,
       newFileIndex: 0,
@@ -99,6 +106,17 @@ export default {
     },
     address(){
       return '/' + this.addressArr.join('/');
+    },
+    bodyClass(){
+      if(!this.dir.readable){
+        return 'lr-fs-dir-unreadable'
+      }
+      if(!this.dir.writeable){
+        return 'lr-fs-dir-unwriteable'
+      }
+      if(this.dir.isSticky){
+        return 'lr-fs-dir-sticky'
+      }
     }
   },
   methods: {
@@ -326,9 +344,13 @@ export default {
     },
     initRelation(item){
       const isInGroup = (this.groups.indexOf(item.group) !== -1);
+      const rwxs = item.rwxs;
+      let readable = false, writeable = false;
       if(item.owner === this.username){
         item.is_owner = true;
         item._relation = 'owner';
+        readable = rwxs.owner.r;
+        writeable = rwxs.owner.w;
       }else if(isInGroup){
         item._relation = 'group';
       }else{
@@ -336,7 +358,24 @@ export default {
       }
       if(isInGroup){
         item.is_group = true;
+        if(!readable){
+          readable = rwxs.group.r;
+        }
+        if(!writeable){
+          writeable = rwxs.group.w;
+        }
       }
+      if(!readable){
+        readable = rwxs.other.r;
+      }
+      if(!writeable){
+        writeable = rwxs.other.w;
+      }
+      // readable = false;
+      // console.log('readable', readable)
+      // console.log('writeable', writeable)
+      item.readable = readable;
+      item.writeable = writeable;
       item.is_other = true;
     },
     dataFormat(item){
@@ -363,7 +402,7 @@ export default {
         success(data){
           const folderArr = [], fileArr = [], hiddenArr = [];
           data.forEach( v => {
-
+            if(v.name === '..') return;
 
             const _syl = v.symbolicLink;
             if(_syl){
@@ -386,7 +425,11 @@ export default {
             //
             //   }
             // }
-            if(v.name === '.' || v.name === '..') return;
+
+            if(v.name === '.'){
+              this.dir = v;
+              return;
+            }
 
             this.focusNewItem(v);
             if(v.name[0] === '.'){
