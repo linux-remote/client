@@ -1,21 +1,3 @@
-// export const wellSize = (size) => {
-//   let m = 'B';
-//   if(size > 1024){
-//     size = (size / 1024);
-//     m = 'K';
-//   }
-//
-//   if(size > 1024){
-//     size = (size / 1024);
-//     m = 'M';
-//   }
-//   if(size > 1024){
-//     size = (size / 1024);
-//     m = 'G';
-//   }
-//   return size.toFixed(2) + m;
-// }
-
 function getFileType(t){
   //https://en.wikipedia.org/wiki/Unix_file_types
   let type;

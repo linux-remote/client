@@ -53,7 +53,34 @@ a {
     display: flex;
   }
 
+  .lr-dustbin-wrap{
+    display: flex;height: 100%; flex-direction: column;
+    flex-grow: 1;
+     button{
+      padding: 0 2px;height: 24px;margin:2px;
+    }
+  }
+  .lr-computer-table{
+    margin-top: 1em;
+    width: 100%;
 
+    // tr>td:last-child{
+    //   font-weight: bold;
+    // }
+  }
+  table{
+    border-collapse:collapse;
+    &,td , th{
+      border:1px solid #ccc;
+    }
+  }
+  table.leftHead >tr>td:first-child{
+    color:#666;
+  }
+  .lr-small-table{
+    width: 100%;
+    font-size: 12px;
+  }
   .lr-table{
     width: 100%;
     font-size: 14px;
@@ -73,12 +100,15 @@ a {
       background-color: red; color:#fff;
     }
     tr:hover{
-      background-color: #888; color:#fff; cursor: default;
+      background-color: #ccc; cursor: default;
     }
   }
   // .lr-dustbin-bar{
   //
   // }
+  .lr_desk_icon_focus{
+    background-color: red; color:#fff;
+  }
   //************* old pro *************
     button, select{padding: 0 8px}
     button{
@@ -353,6 +383,8 @@ a {
       border:0;
     }
   }
+
+
   .lr-title{
     background: $taskBg; height: 25px; line-height: 25px;
      display: flex;cursor: default;
@@ -362,11 +394,23 @@ a {
        display: flex;
        flex-shrink: 0; width: $rightCtrlWidth;
        justify-content: space-between;
+       >div:hover{
+         background-color: $color;
+         color: #000;
+       }
+       >.lr-title-max:hover{
+         &::before, &::after{
+           border-color: #000;
+         }
+       }
      }
   }
   .lr-title.lr-focus{
     background: $taskFocusBg; color: $taskFocusColor;
   }
+  // .lr_unique_task .lr-title{
+  //   color: red;
+  // }
   .lr-title-content{
     flex-grow:1; padding: 0 10px;overflow: hidden;
     text-overflow: ellipsis;

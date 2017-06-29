@@ -18,8 +18,9 @@ export const timeFormat = (date, fmt) => {
 export const ONE_SEC = 1000;
 export const ONE_MIN = ONE_SEC * 60;
 
-export const wellSize = (size) => {
+export const wellSize = (size, fix) => {
   let m = 'B';
+  fix = fix || 2;
   if(size > 1024){
     size = (size / 1024);
     m = 'K';
@@ -33,5 +34,5 @@ export const wellSize = (size) => {
     size = (size / 1024);
     m = 'G';
   }
-  return size.toFixed(2) + m;
+  return size.toFixed(fix) + m;
 }

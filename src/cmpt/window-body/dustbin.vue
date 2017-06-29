@@ -2,10 +2,11 @@
 .lr-window-body
   .lr-hourglass(v-show='isRequest')
   h2(v-html='error' style='color:red' v-if='!data')
-  .lr-dustbin-wrap
+  .lr-dustbin-wrap(v-else)
     .lr-fs-bar
       button(@click='clearAll') Clear All
-      button(@click='getData') Reload
+      div(style='flex-grow:1')
+      .lr-3-item.lr-3-reload(@click='getData')
     .lr-fs-body
       table.lr-table(style='width:100%;')
         tr
@@ -20,7 +21,7 @@
           td
             span(v-if='item.isCover') Covered
             button(@click='recycle(item)', v-else) Recycle
-            button(@click='del(item)') Delete
+            button(@click='del(item)') Clear
     //.lr-dustbin-item(v-for='item in data') {{item.name}}
 
 </template>
@@ -37,7 +38,15 @@ export default {
       error: null
     }
   },
+  watch: {
+    onFsDel(){
+      this.getData();
+    }
+  },
   computed: {
+    onFsDel(){
+      return store.state.onFsDel
+    },
     isError(){
       return !this.data && this.error
     }
@@ -50,6 +59,7 @@ export default {
         data: item,
         type: 'post',
         success(){
+          //store.commit('onDustbinRecycle')
           this.getData();
         }
       })
@@ -69,7 +79,8 @@ export default {
       this.request({
         url: '~/dustbin',
         type: 'delete',
-        success(data){
+        requestKey: 'isRequest',
+        success(){
           this.data = [];
         },
         error(xhr){
@@ -81,6 +92,7 @@ export default {
     getData(){
       this.request({
         url: '~/dustbin',
+        requestKey: 'isRequest',
         success(data){
           this.data = data;
         },

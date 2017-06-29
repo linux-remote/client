@@ -2,7 +2,7 @@
 .lr-task-window(v-show='!isMin',
   @mousedown.stop='taskFocus',
 :style='{width:width + "px", height: height  + "px", zIndex: zIndex, top: positionTop + "px", left: positionLeft  + "px"}' ,
-:class='{lr_2_max: isMax}',
+:class='{lr_2_max: isMax, lr_unique_task: unique}',
 :draggable='draggable',
  @dragstart.stop='handleDragStart',
  @dragend.stop='handleDragEnd')
@@ -17,6 +17,7 @@
   fs-body(v-if='type==="fs"')
   edit-body(v-else-if='type==="edit"' ,:address='address')
   dustbin-body(v-else-if='type==="dustbin"')
+  computer-info-body(v-else-if='type==="computerInfo"')
   .lr-window-body(v-else='!type') Empty
   .lr-2-resize-top(@mousedown.stop.prevent='resizeStart("t", $event)')
   .lr-2-resize-bottom(@mousedown.stop.prevent='resizeStart("b", $event)')
@@ -33,11 +34,13 @@ import store from '__ROOT__/store-global';
 import FsBody from './window-body/fs';
 import EditBody from './window-body/edit';
 import DustbinBody from './window-body/dustbin';
+import ComputerInfoBody from './window-body/computer-info';
 export default {
   components: {
     FsBody,
     EditBody,
-    DustbinBody
+    DustbinBody,
+    ComputerInfoBody
   },
   props: ['index'],
   data(){

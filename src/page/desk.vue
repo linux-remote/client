@@ -3,12 +3,12 @@
   <top-bar />
   .lr-top-bg LR {{hostname}}
   #lr-desk.lr-desk
-    .lr-desk-icon-wrap(@dblclick="openDustBin")
+    .lr-desk-icon-wrap(@dblclick="openDustBin", :class="{lr_desk_icon_focus: dustbinUniqueFocus}")
       img.lr-desk-icon(src='/public/dustbin.svg')
       .lr-desk-icon-text Dustbin
-    .lr-desk-icon-wrap
+    .lr-desk-icon-wrap(@dblclick="openOsInfo" , :class="{lr_desk_icon_focus: computerInfoUniqueFocus}")
       img.lr-desk-icon(src='/public/server.svg')
-      .lr-desk-icon-text Server Info
+      .lr-desk-icon-text Computer
     .lr-desk-icon-wrap
       img.lr-desk-icon(src='/public/user.svg')
       .lr-desk-icon-text User Info
@@ -29,6 +29,7 @@ import TasksBar from '__ROOT__/cmpt/tasks-bar';
 import TasksWindow from '__ROOT__/cmpt/task-window';
 import TopBar from '__ROOT__/cmpt/top-bar';
 import {createWs, logout} from '__ROOT__/lib/login';
+const COMPUTER_TYPE = 'computerInfo';
 
 export default {
   components: {
@@ -46,17 +47,32 @@ export default {
       }
     },
     sessError(val){
-      console.log('watch sessError', val);
+      //console.log('watch sessError', val);
       if(val){
         this.logout();
       }
     }
   },
+  // computed: {
+  //   isComputerInfoOpen(){
+  //     //return this.uniqueTaskMap[COMPUTER_TYPE] !== null
+  //     //return stote.state.uniqueTaskMap[COMPUTER_TYPE] !== null
+  //     return false
+  //   }
+  // },
   methods: {
+    openOsInfo(){
+      store.commit('addTask', {
+        name: 'Computer Info',
+        type: COMPUTER_TYPE,
+        unique: true
+      });
+    },
     openDustBin(){
       store.commit('addTask', {
         name: 'Dustbin',
-        type: 'dustbin'
+        type: 'dustbin',
+        unique: true
       });
     },
     logout,
@@ -87,7 +103,7 @@ export default {
 
       createWs(username);
       //this.createdTask();
-      this.openDustBin();
+      //this.openDustBin();
     }
   },
   destroyed(){

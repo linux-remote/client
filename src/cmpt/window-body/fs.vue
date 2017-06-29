@@ -201,6 +201,7 @@ export default {
               url: '~/fs' + self.address + '/' + item.name + '?type=file',
               success(){
                 //self.newFileIndex += 1;
+                store.commit('onFsDel');
                 self.getData();
               }
             })

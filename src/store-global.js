@@ -57,16 +57,40 @@ const store = new Vuex.Store({
     latestTask: {}, // last created task
     currTask: {}, // focused task
     taskMaxZindex: 0,
-
+    uniqueTaskMap: {
+      // computerInfo: null,
+      // dustbin: null
+    },
+    computerInfoUniqueFocus: false,
+    dustbinUniqueFocus: false,
+    onFsDel: null,
+    onDustbinRecycle: null,
     sessError: false
   },
   mutations: {
+    onFsDel(state){
+      state.onFsDel = Date.now();
+    },
+    // onDustbinRecycle(state){
+    //   onDustbinRecycle = Date.now();
+    // },
     needRelogin(state){
       state.sessError = true;
     },
     addTask(state, data){
+      data.unique = data.unique || false;
+
+      if(data.unique){
+        let o = state.uniqueTaskMap, k = data.type
+        if(o[k]){
+          return store.commit('showTask', o[k]);
+        }else{
+          state[k + 'UniqueFocus'] = true;
+          o[k] = data;
+        }
+      }
       const isMax = state.currTask.isMax;
-      data.width = (isMax ? data.width : state.currTask.width) || 600;
+      data.width = (isMax ? data.width : state.currTask.width) || 800;
 
       //console.log('data.width', data.width, state.currTask.width);
       data.height = (isMax ? data.height : state.currTask.height) || 600;
@@ -74,6 +98,7 @@ const store = new Vuex.Store({
       //
       // }
       data.type = data.type || null;
+
       data.draggable = false;
       data.isMin = false;
       data.isMax = false;
@@ -153,12 +178,18 @@ const store = new Vuex.Store({
         {isMin: false});
       if(preTask){
         store.commit('taskWindowFocus', preTask);
-      }else{
-        console.log('preTask is hidden')
       }
+      // else{
+      //   console.log('preTask is hidden')
+      // }
     },
     removeTask(state, index){
+      const item = state.tasks[index];
+      if(item.unique){
+        state.uniqueTaskMap[item.type] = null;
+      }
       state.tasks.splice(index, 1);
+      state[item.type + 'UniqueFocus'] = false;
       store.commit('focusNextTask');
     },
     currTaskWindowUnFocus(state){
