@@ -2,7 +2,7 @@
 .lr-window-body(style='user-select:text')
   .lr-hourglass(v-show='isRequest')
 
-  table.lr-computer-table(v-if='platform')
+  table.lr-info-table.lr-computer-table(v-if='platform')
     tr
       td(style='color:gray') platform:
       td {{platform}}

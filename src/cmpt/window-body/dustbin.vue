@@ -9,7 +9,7 @@
       div(style='flex-grow:1')
       .lr-3-item.lr-3-reload(@click='getData')
     .lr-fs-body
-      table.lr-table(style='width:100%;')
+      table.lr-info-table.lr-table(style='width:100%;')
         tr
           th name
           th sourceDir

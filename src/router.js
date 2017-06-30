@@ -5,6 +5,7 @@ Vue.use(Router);
 import Login from './page/login.vue';
 import Desk from './page/desk.vue';
 import NotFound from './page/not-found.vue';
+
 //import data from './lib/data';
 
 // const rootBeforeEnter = function(to, from, next){

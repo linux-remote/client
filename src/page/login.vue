@@ -1,5 +1,5 @@
 <template lang="jade">
-.lr-page.lr-login-warp
+.lr-page.lr-login-warp(style='user-select:text')
   h3(v-if='queryUser', :style='{color:"red"}')
     big {{queryUser}}
     | 的session失效了，请重新登录。
@@ -15,14 +15,14 @@
           tr
             td Account:
             td
-              input(placeholder='username' v-model='username')
+              input(placeholder='Raw username' v-model='username')
           tr
             td Password:
             td
-              input(type='password' placeholder='password' v-model='password')
+              input(type='password' placeholder='Raw password' v-model='password')
 
       .lr-2-footer
-        button(@click='login', :class='{loading:isRequest}') ok
+        button(@click='login',  :class='{loading:isRequest}') ok
 
 
     small(v-html='indexNotice' style="width: 282px; text-align:right")

@@ -2,7 +2,7 @@
 #app.lr-h100
   #main.lr-h100(@mousedown='handleMousedown')
     .lr-page(v-if='CADownloadedCount === -1')
-    .ca-download(v-else-if='CADownloadedCount === 0')
+    ca-download(v-else-if='CADownloadedCount === 0')
     router-view(v-else)
   contextmenu
   fly-textarea
@@ -12,9 +12,11 @@
 import store from '../store-global';
 import Contextmenu from '__ROOT__/cmpt/contextmenu';
 import flyTextarea from '__ROOT__/cmpt/fly-textarea';
+import CaDownload from '__ROOT__/page/ca-download.vue';
 import Error from '__ROOT__/cmpt/error';
 export default {
   components:{
+    CaDownload,
     Contextmenu,
     Error,
     flyTextarea

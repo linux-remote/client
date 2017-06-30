@@ -1,18 +1,22 @@
 <template lang="jade">
-.lr-page
-  div(:class="$style.box")
-    h3 你的CA证书是自生成的。
-    h5 请输入你config文件里设置的：
-    h4.text-info sslSelfSigned.CACertFirstDownloadKey
-    input.form-control(v-model='key')
-    button.btn.btn-default.btn-lg(style="margin-top:5px" v-bind:disabled="isClick" v-on:click="download")
-      span.glyphicon.glyphicon-download-alt
-      |下载CA证书
-    hr
-    p 这个页面只会在<b>第一次创建时出现</b>, 请保存好CA证书。
-    p 你还可以用其它方法下载。该文件的服务器路径为：
-    h4.bg-danger(style="font-size:1.3em;padding:5px"){{CACertPath}}
-    p <b>导入到浏览器</b>后，你可能要重启浏览器，才能看到效果。
+.lr-page.lr-ca-download-wrap
+  .lr-ca-download
+    h1(style='text-align:center') Your CA certificate is
+      span(style="color: red")  Self-Signed
+    p Please Enter your config's：
+    h3(style="color:green") sslSelfSigned.CACertFirstDownloadKey
+    .lr-ca-input-wrap
+      input(v-model='key' style="height:28px; width: 300px;disabled:block;flex-grow:1" placeholder='Default is: abc')
+      button(style="margin-left: 10px;" v-bind:disabled="isClick" @click="download") Download CA certificate
+    br
+    br
+    div(style='font-size:14px')
+      p This page only appear when you <b>first</b> created it. Please save the CA certificate.
+      //- p This page only appear on The First , Please save the CA certificate.这个页面只会在<b>第一次创建时出现</b>, 请保存好CA证书。
+      p You can also download it in other ways. The server path for this file is:
+      p(style="color:violet"){{CACertPath}}
+      br
+      p After <b>import</b> it into the browser, You may need to restart your browser to see the effect.
 </template>
 <script>
 import store from '../store-global';
