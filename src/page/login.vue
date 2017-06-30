@@ -4,28 +4,20 @@
     big {{queryUser}}
     | 的session失效了，请重新登录。
   br
-
+  h1 Linux Remote
   .lr-login
-      //h1 linux-remote
+    fieldset
+      legend login
+      label Username:
+      input(placeholder='raw username' v-model='username')
 
-      h1 login
-      hr
-      .lr-2-content
-        table
-          tr
-            td Account:
-            td
-              input(placeholder='Raw username' v-model='username')
-          tr
-            td Password:
-            td
-              input(type='password' placeholder='Raw password' v-model='password')
-
+      label Password:
+      input(type='password' placeholder='raw password' v-model='password')
       .lr-2-footer
         button(@click='login',  :class='{loading:isRequest}') ok
 
 
-    small(v-html='indexNotice' style="width: 282px; text-align:right")
+    p(v-html='indexNotice' style="font-size:12px;text-align:right;")
 
 
   div(style='position:absolute;bottom:0; width: 600px; margin: 0 auto;')
@@ -42,14 +34,15 @@
 
 <script>
 import store from '../store-global';
+import errStore from '../store/error';
 export default {
   data(){
     const queryUser = this.$route.query.user;
     return {
       isRequest: false,
       queryUser,
-      username: queryUser || 'dw',
-      password: '1'
+      username: queryUser || '',
+      password: ''
     }
   },
   computed: {
@@ -66,6 +59,12 @@ export default {
   methods: {
     login(){
       const {username, password} = this;
+      if(!username){
+        return errStore.commit('show', 'Username is empty')
+      }
+      if(!password){
+        return errStore.commit('show', 'Password is empty')
+      }
       this.request({
         requestKey: 'isRequest',
         url: '/login',

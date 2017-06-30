@@ -33,7 +33,7 @@ function codeErrorHandler(data){
   // if(data.code === 5){
   //   store.commit('needRelogin');
   // }
-  console.log('code#' + data.code + ' 错误:' + data.msg);
+  errorStore.commit('show', 'code:' + data.code + data.msg);
 }
 
 function omitEmpty(obj){ //过滤掉空的参数

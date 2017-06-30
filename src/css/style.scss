@@ -181,16 +181,27 @@ a {
   }
   .lr-login{
     //width:260px;
-    border:1px solid #eee;
     h1{
       text-align: center;
     }
-    .lr-2-content{
-      padding: 10px;
+    input{
+      height: 30px; width: 100%;
+    }
+    fieldset{
+      display: flex;flex-direction: column;
+    }
+    legend{
+      //background: black;color:yellow;padding: 5px;
+    }
+    label{
+      font-size: .8em;
+    }
+    .lr-login-content{
+      padding: 20px 10px; border-top: 1px solid #eee;
+      border-bottom: 1px solid #eee;
     }
     .lr-2-footer{
       text-align: right;
-      border-top: 1px solid gray;
       padding: 10px;
     }
   }

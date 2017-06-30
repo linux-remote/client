@@ -37,11 +37,11 @@
     tr
       td(style='color:gray') networkInterfaces:
       td
-        table.leftHead
+        table.leftHead.lr-info-table
           tr(v-for="(v, k) in networkInterfaces")
             td {{k}}:
             td
-              table.lr-small-table
+              table.lr-small-table.lr-info-table
                 tr
                  th(v-for='n in netThKeys') {{n}}
                 tr(v-for='v2 in v')
