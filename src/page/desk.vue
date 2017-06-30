@@ -8,10 +8,10 @@
       .lr-desk-icon-text Dustbin
     .lr-desk-icon-wrap(@dblclick="openOsInfo" , :class="{lr_desk_icon_focus: computerInfoUniqueFocus}")
       img.lr-desk-icon(src='/public/server.svg')
-      .lr-desk-icon-text Computer
-    .lr-desk-icon-wrap(@dblclick="openUserInfo" , :class="{lr_desk_icon_focus: userInfoUniqueFocus}")
-      img.lr-desk-icon(src='/public/user.svg')
-      .lr-desk-icon-text User Info
+      .lr-desk-icon-text Server Info
+    //- .lr-desk-icon-wrap(@dblclick="openUserInfo" , :class="{lr_desk_icon_focus: userInfoUniqueFocus}")
+    //-   img.lr-desk-icon(src='/public/user.svg')
+    //-   .lr-desk-icon-text User Info
     .lr-desk-icon-wrap(@dblclick="createdTask")
       img.lr-desk-icon(src='/public/file-tree.svg')
       .lr-desk-icon-text File System
@@ -70,7 +70,7 @@ export default {
     },
     openOsInfo(){
       store.commit('addTask', {
-        name: 'Computer Info',
+        name: 'Server Info',
         type: COMPUTER_TYPE,
         unique: true
       });

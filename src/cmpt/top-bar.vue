@@ -1,5 +1,8 @@
 <template lang="jade">
 .lr-top
+  .lr-top-quick-item(@click='openHome') Home
+  .lr-top-quick-item(@click='openFs')
+    .lr-top-small-icon(style='background-image:url(/public/file-tree.svg)')
   <watch/>
   <user/>
 </template>
@@ -18,7 +21,20 @@ export default {
     return {}
   },
   methods:{
-    logout
+    logout,
+    openHome(){
+      store.commit('addTask', {
+        name: 'Home',
+        type: 'fs'
+      });
+    },
+    openFs(){
+      store.commit('addTask', {
+        name: 'File System',
+        address: '/',
+        type: 'fs'
+      });
+    }
   },
   computed:{
     username(){

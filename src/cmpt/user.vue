@@ -8,9 +8,12 @@
     //-   b {{user.uid}}
     //-   small(style='margin-left:1em') gid:
     //-   b {{user.gid}}
-    .lr-user-p(style='user-select:text')
-      small homedir:
-      button(style='margin-left:1em' @click='openHome(homedir)') {{homedir}}
+    .lr-user-p(style='user-select:text' @click='noopStop')
+      b group:
+      | {{group}}
+    .lr-user-p(style='user-select:text; line-height:1.2' @click='noopStop')
+      b groups:
+      small {{groups}}
     hr
     .lr-user-p
       router-link.btn.btn-link(to='/' target='_blank') login with other account
@@ -40,6 +43,12 @@ export default {
   computed:{
     username(){
       return store.state.username;
+    },
+    group(){
+      return store.state.groups[0]
+    },
+    groups(){
+      return store.state.groups.join(',')
     },
     homedir(){
       return store.state.homedir;
