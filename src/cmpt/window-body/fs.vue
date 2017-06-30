@@ -120,6 +120,10 @@ export default {
     }
   },
   methods: {
+    getItemPath(name){
+      const a = this.address === '/' ? this.address : this.address + '/';
+      return a + name;
+    },
     handleItemNameClick(item, e){
       if(item !== this.currItem) return;
       const self = this;
@@ -180,7 +184,7 @@ export default {
             const name = item.name + '.lnk';
             self.request({
               type: 'post',
-              url: '~/fs' + self.address + '/' + item.name,
+              url: '~/fs' + self.getItemPath(item.name),
               data: {
                 type: 'createSymbolicLink',
                 name: item.name + '.lnk'
@@ -198,7 +202,7 @@ export default {
           handleClick(){
             self.request({
               type: 'delete',
-              url: '~/fs' + self.address + '/' + item.name + '?type=file',
+              url: '~/fs' + self.getItemPath(item.name) + '?type=file',
               success(){
                 //self.newFileIndex += 1;
                 store.commit('onFsDel');
@@ -209,7 +213,17 @@ export default {
         }
       ];
 
-      if(item.type === 'file' || item.type === 'directory'){
+      if(item.type === 'RegularFile' || item.type === 'Directory'){
+
+        if(item.type === 'RegularFile' && item.readable){
+          data.unshift({
+            name: 'download',
+            handleClick(){
+              self.download(item);
+            }
+          })
+        }
+
         data.unshift({
           name: 'Open',
           handleClick(){
@@ -217,6 +231,7 @@ export default {
             console.log('handleClick open');
           }
         })
+
       }
 
       contextmenuStore.commit('open', {
@@ -231,7 +246,7 @@ export default {
         data: [{
           name: 'New File',
           handleClick(){
-            const name = 'new-file-' + Date.now();
+            const name = 'new-' + Date.now();
             self.request({
               type: 'POST',
               url: '~/fs' + self.address,
@@ -251,7 +266,7 @@ export default {
         {
           name: 'New Folder',
           handleClick(){
-            const name = 'new-file' + Date.now()
+            const name = 'new-' + Date.now()
             self.request({
               type: 'POST',
               url: '~/fs' + self.address,
@@ -287,6 +302,13 @@ export default {
         }
       });
       this.addressArr = arr2;
+    },
+    download(item){
+      const self = this;
+      this.request({
+        url: '~/fs' + self.getItemPath(item.name) + '?download=true',
+        download: true
+      })
     },
     handleArrowLeftClick(){
       if(!this.backStack.length) return;

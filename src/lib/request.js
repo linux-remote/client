@@ -46,8 +46,15 @@ function omitEmpty(obj){ //过滤掉空的参数
   return obj2;
 }
 
+// function formatUrl(url){
+//   if(url[0] === '~'){
+//     url = '/user/' + self.$route.params.username + url.substr(1);
+//   }
+//   opts.url = API_ROOT + opts.url;
+// }
 
 function request(opts, beforeStop = noop, afterStop = noop){
+  console.log('opts.download beforeStop', opts.download)
   if(beforeStop(opts)){
     return;
   }
@@ -56,10 +63,14 @@ function request(opts, beforeStop = noop, afterStop = noop){
   if(opts.url[0] === '~'){
     opts.url = '/user/' + self.$route.params.username + opts.url.substr(1);
   }
+
   opts.url = API_ROOT + opts.url;
   opts.onError = opts.onError || noop;
   if(opts.data){
     opts.data = omitEmpty(opts.data);
+  }
+  if(opts.download){
+    return window.open(opts.url);
   }
   // opts.dataType = 'json';
   // opts.contentType = 'application/json;charset=UTF-8';
@@ -168,6 +179,10 @@ function vRequest(opts){
 }
 
 function download(url){
+  // let p = '';, d
+  // if(d){
+  //   p = '<input name="download" value="1" />'
+  // }${p}
   $(`<form action="${API_ROOT}${url}" style="display:none"></form>`)
   .appendTo('body').submit().remove();
 }
