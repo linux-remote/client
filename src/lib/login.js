@@ -1,9 +1,21 @@
 import store from '../store-global';
 const DOC_TITLE = document.title;
 
-var ws;
+var ws, wsOrigin,
+  isSSL = location.protocol.indexOf('https') !== -1;
+if(isSSL){
+  wsOrigin = 'wss:'
+}else{
+  wsOrigin = 'ws:'
+}
+if(window.SERVER_CONFIG.API_ROOT === '/api'){
+  wsOrigin = wsOrigin + '//' + location.host;
+}else{
+  wsOrigin = wsOrigin + '//' + window.SERVER_CONFIG.API_ROOT.split('/')[2]
+}
+console.log('wsOrigin', wsOrigin);
 export function createWs(username){
-  ws = new WebSocket('wss://192.168.56.101:3000?user=' + username);
+  ws = new WebSocket(`${wsOrigin}?user=${username}`);
   ws.onmessage = function (event) {
     const data = JSON.parse(event.data);
     // switch (data.type) {

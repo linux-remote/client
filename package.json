@@ -1,6 +1,6 @@
 {
   "name": "linux-remote-client",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "author": "Du Wei <hezedu@hotmail.com>",
   "description": "linuxRemote's client",
   "main": "index.js",

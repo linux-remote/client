@@ -1,8 +1,7 @@
 <template lang="jade">
 #app.lr-h100
   #main.lr-h100(@mousedown='handleMousedown')
-    .lr-page(v-if='CADownloadedCount === -1')
-    ca-download(v-else-if='CADownloadedCount === 0')
+    ca-download(v-if='isSHowCaDownPage')
     router-view(v-else)
   contextmenu
   fly-textarea
@@ -27,9 +26,13 @@ export default {
     }
   },
   computed: {
-    CADownloadedCount(){
-      return store.state.CADownloadedCount
+    isSHowCaDownPage(){
+      return store.state.isSelfSigned && store.state.CADownloadedCount === 0
     }
+    // ,
+    // CADownloadedCount(){
+    //   return store.state.CADownloadedCount
+    // }
   },
   methods:{
     handleMousedown(){

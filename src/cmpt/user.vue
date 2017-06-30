@@ -16,7 +16,7 @@
       small {{groups}}
     hr
     .lr-user-p
-      router-link.btn.btn-link(to='/' target='_blank') login with other account
+      router-link(to='/' target='_blank') login with other account
     hr
     button.lr-user-p.lr-3-logout(@click='logout') logout
 
