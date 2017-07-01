@@ -77,6 +77,10 @@ a {
     //   font-weight: bold;
     // }
   }
+  .lr-cpu-info{
+    padding: 5px 0;
+    small{ color: gray;margin: 0 2px;}
+  }
   table.lr-info-table{
     border-collapse:collapse;
     &,td , th{

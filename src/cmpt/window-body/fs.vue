@@ -42,7 +42,8 @@
       //-   b {{currItem.permission}}
       //- span relation:
       //-   b {{currItem._relation}}
-    .lr-fs-status(v-else)
+    .lr-fs-status(v-else-if='dir')
+      b DIR
       span Items: {{data.length}}
       //span DIR
       span {{dir.permission}}
@@ -76,7 +77,7 @@ export default {
       currItem: {},
 
       //dirIsSticky : false,
-      dir: {},
+      dir: null,
 
       newItemName: null,
       newFileIndex: 0,
@@ -108,13 +109,13 @@ export default {
       return '/' + this.addressArr.join('/');
     },
     bodyClass(){
-      if(!this.dir.readable){
+      if(this.dir && !this.dir.readable){
         return 'lr-fs-dir-unreadable'
       }
-      if(!this.dir.writeable){
+      if(this.dir && !this.dir.writeable){
         return 'lr-fs-dir-unwriteable'
       }
-      if(this.dir.isSticky){
+      if(this.dir && this.dir.isSticky){
         return 'lr-fs-dir-sticky'
       }
     }

@@ -2,7 +2,8 @@ import store from '../store-global';
 const DOC_TITLE = document.title;
 
 var ws, wsOrigin,
-  isSSL = location.protocol.indexOf('https') !== -1;
+  isSSL = location.protocol.indexOf('https') !== -1 ||
+  window.SERVER_CONFIG.API_ROOT.indexOf('https') !== -1
 if(isSSL){
   wsOrigin = 'wss:'
 }else{

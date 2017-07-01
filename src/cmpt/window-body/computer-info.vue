@@ -33,7 +33,11 @@
     tr
       td(style='color:gray') cpus:
       td
-        p(v-for="v in cpus") {{v.model}}
+        .lr-cpu-info(v-for="v in cpus")
+          small model:
+          |{{v.model}}
+          small speed:
+          |{{v.speed}}MHz
     tr
       td(style='color:gray') networkInterfaces:
       td
@@ -92,11 +96,11 @@ export default {
         d = (h - _a) / 24
         h = _a;
       }
-      d = (d === undefined ? '' : d + ' Days ');
-      h = (h === undefined ? '' : h + ' hours ');
-      m = (m === undefined ? '' : m + ' minutes ');
-      s = s + ' Seconds';
-      return d + h + m + s
+      d = (d ? '' : d + ' Days ');
+      h = (h ? '' : h + ' hours ');
+      m = (m ? '' : m + ' minutes ');
+      //s = s + ' Seconds';
+      return d + h + m
     }
   },
   methods: {

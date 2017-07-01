@@ -1,12 +1,11 @@
 <template lang="jade">
 .lr-window-body
   .lr-hourglass(v-show='isRequest')
-  h2(v-html='data' style='color:red' v-if='error')
+  h2(v-html='data[0]' style='color:red' v-if='error')
   .lr-edit-body(v-else @keydown='handleKeyDown')
     .lr-edit-bar
       button.btn.btn-sm.btn-default(style='padding: 2px' @click='save' , :disabled='isSaveDisabled') save
-    h2(v-html='data' v-if='error' style='color:red')
-    textarea.lr_edit_textarea(v-else v-model='data')
+    textarea.lr_edit_textarea(v-model='data')
 </template>
 
 <script>
@@ -17,7 +16,7 @@ export default {
     return {
       isRequest: false,
       oldData: '',
-      data: [],
+      data: []
     }
   },
   methods: {
@@ -49,7 +48,7 @@ export default {
           this.data = data;
         },
         error(xhr){
-          this.data = [`http ${xhr.status} 错误: <br>${xhr.responseText}`]
+          this.data = [`${xhr.responseText}`]
         }
       })
     }
@@ -59,7 +58,11 @@ export default {
       return this.oldData === this.data
     },
     error(){
-      return Array.isArray(this.data);
+      if(Array.isArray(this.data) && this.data.length){
+        return true;
+      }else{
+        return false;
+      }
     }
   },
   created(){

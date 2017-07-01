@@ -54,7 +54,7 @@ function omitEmpty(obj){ //过滤掉空的参数
 // }
 
 function request(opts, beforeStop = noop, afterStop = noop){
-  console.log('opts.download beforeStop', opts.download)
+  //console.log('opts.download beforeStop', opts.download)
   if(beforeStop(opts)){
     return;
   }
