@@ -43,7 +43,6 @@
       //- span relation:
       //-   b {{currItem._relation}}
     .lr-fs-status(v-else-if='dir')
-      b DIR
       span Items: {{data.length}}
       //span DIR
       span {{dir.permission}}
