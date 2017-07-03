@@ -6,7 +6,7 @@
   br
   h1 Linux Remote
   .lr-login
-    fieldset
+    fieldset(@keydown.13='login')
       legend login
       label Username:
       input(placeholder='raw username' v-model='username')

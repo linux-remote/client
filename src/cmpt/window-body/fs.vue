@@ -11,7 +11,7 @@
     .lr-fs-body(v-if='error')
       h2(v-html='data' style='color:red')
     .lr-fs-body(v-else @contextmenu.prevent='handleFsBodyContextmenu', @mousedown='handleFsBodyMousedown', :class='bodyClass')
-      h2(style='color:#eee;margin:0', v-if='data.length === 0') Empty
+      h2(style='color:#eee;margin:0', v-if='data.length === 0 && !isRequest') Empty
       .lr-file(v-for='item in data',
         :key='item.name',
         @mousedown='noopStop',
