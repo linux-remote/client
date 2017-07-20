@@ -371,14 +371,16 @@ export default {
       let readable = false, writeable = false;
       if(item.owner === this.username){
         item.is_owner = true;
-        item._relation = 'owner';
+        //item._relation = 'owner';
         readable = rwxs.owner.r;
         writeable = rwxs.owner.w;
-      }else if(isInGroup){
-        item._relation = 'group';
-      }else{
-        item._relation = 'other';
       }
+      // else if(isInGroup){
+      //   item._relation = 'group';
+      // }else{
+      //   item._relation = 'other';
+      // }
+
       if(isInGroup){
         item.is_group = true;
         if(!readable){

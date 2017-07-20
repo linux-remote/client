@@ -597,15 +597,15 @@ a {
         // }
         &.lr_per_is{
           >.lr_per_item_on{
-            background-color: rgba(green, .3);opacity: 1;
-          }
-        }
-        &.lr_per_i{
-          >.lr_per_item_on{
             background-color: rgba(green, .5);opacity: 1;
           }
-
         }
+        // &.lr_per_i{
+        //   >.lr_per_item_on{
+        //     background-color: rgba(green, .5);opacity: 1;
+        //   }
+        //
+        // }
 
       }
       .lr-per-sticky{
