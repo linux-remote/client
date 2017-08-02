@@ -8,7 +8,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var confName = process.env.NODE_BUILD_CONF_NAME || 'dev';
 var conf = require('./config/' + confName);
 var pageage = require('./package.json');
-var devSetup = require('./static-server');
+//var devSetup = require('./static-server');
 var isPro = process.env.NODE_ENV === 'production';
 var bundleName = conf.bundleName;
 var chunkName = conf.chunkName;
@@ -52,7 +52,7 @@ var plugins = [
     chunksSortMode: 'dependency',
     filename: path.join(__dirname, conf.indexDir + '/index.html'),
     template: path.join(__dirname, '/src/index.ejs'),
-    nodeModuleStatic: devSetup.nodeModuleStatic,
+    //nodeModuleStatic: devSetup.nodeModuleStatic,
     //tpl option
     indexData
   })
@@ -132,7 +132,7 @@ module.exports = {
   ],
   plugins: plugins,
   devServer: {
-    setup: devSetup,
+    //setup: devSetup,
     contentBase: path.join(__dirname, conf.indexDir),
     hot: true
   }
