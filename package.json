@@ -30,7 +30,6 @@
     "eslint-plugin-html": "^2.0.3",
     "express": "^4.15.3",
     "fuckwinfsdel": "^1.2.1",
-    "history": "^2.1.2",
     "html-loader": "^0.4.3",
     "html-webpack-plugin": "^2.22.0",
     "jade": "^1.11.0",
