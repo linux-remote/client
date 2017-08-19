@@ -530,6 +530,9 @@ a {
     align-content:flex-start; position: relative;
     overflow-y: auto;
   }
+  .lr-fs-cud-bar{
+    width: 100%; flex-grow:1; height: 25px;background-color: red;
+  }
   .lr-fs-dir-sticky{
     background-color: burlywood
   }

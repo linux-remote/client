@@ -66,7 +66,7 @@ function request(opts, beforeStop = noop, afterStop = noop){
 
   opts.url = API_ROOT + opts.url;
   opts.onError = opts.onError || noop;
-  if(opts.data){
+  if(!opts.uploadFolder && opts.data){
     opts.data = omitEmpty(opts.data);
   }
   if(opts.download){

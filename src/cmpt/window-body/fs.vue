@@ -12,6 +12,8 @@
       h2(v-html='data' style='color:red')
     .lr-fs-body(v-else @contextmenu.prevent='handleFsBodyContextmenu', @mousedown='handleFsBodyMousedown', :class='bodyClass')
       h2(style='color:#eee;margin:0', v-if='data.length === 0 && !isRequest') Empty
+      .lr-fs-cud-bar
+        input( type='file' @change="uploadFolder" webkitdirectory value="上传文件夹")
       .lr-file(v-for='item in data',
         :key='item.name',
         @mousedown='noopStop',
@@ -239,6 +241,26 @@ export default {
         top: e.clientY,
         left: e.clientX
       });
+    },
+    uploadFolder(e){
+      const files = e.target.files;
+      var fd = new FormData();
+      for (var i = 0; i < files.length; i++) {
+        fd.append("file", files[i]);
+      }
+      console.log('uploadFolder')
+      this.request({
+        type: 'POST',
+        uploadFolder: true,
+        contentType: false,
+        processData: false,
+        url: '~/fs' + this.address + '?type=uploadFolder',
+        data: fd,
+        success(){
+          console.log('uploadFolder success');
+          this.getData();
+        }
+      })
     },
     handleFsBodyContextmenu(e){
       const self = this;
