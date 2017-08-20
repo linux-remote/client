@@ -13,7 +13,8 @@
     .lr-fs-body(v-else @contextmenu.prevent='handleFsBodyContextmenu', @mousedown='handleFsBodyMousedown', :class='bodyClass')
       h2(style='color:#eee;margin:0', v-if='data.length === 0 && !isRequest') Empty
       .lr-fs-cud-bar
-        input( type='file' @change="uploadFolder" webkitdirectory value="上传文件夹")
+        button.lr-upload-btn(@click='handleUploadBtnClick') 上传文件夹
+        input.lr-upload-input( type='file' ref='uploadInput' @change='uploadFolder' webkitdirectory)
       .lr-file(v-for='item in data',
         :key='item.name',
         @mousedown='noopStop',
@@ -241,6 +242,13 @@ export default {
         top: e.clientY,
         left: e.clientX
       });
+    },
+    handleUploadBtnClick(){
+      const dom = this.$refs.uploadInput;
+      dom.addEventListener('change', this.uploadFolder, {
+        once: true
+      });
+      dom.click();
     },
     uploadFolder(e){
       const files = e.target.files;
