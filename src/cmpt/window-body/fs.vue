@@ -13,8 +13,10 @@
     .lr-fs-body(v-else @contextmenu.prevent='handleFsBodyContextmenu', @mousedown='handleFsBodyMousedown', :class='bodyClass')
       h2(style='color:#eee;margin:0', v-if='data.length === 0 && !isRequest') Empty
       .lr-fs-cud-bar
-        button.lr-upload-btn(@click='handleUploadBtnClick') 上传文件夹
-        input.lr-upload-input( type='file' ref='uploadInput' @change='uploadFolder' webkitdirectory)
+
+        button.lr-upload-btn(@click='handleUploadBtnClick') 上传文件
+        input.lr-upload-input( type='file' ref='uploadInput' @change='uploadFolder' multiple)
+        Upload(:getFd='getUploadFd', :isFolder='true') 上传文件夹
       .lr-file(v-for='item in data',
         :key='item.name',
         @mousedown='noopStop',
@@ -61,11 +63,13 @@ import store from '__ROOT__/store-global';
 import contextmenuStore from '__ROOT__/store/contextmenu';
 import flyTextAreaStore from '__ROOT__/store/fly-textarea';
 import FsIcon from './fs-icon';
+import Upload from './upload-multiple';
 import {perFormet, getNameSuffix} from './fs-util';
 //import FsItem from './fs-item';
 export default {
   components:{
-    FsIcon
+    FsIcon,
+    Upload
   },
   data(){
     return {
@@ -87,6 +91,7 @@ export default {
       newFolderIndex: 0
     }
   },
+  myStoreage: {},
   watch: {
     address(v){
       this.inputAddress = v;
@@ -123,6 +128,10 @@ export default {
     }
   },
   methods: {
+    getUploadFd(fd){
+      console.log('fd', fd)
+      this.$options.myStoreage.uploadFd = fd;
+    },
     getItemPath(name){
       const a = this.address === '/' ? this.address : this.address + '/';
       return a + name;
@@ -252,17 +261,18 @@ export default {
     },
     uploadFolder(e){
       const files = e.target.files;
+      if(!files.length){
+        return; //changel
+      }
       var fd = new FormData();
       for (var i = 0; i < files.length; i++) {
         fd.append("file", files[i]);
       }
-      console.log('uploadFolder')
       this.request({
         type: 'POST',
-        uploadFolder: true,
         contentType: false,
         processData: false,
-        url: '~/fs' + this.address + '?type=uploadFolder',
+        url: '~/fs' + this.address + '?type=uploadMultiple',
         data: fd,
         success(){
           console.log('uploadFolder success');
