@@ -5,7 +5,7 @@ Vue.use(Router);
 import Login from './page/login.vue';
 import Desk from './page/desk.vue';
 import NotFound from './page/not-found.vue';
-
+import DeskCmpt from './deskcmpt/index.vue';
 //import data from './lib/data';
 
 // const rootBeforeEnter = function(to, from, next){
@@ -19,6 +19,7 @@ import NotFound from './page/not-found.vue';
 
 const router = new Router({
   routes: [
+    { path: '/deskcmpt', component: DeskCmpt },
     { path: '/', component: Login },
     { path: '/user/:username', component: Desk,
       // child: [
