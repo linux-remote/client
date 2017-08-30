@@ -3,12 +3,13 @@
   position:absolute; top:0; bottom:0;
   width:100%;
   height:100%;
-  /*z-index: -10;*/
+  user-select: none;
 }
 </style>
 <template lang='jade'>
 .lr-dragg-warp(:draggable='draggable',  @dragstart.stop='handleDragStart',
  @dragend.stop='handleDragEnd')
+  slot
 </template>
 
 <script>
