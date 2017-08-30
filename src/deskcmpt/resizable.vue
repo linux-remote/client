@@ -1,10 +1,10 @@
 <style>
 .lr-resize-warp{
-  position:absolute; top:0; bottom:0;width:100%; height:100%; background:blue; z-index: -9;
+  position:absolute; top:0; bottom:0;width:100%; height:100%;  z-index: -9;
 }
 .lr-resize-top , .lr-resize-bottom, .lr-resize-left, .lr-resize-right{
   position: absolute;
-  background: red;
+  background: mediumvioletred;
 }
 .lr-resize-top, .lr-resize-bottom{
   width: 100%;height: 7px;
@@ -57,26 +57,26 @@
 
 <script>
 export default {
-  props: {
-    data: {
-      type: Object,
-      default(){
-        return {
-          x: 30,
-          y: 30,
-          h: 0,
-          w: 0
-        }
-      }
-    }
-  },
+  // props: {
+  //   data: {
+  //     type: Object,
+  //     default(){
+  //       return {
+  //         x: 30,
+  //         y: 30,
+  //         h: 0,
+  //         w: 0
+  //       }
+  //     }
+  //   }
+  // },
   methods:{
     resizeStart(type, e){
       this.resizeStartData = {
         x: e.clientX,
         y: e.clientY,
-        height: this.data.h,
-        width: this.data.w,
+        height: this.$parent.h,
+        width: this.$parent.w,
         direction: type
       };
 
@@ -89,10 +89,9 @@ export default {
       const initial = this.resizeStartData;
       const moveX = initial.x - e.clientX;
       const moveY = initial.y - e.clientY;
-      const data = this.data;
+      const data = this.$parent;
       const maxW = 800;
-      /////////////////////////////////////////////
-      //console.log('move', this);
+
       const direction = initial.direction;
       let height, width;
       if(direction.indexOf('t') !== -1){
@@ -129,8 +128,9 @@ export default {
     }
   },
   created(){
-    this.data.minH = this.data.minH || 0;
-    this.data.minW = this.data.minW || 0;
+
+    this.$parent.minH = this.$parent.minH || 0;
+    this.$parent.minW = this.$parent.minW || 0;
   }
 }
 </script>

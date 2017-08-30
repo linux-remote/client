@@ -3,31 +3,38 @@
   position: absolute;
   width: 200px;height: 200px;
   /*min-width: 150vw;*/
-  background-color: blue;
+  background-color: dodgerblue;
+}
+.demo-body{
+  position: absolute; height: 150px; background-color: blue;
+  bottom:0; left:0; width: 100%;
 }
 </style>
 <template lang='jade'>
-  .demo(:style='{width:resize.w + "px", height: resize.h  + "px",  top: resize.y + "px", left: resize.x  + "px"}')
-    Resizeble(:data='resize')
+  .demo(:style='{width:w + "px", height: h  + "px",  top: y + "px", left: x  + "px"}')
+    Resizable
+    Draggable
+    .demo-body
 </template>
 
 <script>
-import Resizeble from './resizable.vue';
+import Resizable from './resizable.vue';
+import Draggable from './draggable.vue';
 export default {
   data(){
     return {
-      resize: {
-        x: 30,
-        y: 30,
-        w: 300,
-        h: 300,
-        minH: 200,
-        minW: 200
-      }
+      dragging: false,
+      x: 600,
+      y: 300,
+      w: 300,
+      h: 300,
+      minH: 200,
+      minW: 200
     }
   },
   components: {
-    Resizeble
+    Draggable,
+    Resizable
   }
 }
 </script>
