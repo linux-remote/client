@@ -5,18 +5,20 @@
   /*min-width: 150vw;*/
   background-color: green;
 }
-.lr-un-dragg-warp{
-  position: absolute;background-color: red;
-  user-select: text;
+.lr-un-drag{
+  position: relative;background-color: red;
+  z-index: 2;
+  /*user-select: text;*/
 }
+
 </style>
 <template lang='jade'>
   .demo(:style='{width:w + "px", height: h  + "px",  top: y + "px", left: x  + "px"}')
     Resizable
+    slot
     Draggable
-      slot(name="drag")
-    .lr-un-dragg-warp
-      slot
+    .lr-un-drag
+      slot(name='unDragg')
 </template>
 
 <script>
