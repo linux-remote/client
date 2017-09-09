@@ -1,10 +1,4 @@
-import _Vue from 'vue';
 import Vuex from 'vuex';
-_Vue.use(Vuex);
-
-_Vue.prototype.noopStop = function(e){
-  e.stopPropagation();
-}
 
 import $ from 'jquery';
 const $win = $(window);
@@ -218,5 +212,4 @@ const store = new Vuex.Store({
   }
 });
 
-export const Vue = _Vue;
 export default store;

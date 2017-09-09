@@ -1,4 +1,9 @@
-import {Vue} from './store-global';
+import Vue from 'vue';
+import 'vue-use-vuex';
+Vue.prototype.noopStop = function(e){
+  e.stopPropagation();
+}
+import './store-global';
 
 require('./css/style.scss');
 require('./lib/request');

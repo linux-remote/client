@@ -44,6 +44,7 @@
     "vue-loader": "^12.1.0",
     "vue-router": "^2.5.3",
     "vue-template-compiler": "^2.3.3",
+    "vue-use-vuex": "^0.2.1",
     "vuex": "^2.3.1",
     "webpack": "1.13.2",
     "webpack-dev-server": "^1.15.0"

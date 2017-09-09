@@ -12,7 +12,7 @@ var pageage = require('./package.json');
 var isPro = process.env.NODE_ENV === 'production';
 var bundleName = conf.bundleName;
 var chunkName = conf.chunkName;
-
+var vueUseVuexPath = require.resolve('vue-use-vuex');
 var outputPath, publicPath;
 if(confName === 'dev' && !isPro){ //使用 命令weblack
   outputPath = path.join(__dirname, conf.indexDir, '/dist/dev/build');
@@ -101,7 +101,7 @@ module.exports = {
     ],
     loaders: [{
       test: /\.js$/,
-      exclude: /node_modules/,
+      include: [path.join(__dirname, "src"), vueUseVuexPath],
       loader: 'babel-loader'
     },
     {
