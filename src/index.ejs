@@ -2,12 +2,19 @@
 <html>
 <% var opts = htmlWebpackPlugin.options, data = opts.indexData; %>
   <head>
-    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
-    <!-- <link rel="shortcut icon" href="/public/favicon.png"> -->
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <link rel="shortcut icon" href="/public/favicon.png" />
+
+    <link href="/public/jquery-ui-1.12.1.custom/jquery-ui.min.css" rel="stylesheet" type="text/css" />
+    <link href="/public/jquery-ui-1.12.1.custom/jquery-ui.theme.min.css" rel="stylesheet" type="text/css" />
+    <link href="/public/jquery-ui-1.12.1.custom/jquery-ui.structure.min.css" rel="stylesheet" type="text/css" />
+    
     <title>Linux Remote</title>
   </head>
   <body>
   <div id="app"><span>Linux Remote Client Loading...</span></div>
+  <script src='/public/js/jquery.min.js'></script>
+  <script src='/public/jquery-ui-1.12.1.custom/jquery-ui.min.js'></script>
   <script>
     var SERVER_CONFIG = <%=JSON.stringify(data)%>
   </script>
