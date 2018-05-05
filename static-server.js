@@ -26,30 +26,18 @@ function _getOpts(name){
   }
 }
 
-// var bootstrapMainPath = require.resolve('bootstrap');
-// var
-// var v = path.resolve(bootstrapMainPath, '../../../package.json');
-// v = require(v).version;
-
-// const bootstrapPublicPath = '/nodeMouduleStatic/bootstrap' + v
-// var distDir = path.resolve(bootstrapMainPath, '../..');
-
 var DAY_TIME = 1000 * 60 * 60 * 24 //一天
 var MONTH_TIME  = DAY_TIME * 30 //一月
 var HALF_YEAR_TIME  = MONTH_TIME * 6; //半年
 var bootstrapOpts = _getOpts('bootstrap');
 var jqueryOpts = _getOpts('jquery');
-//var jqueryUiOpts = _getOpts('jquery-ui');
+
 function setup(app){
   app.use(jqueryOpts.url , eStatic(jqueryOpts.fsDir, {maxAge:HALF_YEAR_TIME}));
-  app.use(bootstrapOpts.url , eStatic(bootstrapOpts.fsDir, {maxAge:HALF_YEAR_TIME}));
-  //app.use(jqueryUiOpts.url , eStatic(jqueryUiOpts.fsDir, {maxAge:HALF_YEAR_TIME}));
 }
 
-
 setup.nodeModuleStatic = {
-  jquery: jqueryOpts.url,
-  bootstrap: bootstrapOpts.url
+  jquery: jqueryOpts.url
 }
 
 module.exports = setup;

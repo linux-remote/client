@@ -58,7 +58,7 @@ var plugins = [
   })
 ]
 // ***************************** 环境适配 *****************************
-
+var preLoaders;
 if (isPro) {
   plugins.push(//正式环境下压缩
     new webpack.optimize.UglifyJsPlugin({
@@ -70,6 +70,15 @@ if (isPro) {
         comments: false,
       },
     }));
+
+    preLoaders = [ //代码检查
+      {
+        test: /(\.js|\.vue)$/,
+        loader: 'eslint-loader',
+        include: [path.resolve(__dirname, "src")],
+        exclude: [/node_modules/]
+      }
+  ]
 };
 
 // ***************************** conf *****************************
@@ -91,14 +100,7 @@ module.exports = {
     chunkFilename: chunkName
   },
   module: {
-    preLoaders: [ //代码检查
-        {
-          test: /(\.js|\.vue)$/,
-          loader: 'eslint-loader',
-          include: [path.resolve(__dirname, "src")],
-          exclude: [/node_modules/]
-        }
-    ],
+    preLoaders,
     loaders: [{
       test: /\.js$/,
       include: [path.join(__dirname, "src"), vueUseVuexPath],
@@ -113,7 +115,7 @@ module.exports = {
       test: /\.scss$/,
       loaders: [
         "style",
-        "css?modules&importLoaders=1&localIdentName=[local]_[hash:base64:5]",
+        "css",
         "postcss",
         "sass"
       ]

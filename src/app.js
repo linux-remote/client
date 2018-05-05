@@ -1,14 +1,13 @@
 import Vue from 'vue';
 import 'vue-use-vuex';
+
 Vue.prototype.noopStop = function(e){
   e.stopPropagation();
 }
+
 import './store-global';
-
-require('./css/style.scss');
-require('./lib/request');
-
-
+import './css/style.scss';
+import './lib/request';
 import router from './router';
 import Root from './page/root.vue';
 
@@ -18,5 +17,5 @@ var app = new Vue({
 });
 
 router.onReady(() => {
-  app.$mount('#app')
+  app.$mount('#lr-app')
 })

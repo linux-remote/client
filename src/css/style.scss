@@ -14,53 +14,68 @@ $barBg : black;
 $barColor: #fff;
 $topBarH :$barH;
 
-
-
-
-
-
-
-* ,*::before, *::after{
-  box-sizing: border-box;
-}
+// ======================= ForMat =======================
 html, body{
-  user-select: none;
-  height: 100%;padding: 0;margin:0;
+  height: 100%;
+  padding: 0;
+  margin:0;
 }
-
 body{
   overflow: hidden;
 }
 a {
-  //color: green;
-  //text-decoration: none;
-  cursor:pointer
+  cursor:pointer;
 }
-// a{
-//   color: $color31;
-// };
-// input{
-//   width:100%;height:28px;line-height: 28px;
-// }
-// button{
-//   padding: 3px 10px;
-// }
-:global{
-  .lr-ca-download-wrap{
-    align-items: center;justify-content: center;user-select: text;
+
+// ======================= lr style =======================
+.lr-h100, 
+.lr-page{
+  height: 100%; 
+  position: relative;
+}
+
+.lr-page{
+  display: flex;
+}
+
+.lr-un-user-select{
+  user-select: none;
+}
+
+//************* login ***************
+.lr-login-warp{
+  justify-content:center;
+  flex-direction: column;
+  align-items: center;
+}
+.lr-login{
+  h1{
+    text-align: center;
   }
-  .lr-ca-download{
-    border:1px solid #eee; padding: 10px;
+  input{
+    height: 30px; 
+    width: 100%;
   }
-  .lr-ca-download>.lr-ca-input-wrap{
-    dlsplay:flex;width:100%;flex-grow:1; justify-content: space-between;
-  }
-  .lr-h100, .lr-page{
-    height: 100%; position: relative;
-  }
-  .lr-page{
+  fieldset{
     display: flex;
+    flex-direction: column;
   }
+
+  label{
+    font-size: .8em;
+  }
+  .lr-login-content{
+    padding: 20px 10px; border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+  }
+  .lr-2-footer{
+    text-align: right;
+    padding: 10px;
+  }
+}
+//************* login end ***************
+
+
 
   .lr-dustbin-wrap{
     display: flex;height: 100%; flex-direction: column;
@@ -176,39 +191,7 @@ a {
     }
     //************* old pro end *************
 
-  //************* login ***************
-  .lr-login-warp{
-    justify-content:center;
-    flex-direction: column;
-    align-items: center;
-  }
-  .lr-login{
-    //width:260px;
-    h1{
-      text-align: center;
-    }
-    input{
-      height: 30px; width: 100%;
-    }
-    fieldset{
-      display: flex;flex-direction: column;
-    }
-    legend{
-      //background: black;color:yellow;padding: 5px;
-    }
-    label{
-      font-size: .8em;
-    }
-    .lr-login-content{
-      padding: 20px 10px; border-top: 1px solid #eee;
-      border-bottom: 1px solid #eee;
-    }
-    .lr-2-footer{
-      text-align: right;
-      padding: 10px;
-    }
-  }
-  //************* login end ***************
+
 
   //************* top bar ***************
   .lr-top-bg{
@@ -798,5 +781,3 @@ a {
   }
 
   //*************** resizable end ***************
-
-}

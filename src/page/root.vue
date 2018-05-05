@@ -1,8 +1,7 @@
 <template lang="jade">
-#app.lr-h100
-  #main.lr-h100(@mousedown='handleMousedown')
-    ca-download(v-if='isSHowCaDownPage')
-    router-view(v-else)
+#lr-app.lr-h100
+  #lr-main.lr-h100(@mousedown='handleMousedown')
+    router-view
   contextmenu
   fly-textarea
   error
@@ -11,11 +10,9 @@
 import store from '../store-global';
 import Contextmenu from '__ROOT__/cmpt/contextmenu';
 import flyTextarea from '__ROOT__/cmpt/fly-textarea';
-import CaDownload from '__ROOT__/page/ca-download.vue';
 import Error from '__ROOT__/cmpt/error';
 export default {
   components:{
-    CaDownload,
     Contextmenu,
     Error,
     flyTextarea
@@ -45,7 +42,7 @@ export default {
     }
   },
   mounted(){
-    window.APP.$elMain = document.getElementById('main');
+    window.APP.$elMain = document.getElementById('lr-main');
   },
   created(){
     window.APP.$router = this.$router;
