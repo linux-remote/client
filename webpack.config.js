@@ -8,7 +8,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var confName = process.env.NODE_BUILD_CONF_NAME || 'dev';
 var conf = require('./config/' + confName);
 var pageage = require('./package.json');
-//var devSetup = require('./static-server');
+var setup = require('./setup');
 var isPro = process.env.NODE_ENV === 'production';
 var bundleName = conf.bundleName;
 var chunkName = conf.chunkName;
@@ -134,6 +134,7 @@ module.exports = {
   ],
   plugins: plugins,
   devServer: {
+    setup,
     //setup: devSetup,
     contentBase: path.join(__dirname, conf.indexDir),
     hot: true
