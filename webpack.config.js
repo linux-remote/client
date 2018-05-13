@@ -7,7 +7,7 @@ var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var confName = process.env.NODE_BUILD_CONF_NAME || 'dev';
 var conf = require('./config/' + confName);
-var pageage = require('./package.json');
+var package = require('./package.json');
 var setup = require('./setup');
 var isPro = process.env.NODE_ENV === 'production';
 var bundleName = conf.bundleName;
@@ -24,7 +24,7 @@ if(confName === 'dev' && !isPro){ //使用 命令weblack
 
 var indexData = conf.indexData || {};
 indexData.BASE_URL = conf.baseUrl;
-indexData.VERSION = pageage.version;
+indexData.VERSION = package.version;
 
 // ***************************** plugins *****************************
 var plugins = [
@@ -52,8 +52,7 @@ var plugins = [
     chunksSortMode: 'dependency',
     filename: path.join(__dirname, conf.indexDir + '/index.html'),
     template: path.join(__dirname, '/src/index.ejs'),
-    //nodeModuleStatic: devSetup.nodeModuleStatic,
-    //tpl option
+    nodeModuleStatic : setup.nodeModuleStatic,
     indexData
   })
 ]
