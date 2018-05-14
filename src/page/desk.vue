@@ -1,7 +1,7 @@
 <template lang="jade">
 .lr-page.lr-desk-wrap(v-if='deskInited')
   <top-bar />
-  .lr-top-bg LR {{hostname}}
+  .lr-top-bg
   #lr-desk.lr-desk
     .lr-desk-icon-wrap(@dblclick="openDustBin", :class="{lr_desk_icon_focus: dustbinUniqueFocus}")
       img.lr-desk-icon(src='/public/dustbin.svg')

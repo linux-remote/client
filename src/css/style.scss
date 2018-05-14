@@ -43,10 +43,54 @@ a {
 }
 
 //************* login ***************
+.lr-login-warp{
+  justify-content:center;
+  flex-direction: column;
+  align-items: center;
 
+}
+.lr-login-h1{
+  text-align: center;
+  color: #333;
+  margin-top:0;
+  margin-bottom: 10px;
+}
+.lr-login-legend{
+  background-color: #333;
+  color: #fff;
+  padding: 3px;
+}
+.lr-login-input{
+  height: 30px; 
+}
+.lr-login-fieldset{
+  display: flex;
+  flex-direction: column;
+
+}
+.lr-login-row{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+.lr-login-label{
+  font-size: .8em;
+  width:80px;
+}
+.lr-login-content{
+  padding: 20px 10px; 
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+}
+.lr-login-footer{
+  text-align: right;
+  padding-top: 10px;
+}
 //************* login end ***************
+//************* desk start ***************
 
-
+//************* desk end ***************
 
   .lr-dustbin-wrap{
     display: flex;height: 100%; flex-direction: column;
