@@ -6,12 +6,12 @@ const store = new Vuex.Store({
   },
   mutations: {
     show(state, message) {
-      window.APP.$elMain.addEventListener('mousedown', () => {
-        store.commit('close');
-      },{
-        once: true,
-        capture: true
-      });
+      // window.APP.$elMain.addEventListener('mousedown', () => {
+      //   store.commit('close');
+      // },{
+      //   once: true,
+      //   capture: true
+      // });
       state.message.push(message);
     },
     close(state){

@@ -1,5 +1,4 @@
 import Vuex from 'vuex';
-
 import $ from 'jquery';
 const $win = $(window);
 const {findLast, sortBy, cloneDeep} = require('lodash');
@@ -23,6 +22,8 @@ const store = new Vuex.Store({
     // global
     winH: $win.height(),
     winW: $win.width(),
+    // Error
+    errorMessages: [],
 
     // sess
     isLogin: false,
@@ -63,6 +64,19 @@ const store = new Vuex.Store({
     sessError: false
   },
   mutations: {
+    errorMessagesShow(state, message) {
+      // window.APP.$elMain.addEventListener('mousedown', () => {
+      //   store.commit('close');
+      // },{
+      //   once: true,
+      //   capture: true
+      // });
+      state.errorMessages.push(message);
+    },
+    errorMessagesClearAll(state){
+      state.errorMessages = [];
+    },
+
     onFsDel(state){
       state.onFsDel = Date.now();
     },

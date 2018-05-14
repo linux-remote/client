@@ -1,6 +1,6 @@
 <style module>
 .title{font-size: 50px}
-.title :global [.test] {color:red}
+.title .test {color:red}
 </style>
 
 

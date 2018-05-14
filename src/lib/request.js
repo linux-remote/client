@@ -179,10 +179,6 @@ function vRequest(opts){
 }
 
 function download(url){
-  // let p = '';, d
-  // if(d){
-  //   p = '<input name="download" value="1" />'
-  // }${p}
   $(`<form action="${API_ROOT}${url}" style="display:none"></form>`)
   .appendTo('body').submit().remove();
 }
