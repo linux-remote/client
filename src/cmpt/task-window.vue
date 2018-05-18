@@ -127,9 +127,9 @@ export default {
         }
 
         this.isMax = true;
-        this.height = this.winH - 25;
+        this.height = this.winH;
         this.width = this.winW;
-        this.positionTop = -25;
+        this.positionTop = 0;
         this.positionLeft = 0;
       }
 

@@ -1,8 +1,8 @@
 <template lang="jade">
 .lr-top
-  .lr-top-quick-item(@click='openHome') Home
-  .lr-top-quick-item(@click='openFs')
-    .lr-top-small-icon(style='background-image:url(/public/file-tree.svg)')
+  //- .lr-top-quick-item(@click='openHome') Home
+  //- .lr-top-quick-item(@click='openFs')
+  //-   .lr-top-small-icon(style='background-image:url(/public/file-tree.svg)')
   <watch/>
   <user/>
 </template>

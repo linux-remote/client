@@ -1,7 +1,7 @@
 <template lang="jade">
 .lr-page.lr-desk-wrap(v-if='deskInited')
-  <top-bar />
-  .lr-top-bg
+  //- <top-bar />
+  //- .lr-top-bg
   #lr-desk.lr-desk
     .lr-desk-icon-wrap(@dblclick="openDustBin", :class="{lr_desk_icon_focus: dustbinUniqueFocus}")
       img.lr-desk-icon(src='/public/dustbin.svg')
@@ -9,15 +9,10 @@
     .lr-desk-icon-wrap(@dblclick="openOsInfo" , :class="{lr_desk_icon_focus: computerInfoUniqueFocus}")
       img.lr-desk-icon(src='/public/server.svg')
       .lr-desk-icon-text Server Info
-    //- .lr-desk-icon-wrap(@dblclick="openUserInfo" , :class="{lr_desk_icon_focus: userInfoUniqueFocus}")
-    //-   img.lr-desk-icon(src='/public/user.svg')
-    //-   .lr-desk-icon-text User Info
     .lr-desk-icon-wrap(@dblclick="createdTask")
       img.lr-desk-icon(src='/public/file-tree.svg')
       .lr-desk-icon-text File System
 
-
-    //-button.btn.btn-default(@click='test500') test500
 
     <tasks-window v-for='(item, index) in tasks' :key='item.id' :index='index'>
     </tasks-window>
@@ -47,19 +42,11 @@ export default {
       }
     },
     sessError(val){
-      //console.log('watch sessError', val);
       if(val){
         this.logout();
       }
     }
   },
-  // computed: {
-  //   isComputerInfoOpen(){
-  //     //return this.uniqueTaskMap[COMPUTER_TYPE] !== null
-  //     //return stote.state.uniqueTaskMap[COMPUTER_TYPE] !== null
-  //     return false
-  //   }
-  // },
   methods: {
     openUserInfo(){
       store.commit('addTask', {

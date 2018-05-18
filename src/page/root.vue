@@ -4,16 +4,19 @@
     router-view
   contextmenu
   fly-textarea
+  UploadInput
   error
 </template>
 <script>
 import store from '../store-global';
+import UploadInput from '__ROOT__/cmpt/upload/golbal-input.vue';
 import Contextmenu from '__ROOT__/cmpt/contextmenu';
 import flyTextarea from '__ROOT__/cmpt/fly-textarea';
 import Error from '__ROOT__/cmpt/error';
 export default {
   components:{
     Contextmenu,
+    UploadInput,
     Error,
     flyTextarea
   },

@@ -31,7 +31,6 @@ a {
 .lr-h100, 
 .lr-page{
   height: 100%; 
-  position: relative;
 }
 
 .lr-page{
@@ -146,7 +145,7 @@ a {
       height: 12px;
       width: 12px;
       animation: rotate 0.8s infinite linear;
-      border: 3px solid #888;
+      border: 3px solid #666;
       border-right-color: #fff;
       border-radius: 50%;
     }
@@ -174,26 +173,29 @@ a {
   .lr-top-bg{
     user-select: text;
     height: $topBarH;
-    background-color: #eee;
-    color:#aaa;padding-left: 10px;
+    background-color: #D69200;
+    color:#aaa;
+    padding-left: 10px;
     //background-color: rgba(0,0,0,.5);
   }
   .lr-top{
-    max-width:66%;
+    // width:50%;
     height: $topBarH;
     display: flex;
     flex-shrink: 0;
     position: fixed;
-    //top: 1px;
-    right: $rightCtrlWidth + 10;
-    background-color: #000;
+
+    right: $rightCtrlWidth + 20;
+    background-color: rgba(#A0522D, .7);
     color:#fff;
     z-index: $topZindex;
-    // border-right: 1px solid #fff;
-    // border-left: 1px solid #fff;
+    top: -5px;
+    border: 5px outset #eee;
+    border-radius: 0 0 10px 10px;
+    padding: 0 30px;
+    
     line-height: $topBarH;
-    //box-shadow: 1px 1px 1px 1px #777;
-    //overflow: hidden;
+    // box-shadow: 3px 3px 3px 3px #CC1814;
     .lr-top-quick-item{
       color: yellow;
       border-left: 1px solid yellow;
@@ -267,23 +269,19 @@ a {
   //************* top bar end ***************
 
   .lr-desk-wrap{
-    flex-direction: column;height: 100%;overflow: hidden;
-    //background-color: #F5DEB3;
-    //background-color: #F2D88F;
-    //background-color: #F5AD3B;
-
-    //background-color: #f3f3bd;
-    //background-color: #FAF9DE;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    background-color: #f5f5f5;
   }
 
 
   .lr-desk{
-    flex-grow: 1; position: relative;
+    flex-grow: 1; 
+    position: relative;
   }
 
-
   .lr-desk-icon-wrap{
-
     display: flex; flex-direction: column;
     width: 80px;margin: 5px;
     padding: 5px;
@@ -313,18 +311,21 @@ a {
 
 
   // *********** task ************
-  $taskBarH : $topBarH;
+  $taskBarH : 37px;
   $taskFocusBg: $barBg;
   $taskFocusColor: yellow;
-  $taskBg: $barBg;
+  $taskBg: rgba(#888, 1);;
   $taskColor: $barColor;
 
   .lr-task-bar{
-    height:$taskBarH;flex-shrink: 0;
-    background-color: #eee;
+    height:$taskBarH;
+    box-sizing: border-box;
+    flex-shrink: 0;
+    background-color: $taskBg;
     position: relative;
     z-index: $topZindex;
     display:flex;
+    // border-top: 2px solid #999;
     .lr-2-body{
       flex-grow: 1;
       display:flex;
@@ -332,15 +333,24 @@ a {
       overflow: hidden;
     }
     .lr-2-control-wrap{
-      flex-shrink: 0; width: $taskBarH * 2; display: flex;
+      flex-shrink: 0;
+       width: $taskBarH * 2; 
+       display: flex;
     }
     .lr-2-control{
-      width: $taskBarH; flex-shrink: 0;border: 2px outset #aaa;
-      background: #999;  line-height: 1;
-      text-align: center; cursor: pointer; font-size: $taskBarH - 4;
+      display: none;
+      width: $taskBarH; 
+      flex-shrink: 0;
+      border: 2px outset #aaa;
+      background: #999;  
+      line-height: 1;
+      text-align: center; 
+      cursor: pointer; 
+      font-size: $taskBarH - 4;
       color: #fff;
     }
   }
+
   .lr-task-item{
     height:$taskBarH;line-height: $taskBarH;
     padding: 0 2px;
@@ -426,7 +436,9 @@ a {
     content: 'X';
   }
   .lr-title-max{
-    padding: 3px; position: relative;
+    padding: 3px; 
+    position: relative;
+    box-sizing: border-box;
     &.lr_2_shrink{
       &::after{
         content: '';display: block; position: absolute;bottom: 3px; left:3px; border:1px solid #fff;

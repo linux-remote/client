@@ -1,7 +1,7 @@
 import Vuex from 'vuex';
 import $ from 'jquery';
 const $win = $(window);
-const {findLast, sortBy, cloneDeep} = require('lodash');
+import {findLast, sortBy, cloneDeep} from 'lodash';
 
 $win.on('resize', function(){
   store.commit('set', {
@@ -16,8 +16,12 @@ window.APP = {
   $elDesk: null
 }
 
+import upload from './module/upload';
 
 const store = new Vuex.Store({
+  modules: {
+    upload
+  },
   state: {
     // global
     winH: $win.height(),
