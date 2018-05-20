@@ -93,7 +93,7 @@ export default {
           this.routeTo(username);
         },
         error(xhr){
-          this.error = `${xhr.responseText}`;
+          this.error = `http #${xhr.status}: ${xhr.responseText}`;
         }
       })
     },

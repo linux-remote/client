@@ -1,9 +1,12 @@
+<style>
+
+</style>
 <template lang="jade">
 .lr-task-bar
-  .lr-2-body
-    .lr-task-item(v-for='(i,index) in tasks', @mousedown='noopStop', @click.stop.prevent = 'handleClick(i)',
+  .lr-task-bar-body
+    .lr-task-bar-item(v-for='(i,index) in tasks', @mousedown='noopStop', @click.stop.prevent = 'handleClick(i)',
     @contextmenu.prevent.stop = 'contextmenu(i, index, $event)',
-     :class='{lr_focus: i.focus, lr_close: i.isMin, lr_2_max: i.isMax}')
+     :class='{lr_task_bar_item_focus: i.focus, lr_task_bar_item_close: i.isMin, lr_task_bar_item_max: i.isMax}')
       {{i.name}}
   .lr-2-control-wrap
     .lr-2-control(title='Minimize All',@mousedown='noopStop' @click.stop='minAll') −

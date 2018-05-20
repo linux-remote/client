@@ -16,7 +16,7 @@ window.APP = {
   $elDesk: null
 }
 
-import upload from './module/upload';
+import upload from './store/module/upload';
 
 const store = new Vuex.Store({
   modules: {

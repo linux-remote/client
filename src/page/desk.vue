@@ -1,8 +1,10 @@
 <template lang="jade">
 .lr-page.lr-desk-wrap(v-if='deskInited')
-  //- <top-bar />
-  //- .lr-top-bg
   #lr-desk.lr-desk
+    Icon
+      div(style="background: green; height: 100%;", slot='drag')
+        | hahh
+      div O
     .lr-desk-icon-wrap(@dblclick="openDustBin", :class="{lr_desk_icon_focus: dustbinUniqueFocus}")
       img.lr-desk-icon(src='/public/dustbin.svg')
       .lr-desk-icon-text Dustbin
@@ -12,7 +14,8 @@
     .lr-desk-icon-wrap(@dblclick="createdTask")
       img.lr-desk-icon(src='/public/file-tree.svg')
       .lr-desk-icon-text File System
-
+    .lr-desk-icon-wrap(@dblclick="openEmptyTask")
+      .lr-desk-icon-text Empty
 
     <tasks-window v-for='(item, index) in tasks' :key='item.id' :index='index'>
     </tasks-window>
@@ -22,15 +25,15 @@
 import store from '__ROOT__/store-global';
 import TasksBar from '__ROOT__/cmpt/tasks-bar';
 import TasksWindow from '__ROOT__/cmpt/task-window';
-import TopBar from '__ROOT__/cmpt/top-bar';
+import Icon from '__ROOT__/cmpt/unit/icon.1.vue';
 import {createWs, logout} from '__ROOT__/lib/login';
 const COMPUTER_TYPE = 'computerInfo';
 
 export default {
   components: {
     TasksBar,
-    TopBar,
-    TasksWindow
+    TasksWindow,
+    Icon
   },
   data(){
     return store.state;
@@ -59,6 +62,13 @@ export default {
       store.commit('addTask', {
         name: 'Server Info',
         type: COMPUTER_TYPE,
+        unique: true
+      });
+    },
+    openEmptyTask(){
+      store.commit('addTask', {
+        name: 'Empty',
+
         unique: true
       });
     },

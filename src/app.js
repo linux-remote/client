@@ -4,11 +4,11 @@ import 'vue-use-vuex';
 Vue.prototype.noopStop = function(e){
   e.stopPropagation();
 }
-Vue.prototype.noop = function(){};
 
-import store from './store-global';
 import './css/style.scss';
 import './lib/request';
+
+import store from './store-global';
 import router from './router';
 import Root from './page/root.vue';
 

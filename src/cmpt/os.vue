@@ -26,7 +26,6 @@ export default {
     }
   },
   created(){
-    //this.nowDate = new Date();
     const self = this;
     function loop(){
       self.nowDate = new Date();
