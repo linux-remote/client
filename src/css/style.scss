@@ -10,7 +10,9 @@ $barH: 25px;
 $barBg : black;
 $barColor: #fff;
 $topBarH :$barH;
-
+*{
+  box-sizing: border-box;
+}
 // ======================= ForMat =======================
 html, body{
   height: 100%;
@@ -89,7 +91,6 @@ $taskColor: $barColor;
   background-color: $taskBg;
   height:$taskBarH;
   padding: 1px 2px;
-  box-sizing: border-box;
   flex-shrink: 0;
   position: relative;
   z-index: $topZindex;
@@ -124,7 +125,6 @@ $taskColor: $barColor;
   border: 2px outset darken($taskBg, 5%);
   background-color: $taskBg;
   padding: 10px;
-  box-sizing: border-box;
   display: flex;
   align-items: center;
   flex-grow:1;
@@ -195,7 +195,6 @@ $taskColor: $barColor;
   flex-shrink: 0;
   justify-content: space-between;
   align-items: center;
-  box-sizing: border-box;
   >div{
     display: flex;
     justify-content: center;
@@ -231,10 +230,10 @@ $taskColor: $barColor;
   opacity: 1;
 }
 
-.lr-window-body-wrap{
-  flex-grow:1; 
-  position: relative;
-}
+// .lr-window-body-wrap{
+//   flex-grow:1; 
+//   position: relative;
+// }
 .lr-window-body{
   flex-grow:1; 
   display: flex;
@@ -670,7 +669,11 @@ table.leftHead >tr>td:first-child{
     height: 30px; background-color: #eee; line-height: 30px;padding: 0 10px;
   }
   .lr_edit_textarea{
-    height: 100%; width: 100%; display: block;flex-grow: 1;outline: none;
+    height: 100%; 
+    width: 100%; 
+    display: block;
+    flex-grow: 1;
+    outline: none;
   }
   .lr_2_hidden{
     opacity: .5;
