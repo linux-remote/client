@@ -66,9 +66,6 @@
 </template>
 
 <script>
-import store from '../store-global';
-import errStore from '../store/error';
-
 export default {
   data(){
     return {

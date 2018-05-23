@@ -8,7 +8,6 @@
   error
 </template>
 <script>
-import store from '../store-global';
 import UploadInput from '__ROOT__/cmpt/upload/golbal-input.vue';
 import Contextmenu from '__ROOT__/cmpt/contextmenu';
 import flyTextarea from '__ROOT__/cmpt/fly-textarea';
@@ -25,22 +24,13 @@ export default {
       isRequest: false
     }
   },
-  computed: {
-    isSHowCaDownPage(){
-      return store.state.isSelfSigned && store.state.CADownloadedCount === 0
-    }
-    // ,
-    // CADownloadedCount(){
-    //   return store.state.CADownloadedCount
-    // }
-  },
   methods:{
     handleMousedown(){
-      store.commit('currTaskWindowUnFocus');
+      this.$store.commit('currTaskWindowUnFocus');
     },
     getData(){
       this.apiGet('/touch', data => {
-        store.commit('set', data);
+        this.$store.commit('set', data);
       })
     }
   },

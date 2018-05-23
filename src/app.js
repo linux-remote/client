@@ -8,7 +8,7 @@ Vue.prototype.noopStop = function(e){
 import './css/style.scss';
 import './lib/request';
 
-import store from './store-global';
+import store from './store/index.js';
 import router from './router';
 import Root from './page/root.vue';
 

@@ -1,42 +1,44 @@
 <template lang="jade">
 .lr-page.lr-desk-wrap(v-if='deskInited')
+  TopBar
   #lr-desk.lr-desk
-    Icon
-      div(style="background: green; height: 100%;", slot='drag')
-        | hahh
-      div O
-    .lr-desk-icon-wrap(@dblclick="openDustBin", :class="{lr_desk_icon_focus: dustbinUniqueFocus}")
-      img.lr-desk-icon(src='/public/dustbin.svg')
-      .lr-desk-icon-text Dustbin
-    .lr-desk-icon-wrap(@dblclick="openOsInfo" , :class="{lr_desk_icon_focus: computerInfoUniqueFocus}")
-      img.lr-desk-icon(src='/public/server.svg')
-      .lr-desk-icon-text Server Info
-    .lr-desk-icon-wrap(@dblclick="createdTask")
-      img.lr-desk-icon(src='/public/file-tree.svg')
-      .lr-desk-icon-text File System
-    .lr-desk-icon-wrap(@dblclick="openEmptyTask")
-      .lr-desk-icon-text Empty
+    //- DeskIcon
+    //-   div(style="background: green; height: 100%;", slot='drag')
+    //-     | hahh
+    //-   div O
+    //- .lr-desk-icon-wrap(@dblclick="openDustBin", :class="{lr_desk_icon_focus: dustbinUniqueFocus}")
+    //-   img.lr-desk-icon(src='/public/dustbin.svg')
+    //-   .lr-desk-icon-text Dustbin
+    //- .lr-desk-icon-wrap(@dblclick="openOsInfo" , :class="{lr_desk_icon_focus: computerInfoUniqueFocus}")
+    //-   img.lr-desk-icon(src='/public/server.svg')
+    //-   .lr-desk-icon-text Server Info
+    //- .lr-desk-icon-wrap(@dblclick="createdTask")
+    //-   img.lr-desk-icon(src='/public/file-tree.svg')
+    //-   .lr-desk-icon-text File System
+    //- .lr-desk-icon-wrap(@dblclick="openEmptyTask")
+    //-   .lr-desk-icon-text Empty
 
-    <tasks-window v-for='(item, index) in tasks' :key='item.id' :index='index'>
-    </tasks-window>
-  <tasks-bar />
+    TasksWindow(v-for='(item, index) in tasks', :key='item.id', :index='index') 
+  TasksBar
 </template>
 <script>
-import store from '__ROOT__/store-global';
-import TasksBar from '__ROOT__/cmpt/tasks-bar';
+
+import TasksBar from '__ROOT__/cmpt/tasks-bar.vue';
+import TopBar from '__ROOT__/cmpt/top-bar/index.vue';
 import TasksWindow from '__ROOT__/cmpt/task-window';
-import Icon from '__ROOT__/cmpt/unit/icon.1.vue';
+import DeskIcon from '__ROOT__/cmpt/unit/icon.1.vue';
 import {createWs, logout} from '__ROOT__/lib/login';
 const COMPUTER_TYPE = 'computerInfo';
 
 export default {
   components: {
+    TopBar,
     TasksBar,
     TasksWindow,
-    Icon
+    DeskIcon
   },
   data(){
-    return store.state;
+    return this.$store.state;
   },
   watch: {
     $route(val){
@@ -52,28 +54,28 @@ export default {
   },
   methods: {
     openUserInfo(){
-      store.commit('addTask', {
+      this.$store.commit('addTask', {
         name: 'User Info',
         type: 'userInfo',
         unique: true
       });
     },
     openOsInfo(){
-      store.commit('addTask', {
+      this.$store.commit('addTask', {
         name: 'Server Info',
         type: COMPUTER_TYPE,
         unique: true
       });
     },
     openEmptyTask(){
-      store.commit('addTask', {
+      this.$store.commit('addTask', {
         name: 'Empty',
 
         unique: true
       });
     },
     openDustBin(){
-      store.commit('addTask', {
+      this.$store.commit('addTask', {
         name: 'Dustbin',
         type: 'dustbin',
         unique: true
@@ -84,7 +86,7 @@ export default {
       this.apiGet('~/test500')
     },
     createdTask(){
-      store.commit('addTask', {
+      this.$store.commit('addTask', {
         name: 'File System',
         address: '/',
         type: 'fs'
@@ -97,11 +99,11 @@ export default {
         data.deskInited = true; //dev use.
         data.username = username;
         document.title = username + '@' + data.hostname;
-        store.commit('set', data);
+        this.$store.commit('set', data);
       });
       const TTL_TIME = 1000 * 60 * 9;
       this.$options._liveTTL = setInterval(()=>{
-        if(!store.state.isLogin) return;
+        if(!this.$store.state.isLogin) return;
         this.apiGet('~/live');
       }, TTL_TIME)
 

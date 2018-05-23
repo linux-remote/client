@@ -1,4 +1,4 @@
-import store from '../store-global';
+import store from '__ROOT__/store/index.js';
 const DOC_TITLE = document.title;
 
 var ws, wsOrigin,

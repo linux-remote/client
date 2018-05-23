@@ -15,8 +15,8 @@
 </template>
 
 <script>
-import store from '__ROOT__/store-global';
 import contextmenuStore from '__ROOT__/store/contextmenu';
+
 export default {
   data(){
     return {
@@ -25,10 +25,10 @@ export default {
   },
   methods: {
     minAll(){
-      store.commit('minAll');
+      this.$store.commit('minAll');
     },
     closeAll(){
-      store.commit('set', {tasks: []});
+      this.$store.commit('set', {tasks: []});
     },
     contextmenu(task, index, e){
       contextmenuStore.commit('open', {
@@ -36,13 +36,13 @@ export default {
           // {
           //   name: 'Copy',
           //   handleClick(){
-          //     store.commit('copyTask', task);
+          //     this.$store.commit('copyTask', task);
           //   }
           // },
           {
             name: 'Close',
             handleClick(){
-              store.commit('removeTask', index);
+              this.$store.commit('removeTask', index);
             }
           }
         ],
@@ -52,18 +52,18 @@ export default {
     },
     handleClick(task){
       if(task.isMin){
-        store.commit('showTask', task);
+        this.$store.commit('showTask', task);
       }else if(task.focus){
-        store.commit('hiddenTask', task);
+        this.$store.commit('hiddenTask', task);
       }else{
-        store.commit('taskWindowFocus', task);
+        this.$store.commit('taskWindowFocus', task);
       }
 
     }
   },
   computed:{
     tasks(){
-      return store.state.tasks;
+      return this.$store.state.tasks;
     }
   },
   created(){

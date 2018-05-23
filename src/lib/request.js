@@ -3,7 +3,7 @@ import Vue from 'vue';
 //import FileSaver from 'file-saver';
 import {noop} from 'lodash';
 import errorStore from '__ROOT__/store/error';
-import store from '__ROOT__/store-global';
+import store from '__ROOT__/store/index.js';
 
 
 // ************************* requset *************************
@@ -30,9 +30,6 @@ function httpErrorHandler(xhr){
 }
 
 function codeErrorHandler(data){
-  // if(data.code === 5){
-  //   store.commit('needRelogin');
-  // }
   errorStore.commit('show', 'code:' + data.code + data.msg);
 }
 

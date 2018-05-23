@@ -4,7 +4,6 @@ b.lr-watch {{watch}} {{timeZoneOffset}} {{timeZoneName}}
 
 <script>
 import {timeFormat, ONE_MIN} from '__ROOT__/lib/util';
-import store from '__ROOT__/store-global';
 export default {
   data(){
     return {
@@ -13,13 +12,13 @@ export default {
   },
   computed:{
     timeDiff(){
-      return this.nowDate.getTime() - (store.state.time  + (this.nowDate.getTimezoneOffset() - store.state.timeZoneOffset) * ONE_MIN);
+      return this.nowDate.getTime() - (this.$store.state.time  + (this.nowDate.getTimezoneOffset() - this.$store.state.timeZoneOffset) * ONE_MIN);
     },
     timeZoneName(){
-      return store.state.timeZoneName
+      return this.$store.state.timeZoneName
     },
     timeZoneOffset(){
-      return store.state.timeZoneOffset
+      return this.$store.state.timeZoneOffset
     },
     watch(){
       return timeFormat(this.now - this.timeDiff);

@@ -10,19 +10,19 @@ TaskWindow(:index='index')
 
 <script>
 import TaskWindow from './task-window-wrap.vue';
-import FsBody from './window-body/fs';
-import EditBody from './window-body/edit';
-import DustbinBody from './window-body/dustbin';
-import ComputerInfoBody from './window-body/computer-info';
-import UserInfoBody from './window-body/user-info';
+// import FsBody from './window-body/fs';
+// import EditBody from './window-body/edit';
+// import DustbinBody from './window-body/dustbin';
+// import ComputerInfoBody from './window-body/computer-info';
+// import UserInfoBody from './window-body/user-info';
 export default {
   components: {
-    TaskWindow,
-    FsBody,
-    EditBody,
-    DustbinBody,
-    ComputerInfoBody,
-    UserInfoBody
+    // TaskWindow,
+    // FsBody,
+    // EditBody,
+    // DustbinBody,
+    // ComputerInfoBody,
+    // UserInfoBody
   },
   props: ['index'],
   data(){
