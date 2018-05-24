@@ -28,10 +28,11 @@
 }
 </style>
 <template lang="jade">
-.lr-desk(@drop='handleDrop',
+.lr-desk(@drop='handleDeskDrop',
          @dragover.prevent='',
-         @dragend='handleDragEnd')
+         @dragend='handleIconDragEnd')
   Draggable.lr-desk-icon(v-for="v in list",
+                    @click="handleIconClick",
                     :key="v.id",
                     :id="v.id",
                     :x="v.x",
@@ -67,12 +68,14 @@ export default {
     }
   },
   methods: {
-    handleDragEnd(e){
+    handleIconClick(){
+      conosle.log('handleIconClick');
+    },
+    handleIconDragEnd(e){
       if(!this.$data._isInDesk){
         return;
       }
       this.$data._isInDesk = false;
-
       const startClient = e.dataTransfer._startClient;
       if(!startClient) return;
 
@@ -102,7 +105,7 @@ export default {
       vueEl.x = positionLeft;
       vueEl.y = positionTop;
     },
-    handleDrop(e){
+    handleDeskDrop(e){
      this.$data._isInDesk = true;
     },
     openDustBin(){
@@ -111,21 +114,15 @@ export default {
         type: 'dustbin',
         unique: true
       });
-    },
-    initDeskWH(){
-      this.$store.commit('set', {
-        deskW: this.$el.offsetWidth,
-        deskH: this.$el.offsetHeight
-      })
     }
-  },
-  mounted(){
-    this.initDeskWH();
-    window.addEventListener('resize', this.initDeskWH);
-  },
-  destroyed(){
-    window.removeEventListener('resize', this.initDeskWH);
   }
+  // mounted(){
+  //   this.initDeskWH();
+  //   window.addEventListener('resize', this.initDeskWH);
+  // },
+  // destroyed(){
+  //   window.removeEventListener('resize', this.initDeskWH);
+  // }
 
 }
 
