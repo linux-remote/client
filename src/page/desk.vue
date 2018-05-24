@@ -1,11 +1,8 @@
 <template lang="jade">
 .lr-page.lr-desk-wrap(v-if='deskInited')
   TopBar
-  #lr-desk.lr-desk
-    //- DeskIcon
-    //-   div(style="background: green; height: 100%;", slot='drag')
-    //-     | hahh
-    //-   div O
+  DeskBody
+      
     //- .lr-desk-icon-wrap(@dblclick="openDustBin", :class="{lr_desk_icon_focus: dustbinUniqueFocus}")
     //-   img.lr-desk-icon(src='/public/dustbin.svg')
     //-   .lr-desk-icon-text Dustbin
@@ -18,15 +15,15 @@
     //- .lr-desk-icon-wrap(@dblclick="openEmptyTask")
     //-   .lr-desk-icon-text Empty
 
-    TasksWindow(v-for='(item, index) in tasks', :key='item.id', :index='index') 
+    SystemApps(v-for='(item, index) in tasks', :key='item.id', :index='index') 
   TasksBar
 </template>
 <script>
 
 import TasksBar from '__ROOT__/cmpt/tasks-bar.vue';
 import TopBar from '__ROOT__/cmpt/top-bar/index.vue';
-import TasksWindow from '__ROOT__/cmpt/task-window';
-import DeskIcon from '__ROOT__/cmpt/unit/icon.1.vue';
+import SystemApps from '__ROOT__/cmpt/system-apps.vue';
+import DeskBody from '__ROOT__/cmpt/desk-body.vue';
 import {createWs, logout} from '__ROOT__/lib/login';
 const COMPUTER_TYPE = 'computerInfo';
 
@@ -34,8 +31,8 @@ export default {
   components: {
     TopBar,
     TasksBar,
-    TasksWindow,
-    DeskIcon
+    SystemApps,
+    DeskBody
   },
   data(){
     return this.$store.state;
@@ -75,6 +72,7 @@ export default {
       });
     },
     openDustBin(){
+      console.log('openDustBin')
       this.$store.commit('addTask', {
         name: 'Dustbin',
         type: 'dustbin',
@@ -112,12 +110,17 @@ export default {
       //this.openDustBin();
     }
   },
+  mounted(){
+
+    // this.$store.commit('set', {
+    //   deskW: window.APP.$elDesk.width(),
+    //   deskH: window.APP.$elDesk.height()
+    // })
+  },
   destroyed(){
     clearInterval(this.$options._liveTTL);
   },
-  mounted(){
-    window.APP.$elDesk = this.$el;
-  },
+
   created(){
     if(!this.deskInited){
       this.init();

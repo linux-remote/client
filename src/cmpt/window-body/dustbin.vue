@@ -28,7 +28,6 @@
 </template>
 
 <script>
-import store from '__ROOT__/store-global';
 import {timeFormat} from '__ROOT__/lib/util';
 export default {
   //props: ['address'],
@@ -46,7 +45,7 @@ export default {
   },
   computed: {
     onFsDel(){
-      return store.state.onFsDel
+      return this.$store.state.onFsDel
     },
     isError(){
       return !this.data && this.error
@@ -60,7 +59,7 @@ export default {
         data: item,
         type: 'post',
         success(){
-          //store.commit('onDustbinRecycle')
+          //this.$store.commit('onDustbinRecycle')
           this.getData();
         }
       })

@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import store from '__ROOT__/store-global';
+
 import contextmenuStore from '__ROOT__/store/contextmenu';
 import flyTextAreaStore from '__ROOT__/store/fly-textarea';
 import FsIcon from './fs-icon';
@@ -107,10 +107,10 @@ export default {
       return !Array.isArray(this.data);
     },
     username(){
-      return store.state.username
+      return this.$store.state.username
     },
     groups(){
-      return store.state.groups
+      return this.$store.state.groups
     },
     address(){
       return '/' + this.addressArr.join('/');
@@ -217,7 +217,7 @@ export default {
               url: '~/fs' + self.getItemPath(item.name) + '?type=file',
               success(){
                 //self.newFileIndex += 1;
-                store.commit('onFsDel');
+                this.$store.commit('onFsDel');
                 self.getData();
               }
             })
@@ -396,7 +396,7 @@ export default {
 
       }else if(item.type === 'RegularFile'){
 
-        store.commit('addTask', {
+        this.$store.commit('addTask', {
           type: 'edit',
           name: item.name + '**' + this.address + '**',
           width: 500,
@@ -521,7 +521,7 @@ export default {
   },
   created(){
     const pData = this.$parent;
-    const address = pData.address || store.state.homedir;
+    const address = pData.address || this.$store.state.homedir;
     this.setAddress(address);
   }
 }
