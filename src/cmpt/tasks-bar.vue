@@ -1,8 +1,7 @@
-<style>
 
-</style>
 <template lang="jade">
 .lr-task-bar
+  QuickBar
   .lr-task-bar-body
     .lr-task-bar-item(v-for='(i,index) in tasks', @mousedown='noopStop', @click.stop.prevent = 'handleClick(i)',
     @contextmenu.prevent.stop = 'contextmenu(i, index, $event)',
@@ -16,14 +15,18 @@
 
 <script>
 import contextmenuStore from '__ROOT__/store/contextmenu';
-
+import QuickBar from './quick-bar.vue';
 export default {
+  components: {
+    QuickBar
+  },
   data(){
     return {
       nowDate: null
     }
   },
   methods: {
+
     minAll(){
       this.$store.commit('minAll');
     },

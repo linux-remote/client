@@ -50,6 +50,7 @@ export default {
     }
   },
   methods: {
+
     openUserInfo(){
       this.$store.commit('addTask', {
         name: 'User Info',
