@@ -9,14 +9,14 @@
      :class='{lr_task_bar_item_focus: i.focus, lr_task_bar_item_close: i.isMin, lr_task_bar_item_max: i.isMax}')
       {{i.name}}
   .lr-2-control-wrap
-    .lr-2-control(title='Minimize All',@mousedown='noopStop' @click.stop='minAll') −
+    .lr-2-control(title='Minimize All',@mousedown='noopStop' @click.stop='taskMinAll') −
     .lr-2-control(title='Close All', @click='closeAll') X
 
 </template>
 
 <script>
 import contextmenuStore from '__ROOT__/store/contextmenu';
-import Start from './Start.vue';
+import Start from './start.vue';
 import QuickBar from './quick-bar.vue';
 export default {
   components: {
@@ -30,8 +30,8 @@ export default {
   },
   methods: {
 
-    minAll(){
-      this.$store.commit('minAll');
+    taskMinAll(){
+      this.$store.commit('taskMinAll');
     },
     closeAll(){
       this.$store.commit('set', {tasks: []});

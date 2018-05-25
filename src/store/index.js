@@ -19,6 +19,7 @@ import upload from './module/upload';
 
 const store = new Vuex.Store({
   modules: {
+
     upload
   },
   state: {
@@ -33,7 +34,10 @@ const store = new Vuex.Store({
       lr_sys_app_return_desk: {
         type: 'system',
         iconUrl: '/public/img/tango-style/user-desktop.png',
-        title: '返回桌面'
+        title: '返回桌面',
+        handleClick(){
+          store.commit('taskMinAll');
+        }
       }
     },
     // global
@@ -176,7 +180,7 @@ const store = new Vuex.Store({
       task.focus = false;
       store.commit('focusNextTask');
     },
-    minAll(state){
+    taskMinAll(state){
       if(state._tmpMinAllTasks.length){
         state._tmpMinAllTasks.forEach(function(v){
           v.isMin = false;
@@ -232,7 +236,6 @@ const store = new Vuex.Store({
     taskWindowFocus(state, task){
       if(task.focus === true) return;
       if(state._tmpMinAllTasks.length){
-        //store.commit('minAll');
         state._tmpMinAllTasks = [];
       }
       if(state.currTask === task){
@@ -261,5 +264,5 @@ function sync(data){
     localStorage.setItem(k, v);
   })
 }
-
+console.log('store', store)
 export default store;
