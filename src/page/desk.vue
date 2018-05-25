@@ -20,9 +20,9 @@
 </template>
 <script>
 
-import TasksBar from '__ROOT__/cmpt/tasks-bar.vue';
+import TasksBar from '__ROOT__/cmpt/task-bar.vue';
 import TopBar from '__ROOT__/cmpt/top-bar/index.vue';
-import SystemApps from '__ROOT__/cmpt/system-apps.vue';
+import SystemApps from '__ROOT__/cmpt/sys-apps/index.vue';
 import DeskBody from '__ROOT__/cmpt/desk-body.vue';
 import {createWs, logout} from '__ROOT__/lib/login';
 const COMPUTER_TYPE = 'computerInfo';

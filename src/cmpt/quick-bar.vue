@@ -63,7 +63,7 @@ export default {
             iconUrl: '/public/img/tango-style/user-trash.png'
       })
       localStorage.quick_bar_list = JSON.stringify(this.list);
-      this.$store.commit('onDragEnd');
+      
     }
   },
   mounted(){

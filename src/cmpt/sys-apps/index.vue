@@ -9,7 +9,7 @@ TaskWindow(:index='index')
 </template>
 
 <script>
-import TaskWindow from './task-window.vue';
+import TaskWindow from '../task-window.vue';
 import FsBody from './window-body/fs.vue';
 import DustbinBody from './window-body/dustbin';
 // import EditBody from './window-body/edit';

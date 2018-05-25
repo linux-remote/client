@@ -35,7 +35,9 @@ export default {
         _vueEl: this
       }
     },
-    // handleDragEnd(e){
+    handleDragEnd(e){
+      this.$store.commit('onDragEnd');
+
     //   console.log('handleDragEnd')
     //   const startClient = e.dataTransfer._startClient;
     //   if(!startClient) return;
@@ -65,7 +67,7 @@ export default {
     //   this.x = positionLeft;
     //   this.y = positionTop;
 
-    // }
+     }
   }
 
 }
