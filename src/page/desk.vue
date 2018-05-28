@@ -1,7 +1,7 @@
 <template lang="jade">
 .lr-page.lr-desk-wrap(v-if='deskInited')
   TopBar
-  DeskBody
+  DeskTop
       
     //- .lr-desk-icon-wrap(@dblclick="openDustBin", :class="{lr_desk_icon_focus: dustbinUniqueFocus}")
     //-   img.lr-desk-icon(src='/public/dustbin.svg')
@@ -23,7 +23,7 @@
 import TasksBar from '__ROOT__/cmpt/task-bar.vue';
 import TopBar from '__ROOT__/cmpt/top-bar/index.vue';
 import SystemApps from '__ROOT__/cmpt/sys-apps/index.vue';
-import DeskBody from '__ROOT__/cmpt/desk-body.vue';
+import DeskTop from '__ROOT__/cmpt/desktop/body.vue';
 import {createWs, logout} from '__ROOT__/lib/login';
 const COMPUTER_TYPE = 'computerInfo';
 
@@ -31,8 +31,9 @@ export default {
   components: {
     TopBar,
     TasksBar,
+    DeskTop,
     SystemApps,
-    DeskBody
+    
   },
   data(){
     return this.$store.state;

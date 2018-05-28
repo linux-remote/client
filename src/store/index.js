@@ -264,5 +264,5 @@ function sync(data){
     localStorage.setItem(k, v);
   })
 }
-console.log('store', store)
+//console.log('store', store)
 export default store;

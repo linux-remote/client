@@ -1,6 +1,6 @@
 
 <template lang="jade">
-.lr-error(@mousedown='noopStop' v-if="message.length")
+.lr-error(@mousedown='noopStop' v-if="message.length" , style="display:none")
   .lr-error-title 
     b 错误
 

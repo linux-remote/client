@@ -1,54 +1,19 @@
-<style>
-.lr-desk-icon{
-  position: absolute;
-  width: 80px;
-  height: 80px;
-  user-select: none;
-  display:flex;
-  flex-direction: column;
-  align-items: center;
-  z-index: 2;
-}
-
-.lr-desk-icon-img{
-  height: 60px;
-  width: 100%;
-  background-position: center;
-  background-size: contain;
-  background-repeat: no-repeat;
-}
-.lr-desk-icon-text{
-  font-size: 12px;
-}
-.lr-desk-icon:hover{
-  background-color: #D3D3D3;
-}
-.lr_desk_icon_focus{
-  background-color: #ddd;
-}
-</style>
 <template lang="jade">
 .lr-desk(@drop='handleDeskDrop',
          @dragover.prevent='',
          @dragend='handleIconDragEnd')
-  Draggable.lr-desk-icon(v-for="v in list",
-                    @click="handleIconClick",
-                    :key="v.id",
-                    :id="v.id",
-                    :x="v.x",
-                    :y="v.y",
-                    :class="{lr_desk_icon_focus: appMap[v.id].unique}")
-    .lr-desk-icon-img(:style="{backgroundImage: `url(${appMap[v.id].iconUrl})`}")
-    .lr-desk-icon-text {{appMap[v.id].title}}
+  Icon(v-for="v in list",
+      :key="v.id",
+      :item="v")
 </template>
 <script>
 
-import Draggable from '__ROOT__/cmpt/unit/draggable.vue';
+import Icon from './icon.vue';
 
 
 export default {
   components: {
-    Draggable
+    Icon
   },
   data(){
     const firstList = [{
@@ -71,6 +36,7 @@ export default {
     handleIconClick(){
       conosle.log('handleIconClick');
     },
+
     handleIconDragEnd(e){
       if(!this.$data._isInDesk){
         return;
@@ -80,7 +46,7 @@ export default {
       if(!startClient) return;
 
       const vueEl = startClient._vueEl;
-      let positionTop = vueEl.y  + (e.clientY - startClient.y);
+      let positionTop = vueEl.item.y  + (e.clientY - startClient.y);
       if(positionTop < 0) {
         positionTop = 0;
       }else{
@@ -90,7 +56,7 @@ export default {
           positionTop = deskH - elH;
         }
       }
-      let positionLeft =  vueEl.x + (e.clientX - startClient.x);
+      let positionLeft =  vueEl.item.x + (e.clientX - startClient.x);
       if(positionLeft < 0) {
         positionLeft = 0;
       }else{
@@ -102,8 +68,9 @@ export default {
         }
       }
 
-      vueEl.x = positionLeft;
-      vueEl.y = positionTop;
+      vueEl.item.x = positionLeft;
+      vueEl.item.y = positionTop;
+
     },
     handleDeskDrop(e){
      this.$data._isInDesk = true;

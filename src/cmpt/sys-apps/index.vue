@@ -1,10 +1,12 @@
 <template lang="jade">
 TaskWindow(:index='index')
-  fs-body(v-if='type==="fs"')
-  edit-body(v-else-if='type==="edit"' ,:address='address')
-  dustbin-body(v-else-if='type==="dustbin"')
-  computer-info-body(v-else-if='type==="computerInfo"')
-  user-info-body(v-else-if='type==="userInfo"')
+  FsBody(v-if='type==="fs"')
+  DustbinBody(v-else-if='type==="dustbin"')
+  
+  //- edit-body(v-else-if='type==="edit"' ,:address='address')
+  
+  //- computer-info-body(v-else-if='type==="computerInfo"')
+  //- user-info-body(v-else-if='type==="userInfo"')
   div(v-else='!type') Empty
 </template>
 
