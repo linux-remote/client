@@ -17,13 +17,13 @@ export default {
   },
   data(){
     const firstList = [{
-      id: 'lr_sys_app_recycle_bin',
+      id: 'sys_app_recycle_bin',
       x: 0,
       y: 0
     }];
 
     return {
-      list: localStorage.deskIconList || firstList,
+      list: localStorage.deskIconList  ? JSON.parse(localStorage.deskIconList) : firstList,
       _isInDesk: false
     }
   },
@@ -70,7 +70,7 @@ export default {
 
       vueEl.item.x = positionLeft;
       vueEl.item.y = positionTop;
-
+      localStorage.deskIconList = JSON.stringify(this.list);
     },
     handleDeskDrop(e){
      this.$data._isInDesk = true;

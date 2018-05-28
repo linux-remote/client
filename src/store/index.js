@@ -24,14 +24,15 @@ const store = new Vuex.Store({
   },
   state: {
     currDragingId: null,
+
     appMap: {
-      lr_sys_app_recycle_bin : {
+      sys_app_recycle_bin : {
         type: 'system',
         iconUrl: '/public/img/tango-style/user-trash.png',
         unique: true,
         title: '回收站'
       },
-      lr_sys_app_return_desk: {
+      sys_app_return_desk: {
         type: 'system',
         iconUrl: '/public/img/tango-style/user-desktop.png',
         title: '返回桌面',
@@ -94,12 +95,12 @@ const store = new Vuex.Store({
       state.currDragingId = null;
     },
     errorMessagesShow(state, message) {
-      // window.APP.$elMain.addEventListener('mousedown', () => {
-      //   store.commit('close');
-      // },{
-      //   once: true,
-      //   capture: true
-      // });
+      document.addEventListener('mousedown', () => {
+        store.commit('close');
+      },{
+        once: true,
+        capture: true
+      });
       state.errorMessages.push(message);
     },
     errorMessagesClearAll(state){

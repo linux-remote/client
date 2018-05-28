@@ -44,7 +44,6 @@ export default {
   methods: {
     handleDragenter(e){
       var id = this.$store.state.currDragingId;
-      console.log('handleDragenter-id', id)
       const isHave = this.list.find(function(v){
         return v.id === id;
       })

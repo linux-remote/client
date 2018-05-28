@@ -66,7 +66,6 @@ export default {
   methods: {
     handleDocumentMousedown(){
       this.isShowMenu = false;
-      console.log('handleDocumentMousedown')
     },
     handleClick(){
       this.isShowMenu = !this.isShowMenu;
