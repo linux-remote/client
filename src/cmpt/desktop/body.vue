@@ -21,9 +21,11 @@ export default {
       x: 0,
       y: 0
     }];
-
+    //{"type":"app","id":"sys_app_recycle_bin","x": 0,"y":0}
     return {
-      list: localStorage.deskIconList  ? JSON.parse(localStorage.deskIconList) : firstList,
+      list: localStorage.deskIconList  ? 
+      JSON.parse(localStorage.deskIconList) : 
+      firstList,
       _isInDesk: false
     }
   },
