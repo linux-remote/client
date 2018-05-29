@@ -27,11 +27,6 @@ export default {
       _isInDesk: false
     }
   },
-  computed: {
-    appMap(){
-      return this.$store.state.appMap
-    }
-  },
   methods: {
     handleIconClick(){
       conosle.log('handleIconClick');
@@ -42,7 +37,7 @@ export default {
         return;
       }
       this.$data._isInDesk = false;
-      const startClient = e.dataTransfer._startClient;
+      const startClient = this.$store.state.dragTransferData._startClient;
       if(!startClient) return;
 
       const vueEl = startClient._vueEl;
@@ -81,7 +76,7 @@ export default {
           data: JSON.stringify(this.list)
         },
         success(){
-          console.log('ok');
+          console.log('desktop save ok');
         }
       })
     },
@@ -100,7 +95,6 @@ export default {
     this.request({
       url: '~/desktop',
       success(result){
-
         this.list = JSON.parse(result);
       }
     })

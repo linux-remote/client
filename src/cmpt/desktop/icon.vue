@@ -30,7 +30,6 @@
 <template lang="jade">
 .lr-desk-icon(draggable="true",
               @dragstart.stop='handleDragStart(item, $event)',
-              @dragend='handleDragEnd',
               @dbclick="app.handleClick || ''",
               :class="{lr_desk_icon_focus: app.unique}",
               :style='{left: item.x + "px", top: item.y + "px"}')
@@ -57,15 +56,15 @@ export default {
   },
   methods: {
     handleDragStart(v, e){
-      this.$store.commit('onDragStart', e.target.id);
-      e.dataTransfer._startClient = {
-        x: e.clientX,
-        y: e.clientY,
-        _vueEl: this
-      }
-    },
-    handleDragEnd(e){
-      this.$store.commit('onDragEnd');
+      this.$store.commit('transferDragData', {
+        id: this.item.id,
+        type: this.item.type,
+        _startClient : {
+          x: e.clientX,
+          y: e.clientY,
+          _vueEl: this
+        }
+      });
     }
   }
 }

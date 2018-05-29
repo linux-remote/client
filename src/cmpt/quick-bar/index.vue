@@ -23,27 +23,29 @@
 .lr-quick-bar(@dragenter='handleDragenter',
               @dragover='handleDragover',
               @drop='handleDrop')
-  .lr-quick-bar-item(v-for="v in list",
-                    :key="v.id",
-                    draggable="true",
-                    :style="{backgroundImage: `url(${v.iconUrl})`}")
+  Item(v-for="v in list",
+      :item="v",
+      :key="v.id")
 
 </template>
 
 <script>
-
+import Item from './item.vue';
 
 export default {
+  components: {
+    Item
+  },
   data(){
     return {
-      list: localStorage.quick_bar_list ? JSON.parse(localStorage.quick_bar_list) : [],
+      list: [],
       _isCanDrop: true
     }
   },
-
   methods: {
     handleDragenter(e){
-      var id = this.$store.state.currDragingId;
+      var data = this.$store.state.dragTransferData;
+      var id = data.id;
       const isHave = this.list.find(function(v){
         return v.id === id;
       })
@@ -56,17 +58,33 @@ export default {
       }
     },
     handleDrop(e){
-      var id = this.$store.state.currDragingId;
+      var data = this.$store.state.dragTransferData;
       this.list.push({
-            id,
-            iconUrl: '/public/img/tango-style/user-trash.png'
+        id: data.id,
+        type: data.type
       })
-      localStorage.quick_bar_list = JSON.stringify(this.list);
-      
-    }
+      this.save();
+    },
+    save(){
+      this.request({
+        url: '~/quickBar',
+        type: 'post',
+        data: {
+          data: JSON.stringify(this.list)
+        },
+        success(){
+          console.log('save quickBar ok');
+        }
+      })
+    },
   },
-  mounted(){
-    // window.dragula([this.$el]);
+  created(){
+    this.request({
+      url: '~/quickBar',
+      success(result){
+        this.list = JSON.parse(result);
+      }
+    })
   }
 }
 </script>

@@ -17,7 +17,7 @@
 <script>
 import contextmenuStore from '__ROOT__/store/contextmenu';
 import Start from './start.vue';
-import QuickBar from './quick-bar.vue';
+import QuickBar from './quick-bar/index.vue';
 export default {
   components: {
     Start,

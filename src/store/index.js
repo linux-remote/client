@@ -23,7 +23,7 @@ const store = new Vuex.Store({
     upload
   },
   state: {
-    currDragingId: null,
+    dragTransferData: null,
 
     appMap: {
       sys_recycle_bin : {
@@ -88,11 +88,13 @@ const store = new Vuex.Store({
     sessError: false
   },
   mutations: {
-    onDragStart(state, id){
-      state.currDragingId = id;
-    },
-    onDragEnd(state){
-      state.currDragingId = null;
+    transferDragData(state, data){
+      state.dragTransferData = data;
+      document.addEventListener('dragend', function(){
+        state.dragTransferData = null;
+      }, {
+        once: true
+      })
     },
     errorMessagesShow(state, message) {
       document.addEventListener('mousedown', () => {
