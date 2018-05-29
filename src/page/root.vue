@@ -2,22 +2,23 @@
 #lr-app.lr-h100
   #lr-main.lr-h100(@mousedown='handleMousedown')
     router-view
-  contextmenu
-  fly-textarea
+  #lr-global.lr-global
+  Contextmenu
+  FlyTextarea
   UploadInput
-  error
+  Error
 </template>
 <script>
 import UploadInput from '__ROOT__/cmpt/upload/golbal-input.vue';
-import Contextmenu from '__ROOT__/cmpt/contextmenu';
-import flyTextarea from '__ROOT__/cmpt/fly-textarea';
+import Contextmenu from '__ROOT__/cmpt/contextmenu.vue';
+import FlyTextarea from '__ROOT__/cmpt/fly-textarea';
 import Error from '__ROOT__/cmpt/error';
 export default {
   components:{
     Contextmenu,
     UploadInput,
     Error,
-    flyTextarea
+    FlyTextarea
   },
   data(){
     return {
@@ -38,7 +39,6 @@ export default {
     window.APP.$elMain = document.getElementById('lr-main');
   },
   created(){
-    window.APP.$router = this.$router;
     this.getData();
   }
 }

@@ -37,6 +37,10 @@ body{
 .lr-page{
   display: flex;
 }
+.lr-global{
+  width: 0;
+  height: 0;
+}
 
 // ======================= desk =======================
 .lr-desk-wrap{
@@ -759,9 +763,14 @@ $rightCtrlWidth : 100px;
   }
 
   .lr-contextmenu{
-    position: absolute; z-index:$topZindex; border: 1px outset #eee;
-    background: #eee; top:0; left:0;
+    position: absolute; 
+    z-index:$topZindex; 
+    border: 1px outset #eee;
+    background: #eee; 
+    top:0; 
+    left:0;
     font-size: 14px;
+    width: 280px;
     .lr-2-item{
       padding: 5px 10px; border-bottom: 1px solid #999; cursor: pointer;
 

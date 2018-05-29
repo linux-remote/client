@@ -63,7 +63,7 @@ export default {
   },
   data(){
     return {
-      isShowMenu: true
+      isShowMenu: false
     }
   },
   computed: {

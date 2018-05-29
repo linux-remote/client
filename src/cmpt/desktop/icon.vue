@@ -29,6 +29,7 @@
 </style>
 <template lang="jade">
 .lr-desk-icon(draggable="true",
+              @contextmenu.prevent.stop='handleContextmenu',
               @dblclick="handleDblclick",
               @dragstart.stop='handleDragStart(item, $event)',
               
@@ -36,17 +37,26 @@
               :style='{left: item.x + "px", top: item.y + "px"}')
   .lr-desk-icon-img(:style="{backgroundImage: `url(${app.iconUrl})`}")
   .lr-desk-icon-text {{currTitle}}
+  Contextmenu(v-if="isShowContextmenu", :close="closeContextMenu")
+    h1 icon
 </template>
 <script>
-
+import Contextmenu from '../global/contextmenu.vue';
 export default {
+  components: {
+    Contextmenu
+  },
   props: {
     item: {
       type: Object,
       required: true
     }
   },
-
+  data(){
+    return {
+      isShowContextmenu: false
+    }
+  },
   computed: {
     app(){
       return this.$store.state.appMap[this.item.id]
@@ -57,6 +67,17 @@ export default {
 
   },
   methods: {
+    handleContextmenu(e){
+      window.APP.contextMenuTransferData = {
+        x: e.clientX,
+        y: e.clientY
+      }
+      this.isShowContextmenu = true;
+    },
+    closeContextMenu(){
+      window.APP.contextMenuTransferData = null;
+      this.isShowContextmenu = false;
+    },
     handleDblclick(){
       this.app.handleClick && this.app.handleClick();
     },

@@ -12,19 +12,19 @@ $win.on('resize', function(){
 
 window.APP = {
   $win,
-  $elMain: null
+  $elMain: null,
+  contextMenuTransferData: null
 }
 
 import upload from './module/upload';
-
+import contextmenu from './module/contextmenu';
 const store = new Vuex.Store({
   modules: {
-
+    contextmenu,
     upload
   },
   state: {
     dragTransferData: null,
-
     appMap: {
       sys_file: {
         type: 'system',
@@ -93,7 +93,7 @@ const store = new Vuex.Store({
     _tmpMinAllCurrTasksFocus: false,
     latestTask: {}, // last created task
     currTask: {}, // focused task
-    taskMaxZindex: 0,
+    taskMaxZindex: 3,
     uniqueTaskMap: {
       // computerInfo: null,
       // dustbin: null

@@ -1,28 +1,44 @@
 <template lang="jade">
 .lr-desk(@drop='handleDeskDrop',
          @dragover.prevent='',
+         @contextmenu.prevent.stop='handleContextmenu',
          @dragend='handleIconDragEnd')
   Icon(v-for="v in list",
       :key="v.id",
       :item="v")
+  Contextmenu(v-if="isShowContextmenu", :close='closeContextMenu')
+    h1 haha
   slot
 </template>
 <script>
 
 import Icon from './icon.vue';
-
+import Contextmenu from '../global/contextmenu.vue';
 
 export default {
   components: {
-    Icon
+    Icon,
+    Contextmenu
   },
   data(){
     return {
       list: [],
+      isShowContextmenu: false,
       _isInDesk: false
     }
   },
   methods: {
+    handleContextmenu(e){
+      window.APP.contextMenuTransferData = {
+        x: e.clientX,
+        y: e.clientY
+      }
+      this.isShowContextmenu = true;
+    },
+    closeContextMenu(){
+      window.APP.contextMenuTransferData = null;
+      this.isShowContextmenu = false;
+    },
     handleIconDragEnd(e){
       console.log('handleIconDragEnd')
       if(!this.$data._isInDesk){
