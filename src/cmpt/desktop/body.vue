@@ -16,16 +16,14 @@ export default {
     Icon
   },
   data(){
-    const firstList = [{
-      id: 'sys_app_recycle_bin',
-      x: 0,
-      y: 0
-    }];
-    //{"type":"app","id":"sys_app_recycle_bin","x": 0,"y":0}
+    // const firstList = [{
+    //   id: 'sys_recycle_bin',
+    //   x: 0,
+    //   y: 0
+    // }];
+    // //{"type":"app","id":"sys_recycle_bin","x": 0,"y":0}
     return {
-      list: localStorage.deskIconList  ? 
-      JSON.parse(localStorage.deskIconList) : 
-      firstList,
+      list: [],
       _isInDesk: false
     }
   },
@@ -72,7 +70,20 @@ export default {
 
       vueEl.item.x = positionLeft;
       vueEl.item.y = positionTop;
-      localStorage.deskIconList = JSON.stringify(this.list);
+      
+      this.save();
+    },
+    save(){
+      this.request({
+        url: '~/desktop',
+        type: 'post',
+        data: {
+          data: JSON.stringify(this.list)
+        },
+        success(){
+          console.log('ok');
+        }
+      })
     },
     handleDeskDrop(e){
      this.$data._isInDesk = true;
@@ -84,14 +95,16 @@ export default {
         unique: true
       });
     }
+  },
+  created(){
+    this.request({
+      url: '~/desktop',
+      success(result){
+
+        this.list = JSON.parse(result);
+      }
+    })
   }
-  // mounted(){
-  //   this.initDeskWH();
-  //   window.addEventListener('resize', this.initDeskWH);
-  // },
-  // destroyed(){
-  //   window.removeEventListener('resize', this.initDeskWH);
-  // }
 
 }
 

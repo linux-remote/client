@@ -26,7 +26,7 @@ const store = new Vuex.Store({
     currDragingId: null,
 
     appMap: {
-      sys_app_recycle_bin : {
+      sys_recycle_bin : {
         type: 'system',
         iconUrl: '/public/img/tango-style/user-trash.png',
         unique: true,
