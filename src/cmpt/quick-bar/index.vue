@@ -1,23 +1,11 @@
 <style>
 .lr-quick-bar{
   border-right: 1px solid #d1d1d1;
-  min-width: 200px;
+  min-width: 100px;
   max-width: 300px;
   display: flex;
+}
 
-}
-.lr-quick-bar-item{
-  width: 40px;
-  margin-right: 10px;
-  height: 100%;
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  border-right: 1px solid #888;
-}
-.lr-quick-bar-item:hover{
-  background-color: #000;
-}
 </style>
 <template lang="jade">
 .lr-quick-bar(@dragenter='handleDragenter',
@@ -67,7 +55,7 @@ export default {
     },
     save(){
       this.request({
-        url: '~/quickBar',
+        url: '~/quick_bar',
         type: 'post',
         data: {
           data: JSON.stringify(this.list)
@@ -80,7 +68,7 @@ export default {
   },
   created(){
     this.request({
-      url: '~/quickBar',
+      url: '~/quick_bar',
       success(result){
         this.list = JSON.parse(result);
       }

@@ -7,7 +7,7 @@
   display:flex;
   flex-direction: column;
   align-items: center;
-  z-index: 2;
+    z-index:1;
 }
 
 .lr-desk-icon-img{
@@ -29,8 +29,9 @@
 </style>
 <template lang="jade">
 .lr-desk-icon(draggable="true",
+              @dblclick="handleDblclick",
               @dragstart.stop='handleDragStart(item, $event)',
-              @dbclick="app.handleClick || ''",
+              
               :class="{lr_desk_icon_focus: app.unique}",
               :style='{left: item.x + "px", top: item.y + "px"}')
   .lr-desk-icon-img(:style="{backgroundImage: `url(${app.iconUrl})`}")
@@ -52,9 +53,13 @@ export default {
     },
     currTitle(){
       return this.item.title || this.app.title
-    }
+    },
+
   },
   methods: {
+    handleDblclick(){
+      this.app.handleClick && this.app.handleClick();
+    },
     handleDragStart(v, e){
       this.$store.commit('transferDragData', {
         id: this.item.id,

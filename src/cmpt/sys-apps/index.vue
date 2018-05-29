@@ -1,7 +1,7 @@
 <template lang="jade">
 TaskWindow(:index='index')
   FsBody(v-if='type==="fs"')
-  DustbinBody(v-else-if='type==="dustbin"')
+  RecycleBinBody(v-else-if='type==="recycle_bin"')
   
   //- edit-body(v-else-if='type==="edit"' ,:address='address')
   
@@ -13,7 +13,7 @@ TaskWindow(:index='index')
 <script>
 import TaskWindow from '../task-window.vue';
 import FsBody from './window-body/fs.vue';
-import DustbinBody from './window-body/dustbin';
+import RecycleBinBody from './window-body/recycle-bin.vue';
 // import EditBody from './window-body/edit';
 // import ComputerInfoBody from './window-body/computer-info';
 // import UserInfoBody from './window-body/user-info';
@@ -21,7 +21,7 @@ export default {
   components: {
     TaskWindow,
     FsBody,
-    DustbinBody,
+    RecycleBinBody,
     // EditBody,
     
     // ComputerInfoBody,

@@ -209,15 +209,12 @@ $taskColor: $barColor;
   opacity: 1;
 }
 
-// .lr-window-body-wrap{
-//   flex-grow:1; 
-//   position: relative;
-// }
 .lr-window-body{
   flex-grow:1; 
   display: flex;
   flex-direction: column;
   position: relative;
+  background-color: #fff;
 }
 .lr-task-control-close::before{
   content: '✖';
@@ -461,7 +458,21 @@ $rightCtrlWidth : 100px;
     }
   }
 }
- //************* topBar end *************
+//************* topBar end *************
+//************* app start *************
+.lr-sys-app-icon{
+  width: 30px;
+  height: 30px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+.lr-sys-app-title{
+  padding-left: 10px;
+}
+
+//************* app end *************
+
   //************* old pro *************
     button, select{
       padding: 0 8px;

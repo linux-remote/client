@@ -31,6 +31,8 @@
   color: #fff;
   padding-left: 10px;
   border-bottom: 1px solid #ddd;
+  display: flex;
+
 }
 .lr-start-menu-item:hover{
   background-color:#eee;
@@ -39,23 +41,29 @@
 </style>
 <template lang="jade">
 .lr-start
-  .lr-start-btn(@click='handleClick', @mousedown.stop='')
-  .lr-start-menu(v-show="isShowMenu", 
-                @mousedown.stop='')
+  .lr-start-btn(@click='handleClick')
+  .lr-start-menu(v-show="isShowMenu")
     .lr-start-menu-item 系统信息
     .lr-start-menu-item 用户信息
     .lr-start-menu-item 所有程序
-    .lr-start-menu-item(v-for='v in appList',
-                        :key="v.id")
-      {{v.title}}
+    br
+    AppItem.lr-start-menu-item(v-for='(v, k) in appList',
+                              :item="v",
+                              :id="k",
+                              :key="k")
+      .lr-sys-app-icon(:style="`background-image:url(${v.iconUrl})`") 
+      .lr-sys-app-title {{v.title}}
 </template>
 
 <script>
-
+import AppItem from './app-item.vue';
 export default {
+  components: {
+    AppItem
+  },
   data(){
     return {
-      isShowMenu: false
+      isShowMenu: true
     }
   },
   computed: {
@@ -64,15 +72,28 @@ export default {
     }
   },
   methods: {
-    handleDocumentMousedown(){
-      this.isShowMenu = false;
+    handleDocMousedown(e){
+      console.log('handleDocMousedown');
+      if(this.$el === e.target || this.$el.contains(e.target)){
+        return;
+      }else{
+        //console.log('remove by doc mousedown');
+        document.removeEventListener('mousedown', 
+          this.handleDocMousedown, 
+          true); // true is capture! must set.
+        this.isShowMenu = false;
+      }
     },
     handleClick(){
       this.isShowMenu = !this.isShowMenu;
       if(this.isShowMenu){
-        document.addEventListener('mousedown', this.handleDocumentMousedown, {once: true})
+        //console.log('Listener by click');
+        document.addEventListener('mousedown', this.handleDocMousedown, {
+          capture: true
+        })
       }else {
-        document.removeEventListener('mousedown', this.handleDocumentMousedown);
+        //console.log('remove by click');
+        document.removeEventListener('mousedown', this.handleDocMousedown, true);
       }
     }
   }

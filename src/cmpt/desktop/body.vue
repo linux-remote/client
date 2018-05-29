@@ -5,6 +5,7 @@
   Icon(v-for="v in list",
       :key="v.id",
       :item="v")
+  slot
 </template>
 <script>
 
@@ -16,29 +17,26 @@ export default {
     Icon
   },
   data(){
-    // const firstList = [{
-    //   id: 'sys_recycle_bin',
-    //   x: 0,
-    //   y: 0
-    // }];
-    // //{"type":"app","id":"sys_recycle_bin","x": 0,"y":0}
     return {
       list: [],
       _isInDesk: false
     }
   },
   methods: {
-    handleIconClick(){
-      conosle.log('handleIconClick');
-    },
-
     handleIconDragEnd(e){
+      console.log('handleIconDragEnd')
       if(!this.$data._isInDesk){
         return;
       }
       this.$data._isInDesk = false;
-      const startClient = this.$store.state.dragTransferData._startClient;
-      if(!startClient) return;
+      const dragTransferData = this.$store.state.dragTransferData;
+      if(!dragTransferData){
+        console.log('body dragend !dragTransferData');
+        return;
+      }
+
+      const startClient = dragTransferData._startClient;
+      console.log('body dragend');
 
       const vueEl = startClient._vueEl;
       let positionTop = vueEl.item.y  + (e.clientY - startClient.y);
@@ -81,6 +79,18 @@ export default {
       })
     },
     handleDeskDrop(e){
+      const dragTransferData = this.$store.state.dragTransferData;
+      if(dragTransferData.isRaw){
+        
+        this.list.push({
+          id: dragTransferData.id,
+          type: dragTransferData.type,
+          x: e.clientX,
+          y: e.clientY
+        })
+        this.save();
+        return;
+      }
      this.$data._isInDesk = true;
     },
     openDustBin(){

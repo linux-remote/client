@@ -55,7 +55,7 @@ export default {
     recycle(item){
       //let name = item.delTime;
       this.request({
-        url: '~/dustbin/recycle',
+        url: '~/recycle_bin/recycle',
         data: item,
         type: 'post',
         success(){
@@ -67,7 +67,7 @@ export default {
     del(item){
       let name = item.delTime;
       this.request({
-        url: '~/dustbin/' + name,
+        url: '~/recycle_bin/' + name,
         type: 'delete',
         success(){
           this.getData();
@@ -77,7 +77,7 @@ export default {
     timeFormat,
     clearAll(){
       this.request({
-        url: '~/dustbin',
+        url: '~/recycle_bin',
         type: 'delete',
         requestKey: 'isRequest',
         success(){
@@ -91,7 +91,7 @@ export default {
     },
     getData(){
       this.request({
-        url: '~/dustbin',
+        url: '~/recycle_bin',
         requestKey: 'isRequest',
         success(data){
           this.data = data;

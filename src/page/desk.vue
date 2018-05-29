@@ -2,8 +2,6 @@
 .lr-page.lr-desk-wrap(v-if='deskInited')
   TopBar
   DeskTop
-      
-    //- .lr-desk-icon-wrap(@dblclick="openDustBin", :class="{lr_desk_icon_focus: dustbinUniqueFocus}")
     //-   img.lr-desk-icon(src='/public/dustbin.svg')
     //-   .lr-desk-icon-text Dustbin
     //- .lr-desk-icon-wrap(@dblclick="openOsInfo" , :class="{lr_desk_icon_focus: computerInfoUniqueFocus}")
@@ -73,14 +71,7 @@ export default {
         unique: true
       });
     },
-    openDustBin(){
-      console.log('openDustBin')
-      this.$store.commit('addTask', {
-        name: 'Dustbin',
-        type: 'dustbin',
-        unique: true
-      });
-    },
+
     logout,
     test500(){
       this.apiGet('~/test500')
@@ -109,7 +100,7 @@ export default {
 
       createWs(username);
       //this.createdTask();
-      //this.openDustBin();
+
     }
   },
   mounted(){

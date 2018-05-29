@@ -15,7 +15,7 @@
 <template lang="jade">
 .lr-quick-bar-item(
     :style="{backgroundImage: `url(${app.iconUrl})`}",
-    @dbclick="app.handleClick || ''"
+    @click="handleClick"
     )
 
 </template>
@@ -35,6 +35,11 @@ export default {
     }
   },
   methods: {
+    handleClick(){
+      this.app.handleClick && this.app.handleClick();
+    }
+  },
+  mounted(){
   }
 }
 </script>

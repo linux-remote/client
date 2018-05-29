@@ -16,7 +16,7 @@
 
 <script>
 import contextmenuStore from '__ROOT__/store/contextmenu';
-import Start from './start.vue';
+import Start from './start/index.vue';
 import QuickBar from './quick-bar/index.vue';
 export default {
   components: {
@@ -37,6 +37,7 @@ export default {
       this.$store.commit('set', {tasks: []});
     },
     contextmenu(task, index, e){
+      const self = this;
       contextmenuStore.commit('open', {
         data: [
           // {
@@ -48,7 +49,7 @@ export default {
           {
             name: 'Close',
             handleClick(){
-              this.$store.commit('removeTask', index);
+              self.$store.commit('removeTask', index);
             }
           }
         ],
@@ -64,7 +65,6 @@ export default {
       }else{
         this.$store.commit('taskWindowFocus', task);
       }
-
     }
   },
   computed:{

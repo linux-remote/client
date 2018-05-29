@@ -26,9 +26,27 @@ const store = new Vuex.Store({
     dragTransferData: null,
 
     appMap: {
+      sys_file: {
+        type: 'system',
+        iconUrl: '/public/img/tango-style/user-home.png',
+        handleClick(){
+          store.commit('addTask', {
+            name: 'file system',
+            type: 'fs'
+          });
+        },
+        unique: true,
+        title: '文件系统'
+      },
       sys_recycle_bin : {
         type: 'system',
         iconUrl: '/public/img/tango-style/user-trash.png',
+        handleClick(){
+          store.commit('addTask', {
+            name: 'recycle bin',
+            type: 'recycle_bin'
+          });
+        },
         unique: true,
         title: '回收站'
       },
@@ -112,9 +130,6 @@ const store = new Vuex.Store({
     onFsDel(state){
       state.onFsDel = Date.now();
     },
-    // onDustbinRecycle(state){
-    //   onDustbinRecycle = Date.now();
-    // },
     needRelogin(state){
       state.sessError = true;
     },
