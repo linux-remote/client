@@ -29,24 +29,32 @@
 </style>
 <template lang="jade">
 .lr-desk-icon(draggable="true",
+              @contextmenu='handleContextmenu',
               @dblclick="handleDblclick",
               @dragstart.stop='handleDragStart(item, $event)',
               :class="{lr_desk_icon_focus: app.unique}",
               :style='{left: item.x + "px", top: item.y + "px"}')
   .lr-desk-icon-img(:style="{backgroundImage: `url(${app.iconUrl})`}")
   .lr-desk-icon-text {{currTitle}}
-  Contextmenuable
+  ContextMenu(v-if="contextmenuIsShow", :close="contextmenuClose")
+    .lr-contextmenu-item(@click="remove")
+      | 移除
     h1 icon
+
 </template>
 <script>
-import Contextmenuable from '../global/contextmenuable.vue';
+import ContextmenuExtend from '../global/contextmenu-extend.vue';
+
 export default {
-  components: {
-    Contextmenuable
-  },
+  extends: ContextmenuExtend,
+
   props: {
     item: {
       type: Object,
+      required: true
+    },
+    index: {
+      type: Number,
       required: true
     }
   },
@@ -61,6 +69,12 @@ export default {
 
   },
   methods: {
+    remove(){
+      this.contextmenuClose();
+      this.$nextTick(()=> {
+        this.$parent.list.splice(this.index, 1);
+      })
+    },
     handleDblclick(){
       this.app.handleClick && this.app.handleClick();
     },

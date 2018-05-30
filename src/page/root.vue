@@ -2,7 +2,6 @@
 #lr-app.lr-h100
   #lr-main.lr-h100(@mousedown='handleMousedown')
     router-view
-  #lr-global.lr-global
   Contextmenu
   FlyTextarea
   UploadInput

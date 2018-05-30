@@ -771,12 +771,24 @@ $rightCtrlWidth : 100px;
     left:0;
     font-size: 14px;
     width: 280px;
+    padding: 10px;
     .lr-2-item{
-      padding: 5px 10px; border-bottom: 1px solid #999; cursor: pointer;
+      padding: 5px 10px; 
+      border-bottom: 1px solid #999; 
+      cursor: pointer;
 
       &:hover{
         background-color: green; color:#fff;
       }
+    }
+  }
+  .lr-contextmenu-item{
+    padding: 5px 10px; 
+    border-bottom: 1px solid #999; 
+    cursor: pointer;
+    &:hover{
+      background-color: green; 
+      color:#fff;
     }
   }
 

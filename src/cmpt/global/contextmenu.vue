@@ -1,5 +1,5 @@
 <template lang="jade">
-.lr-contextmenu(:style='{top: y + "px", left: x + "px"}')
+.lr-contextmenu#lr-contextmenu(:style='{top: y + "px", left: x + "px"}')
   slot
 </template>
 
@@ -19,7 +19,7 @@ export default {
   },
   methods:{
     handleClick(){
-      store.commit('close');
+      this.close();
     }
   },
 
@@ -28,20 +28,24 @@ export default {
     const data = window.APP.contextMenuTransferData;
     if(data){
 
+      // var _tmpDom = document.createElement('div');
+      // this.$el.replaceWith(_tmpDom);
+      //this.$options._prevNode = window.$(this.$el).prev();
       document.getElementById('lr-app').appendChild(this.$el);
+      
 
       const height = this.$el.offsetHeight;
       const width = this.$el.offsetWidth;
       let x = data.x;
       let y = data.y;
-      console.log('x', x, 'y', y, 'height', height, 'width', width);
+ 
       if(x + width > this.$store.state.winW){
         x = this.$store.state.winW - width;
       }
       if(y + height > this.$store.state.winH){
         y = this.$store.state.winH - height;
       }
-      console.log('this.x', x, 'this.y', y);
+
       this.x = x;
       this.y = y;
 
@@ -52,7 +56,11 @@ export default {
         capture: true
       });
     }
-
+  },
+  destroyed(){
+    // if(this.$parent._isBeingDestroyed){
+    //   document.getElementById('lr-app').removeChild(this.$el);
+    // }
   }
 }
 </script>
