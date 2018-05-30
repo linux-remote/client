@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import 'vue-use-vuex';
-
+console.log('Vue.version', Vue.version)
 Vue.prototype.noopStop = function(e){
   e.stopPropagation();
 }

@@ -96,7 +96,7 @@ export default {
     },
     handleDeskDrop(e){
       const dragTransferData = this.$store.state.dragTransferData;
-      if(dragTransferData.isRaw){
+      if(dragTransferData && dragTransferData.isRaw){
         
         this.list.push({
           id: dragTransferData.id,
@@ -107,7 +107,9 @@ export default {
         this.save();
         return;
       }
-     this.$data._isInDesk = true;
+      this.$data._isInDesk = true;
+  
+      
     },
     openDustBin(){
       this.$store.commit('addTask', {
