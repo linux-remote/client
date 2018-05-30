@@ -17,10 +17,8 @@ window.APP = {
 }
 
 import upload from './module/upload';
-import contextmenu from './module/contextmenu';
 const store = new Vuex.Store({
   modules: {
-    contextmenu,
     upload
   },
   state: {
