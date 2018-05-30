@@ -5,23 +5,14 @@
 
 <script>
 export default {
-  props: {  
-    close: {
-      type: Function,
-      required: true
-    }
-  },
+
   data(){
     return {
       x: -999999,
       y: -999999
     }
   },
-  methods:{
-    handleClick(){
-      this.close();
-    }
-  },
+
 
   mounted(){
     console.log('contextMenu mounted')
@@ -51,7 +42,7 @@ export default {
 
       const self = this;
       window.APP.$elMain
-      .addEventListener('mousedown', this.close, {
+      .addEventListener('mousedown', this.$parent.contextmenuClose, {
         once: true,
         capture: true
       });

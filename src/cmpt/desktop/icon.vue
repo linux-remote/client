@@ -73,6 +73,7 @@ export default {
       this.contextmenuClose();
       this.$nextTick(()=> {
         this.$parent.list.splice(this.index, 1);
+        this.$parent.save();
       })
     },
     handleDblclick(){
