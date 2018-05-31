@@ -3,7 +3,7 @@ import Router from 'vue-router';
 Vue.use(Router);
 
 import Login from './page/login.vue';
-import Desk from './page/desk.vue';
+import Desktop from './page/desktop.vue';
 import NotFound from './page/not-found.vue';
 //import data from './lib/data';
 
@@ -19,7 +19,7 @@ import NotFound from './page/not-found.vue';
 const router = new Router({
   routes: [
     { path: '/', component: Login },
-    { path: '/user/:username', component: Desk,
+    { path: '/user/:username', component: Desktop,
       // child: [
       //   {path: 'agdf', component: Root}
       // ]

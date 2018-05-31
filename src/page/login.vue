@@ -45,7 +45,6 @@
   width: 100%;
   color:red;
   font-size: 14px;
-  /* white-space: nowrap; */
 }
 </style>
 <template lang="jade">

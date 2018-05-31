@@ -54,21 +54,6 @@ export default {
     },
   },
   methods:{
-    // parseData(data){
-    //   //data = data.split('/n');
-    //   //console.log('data', ansicolor.parse(data));
-    // },
-    // getData(){
-    //   this.request({
-    //     url: '~/exec',
-    //     data: {
-    //       cmd: 'ls -l --color=always /home/dw/test/f3'
-    //     },
-    //     success(data){
-    //       this.parseData(data);
-    //     }
-    //   })
-    // },
     openHome(dir){
       this.$store.commit('addTask', {
         name: 'Home',

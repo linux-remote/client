@@ -72,7 +72,7 @@ const store = new Vuex.Store({
     CACertPath: '',
     loginedList: [],
     indexNotice: '',
-    // desk
+    // desktop
     deskInited: false,
     username:'',
     groups: [],

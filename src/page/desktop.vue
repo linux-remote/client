@@ -44,6 +44,7 @@ export default {
     },
     sessError(val){
       if(val){
+        console.log('后端403, 前端再退出一下.');
         this.logout();
       }
     }
@@ -92,11 +93,13 @@ export default {
         document.title = username + '@' + data.hostname;
         this.$store.commit('set', data);
       });
-      const TTL_TIME = 1000 * 60 * 9;
-      this.$options._liveTTL = setInterval(()=>{
-        if(!this.$store.state.isLogin) return;
-        this.apiGet('~/live');
-      }, TTL_TIME)
+
+      
+      // const TTL_TIME = 1000 * 60 * 9;
+      // this.$options._liveTTL = setInterval(()=>{
+      //   if(!this.$store.state.isLogin) return;
+      //   this.apiGet('~/live');
+      // }, TTL_TIME)
 
       createWs(username);
       //this.createdTask();
@@ -111,7 +114,7 @@ export default {
     // })
   },
   destroyed(){
-    clearInterval(this.$options._liveTTL);
+    //clearInterval(this.$options._liveTTL);
   },
 
   created(){
