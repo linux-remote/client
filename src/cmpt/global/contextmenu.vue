@@ -49,9 +49,9 @@ export default {
     }
   },
   destroyed(){
-    // if(this.$parent._isBeingDestroyed){
-    //   document.getElementById('lr-app').removeChild(this.$el);
-    // }
+    if(this.$parent._isBeingDestroyed){
+      document.getElementById('lr-app').removeChild(this.$el);
+    }
   }
 }
 </script>

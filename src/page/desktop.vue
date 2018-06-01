@@ -45,7 +45,7 @@ export default {
     sessError(val){
       if(val){
         console.log('后端403, 前端再退出一下.');
-        this.logout();
+        //this.logout();
       }
     }
   },
@@ -94,7 +94,7 @@ export default {
         this.$store.commit('set', data);
       });
 
-      
+
       // const TTL_TIME = 1000 * 60 * 9;
       // this.$options._liveTTL = setInterval(()=>{
       //   if(!this.$store.state.isLogin) return;
