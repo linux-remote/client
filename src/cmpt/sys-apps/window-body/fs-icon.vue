@@ -7,7 +7,7 @@
       .lr-per-item(v-for='v2 in v' , :class='{lr_per_item_on: v2 }')
     .lr-per-sticky(v-if='item.isSticky')
   span(v-if='item.suffix') {{item.suffix}}
-  .lr-3-icon.lr-3-link(v-if='item.isSymbolicLink')
+  .lr-file-link(v-if='item.isSymbolicLink')
   .lr-error-icon(v-if='item.linkTargetError')
 </template>
 

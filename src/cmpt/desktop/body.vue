@@ -8,14 +8,18 @@
       :index="i",
       :item="v")
   ContextMenu(v-if="contextmenuIsShow", :close="contextmenuClose")
-    h1 haha
+    .lr-contextmenu-item(@click="sortIcon")
+      | 整理
+    .lr-contextmenu-item(@click="reload")
+      | 刷新
   slot
 </template>
 <script>
 
 import Icon from './icon.vue';
 import ContextmenuExtend from '../global/contextmenu-extend.vue';
-
+const ICON_WIDTH = 80;
+const ICON_HEIGHT = 80;
 export default {
   extends: ContextmenuExtend,
   components: {
@@ -28,6 +32,23 @@ export default {
     }
   },
   methods: {
+    sortIcon(){
+      let deskH = this.$el.offsetHeight;
+      let maxRow = Math.floor(deskH / ICON_HEIGHT);
+      let cum = 0;
+      this.list.forEach((v, i) => {
+        v.x = cum * ICON_WIDTH;
+        if( i > maxRow){
+          cum = cum + 1;
+        }
+        v.y = (i % maxRow) * ICON_HEIGHT;
+      })
+      this.save();
+    },
+    reload(){
+      this.getData();
+      this.contextmenuClose();
+    },
     handleIconDragEnd(e){
       console.log('handleIconDragEnd')
       if(!this.$data._isInDesk){
@@ -49,7 +70,7 @@ export default {
         positionTop = 0;
       }else{
         let deskH = this.$el.offsetHeight;
-        let elH = vueEl.$el.offsetHeight;
+        let elH = ICON_HEIGHT;
         if(positionTop + elH > deskH){
           positionTop = deskH - elH;
         }
@@ -59,7 +80,7 @@ export default {
         positionLeft = 0;
       }else{
         let deskW = this.$el.offsetWidth;
-        let elW = vueEl.$el.offsetWidth;
+        let elW = ICON_WIDTH;
 
         if(positionLeft + elW > deskW){
           positionLeft = deskW - elW;
@@ -106,15 +127,18 @@ export default {
         type: 'dustbin',
         unique: true
       });
-    }
-  },
-  created(){
+    },
+    getData(){
     this.request({
       url: '~/desktop',
       success(result){
         this.list = JSON.parse(result);
       }
     })
+    }
+  },
+  created(){
+    this.getData();
   }
 
 }

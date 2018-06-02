@@ -39,7 +39,6 @@
   ContextMenu(v-if="contextmenuIsShow", :close="contextmenuClose")
     .lr-contextmenu-item(@click="remove")
       | 移除
-    h1 icon
 
 </template>
 <script>

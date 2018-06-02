@@ -36,7 +36,7 @@ const store = new Vuex.Store({
           });
         },
         unique: true,
-        title: '文件系统'
+        title: '文件管理器'
       },
       sys_recycle_bin : {
         type: 'system',

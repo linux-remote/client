@@ -2,12 +2,12 @@
 .lr-window-body
     .lr-hourglass(v-show='isRequest')
     .lr-fs-bar
-      .lr-3-item.lr-3-left(@click='handleArrowLeftClick', :class='{lr_2_disabled:backStack.length === 0}')
-      .lr-3-item.lr-3-up(@click='handleArrowUpClick', :class='{lr_2_disabled:address === "/"}')
-      .lr-3-item.lr-3-right(@click='handleArrowRightClick', :class='{lr_2_disabled:goStack.length === 0}')
-      input.lr-2-address(v-model='inputAddress' @keydown.13='handleGoClick')
-      .lr-3-item.lr-3-reload(v-if='address===inputAddress' @click='getData')
-      .lr-3-item.lr-3-go(v-else @click='handleGoClick')
+      .lr-fs-nav-item.lr-fs-nav-left(@click='handleArrowLeftClick', :class='{lr_fs_nav_disabled:backStack.length === 0}')
+      .lr-fs-nav-item.lr-fs-nav-up(@click='handleArrowUpClick', :class='{lr_fs_nav_disabled:address === "/"}')
+      .lr-fs-nav-item.lr-fs-nav-right(@click='handleArrowRightClick', :class='{lr_fs_nav_disabled:goStack.length === 0}')
+      input.lr-fs-address(v-model='inputAddress' @keydown.13='handleGoClick')
+      .lr-fs-nav-item.lr-fs-nav-reload(v-if='address===inputAddress' @click='getData')
+      .lr-fs-nav-item.lr-fs-nav-go(v-else @click='handleGoClick')
     .lr-fs-body(v-if='error')
       h2(v-html='data' style='color:red')
     .lr-fs-body(v-else @contextmenu.prevent='handleFsBodyContextmenu', @mousedown='handleFsBodyMousedown', :class='bodyClass')
@@ -22,9 +22,9 @@
         @mousedown='noopStop',
         @dblclick='openItem(item)', @click.stop='focusItem(item)',
         @contextmenu.prevent.stop='handleFsItemContextmenu(item, $event)',
-        :class='{lr_2_hidden: item.name[0] === ".", lr_2_focus: item.focus, ["lr_file_type_" + item.type ]: item.type}')
+        :class='{lr_file_hidden: item.name[0] === ".", lr_file_focus: item.focus, ["lr_file_type_" + item.type ]: item.type}')
         <fs-icon :item='item' />
-        .lr-2-name(@click='handleItemNameClick(item, $event)') {{item.name}}
+        .lr-file-name(@click='handleItemNameClick(item, $event)') {{item.name}}
 
 
 

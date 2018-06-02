@@ -539,7 +539,7 @@ $rightCtrlWidth : 100px;
     }
     //************* old pro end *************
 
-
+  //************* 文件管理器 *************
   .lr-fs-bar{
     background: #666; 
     border-bottom: 1px solid #000;
@@ -551,34 +551,36 @@ $rightCtrlWidth : 100px;
     // .lr-2-nav{
     //   display: flex;
     // }
-    .lr-2-address{
-      flex-grow:1; height: 25px;
+    .lr-fs-address{
+      flex-grow:1; 
+      height: 25px;
     }
-    .lr-3-item{
-      width: 30px; height: 30px;
+    .lr-fs-nav-item{
+      width: 30px; 
+      height: 30px;
       background-size: 80%;
       background-position: center;
       background-repeat: no-repeat;
       &:hover{
         background-color: #000;
       }
-      &.lr_2_disabled{
+      &.lr_fs_nav_disabled{
          opacity: .5;
       }
 
-      &.lr-3-up{
+      &.lr-fs-nav-up{
         background-image: url('/public/arrow-up.svg');
       }
-      &.lr-3-left{
+      &.lr-fs-nav-left{
         background-image: url('/public/arrow-left.svg');
       }
-      &.lr-3-right{
+      &.lr-fs-nav-right{
         background-image: url('/public/arrow-right.svg');
       }
-      &.lr-3-go{
+      &.lr-fs-nav-go{
         background-image: url('/public/go.svg');
       }
-      &.lr-3-reload{
+      &.lr-fs-nav-reload{
         background-image: url('/public/reload.svg');
       }
     }
@@ -648,59 +650,55 @@ $rightCtrlWidth : 100px;
         background-position: center;
         background-repeat: no-repeat;
       }
-      .lr-per-relation-wrap{
-        width: 50px; height: 50px;margin: 0 auto;
-        display: flex; position: relative;
-      }
-      .lr-per-relation{
-        flex-grow: 1;
-        display: flex;
-        //background: #000;
-        flex-direction: column;
-
-        .lr-per-item{
-          flex-grow: 1;font-size: 10px;
-          display: flex; align-items: center;justify-content: center;
-          opacity: 0; color:#fff;
-          //margin:1px;
-        }
-        // .lr_per_item_on{
-        //   background-color: #eee;
-        // }
-        &.lr_per_is{
-          >.lr_per_item_on{
-            background-color: rgba(green, .5);opacity: 1;
-          }
-        }
-        // &.lr_per_i{
-        //   >.lr_per_item_on{
-        //     background-color: rgba(green, .5);opacity: 1;
-        //   }
-        //
-        // }
-
-      }
-      .lr-per-sticky{
-        position: absolute; background: rgba(sienna, .5);
-        right:0; bottom: 0; width: 33.33%; height: 33.33%;
-        //z-index: 2;
-      }
       span{
         position: absolute;left: 17px;top: 8px;z-index: 3;
         text-overflow: ellipsis;white-space: nowrap; width: 26px;
         text-align: center;overflow: hidden;
         background: red; color:#fff;padding: 0 1px;font-size: 10px;
       }
-
-       >.lr-3-link{
+       >.lr-file-link{
          width: 40%; height: 40%;position: absolute;bottom:-5px; z-index: 2;
          right:8px;background-size: 100% 100%;
          background-image: url('/public/link.svg');
        }
     }
 
+      //----------- permission -----------
+    .lr-per-relation-wrap{
+      width: 50px; height: 50px;margin: 0 auto;
+      display: flex; position: relative;
+    }
+    .lr-per-relation{
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+
+      .lr-per-item{
+        flex-grow: 1;font-size: 10px;
+        display: flex; align-items: center;justify-content: center;
+        opacity: 0; color:#fff;
+      }
+
+      &.lr_per_is{
+        >.lr_per_item_on{
+          background-color: rgba(green, .5);
+          opacity: 1;
+        }
+      }
+    }
+    .lr-per-sticky{
+      position: absolute;
+      background: rgba(sienna, .5);
+      right:0; 
+      bottom: 0; 
+      width: 33.33%; 
+      height: 33.33%;
+    }
+
+    //----------- permission end -----------
+
     &.lr_file_type_Directory > .lr-file-icon > .lr-file-icon-front{
-      background-image: url('/public/img/nuvola-style/folder-grey_open.png');
+      background-image: url('/public/img/tango-style/folder.png');
     }
     &.lr_file_type_RegularFile > .lr-file-icon > .lr-file-icon-front{
       background-size: 90% 90%;
@@ -746,21 +744,32 @@ $rightCtrlWidth : 100px;
       background-image: url('/public/mask.svg');
     }
 
-
-
-    .lr-2-name{
-       font-size: 12px;text-align: center;cursor: text;z-index: 4;
+    .lr-file-name{
+       font-size: 12px;
+       text-align: center;
+       cursor: text;
+       z-index: 4;
+       white-space: nowrap;
+       text-overflow: ellipsis;
+       overflow: hidden;
     }
-    &:hover, &.lr_2_focus{
-      background-color: #000; color:$color;word-break:break-all;
-      .lr-2-name{
-        background-color: red;position: relative;
+
+    &:hover, &.lr_file_focus{
+      background-color: #000; 
+      color:$color;
+      word-break:break-all;
+      
+      .lr-file-name{
+        background-color: red;
+        position: relative;
+        white-space: normal;
       }
     }
-    &.lr_2_focus{
+    &.lr_file_focus{
       overflow:visible;
     }
   }
+  //************* 文件管理器 end *************
 
   .lr-contextmenu{
     position: absolute; 
@@ -812,7 +821,7 @@ $rightCtrlWidth : 100px;
     flex-grow: 1;
     outline: none;
   }
-  .lr_2_hidden{
+  .lr_file_hidden .lr-file-icon{
     opacity: .5;
   }
   .lr_fly_textarea{

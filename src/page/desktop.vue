@@ -45,7 +45,7 @@ export default {
     sessError(val){
       if(val){
         console.log('后端403, 前端再退出一下.');
-        //this.logout();
+        this.logout();
       }
     }
   },
