@@ -11,7 +11,7 @@
 import UploadInput from '__ROOT__/cmpt/upload/golbal-input.vue';
 import Contextmenu from '__ROOT__/cmpt/contextmenu.vue';
 import FlyTextarea from '__ROOT__/cmpt/fly-textarea';
-import Error from '__ROOT__/cmpt/error';
+import Error from '__ROOT__/cmpt/global/error.vue';
 export default {
   components:{
     Contextmenu,

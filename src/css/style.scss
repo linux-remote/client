@@ -824,19 +824,50 @@ $rightCtrlWidth : 100px;
 
 .lr-error{
   position: absolute; 
-  width: 100%; 
+  width: 800px; 
   margin: 0 auto; 
   top: 50px;
   z-index: $topZindex + 1;
   left: 0;
   right:0;
   box-shadow: 3px 3px 3px 3px #eee;
+  border: 1px solid #eee;
+}
+.lr-error-title{
+  background-color: #fff;
+  color: #B22222;
+  padding: 1px 5px;
+  display: flex;
+  align-items: center;
+  justify-content:  space-between;
+}
+.lr-error-body{
+  max-height: 150px;
+  overflow: auto;
+  background-color: rgba(255, 255, 255, .5);
+  &::-webkit-scrollbar
+  {
+    width: 5px;  /* for vertical scrollbars */
+  }
+
+  &::-webkit-scrollbar-track
+  {
+    background: rgba(red, 0.1);
+  }
+
+  &::-webkit-scrollbar-thumb
+  {
+    background: rgba(red, .4);
+  }
 }
 .lr-error-item{
+  text-align: left;
+  padding: 5px 10px;
+  background-color: #B22222;
+  color:#fff;
+  margin-top: 3px;
+  margin-bottom:2px;
   text-align: center;
-  padding: 10px;
-  color:red;
-  margin-bottom: 5px;
 }
   //*************** resizable ***************
   $resize: 5px;

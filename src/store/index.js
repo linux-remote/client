@@ -17,9 +17,11 @@ window.APP = {
 }
 
 import upload from './module/upload';
+import error from './module/error';
 const store = new Vuex.Store({
   modules: {
-    upload
+    upload,
+    error
   },
   state: {
     dragTransferData: null,

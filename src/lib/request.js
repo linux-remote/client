@@ -2,7 +2,6 @@ import $ from 'jquery';
 import Vue from 'vue';
 //import FileSaver from 'file-saver';
 import {noop} from 'lodash';
-import errorStore from '__ROOT__/store/error';
 import store from '__ROOT__/store/index.js';
 
 
@@ -24,14 +23,14 @@ if(API_ROOT.indexOf('http') === 0){
 function httpErrorHandler(xhr){
 
   if(xhr.status === 403 || xhr.responseText === 'LINUX_REMOTE_USER_SERVER_ERROR'){
-    console.log('转向登录页')
+    console.log('转向登录页');
     return store.commit('needRelogin');
   }
-  errorStore.commit('show', `http ${xhr.status} ${xhr.responseText}`);
+  store.commit('error/show', `http#${xhr.status}: ${xhr.responseText}`);
 }
 
 function codeErrorHandler(data){
-  errorStore.commit('show', 'code:' + data.code + data.msg);
+  store.commit('error/show', `code#${data.code}: ${data.msg}`);
 }
 
 function omitEmpty(obj){ //过滤掉空的参数

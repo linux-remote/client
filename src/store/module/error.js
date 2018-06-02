@@ -1,13 +1,14 @@
 import Vuex from 'vuex';
 
-const store = new Vuex.Store({
+export default  {
+  namespaced: true,
   state: {
     message: []
   },
   mutations: {
     show(state, message) {
       // window.APP.$elMain.addEventListener('mousedown', () => {
-      //   store.commit('close');
+      //   this.commit('error/close');
       // },{
       //   once: true,
       //   capture: true
@@ -18,6 +19,4 @@ const store = new Vuex.Store({
       state.message = [];
     }
   }
-});
-
-export default store;
+}
