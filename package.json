@@ -15,8 +15,7 @@
     "pro": "node script/pro"
   },
   "dependencies": {
-    "serve-favicon": "^2.5.0",
-    "winstrap": "^0.5.12"
+    "serve-favicon": "^2.5.0"
   },
   "devDependencies": {
     "babel-core": "^6.14.0",
@@ -39,7 +38,7 @@
     "jade": "^1.11.0",
     "jquery": "^3.2.1",
     "lodash": "^4.15.0",
-    "node-sass": "^4.5.3",
+    "node-sass": "^4.9.0",
     "postcss-loader": "^0.11.0",
     "rucksack-css": "^0.8.6",
     "sass-loader": "^4.0.0",
