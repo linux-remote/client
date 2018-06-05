@@ -27,7 +27,7 @@ export default {
   },
   methods: {
     close(){
-      this.$store.commit('error/show', 'haha' + Date.now());
+      this.$store.commit('error/close');
     }
   }
 }

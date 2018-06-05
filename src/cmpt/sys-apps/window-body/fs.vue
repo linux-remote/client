@@ -9,21 +9,22 @@
       .lr-fs-nav-item.lr-fs-nav-reload(v-if='address===inputAddress' @click='getData')
       .lr-fs-nav-item.lr-fs-nav-go(v-else @click='handleGoClick')
     .lr-fs-body(v-if='error')
-      h2(v-html='data' style='color:red')
+      pre.lr-fs-error(v-html='data' style='color:red')
     .lr-fs-body(v-else @contextmenu.prevent='handleFsBodyContextmenu', @mousedown='handleFsBodyMousedown', :class='bodyClass')
-      h2(style='color:#eee;margin:0', v-if='data.length === 0 && !isRequest') Empty
+      
       .lr-fs-cud-bar
-
+        .lr-fs-cud-bar-mask(v-if='dir && !dir.writeable')
         button.lr-upload-btn(@click='handleUploadBtnClick') 上传文件
         input.lr-upload-input( type='file' ref='uploadInput' @change='uploadFolder' multiple)
-        Upload(:getFd='getUploadFd', :isFolder='true') 上传文件夹
+        //-Upload(:getFd='getUploadFd', :isFolder='true') 上传文件夹
+      //-h2(style='color:#eee;margin:0', v-if='data.length === 0 && !isRequest') Empty
       .lr-file(v-for='item in data',
-        :key='item.name',
-        @mousedown='noopStop',
-        @dblclick='openItem(item)', @click.stop='focusItem(item)',
-        @contextmenu.prevent.stop='handleFsItemContextmenu(item, $event)',
-        :class='{lr_file_hidden: item.name[0] === ".", lr_file_focus: item.focus, ["lr_file_type_" + item.type ]: item.type}')
-        <fs-icon :item='item' />
+              :key='item.name',
+              @mousedown='noopStop',
+              @dblclick='openItem(item)', @click.stop='focusItem(item)',
+              @contextmenu.prevent.stop='handleFsItemContextmenu(item, $event)',
+              :class='{lr_file_hidden: item.name[0] === ".", lr_file_focus: item.focus, ["lr_file_type_" + item.type ]: item.type}')
+        FsIcon(:item='item')
         .lr-file-name(@click='handleItemNameClick(item, $event)') {{item.name}}
 
 
@@ -35,21 +36,11 @@
       span {{currItem.permission}}
       span {{currItem.owner}}
       span {{currItem.group}}
-        //- b(v-if='currItem.blocks && currItem.blksize > currItem.size') /{{wellSize(currItem.blksize)}}
       span(v-if='currItem.isSymbolicLink') linkTo:
         b.v-2-link {{currItem.linkPath}}
-      //- span owner
-      //-   b {{currItem.owner}}
-      //- //- span(v-else) nlink:
-      //- //-   b {{currItem.nlink}}
-      //-
-      //- span per:
-      //-   b {{currItem.permission}}
-      //- span relation:
-      //-   b {{currItem._relation}}
     .lr-fs-status(v-else-if='dir')
       span Items: {{data.length}}
-      //span DIR
+      //-span DIR
       span {{dir.permission}}
       span {{dir.owner}}
       span {{dir.group}}
@@ -385,13 +376,6 @@ export default {
       const address = this.getAddress(item);
       if(item.type === 'Directory'){
         this.backStack.push(this.addressArr);
-        // let address;
-        // if(item.isSymbolicLink){
-        //   address = item.linkPath;
-        // }else{
-        //   address = this.address + '/' + item.name
-        // }
-        //this.$parent.name = item.name;
         this.setAddress(address);
 
       }else if(item.type === 'RegularFile'){
@@ -408,19 +392,14 @@ export default {
     initRelation(item){
       const isInGroup = (this.groups.indexOf(item.group) !== -1);
       const rwxs = item.rwxs;
-      let readable = false, writeable = false;
+      let readable = false, writeable = false, accessable = false;
       if(item.owner === this.username){
         item.is_owner = true;
-        //item._relation = 'owner';
+
         readable = rwxs.owner.r;
         writeable = rwxs.owner.w;
+        accessable = rwxs.owner.x;
       }
-      // else if(isInGroup){
-      //   item._relation = 'group';
-      // }else{
-      //   item._relation = 'other';
-      // }
-
       if(isInGroup){
         item.is_group = true;
         if(!readable){
@@ -429,6 +408,9 @@ export default {
         if(!writeable){
           writeable = rwxs.group.w;
         }
+        if(!accessable){
+          accessable = rwxs.group.x;
+        }
       }
       if(!readable){
         readable = rwxs.other.r;
@@ -436,12 +418,43 @@ export default {
       if(!writeable){
         writeable = rwxs.other.w;
       }
-      // readable = false;
-      // console.log('readable', readable)
-      // console.log('writeable', writeable)
+      if(!accessable){
+        accessable = rwxs.group.x;
+      }
+
       item.readable = readable;
       item.writeable = writeable;
-      item.is_other = true;
+      item.accessable = accessable;
+      item.is_other = true; //icon 用到了.
+      if(item.type === 'Directory'){
+
+        if(!accessable){
+          if(readable){
+            item.permiss_type = 'list';
+          }else{
+            item.permiss_type = 'none';
+          }
+          
+        }else {
+          if(item.readable){
+            if(item.writeable){
+              item.permiss_type = 'full';
+            }else{
+              item.permiss_type = 'only_read';
+            }
+
+          }else {
+
+            if(writeable){
+              item.permiss_type = 'only_write';
+            }else{
+              item.permiss_type = 'none';
+            }
+          }
+        }
+
+      }
+
     },
     dataFormat(item){
       const per = item.permission;

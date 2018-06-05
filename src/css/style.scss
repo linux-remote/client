@@ -592,13 +592,31 @@ $rightCtrlWidth : 100px;
     overflow-y: auto;
   }
   .lr-fs-cud-bar{
-    width: 100%; flex-grow:1; height: 30px;background-color: #eee;margin-bottom: 10px;
-    line-height: 30px;color:#000;padding: 0 10px;
+    width: 100%; 
+    flex-grow:1; 
+    height: 30px;
+    background-color: #eee;
+    margin-bottom: 10px;
+    line-height: 30px;
+    color:#000;
+    //padding: 0 10px;
+    border-bottom: 1px solid #666;
+    position: relative;
+  }
+  .lr-fs-cud-bar-mask{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0, .6);
+    z-index: 2;
   }
   .lr-upload-btn{
     position: relative;
   }
-
+  .lr-fs-error{
+    font-size: 1.5em;
+    font-weight: bold;
+  }
   .lr-upload-input{
     display: none;
   }
@@ -612,61 +630,85 @@ $rightCtrlWidth : 100px;
   .lr-fs-dir-unreadable{
     background-color: black;
     color:#fff;
-    &::before{
-      content: 'permission:unreadable';
-      color: #fff;
-      font-size: 2em;
-    }
   }
   .lr-fs-status{
-    height: 18px; flex-shrink: 0;border-top: 1px solid #000; line-height: 18px;
-    font-size: 12px; user-select: text;
+    height: 18px; 
+    flex-shrink: 0;
+    border-top: 1px solid #000; 
+    line-height: 18px;
+    font-size: 12px; 
+    user-select: text;
     span{
       margin: 0 2px; padding: 0 2px;
     }
     b{margin-left: 2px;}
     .v-2-link{color: $linkFileColor}
   }
+
   .lr-file{
-    width: 80px; height: 80px; overflow: hidden;
+    width: 80px; 
+    height: 80px; 
+    overflow: hidden;
     position: relative;
-    //background-color: #fff;
     margin: 1px;
     cursor: pointer;
 
 
     >.lr-file-icon{
-      width: 100%; height: 50px;
+      width: 100%; 
+      height: 50px;
       display: flex;
       position: relative;
-      // text-align: center;
-      // line-height: 50px;
       >.lr-file-icon-front{
-        width: 100%; height: 100%;
+        width: 100%; 
+        height: 100%;
         position: absolute;
-        top:0; left:0; 
+        top:0; 
+        left:0;
         z-index: 2;
         background-size: contain;
         background-position: center;
         background-repeat: no-repeat;
       }
       span{
-        position: absolute;left: 17px;top: 8px;z-index: 3;
-        text-overflow: ellipsis;white-space: nowrap; width: 26px;
-        text-align: center;overflow: hidden;
-        background: red; color:#fff;padding: 0 1px;font-size: 10px;
+        position: absolute;
+        left: 17px;
+        top: 8px;
+        z-index: 3;
+        text-overflow: ellipsis;
+        white-space: nowrap; 
+        width: 26px;
+        text-align: center;
+        overflow: hidden;
+        background: red; 
+        color:#fff;
+        padding: 0 1px;
+        font-size: 10px;
       }
-       >.lr-file-link{
-         width: 40%; height: 40%;position: absolute;bottom:-5px; z-index: 2;
-         right:8px;background-size: 100% 100%;
-         background-image: url('/public/link.svg');
-       }
-    }
 
+    }
+    .lr-file-link{
+      width: 40%; 
+      height: 40%;
+      position: absolute;
+      bottom:-5px; 
+      z-index: 2;
+      right:8px;
+      background-size: 100% 100%;
+      background-image: url('/public/link.svg');
+    }
       //----------- permission -----------
     .lr-per-relation-wrap{
-      width: 50px; height: 50px;margin: 0 auto;
-      display: flex; position: relative;
+      width: 50px;
+      height: 50px;
+      top: 0;
+      left: 0;
+      right:0;
+      bottom: 0;
+      margin: auto;
+      display: flex; 
+      position: absolute;
+      z-index: 1;
     }
     .lr-per-relation{
       flex-grow: 1;
@@ -674,9 +716,14 @@ $rightCtrlWidth : 100px;
       flex-direction: column;
 
       .lr-per-item{
-        flex-grow: 1;font-size: 10px;
-        display: flex; align-items: center;justify-content: center;
-        opacity: 0; color:#fff;
+        flex-grow: 1;
+
+        display: flex; 
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        // font-size: 10px;
+        // color:#fff;
       }
 
       &.lr_per_is{
@@ -689,6 +736,8 @@ $rightCtrlWidth : 100px;
     .lr-per-sticky{
       position: absolute;
       background: rgba(sienna, .5);
+      //background: rgba(sienna, .5);
+      //background: rgba(#c66f00, .5);
       right:0; 
       bottom: 0; 
       width: 33.33%; 
@@ -698,11 +747,16 @@ $rightCtrlWidth : 100px;
     //----------- permission end -----------
 
     &.lr_file_type_Directory > .lr-file-icon > .lr-file-icon-front{
-      background-image: url('/public/img/tango-style/folder.png');
+      //background-image: url('/public/img/tango-style/folder.png');
+       background-image: url('/public/blue/folder-blue.svg');
+       //background-color: rgba(255,255,255, .5);
     }
     &.lr_file_type_RegularFile > .lr-file-icon > .lr-file-icon-front{
-      background-size: 90% 90%;
-      background-image: url('/public/file.svg');
+      //background-size: 90% 90%;
+      //background-image: url('/public/img/tango-style/text-x-generic.png');
+       background-image: url('/public/blue/file.svg');
+       //background-color: rgba(255,255,255, .5);
+
     }
     &.lr_file_type_Socket > .lr-file-icon > .lr-file-icon-front{
       background-image: url('/public/socket.svg');
@@ -881,7 +935,12 @@ $rightCtrlWidth : 100px;
   //*************** resizable ***************
   $resize: 5px;
   .lr-resize-warp{
-    position:absolute; top:0; bottom:0;width:100%; height:100%; background:blue; z-index: -9;
+    position:absolute; 
+    top:0; 
+    bottom:0;
+    width:100%; 
+    height:100%; 
+    background:blue; z-index: -9;
   }
   .lr-2-resize-top , .lr-2-resize-bottom, .lr-2-resize-left, .lr-2-resize-right{
     position: absolute;
