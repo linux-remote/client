@@ -34,5 +34,13 @@ export const wellSize = (size, fix) => {
     size = (size / 1024);
     m = 'G';
   }
+  if(size > 1024){
+    size = (size / 1024);
+    m = 'T';
+  }
   return size.toFixed(fix) + m;
+}
+
+export const TypeOf = function(v){
+  return Object.prototype.toString.call(v).slice(8, -1);
 }

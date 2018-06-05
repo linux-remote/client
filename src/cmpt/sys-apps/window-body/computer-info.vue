@@ -107,7 +107,7 @@ export default {
     getData(){
       this.request({
         url: '~/serverInfo',
-        requestKey : 'isRequest',
+        stateKey : 'isRequest',
         success(data){
           Object.assign(this, data);
         }

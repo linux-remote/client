@@ -1,14 +1,9 @@
 <template lang='jade'>
-input(type='file' multiple="true" ref='uploadBtn' style="display:none" @change='handleChange')
+input(type='file' multiple="true" ref='uploadBtn' id='lr-upload-input' style="display:none" @change='handleChange')
 </template>
 
 <script>
 export default {
-  props: {
-    onFileSelected: {
-      type: Function
-    }
-  },
   methods: {
     handleChange(e){
       const files = e.target.files;
@@ -16,11 +11,8 @@ export default {
       Object.keys(e.target.files).forEach(k => {
         selectedFile.push(files[k]);
       });
-      this.$store.upload.addSelectedFile(selectedFile);
-      
-      if(this.onFileSelected){
-        this.onFileSelected(selectedFile);
-      }
+      this.$store.commit('upload/addSelectedFile', selectedFile);
+
       this.$refs.uploadBtn.value = '';
     }
   }

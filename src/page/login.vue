@@ -78,7 +78,7 @@ export default {
     login(){
       const {username, password} = this;
       this.request({
-        requestKey: 'isRequest',
+        stateKey: 'isRequest',
         url: '/login',
         type: 'post',
         data: {

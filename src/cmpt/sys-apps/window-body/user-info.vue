@@ -1,6 +1,5 @@
 <template lang="jade">
 .lr-window-body(style='user-select:text')
-  //.lr-hourglass(v-show='isRequest')
   table.lr-computer-table
     tr
       td(style='color:gray') user:
@@ -15,12 +14,6 @@
 <script>
 import store from '__ROOT__/store-global';
 export default {
-  // data(){
-  //   return {
-  //     isRequest: false,
-  //     group: null
-  //   }
-  // },
   computed:{
     username(){
       return store.state.username

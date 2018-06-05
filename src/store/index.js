@@ -1,5 +1,5 @@
 import Vuex from 'vuex';
-import $ from 'jquery';
+const $ = window.$;
 import {findLast, sortBy, cloneDeep} from 'lodash';
 
 const $win = $(window);

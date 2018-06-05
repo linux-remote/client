@@ -15,7 +15,7 @@
       .lr-fs-cud-bar
         .lr-fs-cud-bar-mask(v-if='dir && !dir.writeable')
         button.lr-upload-btn(@click='handleUploadBtnClick') 上传文件
-        input.lr-upload-input( type='file' ref='uploadInput' @change='uploadFolder' multiple)
+        //-input.lr-upload-input( type='file' ref='uploadInput' @change='uploadFolder' multiple)
         //-Upload(:getFd='getUploadFd', :isFolder='true') 上传文件夹
       //-h2(style='color:#eee;margin:0', v-if='data.length === 0 && !isRequest') Empty
       .lr-file(v-for='item in data',
@@ -244,11 +244,12 @@ export default {
       });
     },
     handleUploadBtnClick(){
-      const dom = this.$refs.uploadInput;
-      dom.addEventListener('change', this.uploadFolder, {
-        once: true
-      });
-      dom.click();
+      this.$store.commit('upload/start', this.address);
+      // const dom = this.$refs.uploadInput;
+      // dom.addEventListener('change', this.uploadFolder, {
+      //   once: true
+      // });
+      // dom.click();
     },
     uploadFolder(e){
       const files = e.target.files;
@@ -474,7 +475,7 @@ export default {
     getData(){
       this.request({
         url: '~/fs' + this.address,
-        requestKey: 'isRequest',
+        stateKey: 'isRequest',
         //poolKey: this.address,
         data: {dir: true},
         success(data){

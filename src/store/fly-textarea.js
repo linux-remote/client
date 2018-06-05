@@ -1,5 +1,5 @@
 import Vuex from 'vuex';
-import $ from 'jquery';
+const $ = window.$;
 const noop = () => {}
 const store = new Vuex.Store({
   state: {

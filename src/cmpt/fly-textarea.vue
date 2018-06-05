@@ -4,7 +4,7 @@ textarea.lr_fly_textarea(v-show='open' , :style='{top:top + "px", left: left  + 
 
 <script>
 import store from '__ROOT__/store/fly-textarea';
-import $ from 'jquery';
+const $ = window.$;
 export default {
   data(){
     return store.state

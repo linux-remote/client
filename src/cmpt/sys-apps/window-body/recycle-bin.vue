@@ -79,7 +79,7 @@ export default {
       this.request({
         url: '~/recycle_bin',
         type: 'delete',
-        requestKey: 'isRequest',
+        stateKey: 'isRequest',
         success(){
           this.data = [];
         },
@@ -92,7 +92,7 @@ export default {
     getData(){
       this.request({
         url: '~/recycle_bin',
-        requestKey: 'isRequest',
+        stateKey: 'isRequest',
         success(data){
           this.data = data;
         },

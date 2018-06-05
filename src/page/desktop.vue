@@ -75,30 +75,35 @@ export default {
 
     logout,
     test500(){
-      this.apiGet('~/test500')
+      this.request({
+        url: '~/test500'
+      })
     },
     createdTask(){
       this.$store.commit('addTask', {
         name: 'File System',
-        address: '/',
+        address: '/home/dw',
         type: 'fs'
       });
     },
     init(){
       const username = this.$route.params.username;
-      this.apiGet('~/info', function(data){
-        data.isLogin = true;
-        data.deskInited = true; //dev use.
-        data.username = username;
-        document.title = username + '@' + data.hostname;
-        this.$store.commit('set', data);
+      this.request({
+        url: '~/info', 
+        success(data){
+          data.isLogin = true;
+          data.deskInited = true; //dev use.
+          data.username = username;
+          document.title = username + '@' + data.hostname;
+          this.$store.commit('set', data);
+        }
       });
 
 
       // const TTL_TIME = 1000 * 60 * 9;
       // this.$options._liveTTL = setInterval(()=>{
       //   if(!this.$store.state.isLogin) return;
-      //   this.apiGet('~/live');
+      //   this.request({url: '~/live'});
       // }, TTL_TIME)
 
       createWs(username);

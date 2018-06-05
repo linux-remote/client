@@ -5,10 +5,12 @@
   Contextmenu
   FlyTextarea
   UploadInput
+  UploadBox
   Error
 </template>
 <script>
-import UploadInput from '__ROOT__/cmpt/upload/golbal-input.vue';
+import UploadInput from '__ROOT__/cmpt/global/upload/input.vue';
+import UploadBox from '__ROOT__/cmpt/global/upload/box.vue';
 import Contextmenu from '__ROOT__/cmpt/contextmenu.vue';
 import FlyTextarea from '__ROOT__/cmpt/fly-textarea';
 import Error from '__ROOT__/cmpt/global/error.vue';
@@ -16,6 +18,7 @@ export default {
   components:{
     Contextmenu,
     UploadInput,
+    UploadBox,
     Error,
     FlyTextarea
   },
@@ -29,9 +32,13 @@ export default {
       this.$store.commit('currTaskWindowUnFocus');
     },
     getData(){
-      this.apiGet('/touch', data => {
-        this.$store.commit('set', data);
-      })
+      this.request({
+        url: '/touch',
+        stateKey: 'isRequest',
+        success(data){
+          this.$store.commit('set', data);
+        }
+      });
     }
   },
   mounted(){

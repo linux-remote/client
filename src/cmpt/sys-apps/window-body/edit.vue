@@ -30,6 +30,7 @@ export default {
       if(this.isSaveDisabled) return;
       this.request({
         url: '~/fs' + this.address,
+        stateKey: 'isRequest',
         type: 'put',
         data: {text: this.data},
         success(data){
