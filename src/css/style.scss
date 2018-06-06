@@ -548,10 +548,7 @@ $rightCtrlWidth : 100px;
     height: 31px; 
     line-height: 30px;
     flex-shrink: 0;
-    .lr-fs-address{
-      flex-grow:1; 
-      height: 25px;
-    }
+
     .lr-fs-nav-item{
       width: 30px;
       height: 30px;
@@ -580,6 +577,32 @@ $rightCtrlWidth : 100px;
       &.lr-fs-nav-reload{
         background-image: url('/public/reload.svg');
       }
+    }
+  }
+  .lr-fs-address{
+    flex-grow:1; 
+    display: flex;
+    background-color: #fff;
+    height: 25px;
+    position: relative;
+    >input{
+      flex-grow: 1;
+    }
+  }
+  .lr-fs-address-inner{
+    position: absolute;
+    height: 100%;
+    max-width: 90%;
+    display: flex;
+    background-color: #fff;
+  }
+  .lr-fs-crumb{
+    color: blue;
+    margin-right: 5px;
+    text-decoration: underline;
+    cursor: pointer;
+    &::before{
+      content: '/';
     }
   }
   $linkFileColor: violet;
