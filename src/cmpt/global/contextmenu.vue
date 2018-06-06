@@ -1,5 +1,5 @@
 <template lang="jade">
-.lr-contextmenu#lr-contextmenu(:style='{top: y + "px", left: x + "px"}')
+#lr-contextmenu.lr-contextmenu(:style='{top: y + "px", left: x + "px"}')
   slot
 </template>
 
@@ -15,7 +15,7 @@ export default {
 
 
   mounted(){
-    console.log('contextMenu mounted')
+    //console.log('contextMenu mounted')
     const data = window.APP.contextMenuTransferData;
     if(data){
 

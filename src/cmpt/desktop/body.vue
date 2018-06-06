@@ -12,18 +12,33 @@
       | 整理
     .lr-contextmenu-item(@click="reload")
       | 刷新
+    Cascade.lr-contextmenu-item
+      | 设置桌面壁纸
+      .lr-test-parent(slot='menu')
+        .lr-contextmenu-item 选择
+        .lr-contextmenu-item 上传
+        Cascade 333
+          div(slot='menu')
+            .lr-contextmenu-item 333
+            .lr-contextmenu-item 333
+            Cascade 444
+              div(slot='menu')
+                .lr-contextmenu-item 444
+                .lr-contextmenu-item 444
   slot
 </template>
 <script>
 
 import Icon from './icon.vue';
 import ContextmenuExtend from '../global/contextmenu-extend.vue';
+import Cascade from '../global/cascade.vue';
 const ICON_WIDTH = 80;
 const ICON_HEIGHT = 80;
 export default {
   extends: ContextmenuExtend,
   components: {
     Icon,
+    Cascade
   },
   data(){
     return {
