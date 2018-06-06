@@ -1,6 +1,5 @@
 import Vuex from 'vuex';
 const $ = window.$;
-import {findLast, sortBy, cloneDeep} from 'lodash';
 
 const $win = $(window);
 $win.on('resize', function(){
@@ -89,20 +88,6 @@ const store = new Vuex.Store({
     timeZoneName: '',
     timeZoneOffset: 0,
 
-    // tasks
-    tasks: [], // tasks stack
-    _tmpMinAllTasks: [],
-    _tmpMinAllCurrTasksFocus: false,
-    latestTask: {}, // last created task
-    currTask: {}, // focused task
-    taskMaxZindex: 3,
-    uniqueTaskMap: {
-      // computerInfo: null,
-      // dustbin: null
-    },
-    computerInfoUniqueFocus: false,
-    dustbinUniqueFocus: false,
-    userInfoUniqueFocus: false,
     onFsDel: null,
     onDustbinRecycle: null,
     sessError: false
@@ -116,18 +101,6 @@ const store = new Vuex.Store({
         once: true
       })
     },
-    errorMessagesShow(state, message) {
-      document.addEventListener('mousedown', () => {
-        store.commit('close');
-      },{
-        once: true,
-        capture: true
-      });
-      state.errorMessages.push(message);
-    },
-    errorMessagesClearAll(state){
-      state.errorMessages = [];
-    },
 
     onFsDel(state){
       state.onFsDel = Date.now();
@@ -137,19 +110,19 @@ const store = new Vuex.Store({
     },
     set (state, data) {
       Object.assign(state, data);
-      //sync(data);
     },
   }
 });
 
-function sync(data){
-  Object.keys(data).forEach(k => {
-    let v = data[k];
-    if(v !== null && typeof v === 'object'){
-      v = JSON.stringify(v);
-    }
-    localStorage.setItem(k, v);
-  })
-}
-//console.log('store', store)
+
 export default store;
+
+// function sync(data){
+//   Object.keys(data).forEach(k => {
+//     let v = data[k];
+//     if(v !== null && typeof v === 'object'){
+//       v = JSON.stringify(v);
+//     }
+//     localStorage.setItem(k, v);
+//   })
+// }
