@@ -50,6 +50,12 @@
 <template lang="jade">
 .lr-page.lr-login-warp
   h1.lr-login-h1 Linux Remote
+  fieldset
+    legend.lr-login-legend {{LANG.langTitle}}
+    select(v-model='currLangId', @change="handleChange")
+      option(v-for='v in language.list',
+            :value='v.id', 
+            :key='v.id') {{v.name}}
   form(@submit.prevent="login")
     fieldset.lr-login-fieldset(@keydown.13='login')
       legend.lr-login-legend {{LANG.title}}
@@ -68,6 +74,7 @@
 export default {
   data(){
     return {
+      currLangId: this.$store.state.language.currId,
       isRequest: false,
       username: this.$route.query.user || '',
       password: '',
@@ -75,11 +82,18 @@ export default {
     }
   },
   computed: {
+    language(){
+      return this.$store.state.language;
+    },
     LANG(){
-      return this.$store.state.language.data.loginPage;
+      return this.$store.getters['language/currLanguage'].loginPage;
     }
   },
   methods: {
+    handleChange(e){
+
+      this.$store.commit('language/set', this.currLangId)
+    },
     login(){
       const {username, password} = this;
       this.request({

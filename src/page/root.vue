@@ -29,7 +29,7 @@ export default {
   },
   computed: {
     language(){
-      return this.$store.state.language.id
+      return this.$store.state.language.currId
     }
   },
   watch: {
