@@ -1,23 +1,12 @@
 <template lang="jade">
 .lr-window-body
     .lr-hourglass(v-show='isRequest')
-    .lr-fs-bar
-      .lr-fs-nav-item.lr-fs-nav-left(@click='handleArrowLeftClick', :class='{lr_fs_nav_disabled:backStack.length === 0}')
-      .lr-fs-nav-item.lr-fs-nav-up(@click='handleArrowUpClick', :class='{lr_fs_nav_disabled:address === "/"}')
-      .lr-fs-nav-item.lr-fs-nav-right(@click='handleArrowRightClick', :class='{lr_fs_nav_disabled:goStack.length === 0}')
-      input.lr-fs-address(v-model='inputAddress' @keydown.13='handleGoClick')
-      .lr-fs-nav-item.lr-fs-nav-reload(v-if='address===inputAddress' @click='getData')
-      .lr-fs-nav-item.lr-fs-nav-go(v-else @click='handleGoClick')
+    NavBar(ref='navBar', :onChange="handleNavChange")
+    CtrlBar
     .lr-fs-body(v-if='error')
       pre.lr-fs-error(v-html='data' style='color:red')
-    .lr-fs-body(v-else @contextmenu.prevent='handleFsBodyContextmenu', @mousedown='handleFsBodyMousedown', :class='bodyClass')
-      
-      .lr-fs-cud-bar
-        .lr-fs-cud-bar-mask(v-if='dir && !dir.writeable')
-        button.lr-upload-btn(@click='handleUploadBtnClick') 上传文件
-        //-input.lr-upload-input( type='file' ref='uploadInput' @change='uploadFolder' multiple)
-        //-Upload(:getFd='getUploadFd', :isFolder='true') 上传文件夹
-      //-h2(style='color:#eee;margin:0', v-if='data.length === 0 && !isRequest') Empty
+    .lr-fs-body(v-else @contextmenu.prevent='handleFsBodyContextmenu',
+                @mousedown='handleFsBodyMousedown', :class='bodyClass')
       .lr-file(v-for='item in data',
               :key='item.name',
               @mousedown='noopStop',
@@ -26,10 +15,6 @@
               :class='{lr_file_hidden: item.name[0] === ".", lr_file_focus: item.focus, ["lr_file_type_" + item.type ]: item.type}')
         FsIcon(:item='item')
         .lr-file-name(@click='handleItemNameClick(item, $event)') {{item.name}}
-
-
-
-
     .lr-fs-status(v-if='currItem.focus')
       span {{currItem.isSymbolicLink ? 'SymbolicLink' : currItem.type}}
       span {{wellCurrSize}}
@@ -53,24 +38,24 @@
 
 import contextmenuStore from '__ROOT__/store/contextmenu';
 import flyTextAreaStore from '__ROOT__/store/fly-textarea';
-import FsIcon from './fs-icon';
-import Upload from './upload-multiple';
+import FsIcon from './fs-icon.vue';
+import NavBar from './nav-bar.vue';
+import CtrlBar from './ctrl-bar.vue';
 import {perFormet, getNameSuffix} from './fs-util';
 //import FsItem from './fs-item';
 export default {
   components:{
     FsIcon,
-    Upload
+    NavBar,
+    CtrlBar
   },
   data(){
     return {
       isRequest: false,
-      inputAddress: null,
-      // address: null,
-      addressArr: ['/'],
+
+      address: null,
+
       data: [],
-      backStack: [],
-      goStack: [],
       currItem: {},
 
       //dirIsSticky : false,
@@ -83,12 +68,6 @@ export default {
     }
   },
   myStoreage: {},
-  watch: {
-    address(v){
-      this.inputAddress = v;
-      this.getData();
-    }
-  },
   computed: {
     wellCurrSize(){
       return this.currItem.size
@@ -103,9 +82,6 @@ export default {
     groups(){
       return this.$store.state.groups
     },
-    address(){
-      return '/' + this.addressArr.join('/');
-    },
     bodyClass(){
       if(this.dir && !this.dir.readable){
         return 'lr-fs-dir-unreadable'
@@ -119,10 +95,11 @@ export default {
     }
   },
   methods: {
-    getUploadFd(fd){
-      console.log('fd', fd)
-      this.$options.myStoreage.uploadFd = fd;
+    handleNavChange(address){
+      this.address = address;
+      this.getData();
     },
+
     getItemPath(name){
       const a = this.address === '/' ? this.address : this.address + '/';
       return a + name;
@@ -243,14 +220,7 @@ export default {
         left: e.clientX
       });
     },
-    handleUploadBtnClick(){
-      this.$store.commit('upload/start', this.address);
-      // const dom = this.$refs.uploadInput;
-      // dom.addEventListener('change', this.uploadFolder, {
-      //   once: true
-      // });
-      // dom.click();
-    },
+
     uploadFolder(e){
       const files = e.target.files;
       if(!files.length){
@@ -325,44 +295,12 @@ export default {
 
       });
     },
-    setAddress(path){
-      const arr = path.split('/');
-      const arr2 = [];
-      arr.forEach(v => {
-        if(v){
-          arr2.push(v);
-        }
-      });
-      this.addressArr = arr2;
-    },
     download(item){
       const self = this;
       this.request({
         url: '~/fs' + self.getItemPath(item.name) + '?download=true',
         download: true
       })
-    },
-    handleArrowLeftClick(){
-      if(!this.backStack.length) return;
-      this.goStack.push(this.addressArr);
-      const pop = this.backStack.pop();
-      this.addressArr = pop;
-    },
-    handleArrowRightClick(){
-      if(!this.goStack.length) return;
-      const pop = this.goStack.pop();
-      this.addressArr = pop;
-    },
-    handleGoClick(){
-      //console.log('handleGoClick')
-      this.setAddress(this.inputAddress);
-    },
-    handleArrowUpClick(){
-      if(!this.address === '/') return;
-      this.goStack = [];
-      this.backStack.push(this.addressArr);
-      const i = this.address.lastIndexOf('/');
-      this.setAddress(this.address.substr(0, i));
     },
     getAddress(item){
       let address;
@@ -376,12 +314,12 @@ export default {
     openItem(item){
       const address = this.getAddress(item);
       if(item.type === 'Directory'){
-        this.backStack.push(this.addressArr);
-        this.setAddress(address);
+        //this.backStack.push(this.addressArr);
+        this.$refs.navBar.go(address);
 
       }else if(item.type === 'RegularFile'){
 
-        this.$store.commit('addTask', {
+        this.$store.commit('task/add', {
           type: 'edit',
           name: item.name + '**' + this.address + '**',
           width: 500,
@@ -533,10 +471,10 @@ export default {
       })
     }
   },
-  created(){
+  mounted(){
     const pData = this.$parent;
     const address = pData.address || this.$store.state.homedir;
-    this.setAddress(address);
+    this.$refs.navBar.setAddress(address);
   }
 }
 </script>

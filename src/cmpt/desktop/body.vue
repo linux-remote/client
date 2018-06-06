@@ -1,5 +1,5 @@
 <template lang="jade">
-.lr-desk(@drop='handleDeskDrop',
+#lr-desk.lr-desk(@drop='handleDeskDrop',
          @dragover.prevent='',
          @contextmenu='handleContextmenu',
          @dragend='handleIconDragEnd')
@@ -122,7 +122,7 @@ export default {
       
     },
     openDustBin(){
-      this.$store.commit('addTask', {
+      this.$store.commit('task/add', {
         name: 'Dustbin',
         type: 'dustbin',
         unique: true

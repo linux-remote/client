@@ -54,13 +54,6 @@ export default {
     },
   },
   methods:{
-    openHome(dir){
-      this.$store.commit('addTask', {
-        name: 'Home',
-        address: dir,
-        type: 'fs'
-      })
-    },
     show(){
       if(this.showDrop) return;
       this.showDrop = true;

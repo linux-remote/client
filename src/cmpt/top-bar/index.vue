@@ -15,34 +15,6 @@ export default {
   components:{
     Watch,
     User
-  },
-  data(){
-    return {
-      
-    }
-  },
-  methods:{
-    openHome(){
-      this.$store.commit('addTask', {
-        name: 'Home',
-        type: 'fs'
-      });
-    },
-    openFs(){
-      this.$store.commit('addTask', {
-        name: 'File System',
-        address: '/',
-        type: 'fs'
-      });
-    }
-  },
-  computed:{
-    username(){
-      return this.$store.state.username
-    },
-    title(){
-      return this.$store.state.crrrMaxTaskTitle ||  this.$store.state.hostname
-    }
   }
 }
 </script>

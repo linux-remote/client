@@ -29,7 +29,7 @@ export default {
   },
   methods:{
     handleMousedown(){
-      this.$store.commit('currTaskWindowUnFocus');
+      this.$store.commit('task/currentUnFocus');
     },
     getData(){
       this.request({

@@ -12,7 +12,7 @@ TaskWindow(:index='index')
 
 <script>
 import TaskWindow from '../task-window.vue';
-import FsBody from './window-body/fs.vue';
+import FsBody from './window-body/fs/index.vue';
 import RecycleBinBody from './window-body/recycle-bin.vue';
 // import EditBody from './window-body/edit';
 // import ComputerInfoBody from './window-body/computer-info';
@@ -29,7 +29,7 @@ export default {
   },
   props: ['index'],
   data(){
-    return this.$store.state.tasks[this.index];
+    return this.$store.state.task.list[this.index];
   }
 }
 </script>

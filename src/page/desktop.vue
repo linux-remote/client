@@ -13,7 +13,7 @@
     //- .lr-desk-icon-wrap(@dblclick="openEmptyTask")
     //-   .lr-desk-icon-text Empty
 
-    SystemApps(v-for='(item, index) in tasks', :key='item.id', :index='index') 
+    SystemApps(v-for='(item, index) in tasks', :key='item.id', :index='index')
   TasksBar
 </template>
 <script>
@@ -34,7 +34,21 @@ export default {
     
   },
   data(){
-    return this.$store.state;
+    return {}
+  },
+  computed:{
+    tasks(){
+      return this.$store.state.task.list;
+    },
+    sessError(){
+      return this.$store.state.sessError
+    },
+    deskInited(){
+      return this.$store.state.deskInited
+    },
+    username(){
+      return this.$store.state.username
+    }
   },
   watch: {
     $route(val){
@@ -52,21 +66,21 @@ export default {
   methods: {
 
     openUserInfo(){
-      this.$store.commit('addTask', {
+      this.$store.commit('task/add', {
         name: 'User Info',
         type: 'userInfo',
         unique: true
       });
     },
     openOsInfo(){
-      this.$store.commit('addTask', {
+      this.$store.commit('task/add', {
         name: 'Server Info',
         type: COMPUTER_TYPE,
         unique: true
       });
     },
     openEmptyTask(){
-      this.$store.commit('addTask', {
+      this.$store.commit('task/add', {
         name: 'Empty',
 
         unique: true
@@ -80,7 +94,7 @@ export default {
       })
     },
     createdTask(){
-      this.$store.commit('addTask', {
+      this.$store.commit('task/add', {
         name: 'File System',
         address: '/home/dw',
         type: 'fs'

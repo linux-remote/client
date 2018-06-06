@@ -2,7 +2,7 @@
 .lr-task-window(v-show='!isMin',
                 @mousedown.stop='taskFocus',
                 :style='{width:width + "px", height: height  + "px", zIndex: zIndex, top:     positionTop + "px", left: positionLeft  + "px"}' ,
-                :class='{lr_task_max: isMax, lr_task_unique: unique, lr_task_focus: focus}',
+                :class='{lr_task_max: isMax, lr_task_unique: unique, lr_task_focus: isFocus}',
                 :draggable='draggable',
                 @dragstart.stop='handleDragStart',
                 @dragend.stop='handleDragEnd')
@@ -29,9 +29,9 @@
 <script>
 
 export default {
-  props: ['index'],
+  props: ['index', 'title', 'taskId'],
   data(){
-    return this.$store.state.tasks[this.index];
+    return this.$store.state.task.list[this.index];
   },
   methods:{
     resizeStart(type, e){
@@ -119,16 +119,16 @@ export default {
 
     },
     hiddenTask(){
-      this.$store.commit('hiddenTask', this.$data);
+      this.$store.commit('task/hidden', this.$data);
     },
     removeTask(){
-      this.$store.commit('removeTask', this.index);
+      this.$store.commit('task/remove', this.index);
     },
     // handleNothing(e){
     //   return false
     // },
     taskFocus(){
-      this.$store.commit('taskWindowFocus', this.$data);
+      this.$store.commit('task/focus', this.$data);
     },
     handleDragStart(e){
       if(!this.draggable || this.isMax){
@@ -136,8 +136,8 @@ export default {
         return false;
       }
 
-      if(!this.focus){
-        this.$store.commit('taskWindowFocus', this.$data);
+      if(!this.isFocus){
+        this.$store.commit('task/focus', this.$data);
       }
 
       e.dataTransfer._startClient = {
