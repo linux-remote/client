@@ -15,16 +15,21 @@ window.APP = {
   contextMenuTransferData: null
 }
 
+import language from './module/language';
 import upload from './module/upload';
 import error from './module/error';
 import task from './module/task';
+
 const store = new Vuex.Store({
   modules: {
+    language,
     upload,
     error,
     task
   },
   state: {
+
+
     dragTransferData: null,
     appMap: {
       sys_file: {

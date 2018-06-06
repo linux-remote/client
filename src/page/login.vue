@@ -52,16 +52,16 @@
   h1.lr-login-h1 Linux Remote
   form(@submit.prevent="login")
     fieldset.lr-login-fieldset(@keydown.13='login')
-      legend.lr-login-legend login
+      legend.lr-login-legend {{LANG.title}}
       .lr-login-row
-        label.lr-login-label 用户名:
+        label.lr-login-label {{LANG.username}}:
         input.lr-login-input( v-model='username' required="required")
       .lr-login-row
-        label.lr-login-label 密码:
+        label.lr-login-label {{LANG.password}}:
         input.lr-login-input(type='password' v-model='password' required="required")
       .lr-login-footer
         button(type="submit", :class='{lr_loading:isRequest}') ok
-      .lr-login-error(v-show="error") {{error}}
+      .lr-login-error(v-show="error") {{LANG.submitBtn}}
 </template>
 
 <script>
@@ -72,6 +72,11 @@ export default {
       username: this.$route.query.user || '',
       password: '',
       error: ''
+    }
+  },
+  computed: {
+    LANG(){
+      return this.$store.state.language.data.loginPage;
     }
   },
   methods: {
@@ -94,7 +99,7 @@ export default {
       })
     },
     routeTo(username){
-      this.$router.push('/user/' + username);
+      this.$router.push('user/' + username);
     }
   }
 }

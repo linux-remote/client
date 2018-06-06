@@ -1,5 +1,5 @@
 <template lang="jade">
-.lr-page.lr-desk-wrap(v-if='deskInited')
+.lr-page.lr-desk-wrap(v-if='deskInited', @mousedown='handleMousedown')
   TopBar
   DeskTop
     //-   img.lr-desk-icon(src='/public/dustbin.svg')
@@ -64,7 +64,9 @@ export default {
     }
   },
   methods: {
-
+    handleMousedown(){
+      this.$store.commit('task/currentUnFocus');
+    },
     openUserInfo(){
       this.$store.commit('task/add', {
         name: 'User Info',

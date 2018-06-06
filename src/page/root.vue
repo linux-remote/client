@@ -1,6 +1,6 @@
 <template lang="jade">
 #lr-app.lr-h100
-  #lr-main.lr-h100(@mousedown='handleMousedown')
+  #lr-main.lr-h100
     router-view
   Contextmenu
   FlyTextarea
@@ -27,9 +27,19 @@ export default {
       isRequest: false
     }
   },
+  computed: {
+    language(){
+      return this.$store.state.language.id
+    }
+  },
+  watch: {
+    language(newVal){
+      this.getLanguage(newVal)
+    }
+  },
   methods:{
-    handleMousedown(){
-      this.$store.commit('task/currentUnFocus');
+    getLanguage(newVal){
+      console.log('getLanguage', newVal)
     },
     getData(){
       this.request({
@@ -45,6 +55,12 @@ export default {
     window.APP.$elMain = document.getElementById('lr-main');
   },
   created(){
+    const language = localStorage.language || navigator.language;
+    if(this.language !== language){
+      this.$store.commit('set', {
+        language
+      })
+    }
     this.getData();
   }
 }
