@@ -8,6 +8,7 @@
   .lr-fs-nav-item.lr-fs-nav-go(v-else @click='handleGoClick')
 </template>
 <script>
+const MAX_LEN = 50;
 export default {
   props: {
     onChange : {
@@ -62,10 +63,13 @@ export default {
       } 
       this.goStack = [];
       const i = this.address.lastIndexOf('/');
-      this.setAddress(this.address.substr(0, i));
+      this.go(this.address.substr(0, i));
     },
 
     go(newAddress){
+      if(this.backStack.length === MAX_LEN){
+        this.backStack.pop();
+      }
       this.backStack.push(this.addressArr);
       this.setAddress(newAddress);
     },
