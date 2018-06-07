@@ -600,6 +600,7 @@ $rightCtrlWidth : 100px;
     color: blue;
     margin-right: 5px;
     text-decoration: underline;
+    white-space: pre-wrap;
     cursor: pointer;
     &::before{
       content: '/';
@@ -823,7 +824,7 @@ $rightCtrlWidth : 100px;
        text-align: center;
        cursor: text;
        z-index: 4;
-       white-space: nowrap;
+       white-space: pre-wrap;
        text-overflow: ellipsis;
        overflow: hidden;
     }

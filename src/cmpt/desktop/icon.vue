@@ -60,7 +60,7 @@ export default {
 
   computed: {
     app(){
-      return this.$store.state.appMap[this.item.id]
+      return this.$store.state.app.map[this.item.id]
     },
     currTitle(){
       return this.item.title || this.app.title

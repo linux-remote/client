@@ -1,7 +1,7 @@
 <template lang="jade">
 TaskWindow(:index='index')
-  FsBody(v-if='type==="fs"')
-  RecycleBinBody(v-else-if='type==="recycle_bin"')
+  FsBody(v-if='appId==="sys_file"')
+  RecycleBinBody(v-else-if='appId==="sys_recycle_bin"')
   
   //- edit-body(v-else-if='type==="edit"' ,:address='address')
   

@@ -65,7 +65,7 @@ export default {
       this.contextmenuClose();
     },
     handleIconDragEnd(e){
-      console.log('handleIconDragEnd')
+      //console.log('handleIconDragEnd')
       if(!this.$data._isInDesk){
         return;
       }
@@ -133,21 +133,16 @@ export default {
         return;
       }
       this.$data._isInDesk = true;
-  
-      
-    },
-    openDustBin(){
-      this.$store.commit('task/add', {
-        name: 'Dustbin',
-        type: 'dustbin',
-        unique: true
-      });
     },
     getData(){
     this.request({
       url: '~/desktop',
       success(result){
-        this.list = JSON.parse(result);
+        result = JSON.parse(result);
+        if(!result.length){
+          result = [{"type":"app","id":"sys_recycle_bin","x": 0,"y":0}]
+        }
+        this.list = result;
       }
     })
     }

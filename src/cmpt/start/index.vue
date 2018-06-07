@@ -68,7 +68,7 @@ export default {
   },
   computed: {
     appList(){
-      return this.$store.state.appMap
+      return this.$store.state.app.map
     }
   },
   methods: {
