@@ -42,6 +42,7 @@ import FsIcon from './fs-icon.vue';
 import NavBar from './nav-bar.vue';
 import CtrlBar from './ctrl-bar.vue';
 import {perFormet, getNameSuffix} from './fs-util';
+import {wellSize} from '__ROOT__/lib/util';
 //import FsItem from './fs-item';
 export default {
   components:{
@@ -70,8 +71,7 @@ export default {
   myStoreage: {},
   computed: {
     wellCurrSize(){
-      return this.currItem.size
-      //wellSize(this.currItem.size)
+      return wellSize(this.currItem.size);
     },
     error(){
       return !Array.isArray(this.data);

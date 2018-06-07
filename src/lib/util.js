@@ -18,27 +18,35 @@ export const timeFormat = (date, fmt) => {
 export const ONE_SEC = 1000;
 export const ONE_MIN = ONE_SEC * 60;
 
+
+function trimEnd0(str) { //去掉未尾多余的0.
+  str = str.replace(/0+$/, '');
+  var lastIndex = str.length - 1;
+  return str[lastIndex] !== '.' ? str : str.substr(0, lastIndex);
+}
 export const wellSize = (size, fix) => {
   let m = 'B';
   fix = fix || 2;
   if(size > 1024){
     size = (size / 1024);
-    m = 'K';
+    m = 'KB';
   }
 
   if(size > 1024){
     size = (size / 1024);
-    m = 'M';
+    m = 'MB';
   }
   if(size > 1024){
     size = (size / 1024);
-    m = 'G';
+    m = 'GB';
   }
   if(size > 1024){
     size = (size / 1024);
-    m = 'T';
+    m = 'TB';
   }
-  return size.toFixed(fix) + m;
+  size = size.toFixed(fix);
+
+  return trimEnd0(size) + ' ' + m;
 }
 
 export const TypeOf = function(v){
