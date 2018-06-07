@@ -9,7 +9,7 @@
   .lr-task-title(@mousedown='handleTitleMousedown',
             @dblclick='maxToggle', 
             @mouseup='disableDraggable')
-    .lr-task-title-content {{name}}
+    .lr-task-title-content {{title}}
     .lr-task-control
       .lr-task-control-min(@click.stop='hiddenTask')
       div(@click.stop='maxToggle',
@@ -29,7 +29,7 @@
 <script>
 
 export default {
-  props: ['index', 'title', 'taskId'],
+  props: ['index'],
   data(){
     return this.$store.state.task.list[this.index];
   },

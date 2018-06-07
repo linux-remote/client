@@ -38,7 +38,7 @@ export default {
   },
   methods: {
     handleClick(){
-      this.app.handleClick && this.app.handleClick();
+      this.$store.commit('task/add', this.item.id);
     }
   },
   mounted(){

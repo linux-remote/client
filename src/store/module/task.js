@@ -19,32 +19,37 @@ export default  {
   //   }
   // },
   mutations: {
-    add(state, data){
-      data.unique = data.unique || false;
+    add(state, appId){
+      const APP = this.state.app.map[appId];
+      const data = {
+        appId,
+        ...APP
+      }
+
+      data.unique = APP.unique || false;
+
       if(data.unique){
-        let k = data.type;
-        if(uniqueMap[k]){
-          return this.commit('task/show', o[k]);
+        if(uniqueMap[appId]){
+          return this.commit('task/show', uniqueMap[appId]);
         }else{
-          uniqueMap[k] = data;
+          uniqueMap[appId] = data;
         }
       }
+
       const isMax = state.current.isMax;
-      data.width = (isMax ? data.width : state.current.width) || 800;
-      data.height = (isMax ? data.height : state.current.height) || 600;
-      data.type = data.type || null;
+      data.width = (isMax ? APP.width : state.current.width) || 800;
+      data.height = (isMax ? APP.height : state.current.height) || 600;
       data.draggable = false;
       data.isMin = false;
       data.isMax = false;
       data.resizeStartData = null;
 
-      this.commit('task/_initPosition', data);
+      this.commit('task/_initPosition', data); // init: positionTop, positionLeft
       this.commit('task/focus', data); // init: isFocus, id.
 
       data.id = state.id;
       state.latest = data;
       state.list.push(data);
-
     },
     focus(state, task){
       if(task.isFocus === true){
@@ -83,7 +88,7 @@ export default  {
     remove(state, index){
       const item = state.list[index];
       if(item.unique){
-        delete(uniqueMap[item.type]);
+        delete(uniqueMap[item.appId]);
       }
       state.list.splice(index, 1);
       this.commit('task/_focusNext');

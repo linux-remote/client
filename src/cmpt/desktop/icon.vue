@@ -76,7 +76,7 @@ export default {
       })
     },
     handleDblclick(){
-      this.app.handleClick && this.app.handleClick();
+      this.$store.commit('task/add', this.item.id);
     },
     handleDragStart(v, e){
       this.$store.commit('transferDragData', {
