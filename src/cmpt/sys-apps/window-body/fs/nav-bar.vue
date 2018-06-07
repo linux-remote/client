@@ -85,7 +85,7 @@ export default {
 
     go(newAddress){
       if(this.backStack.length === MAX_LEN){
-        this.backStack.pop();
+        this.backStack.shift();
       }
       if(this.goStack.length){
         this.goStack = [];
