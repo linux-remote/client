@@ -10,6 +10,11 @@ export default  {
         iconUrl: '/public/img/tango-style/user-trash.png',
         unique: true,
         title: '回收站'
+      },
+      sys_disk : {
+        iconUrl: '/public/img/tango-style/network-server.png',
+        unique: true,
+        title: '资源管理器'
       }
     }
   }
