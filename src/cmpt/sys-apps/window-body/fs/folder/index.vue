@@ -1,16 +1,19 @@
 <template lang="jade">
-.lr-fs-folder(@contextmenu.prevent='handleFsBodyContextmenu',
-            @mousedown='handleFsBodyMousedown', :class='bodyClass')
-  CtrlBar
-  .lr-fs-folder-inner
-    .lr-file(v-for='item in list',
-            :key='item.name',
-            @mousedown='noopStop',
-            @dblclick='openItem(item)', @click.stop='focusItem(item)',
-            @contextmenu.prevent.stop='handleFsItemContextmenu(item, $event)',
-            :class='{lr_file_hidden: item.name[0] === ".", lr_file_focus: item.focus, ["lr_file_type_" + item.type ]: item.type}')
-      FsIcon(:item='item')
-      .lr-file-name(@click='handleItemNameClick(item, $event)') {{item.name}}
+.lr-fs-right
+  .lr-fs-folder(v-if='error')
+    pre.lr-fs-error(v-html='data' style='color:red')
+  .lr-fs-folder(v-else, @contextmenu.prevent='handleFsBodyContextmenu',
+              @mousedown='handleFsBodyMousedown', :class='bodyClass')
+    CtrlBar
+    .lr-fs-folder-inner
+      .lr-file(v-for='item in list',
+              :key='item.name',
+              @mousedown='noopStop',
+              @dblclick='openItem(item)', @click.stop='focusItem(item)',
+              @contextmenu.prevent.stop='handleFsItemContextmenu(item, $event)',
+              :class='{lr_file_hidden: item.name[0] === ".", lr_file_focus: item.focus, ["lr_file_type_" + item.type ]: item.type}')
+        FsIcon(:item='item')
+        .lr-file-name(@click='handleItemNameClick(item, $event)') {{item.name}}
   Status
 </template>
 
@@ -23,7 +26,7 @@ import Status from './status.vue';
 import CtrlBar from './ctrl-bar.vue';
 
 import initRelation from './permission-util';
-import {getNameSuffix} from './fs-util';
+import {getNameSuffix} from '../fs-util';
 export default {
   components:{
     CtrlBar,
@@ -39,6 +42,9 @@ export default {
     }
   },
   computed: {
+    error(){
+      return !Array.isArray(this.list);
+    },
     username(){
       return this.$store.state.username
     },

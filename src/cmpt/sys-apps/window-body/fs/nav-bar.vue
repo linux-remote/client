@@ -1,11 +1,11 @@
 <template lang="jade">
 .lr-fs-nav-bar
   .lr-fs-nav-item.lr-fs-nav-left(@click='handleArrowLeftClick', :class='{lr_fs_nav_disabled:backStack.length === 0}')
-  .lr-fs-nav-item.lr-fs-nav-up(@click='handleArrowUpClick', :class='{lr_fs_nav_disabled:address === "/"}')
+  .lr-fs-nav-item.lr-fs-nav-up(@click='handleArrowUpClick', :class='{lr_fs_nav_disabled:address === ""}')
   .lr-fs-nav-item.lr-fs-nav-right(@click='handleArrowRightClick', :class='{lr_fs_nav_disabled:goStack.length === 0}')
   .lr-fs-address
     .lr-fs-address-inner(v-if="!isInputFocus")
-      .lr-fs-crumb(v-for='(v, i) in addressArr', 
+      .lr-fs-crumb(v-for='(v, i) in addressArr',
                   :key='v',
                   @click='handleCrumbClick(i)') {{v}}
     input(v-model='inputAddress', 
@@ -30,9 +30,14 @@ export default {
     return {
       backStack: [],
       goStack: [],
-      addressArr: ['/'],
+      addressArr: [],
       inputAddress: null,
       isInputFocus: false
+    }
+  },
+  computed: {
+    address(){
+      return this.addressArr.join('/');
     }
   },
   watch: {
@@ -41,11 +46,7 @@ export default {
       this.onChange(v);
     }
   },
-  computed: {
-    address(){
-      return '/' + this.addressArr.join('/');
-    }
-  },
+
   methods: {
     handleCrumbClick(index){
       const arr = [];
@@ -76,9 +77,9 @@ export default {
       this.addressArr = pop;
     },
     handleArrowUpClick(){
-      if(!this.address === '/'){
+      if(!this.address === ''){
         return;
-      } 
+      }
       const i = this.address.lastIndexOf('/');
       this.go(this.address.substr(0, i));
     },

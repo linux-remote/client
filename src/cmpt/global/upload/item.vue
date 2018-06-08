@@ -73,7 +73,6 @@ export default {
           return xhr;
         },
         success(){
-          console.log('uploadFolder success');
         }
       })
       

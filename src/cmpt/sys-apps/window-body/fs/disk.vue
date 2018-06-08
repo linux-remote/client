@@ -67,35 +67,22 @@
   font-size: 13px;
   color: #666;
 }
-.lr-disk-wrap{
-  display: flex;
-  height: 100%;
-}
-
 </style>
 <template lang="jade">
-.lr-disk-wrap
-  .lr-fs-left
-    .lr-fs-bookmark  此电脑
-    .lr-fs-bookmark  /
-    .lr-fs-bookmark Home
-
-    hr
-    .lr-fs-bookmark  /
-  .lr-fs-right
-    fieldset(v-for='field in map', v-if='field.list.length')
-      legend {{field.title}}
-      .lr-fieldset-body
-        .lr-disk-item(v-for='(v, i) in field.list', :key='i')
-          .lr-disk-icon(:class='"lr-disk-" + v.type')
-          .lr-disk-item-right
-            div {{v.target}}
-            .lr-disk-process-wrap
-              .lr-disk-process(:style='{width: v.percent + "%"}')
-              .lr-disk-i-process(:style='{width: v.ipercent + "%"}', :title='"inode " + v.ipercent + "%"')
-            .lr-disk-info  
-              span.lr-disk-type {{v.fstype}} 
-              | {{(v.size - v.used)  | wellSize('K')}} 可用 共 {{v.size | wellSize('K')}} 
+.lr-fs-right
+  fieldset(v-for='field in map', v-if='field.list.length')
+    legend {{field.title}}
+    .lr-fieldset-body
+      .lr-disk-item(v-for='(v, i) in field.list', :key='i')
+        .lr-disk-icon(:class='"lr-disk-" + v.type')
+        .lr-disk-item-right
+          div {{v.target}}
+          .lr-disk-process-wrap
+            .lr-disk-process(:style='{width: v.percent + "%"}')
+            .lr-disk-i-process(:style='{width: v.ipercent + "%"}', :title='"inode " + v.ipercent + "%"')
+          .lr-disk-info  
+            span.lr-disk-type {{v.fstype}} 
+            | {{(v.size - v.used)  | wellSize('K')}} 可用 共 {{v.size | wellSize('K')}} 
 </template>
 
 <script>
