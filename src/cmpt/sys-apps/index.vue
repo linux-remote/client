@@ -14,7 +14,7 @@ TaskWindow(:index='index')
 import TaskWindow from '../task-window.vue';
 import FsBody from './window-body/fs/index.vue';
 import RecycleBinBody from './window-body/recycle-bin.vue';
-import DiskBody from './window-body/disk.vue';
+import DiskBody from './window-body/fs/disk.vue';
 // import EditBody from './window-body/edit';
 // import ComputerInfoBody from './window-body/computer-info';
 // import UserInfoBody from './window-body/user-info';

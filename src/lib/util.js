@@ -26,15 +26,18 @@ function trimEnd0(str) { //去掉未尾多余的0.
 }
 const SIZE_TYPE = ['B', 'K', 'M', 'G', 'T', 'P'];
 export const wellSize = (size, startUnit, fix) => {
-
+  if(size === 0){
+    return '0 B';
+  }
   var  index = startUnit ? SIZE_TYPE.indexOf(startUnit) : 0;
+
   var len = SIZE_TYPE.length;
   fix = fix || 2;
 
   function loop(){
-    size = (size / 1024);
-    index = index + 1;
     if(size > 1024 && index < len){
+      size = (size / 1024);
+      index = index + 1;
       loop();
     }
   }

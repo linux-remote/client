@@ -2,7 +2,7 @@ export default  {
   namespaced: true,
   state: {
     map:{
-        sys_file: {
+      sys_file: {
         iconUrl: '/public/img/tango-style/user-home.png',
         title: '文件管理器'
       },
@@ -12,8 +12,7 @@ export default  {
         title: '回收站'
       },
       sys_disk : {
-        iconUrl: '/public/img/tango-style/network-server.png',
-        unique: true,
+        iconUrl: '/public/img/system-file-manager-6.png',
         title: '资源管理器'
       }
     }

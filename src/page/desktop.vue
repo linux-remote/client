@@ -7,8 +7,6 @@
     //- .lr-desk-icon-wrap(@dblclick="openOsInfo" , :class="{lr_desk_icon_focus: computerInfoUniqueFocus}")
     //-   img.lr-desk-icon(src='/public/server.svg')
     //-   .lr-desk-icon-text Server Info
-    //- .lr-desk-icon-wrap(@dblclick="createdTask")
-    //-   img.lr-desk-icon(src='/public/file-tree.svg')
     //-   .lr-desk-icon-text File System
     //- .lr-desk-icon-wrap(@dblclick="openEmptyTask")
     //-   .lr-desk-icon-text Empty
@@ -96,11 +94,7 @@ export default {
       })
     },
     createdTask(){
-      this.$store.commit('task/add', {
-        name: 'File System',
-        address: '/home/dw',
-        type: 'fs'
-      });
+      this.$store.commit('task/add', 'sys_file');
     },
     init(){
       const username = this.$route.params.username;
@@ -123,7 +117,7 @@ export default {
       // }, TTL_TIME)
 
       createWs(username);
-      //this.createdTask();
+      this.createdTask();
 
     }
   },

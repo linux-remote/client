@@ -1,37 +1,44 @@
 <template lang="jade">
 .lr-window-body
-    .lr-hourglass(v-show='isRequest')
-    NavBar(ref='navBar', :onChange="handleNavChange")
-    CtrlBar
-    .lr-fs-body(v-if='error')
-      pre.lr-fs-error(v-html='data' style='color:red')
-    .lr-fs-body(v-else @contextmenu.prevent='handleFsBodyContextmenu',
-                @mousedown='handleFsBodyMousedown', :class='bodyClass')
-      .lr-file(v-for='item in data',
-              :key='item.name',
-              @mousedown='noopStop',
-              @dblclick='openItem(item)', @click.stop='focusItem(item)',
-              @contextmenu.prevent.stop='handleFsItemContextmenu(item, $event)',
-              :class='{lr_file_hidden: item.name[0] === ".", lr_file_focus: item.focus, ["lr_file_type_" + item.type ]: item.type}')
-        FsIcon(:item='item')
-        .lr-file-name(@click='handleItemNameClick(item, $event)') {{item.name}}
-    .lr-fs-status(v-if='currItem.focus')
-      span {{currItem.isSymbolicLink ? 'SymbolicLink' : currItem.type}}
-      span {{wellCurrSize}}
-      span {{currItem.permission}}
-      span {{currItem.owner}}
-      span {{currItem.group}}
-      span(v-if='currItem.isSymbolicLink') linkTo:
-        b.v-2-link {{currItem.linkPath}}
-    .lr-fs-status(v-else-if='dir')
-      span Items: {{data.length}}
-      //-span DIR
-      span {{dir.permission}}
-      span {{dir.owner}}
-      span {{dir.group}}
-      span(v-if='!dir.readable') readable: {{dir.readable}}
-      span(v-if='!dir.writeable') writeable: {{dir.writeable}}
-      span(v-if='dir.isSticky') sticky:{{dir.isSticky}}
+  .lr-hourglass(v-show='isRequest')
+  NavBar(ref='navBar', :onChange="handleNavChange")
+  .lr-fs-bottom-wrap
+    Left
+    .lr-fs-right
+      CtrlBar
+      .lr-fs-body(v-if='error')
+        pre.lr-fs-error(v-html='data' style='color:red')
+      .lr-fs-body(v-else @contextmenu.prevent='handleFsBodyContextmenu',
+                  @mousedown='handleFsBodyMousedown', :class='bodyClass')
+        .lr-fs-body-inner
+          .lr-file(v-for='item in data',
+                  :key='item.name',
+                  @mousedown='noopStop',
+                  @dblclick='openItem(item)', @click.stop='focusItem(item)',
+                  @contextmenu.prevent.stop='handleFsItemContextmenu(item, $event)',
+                  :class='{lr_file_hidden: item.name[0] === ".", lr_file_focus: item.focus, ["lr_file_type_" + item.type ]: item.type}')
+            FsIcon(:item='item')
+            .lr-file-name(@click='handleItemNameClick(item, $event)') {{item.name}}
+
+
+
+  .lr-fs-status(v-if='currItem.focus')
+    span {{currItem.isSymbolicLink ? 'SymbolicLink' : currItem.type}}
+    span {{wellCurrSize}}
+    span {{currItem.permission}}
+    span {{currItem.owner}}
+    span {{currItem.group}}
+    span(v-if='currItem.isSymbolicLink') linkTo:
+      b.v-2-link {{currItem.linkPath}}
+  .lr-fs-status(v-else-if='dir')
+    span Items: {{data.length}}
+    //-span DIR
+    span {{dir.permission}}
+    span {{dir.owner}}
+    span {{dir.group}}
+    span(v-if='!dir.readable') readable: {{dir.readable}}
+    span(v-if='!dir.writeable') writeable: {{dir.writeable}}
+    span(v-if='dir.isSticky') sticky:{{dir.isSticky}}
 </template>
 
 <script>
@@ -41,6 +48,7 @@ import flyTextAreaStore from '__ROOT__/store/fly-textarea';
 import FsIcon from './fs-icon.vue';
 import NavBar from './nav-bar.vue';
 import CtrlBar from './ctrl-bar.vue';
+import Left from './left.vue';
 import {perFormet, getNameSuffix} from './fs-util';
 import {wellSize} from '__ROOT__/lib/util';
 //import FsItem from './fs-item';
@@ -48,7 +56,8 @@ export default {
   components:{
     FsIcon,
     NavBar,
-    CtrlBar
+    CtrlBar,
+    Left
   },
   data(){
     return {
