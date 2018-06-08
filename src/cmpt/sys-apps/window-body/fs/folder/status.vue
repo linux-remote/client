@@ -9,7 +9,7 @@
     span(v-if='$parent.currItem.isSymbolicLink') linkTo:
       b.lr-fs-status-link {{$parent.currItem.linkPath}}
   .lr-fs-status(v-else-if='$parent.dir')
-    span Items: {{$parent.data.length}}
+    span Items: {{$parent.list.length}}
     //-span DIR
     span {{$parent.dir.permission}}
     span {{$parent.dir.owner}}

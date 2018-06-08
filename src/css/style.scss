@@ -626,12 +626,14 @@ $rightCtrlWidth : 100px;
   }
   .lr-fs-crumb{
     color: blue;
-    margin-right: 5px;
-    text-decoration: underline;
     white-space: pre-wrap;
     cursor: pointer;
+    //text-decoration: underline;
     &::before{
       content: '/';
+      color: #000;
+      margin: 0 10px;
+      //text-decoration: none;
     }
   }
   $linkFileColor: violet;

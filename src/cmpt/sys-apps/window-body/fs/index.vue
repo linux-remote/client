@@ -5,7 +5,7 @@
   .lr-fs-bottom-wrap
     Left
     Disk(v-if='address === ""')
-    Folder(v-else)
+    Folder(v-else-if='address', :address='address')
 </template>
 
 <script>
@@ -30,19 +30,6 @@ export default {
   methods: {
     handleNavChange(address){
       this.address = address;
-      this.getData();
-    },
-    getAddress(item){
-      let address;
-      if(item.isSymbolicLink){
-        address = item.linkPath;
-      }else{
-        address = this.address + '/' + item.name
-      }
-      return address;
-    },
-    getData(){
-
     }
   },
   mounted(){

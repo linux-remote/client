@@ -67,6 +67,15 @@
   font-size: 13px;
   color: #666;
 }
+.lr-disk-link{
+  text-decoration: underline;
+  color: blue;
+  cursor: pointer;
+  width: 100%;
+}
+.lr-disk-link:hover{
+  color: green;
+}
 </style>
 <template lang="jade">
 .lr-fs-right
@@ -76,11 +85,11 @@
       .lr-disk-item(v-for='(v, i) in field.list', :key='i')
         .lr-disk-icon(:class='"lr-disk-" + v.type')
         .lr-disk-item-right
-          div {{v.target}}
+          .lr-disk-link(@click='go(v.target)') {{v.target}}
           .lr-disk-process-wrap
             .lr-disk-process(:style='{width: v.percent + "%"}')
             .lr-disk-i-process(:style='{width: v.ipercent + "%"}', :title='"inode " + v.ipercent + "%"')
-          .lr-disk-info  
+          .lr-disk-info
             span.lr-disk-type {{v.fstype}} 
             | {{(v.size - v.used)  | wellSize('K')}} 可用 共 {{v.size | wellSize('K')}} 
 </template>
@@ -117,7 +126,11 @@ export default {
       }
     }
   },
-
+  computed: {
+    go(){
+      return this.$parent.$refs.navBar.go
+    }
+  },
 
   methods: {
     getData(){

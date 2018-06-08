@@ -1,7 +1,7 @@
 <template lang="jade">
 .lr-fs-right
   .lr-fs-folder(v-if='error')
-    pre.lr-fs-error(v-html='data' style='color:red')
+    pre.lr-fs-error(v-html='list' style='color:red')
   .lr-fs-folder(v-else, @contextmenu.prevent='handleFsBodyContextmenu',
               @mousedown='handleFsBodyMousedown', :class='bodyClass')
     CtrlBar
@@ -33,6 +33,17 @@ export default {
     FsIcon,
     Status
   },
+  props: {
+    address: {
+      type: String,
+      required: true
+    }
+  },
+  watch: {
+    address(){
+      this.getData();
+    }
+  },
   data(){
     return {
       list: [],
@@ -61,9 +72,22 @@ export default {
       if(this.dir && this.dir.isSticky){
         return 'lr-fs-dir-sticky'
       }
+    },
+    go(){
+      return this.$parent.$refs.navBar.go
     }
   },
+
   methods: {
+    getItemAddress(item){
+      let address;
+      if(item.isSymbolicLink){
+        address = item.linkPath;
+      }else{
+        address = this.address + '/' + item.name
+      }
+      return address;
+    },
     getData(){
       this.request({
         url: '~/fs' + this.address,
@@ -126,13 +150,10 @@ export default {
       }
     },
     openItem(item){
-      const address = this.getAddress(item);
+      const address = this.getItemAddress(item);
       if(item.type === 'Directory'){
-        //this.backStack.push(this.addressArr);
-        this.$refs.navBar.go(address);
-
+        this.go(address);
       }else if(item.type === 'RegularFile'){
-
         this.$store.commit('task/add', {
           type: 'edit',
           name: item.name + '**' + this.address + '**',
@@ -316,7 +337,8 @@ export default {
       });
     },
   },
-  mounted(){
+  created(){
+    this.getData();
   }
 }
 </script>

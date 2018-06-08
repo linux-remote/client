@@ -7,7 +7,8 @@
     .lr-fs-address-inner(v-if="!isInputFocus")
       .lr-fs-crumb(v-for='(v, i) in addressArr',
                   :key='v',
-                  @click='handleCrumbClick(i)') {{v}}
+                  @click='handleCrumbClick(i)',
+                  v-if='v') {{v}}
     input(v-model='inputAddress', 
           @focus="handleInputFocus",
           @blur="handleInputBlur", 
@@ -37,6 +38,13 @@ export default {
   },
   computed: {
     address(){
+      var len = this.addressArr.length;
+      if(!len){  //''.split('/')  [""]
+        return '';
+      }
+      if(len === 1){  //''.split('/')  [""]
+        return '/';
+      }
       return this.addressArr.join('/');
     }
   },
@@ -77,14 +85,11 @@ export default {
       this.addressArr = pop;
     },
     handleArrowUpClick(){
-      if(!this.address === ''){
-        return;
-      }
-      const i = this.address.lastIndexOf('/');
-      this.go(this.address.substr(0, i));
+      var len = this.addressArr.length - 1;
+      let arr = this.addressArr.slice(0, len);
+      this.go(arr);
     },
-
-    go(newAddress){
+    beforeGo(){
       if(this.backStack.length === MAX_LEN){
         this.backStack.shift();
       }
@@ -92,19 +97,22 @@ export default {
         this.goStack = [];
       }
       this.backStack.push(this.addressArr);
+    },
+    go(newAddress){
+      this.beforeGo();
       this.setAddress(newAddress);
     },
-
     setAddress(path){
       if(typeof path === 'string'){
-        const arr = path.split('/');
-        const arr2 = [];
-        arr.forEach(v => {
-          if(v){
-            arr2.push(v);
+        if(!path){
+          this.addressArr = []
+        }else {
+          if(path === '/'){
+            this.addressArr = ['']
+          }else{
+            this.addressArr = path.split('/');
           }
-        });
-        this.addressArr = arr2;
+        }
       }else{
         this.addressArr = path;
       }
