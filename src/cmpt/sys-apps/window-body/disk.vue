@@ -32,11 +32,28 @@
   background-color: #eee;
   border: 1px solid #ddd;
   width: 100%;
-  margin-bottom: 5px;
+  position: relative;
 }
 .lr-disk-process{
   height: 100%;
   background-color: green;
+}
+/* .lr-disk-i-process-wrap{
+  width: 100%;
+  margin-bottom: 5px;
+  background-color: bisque;
+  border: 1px solid #ddd;
+  border-radius: 2px;
+  height: 5px;
+} */
+.lr-disk-i-process{
+
+  position: absolute;
+  height: 3px;
+  background-color: #66CDAA;
+  z-index: 2;
+  top: 100%;
+  left: 0;
 }
 .lr-disk-info{
   font-size: 13px;
@@ -52,7 +69,10 @@
         div {{v.target}}
         .lr-disk-process-wrap
           .lr-disk-process(:style='{width: v.percent + "%"}')
-          .lr-disk-info  {{(v.size - v.used)  | wellSize('K')}} 可用 共 {{v.size | wellSize('K')}} 
+          .lr-disk-i-process(:style='{width: v.ipercent + "%"}')
+
+          
+        .lr-disk-info  {{(v.size - v.used)  | wellSize('K')}} 可用 共 {{v.size | wellSize('K')}} 
 </template>
 
 <script>
@@ -87,7 +107,10 @@ export default {
             }else {
               obj.type = 'hd'
             }
+            obj.available = obj.size - obj.used;
             obj.percent = (obj.used / obj.size) * 100;
+            obj.iavailable = obj.itotal - obj.iused;
+            obj.ipercent = (obj.iused / obj.itotal) * 100;
           })
         } 
       })
