@@ -8,7 +8,7 @@
       button(@click='clearAll') Clear All
       div(style='flex-grow:1')
       .lr-3-item.lr-3-reload(@click='getData')
-    .lr-fs-body
+    .lr-fs-folder
       table.lr-info-table.lr-table(style='width:100%;')
         tr
           th name

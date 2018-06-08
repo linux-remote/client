@@ -6,58 +6,32 @@
     Left
     .lr-fs-right
       CtrlBar
-      .lr-fs-body(v-if='error')
+      .lr-fs-folder(v-if='error')
         pre.lr-fs-error(v-html='data' style='color:red')
-      .lr-fs-body(v-else @contextmenu.prevent='handleFsBodyContextmenu',
-                  @mousedown='handleFsBodyMousedown', :class='bodyClass')
-        .lr-fs-body-inner
-          .lr-file(v-for='item in data',
-                  :key='item.name',
-                  @mousedown='noopStop',
-                  @dblclick='openItem(item)', @click.stop='focusItem(item)',
-                  @contextmenu.prevent.stop='handleFsItemContextmenu(item, $event)',
-                  :class='{lr_file_hidden: item.name[0] === ".", lr_file_focus: item.focus, ["lr_file_type_" + item.type ]: item.type}')
-            FsIcon(:item='item')
-            .lr-file-name(@click='handleItemNameClick(item, $event)') {{item.name}}
+      Folder(v-else)
+  Status
 
 
 
-  .lr-fs-status(v-if='currItem.focus')
-    span {{currItem.isSymbolicLink ? 'SymbolicLink' : currItem.type}}
-    span {{wellCurrSize}}
-    span {{currItem.permission}}
-    span {{currItem.owner}}
-    span {{currItem.group}}
-    span(v-if='currItem.isSymbolicLink') linkTo:
-      b.v-2-link {{currItem.linkPath}}
-  .lr-fs-status(v-else-if='dir')
-    span Items: {{data.length}}
-    //-span DIR
-    span {{dir.permission}}
-    span {{dir.owner}}
-    span {{dir.group}}
-    span(v-if='!dir.readable') readable: {{dir.readable}}
-    span(v-if='!dir.writeable') writeable: {{dir.writeable}}
-    span(v-if='dir.isSticky') sticky:{{dir.isSticky}}
 </template>
 
 <script>
-
-import contextmenuStore from '__ROOT__/store/contextmenu';
 import flyTextAreaStore from '__ROOT__/store/fly-textarea';
-import FsIcon from './fs-icon.vue';
+
 import NavBar from './nav-bar.vue';
 import CtrlBar from './ctrl-bar.vue';
 import Left from './left.vue';
+import Folder from './folder.vue';
+import Status from './status.vue';
 import {perFormet, getNameSuffix} from './fs-util';
-import {wellSize} from '__ROOT__/lib/util';
 //import FsItem from './fs-item';
 export default {
   components:{
-    FsIcon,
+    Left,
     NavBar,
     CtrlBar,
-    Left
+    Folder,
+    Status
   },
   data(){
     return {
@@ -77,11 +51,7 @@ export default {
       newFolderIndex: 0
     }
   },
-  myStoreage: {},
   computed: {
-    wellCurrSize(){
-      return wellSize(this.currItem.size);
-    },
     error(){
       return !Array.isArray(this.data);
     },
@@ -90,144 +60,12 @@ export default {
     },
     groups(){
       return this.$store.state.groups
-    },
-    bodyClass(){
-      if(this.dir && !this.dir.readable){
-        return 'lr-fs-dir-unreadable'
-      }
-      if(this.dir && !this.dir.writeable){
-        return 'lr-fs-dir-unwriteable'
-      }
-      if(this.dir && this.dir.isSticky){
-        return 'lr-fs-dir-sticky'
-      }
     }
   },
   methods: {
     handleNavChange(address){
       this.address = address;
       this.getData();
-    },
-
-    getItemPath(name){
-      const a = this.address === '/' ? this.address : this.address + '/';
-      return a + name;
-    },
-    handleItemNameClick(item, e){
-      if(item !== this.currItem) return;
-      const self = this;
-      const data = {
-        target: e.target,
-        //value: item.name,
-        handleBlur : function(newName){
-          if(item.name === newName) return;
-          self.renameItem(item, newName);
-        }
-      }
-      flyTextAreaStore.commit('open', data);
-    },
-    renameItem(item, newName){
-      // console.log('oldName', item.name, newName);
-      // return;
-      this.request({
-        url: '~/fs' + this.address,
-        type: 'post',
-        data: {type: 'rename', oldName: item.name, newName},
-        success(){
-          item.name = newName;
-          if(item.isFile){
-            item.suffix = getNameSuffix(item.name);
-          }
-          console.log('rename success');
-        }
-      })
-      //console.log('renameItem', item.name, newName);
-    },
-    focusItem(item){
-      this.itemFocus(item);
-    },
-    itemFocus(item){
-      this.currItem.focus = false;
-      item.focus = true;
-      this.currItem = item;
-      if(this.onListener === true) return;
-      this.onListener = true;
-      window.APP.$elMain.addEventListener('mousedown', () => {
-        this.currItem.focus = false;
-        this.onListener = false;
-      }, {
-        once: true,
-        //capture: true
-      })
-    },
-
-    handleFsBodyMousedown(){
-      this.currItem.focus = false;
-    },
-    handleFsItemContextmenu(item, e){
-      const self = this;
-      this.itemFocus(item);
-      const data = [
-        {name: 'Create Symbolic Link',
-          handleClick(){
-            const name = item.name + '.lnk';
-            self.request({
-              type: 'post',
-              url: '~/fs' + self.getItemPath(item.name),
-              data: {
-                type: 'createSymbolicLink',
-                name: item.name + '.lnk'
-              },
-              success(){
-                self.newItemName = name;
-                //self.newFileIndex += 1;
-                self.getData();
-              }
-            })
-          }
-        },
-        {
-          name: 'Delete',
-          handleClick(){
-            self.request({
-              type: 'delete',
-              url: '~/fs' + self.getItemPath(item.name) + '?type=file',
-              success(){
-                //self.newFileIndex += 1;
-                this.$store.commit('onFsDel');
-                self.getData();
-              }
-            })
-          }
-        }
-      ];
-
-      if(item.type === 'RegularFile' || item.type === 'Directory'){
-
-        if(item.type === 'RegularFile' && item.readable){
-          data.unshift({
-            name: 'download',
-            handleClick(){
-              self.download(item);
-            }
-          })
-        }
-
-        data.unshift({
-          name: 'Open',
-          handleClick(){
-            self.openItem(item)
-            console.log('handleClick open');
-          }
-        })
-
-      }
-
-      contextmenuStore.commit('open', {
-        data,
-        top: e.clientY,
-        left: e.clientX
-      });
     },
 
     uploadFolder(e){
@@ -251,66 +89,7 @@ export default {
         }
       })
     },
-    handleFsBodyContextmenu(e){
-      const self = this;
-      contextmenuStore.commit('open', {
-        data: [{
-          name: 'New File',
-          handleClick(){
-            const name = 'new-' + Date.now();
-            self.request({
-              type: 'POST',
-              url: '~/fs' + self.address,
-              data: {
-                name,
-                type: 'createFile'
-              },
-              success(){
-                self.newItemName = name;
-                //self.currItem.focus = true;
-                //self.newFileIndex += 1;
-                self.getData();
-              }
-            })
-          }
-        },
-        {
-          name: 'New Folder',
-          handleClick(){
-            const name = 'new-' + Date.now()
-            self.request({
-              type: 'POST',
-              url: '~/fs' + self.address,
-              data: {
-                name,
-                type: 'createFolder'
-              },
-              success(){
-                self.newItemName = name;
-                //self.newFolderIndex += 1;
-                self.getData();
-              }
-            })
-          }
-        },
-        {
-          name: 'Refresh',
-          handleClick(){
-            self.getData();
-          }
-        }],
-        top: e.clientY,
-        left: e.clientX
 
-      });
-    },
-    download(item){
-      const self = this;
-      this.request({
-        url: '~/fs' + self.getItemPath(item.name) + '?download=true',
-        download: true
-      })
-    },
     getAddress(item){
       let address;
       if(item.isSymbolicLink){
@@ -320,23 +99,7 @@ export default {
       }
       return address;
     },
-    openItem(item){
-      const address = this.getAddress(item);
-      if(item.type === 'Directory'){
-        //this.backStack.push(this.addressArr);
-        this.$refs.navBar.go(address);
 
-      }else if(item.type === 'RegularFile'){
-
-        this.$store.commit('task/add', {
-          type: 'edit',
-          name: item.name + '**' + this.address + '**',
-          width: 500,
-          height:500,
-          address
-        });
-      }
-    },
     initRelation(item){
       const isInGroup = (this.groups.indexOf(item.group) !== -1);
       const rwxs = item.rwxs;
@@ -369,20 +132,17 @@ export default {
       if(!accessable){
         accessable = rwxs.group.x;
       }
-
       item.readable = readable;
       item.writeable = writeable;
       item.accessable = accessable;
       item.is_other = true; //icon 用到了.
       if(item.type === 'Directory'){
-
         if(!accessable){
           if(readable){
             item.permiss_type = 'list';
           }else{
             item.permiss_type = 'none';
           }
-          
         }else {
           if(item.readable){
             if(item.writeable){
@@ -390,9 +150,7 @@ export default {
             }else{
               item.permiss_type = 'only_read';
             }
-
           }else {
-
             if(writeable){
               item.permiss_type = 'only_write';
             }else{
@@ -400,10 +158,9 @@ export default {
             }
           }
         }
-
       }
-
     },
+
     dataFormat(item){
       const per = item.permission;
       const obj = perFormet(per);
@@ -446,12 +203,6 @@ export default {
 
             this.initRelation(v);
 
-            // if(v.name === '.'){
-            //   if(v.is_owner || v.is_group || !v.isSticky){
-            //
-            //   }
-            // }
-
             if(v.name === '.'){
               this.dir = v;
               return;
@@ -472,7 +223,6 @@ export default {
             }
           });
           this.data = folderArr.concat(fileArr).concat(hiddenArr);
-          //this.data = data;
         },
         error(xhr){
           this.data = `http ${xhr.status} 错误: <br>${xhr.responseText}`
