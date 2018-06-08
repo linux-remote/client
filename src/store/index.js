@@ -48,6 +48,10 @@ const store = new Vuex.Store({
     homedir: '',
     hostname: '',
 
+    lr_sys_unknown_app : {
+      iconUrl : '/public/img/image-missing-3.png',
+      title: 'lr_sys_unknown_app'
+    },
     //arch: '',
 
     time: 0,

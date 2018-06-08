@@ -11,7 +11,7 @@ export default  {
         unique: true,
         title: '回收站'
       },
-      sys_disk : {
+      sys_disk2 : {
         iconUrl: '/public/img/system-file-manager-6.png',
         title: '资源管理器'
       }

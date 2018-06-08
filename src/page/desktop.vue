@@ -2,15 +2,6 @@
 .lr-page.lr-desk-wrap(v-if='deskInited', @mousedown='handleMousedown')
   TopBar
   DeskTop
-    //-   img.lr-desk-icon(src='/public/dustbin.svg')
-    //-   .lr-desk-icon-text Dustbin
-    //- .lr-desk-icon-wrap(@dblclick="openOsInfo" , :class="{lr_desk_icon_focus: computerInfoUniqueFocus}")
-    //-   img.lr-desk-icon(src='/public/server.svg')
-    //-   .lr-desk-icon-text Server Info
-    //-   .lr-desk-icon-text File System
-    //- .lr-desk-icon-wrap(@dblclick="openEmptyTask")
-    //-   .lr-desk-icon-text Empty
-
     SystemApps(v-for='(item, index) in tasks', :key='item.id', :index='index')
   TasksBar
 </template>
@@ -21,7 +12,6 @@ import TopBar from '__ROOT__/cmpt/top-bar/index.vue';
 import SystemApps from '__ROOT__/cmpt/sys-apps/index.vue';
 import DeskTop from '__ROOT__/cmpt/desktop/body.vue';
 import {createWs, logout} from '__ROOT__/lib/login';
-const COMPUTER_TYPE = 'computerInfo';
 
 export default {
   components: {
@@ -65,24 +55,16 @@ export default {
     handleMousedown(){
       this.$store.commit('task/currentUnFocus');
     },
-    openUserInfo(){
-      this.$store.commit('task/add', {
-        name: 'User Info',
-        type: 'userInfo',
-        unique: true
-      });
-    },
     openOsInfo(){
       this.$store.commit('task/add', {
         name: 'Server Info',
-        type: COMPUTER_TYPE,
+        type: 'computerInfo',
         unique: true
       });
     },
     openEmptyTask(){
       this.$store.commit('task/add', {
         name: 'Empty',
-
         unique: true
       });
     },

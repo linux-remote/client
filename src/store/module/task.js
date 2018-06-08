@@ -1,6 +1,8 @@
 //let _id = 3; 
 const uniqueMap = Object.create(null);
 import {findLast, sortBy, cloneDeep} from 'lodash';
+const TASK_WIDTH = 800;
+const TASK_HEIGHT = 600;
 export default  {
   namespaced: true,
   state: {
@@ -36,9 +38,12 @@ export default  {
         }
       }
 
-      const isMax = state.current.isMax;
-      data.width = (isMax ? APP.width : state.current.width) || 800;
-      data.height = (isMax ? APP.height : state.current.height) || 600;
+      const list = sortBy(state.list, 'zIndex');
+      const preSameTask = findLast(list,{appId}) || {};
+      const isMax = preSameTask.isMax;
+
+      data.width = (isMax ? APP.width : preSameTask.width) || TASK_WIDTH;
+      data.height = (isMax ? APP.height : preSameTask.height) || TASK_HEIGHT;
       data.draggable = false;
       data.isMin = false;
       data.isMax = false;
@@ -123,8 +128,8 @@ export default  {
       state.current.isFocus = false;
     },
     _focusNext(state){
-      const test = sortBy(state.list, 'zIndex');
-      const preTask = findLast(test,{isMin: false});
+      const list = sortBy(state.list, 'zIndex');
+      const preTask = findLast(list,{isMin: false});
       if(preTask){
         this.commit('task/focus', preTask);
       }

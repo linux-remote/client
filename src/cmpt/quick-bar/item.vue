@@ -31,9 +31,7 @@ export default {
   },
   computed: {
     app(){
-      return this.$store.state.app.map[this.item.id] || {
-        iconUrl : '/public/img/emblem-question.png'
-      }
+      return this.$store.state.app.map[this.item.id] || this.$store.state.lr_sys_unknown_app
     }
   },
   methods: {

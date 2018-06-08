@@ -17,7 +17,6 @@ import RecycleBinBody from './window-body/recycle-bin.vue';
 import DiskBody from './window-body/fs/disk.vue';
 // import EditBody from './window-body/edit';
 // import ComputerInfoBody from './window-body/computer-info';
-// import UserInfoBody from './window-body/user-info';
 export default {
   components: {
     TaskWindow,
@@ -26,8 +25,7 @@ export default {
     DiskBody
     // EditBody,
     
-    // ComputerInfoBody,
-    // UserInfoBody
+    // ComputerInfoBody
   },
   props: ['index'],
   data(){
