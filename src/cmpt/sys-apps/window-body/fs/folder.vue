@@ -15,16 +15,25 @@
 <script>
 import contextmenuStore from '__ROOT__/store/contextmenu';
 import FsIcon from './fs-icon.vue';
+import initRelation from './permission-util';
+import {getNameSuffix} from './fs-util';
 export default {
   components:{
     FsIcon
   },
   data(){
     return {
+      data: [],
+      newItemName: null
     }
   },
   computed: {
-    
+    username(){
+      return this.$store.state.username
+    },
+    groups(){
+      return this.$store.state.groups
+    },
     bodyClass(){
       if(this.dir && !this.dir.readable){
         return 'lr-fs-dir-unreadable'
@@ -38,6 +47,67 @@ export default {
     }
   },
   methods: {
+    getData(){
+      this.request({
+        url: '~/fs' + this.address,
+        stateKey: 'isRequest',
+        //poolKey: this.address,
+        data: {dir: true},
+        success(data){
+          const folderArr = [], fileArr = [], hiddenArr = [];
+          data.forEach( v => {
+            if(v.name === '..') return;
+
+            const _syl = v.symbolicLink;
+            if(_syl){
+              v.isSymbolicLink = true;
+              v.linkPath = _syl.linkPath;
+              v.linkTargetError = _syl.linkTargetError;
+              if(!v.linkTargetError){
+                v.permission = _syl.permission;
+                v.owner = _syl.owner;
+                v.group = _syl.group;
+              }
+            }
+
+            initRelation(v, this.username, this.groups);
+
+            if(v.name === '.'){
+              this.dir = v;
+              return;
+            }
+
+            this.focusNewItem(v);
+            if(v.name[0] === '.'){
+              v.isHidden = true;
+              hiddenArr.push(v);
+            }else{
+              v.isHidden = false;
+              if(v.type === 'Directory'){
+                folderArr.push(v)
+              }else{
+                fileArr.push(v);
+                v.suffix = getNameSuffix(v.name);
+              }
+            }
+          });
+          this.data = folderArr.concat(fileArr).concat(hiddenArr);
+        },
+        error(xhr){
+          this.data = `http ${xhr.status} 错误: <br>${xhr.responseText}`
+        }
+      })
+    },
+    focusNewItem(v){
+      if(this.newItemName && v.name === this.newItemName){
+        this.itemFocus(v);
+        this.newItemName = null;
+      }else if(v.name === this.currItem.name && this.currItem.focus){
+        this.itemFocus(v);
+      }else{
+        v.focus = false;
+      }
+    },
     openItem(item){
       const address = this.getAddress(item);
       if(item.type === 'Directory'){
@@ -131,8 +201,6 @@ export default {
               },
               success(){
                 self.newItemName = name;
-                //self.currItem.focus = true;
-                //self.newFileIndex += 1;
                 self.getData();
               }
             })
@@ -151,7 +219,6 @@ export default {
               },
               success(){
                 self.newItemName = name;
-                //self.newFolderIndex += 1;
                 self.getData();
               }
             })
@@ -184,7 +251,6 @@ export default {
               },
               success(){
                 self.newItemName = name;
-                //self.newFileIndex += 1;
                 self.getData();
               }
             })
@@ -197,7 +263,6 @@ export default {
               type: 'delete',
               url: '~/fs' + self.getItemPath(item.name) + '?type=file',
               success(){
-                //self.newFileIndex += 1;
                 this.$store.commit('onFsDel');
                 self.getData();
               }
