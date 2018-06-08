@@ -98,6 +98,8 @@ export default {
           const folderArr = [], fileArr = [], hiddenArr = [];
           data.forEach( v => {
             if(v.name === '..') return;
+            
+            v.size = Number(v.size);
 
             const _syl = v.symbolicLink;
             if(_syl){
@@ -112,7 +114,7 @@ export default {
             }
 
             initRelation(v, this.username, this.groups);
-
+            
             if(v.name === '.'){
               this.dir = v;
               return;

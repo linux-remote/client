@@ -24,8 +24,10 @@ function trimEnd0(str) { //去掉未尾多余的0.
   var lastIndex = str.length - 1;
   return str[lastIndex] !== '.' ? str : str.substr(0, lastIndex);
 }
-const SIZE_TYPE = ['B', 'K', 'M', 'G', 'T', 'P'];
+const SIZE_TYPE = ['', 'K', 'M', 'G', 'T', 'P'];
 export const wellSize = (size, startUnit, fix) => {
+  // console.log('size', size, typeof size, size.length)
+  // size = Number(size);
   if(size === 0){
     return '0 B';
   }
@@ -43,7 +45,7 @@ export const wellSize = (size, startUnit, fix) => {
   }
 
   loop();
-
+  
   size = size.toFixed(fix);
 
   return trimEnd0(size) + ' ' + SIZE_TYPE[index] + 'B';
