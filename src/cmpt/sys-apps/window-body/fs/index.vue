@@ -5,35 +5,27 @@
   .lr-fs-bottom-wrap
     Left
     .lr-fs-right
-      CtrlBar
       .lr-fs-folder(v-if='error')
         pre.lr-fs-error(v-html='data' style='color:red')
       Folder(v-else)
-  Status
 </template>
 
 <script>
 import NavBar from './nav-bar.vue';
-import CtrlBar from './ctrl-bar.vue';
 import Left from './left.vue';
 import Folder from './folder.vue';
-import Status from './status.vue';
 
 export default {
   components:{
     Left,
     NavBar,
-    CtrlBar,
-    Folder,
-    Status
+    Folder
   },
   data(){
     return {
       isRequest: false,
       address: null,
-      data: [],
-      currItem: {},
-      dir: null
+      data: []
     }
   },
   computed: {

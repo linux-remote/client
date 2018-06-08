@@ -1,8 +1,9 @@
 <template lang="jade">
 .lr-fs-folder(@contextmenu.prevent='handleFsBodyContextmenu',
             @mousedown='handleFsBodyMousedown', :class='bodyClass')
+  CtrlBar
   .lr-fs-folder-inner
-    .lr-file(v-for='item in $parent.data',
+    .lr-file(v-for='item in list',
             :key='item.name',
             @mousedown='noopStop',
             @dblclick='openItem(item)', @click.stop='focusItem(item)',
@@ -10,20 +11,30 @@
             :class='{lr_file_hidden: item.name[0] === ".", lr_file_focus: item.focus, ["lr_file_type_" + item.type ]: item.type}')
       FsIcon(:item='item')
       .lr-file-name(@click='handleItemNameClick(item, $event)') {{item.name}}
+  Status
 </template>
 
 <script>
 import contextmenuStore from '__ROOT__/store/contextmenu';
+import flyTextAreaStore from '__ROOT__/store/fly-textarea';
+
 import FsIcon from './fs-icon.vue';
+import Status from './status.vue';
+import CtrlBar from './ctrl-bar.vue';
+
 import initRelation from './permission-util';
 import {getNameSuffix} from './fs-util';
 export default {
   components:{
-    FsIcon
+    CtrlBar,
+    FsIcon,
+    Status
   },
   data(){
     return {
-      data: [],
+      list: [],
+      currItem: {},
+      dir: null,
       newItemName: null
     }
   },
@@ -91,10 +102,10 @@ export default {
               }
             }
           });
-          this.data = folderArr.concat(fileArr).concat(hiddenArr);
+          this.list = folderArr.concat(fileArr).concat(hiddenArr);
         },
         error(xhr){
-          this.data = `http ${xhr.status} 错误: <br>${xhr.responseText}`
+          this.list = `http ${xhr.status} 错误: <br>${xhr.responseText}`
         }
       })
     },
