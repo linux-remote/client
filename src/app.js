@@ -13,6 +13,9 @@ Vue.prototype.noopStop = function(e){
   e.stopPropagation();
 }
 
+import {wellSize} from './lib/util';
+Vue.filter('wellSize', wellSize);
+
 import store from './store/index.js';
 import router from './router';
 import Root from './page/root.vue';

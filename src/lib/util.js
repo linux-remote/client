@@ -24,29 +24,26 @@ function trimEnd0(str) { //去掉未尾多余的0.
   var lastIndex = str.length - 1;
   return str[lastIndex] !== '.' ? str : str.substr(0, lastIndex);
 }
-export const wellSize = (size, fix) => {
-  let m = 'B';
+const SIZE_TYPE = ['B', 'K', 'M', 'G', 'T', 'P'];
+export const wellSize = (size, startUnit, fix) => {
+
+  var  index = startUnit ? SIZE_TYPE.indexOf(startUnit) : 0;
+  var len = SIZE_TYPE.length;
   fix = fix || 2;
-  if(size > 1024){
+
+  function loop(){
     size = (size / 1024);
-    m = 'KB';
+    index = index + 1;
+    if(size > 1024 && index < len){
+      loop();
+    }
   }
 
-  if(size > 1024){
-    size = (size / 1024);
-    m = 'MB';
-  }
-  if(size > 1024){
-    size = (size / 1024);
-    m = 'GB';
-  }
-  if(size > 1024){
-    size = (size / 1024);
-    m = 'TB';
-  }
+  loop();
+
   size = size.toFixed(fix);
 
-  return trimEnd0(size) + ' ' + m;
+  return trimEnd0(size) + ' ' + SIZE_TYPE[index] + 'B';
 }
 
 export const TypeOf = function(v){
