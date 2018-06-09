@@ -11,7 +11,8 @@
 }
 
 .lr-desk-icon-img{
-  height: 60px;
+  /* height: 60px; */
+  height: 50px;
   width: 100%;
   background-position: center;
   background-size: contain;
@@ -19,6 +20,14 @@
 }
 .lr-desk-icon-text{
   font-size: 12px;
+  line-height: 15px;
+  word-break: break-all;
+  height: 30px;
+  width: 100%;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
 }
 .lr-desk-icon:hover{
   background-color: #D3D3D3;
