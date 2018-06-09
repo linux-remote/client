@@ -1,19 +1,18 @@
 <template lang="jade">
-.lr-fs-right
-  .lr-fs-folder(v-if='error')
-    pre.lr-fs-error(v-html='list' style='color:red')
-  .lr-fs-folder(v-else, @contextmenu.prevent='handleFsBodyContextmenu',
-              @mousedown='handleFsBodyMousedown', :class='bodyClass')
-    CtrlBar
-    .lr-fs-folder-inner
-      .lr-file(v-for='item in list',
-              :key='item.name',
-              @mousedown='noopStop',
-              @dblclick='openItem(item)', @click.stop='focusItem(item)',
-              @contextmenu.prevent.stop='handleFsItemContextmenu(item, $event)',
-              :class='{lr_file_hidden: item.name[0] === ".", lr_file_focus: item.focus, ["lr_file_type_" + item.type ]: item.type}')
-        FsIcon(:item='item')
-        .lr-file-name(@click='handleItemNameClick(item, $event)') {{item.name}}
+.lr-fs-folder(@contextmenu.prevent='handleFsBodyContextmenu',
+            @mousedown='handleFsBodyMousedown', :class='bodyClass')
+  CtrlBar
+  .lr-fs-folder-inner(v-if='error')
+    pre.lr-fs-error(v-html='list')
+  .lr-fs-folder-inner(v-else)
+    .lr-file(v-for='item in list',
+            :key='item.name',
+            @mousedown='noopStop',
+            @dblclick='openItem(item)', @click.stop='focusItem(item)',
+            @contextmenu.prevent.stop='handleFsItemContextmenu(item, $event)',
+            :class='{lr_file_hidden: item.name[0] === ".", lr_file_focus: item.focus, ["lr_file_type_" + item.type ]: item.type}')
+      FsIcon(:item='item')
+      .lr-file-name(@click='handleItemNameClick(item, $event)') {{item.name}}
   Status
 </template>
 
@@ -143,7 +142,7 @@ export default {
           this.list = folderArr.concat(fileArr).concat(hiddenArr);
         },
         error(xhr){
-          this.list = `http ${xhr.status} 错误: <br>${xhr.responseText}`
+          this.list = `${xhr.responseText}`
         }
       })
     },
