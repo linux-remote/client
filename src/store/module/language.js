@@ -29,18 +29,21 @@ export default  {
         }
       }
     ],
-    currId: 'zh-CN'
+    currId: 'zh-CN',
+    currIndex: 0
   },
   getters: {
     currLanguage(state){
-      return state.list.find((v) => {
-        return v.id === state.currId
-      }).data
+      return state.list[state.currIndex].data;
     }
   },
   mutations: {
     set(state, id){
-      state.currId = id;
+      var i = (typeof id === 'number') ? id : state.list.findIndex((v) => {
+        return v.id === id
+      });
+      i = (i === -1) ? 0 : i;
+      state.currIndex = i;
     }
   }
 }

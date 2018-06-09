@@ -27,20 +27,20 @@ export default {
       isRequest: false
     }
   },
-  computed: {
-    language(){
-      return this.$store.state.language.currId
-    }
-  },
-  watch: {
-    language(newVal){
-      this.getLanguage(newVal)
-    }
-  },
+  // computed: {
+  //   language(){
+  //     return this.$store.state.language.currId
+  //   }
+  // },
+  // watch: {
+  //   language(newVal){
+  //     this.getLanguage(newVal)
+  //   }
+  // },
   methods:{
-    getLanguage(newVal){
-      console.log('getLanguage', newVal)
-    },
+    // getLanguage(newVal){
+    //   console.log('getLanguage', newVal)
+    // },
     getData(){
       this.request({
         url: '/touch',
@@ -55,12 +55,8 @@ export default {
     window.APP.$elMain = document.getElementById('lr-main');
   },
   created(){
-    const language = localStorage.language || navigator.language;
-    if(this.language !== language){
-      this.$store.commit('set', {
-        language
-      })
-    }
+    const language = this.$route.query.language || navigator.language;
+    this.$store.commit('language/set', language);
     this.getData();
   }
 }

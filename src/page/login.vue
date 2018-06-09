@@ -1,60 +1,12 @@
-<style>
-.lr-login-warp{
-  justify-content:center;
-  flex-direction: column;
-  align-items: center;
-  
-  /* C28E00 ffb900 F5AD3B BDB76B E8A600*/
-  /* background-color: #8B4513;
-  margin: 0 auto; */
-}
-.lr-login-h1{
-  text-align: center;
-  margin-top: 0;
-  margin-bottom: 10px;
-}
-.lr-login-input{
-  height: 30px; 
-}
-.lr-login-fieldset{
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-}
-.lr-login-row{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 10px;
-}
-.lr-login-label{
-  font-size: .82em;
-  line-height: 1;
-  margin-right: 10px;
-}
 
-.lr-login-footer{
-  text-align: right;
-  padding-top: 10px;
-}
-.lr-login-error{
-  position: absolute;
-  left: 0;
-  top: 100%;
-  width: 100%;
-  color:red;
-  font-size: 14px;
-}
-</style>
 <template lang="jade">
 .lr-page.lr-login-warp
   h1.lr-login-h1 Linux Remote
   fieldset
     legend.lr-login-legend {{LANG.langTitle}}
-    select(v-model='currLangId', @change="handleChange")
-      option(v-for='v in language.list',
-            :value='v.id', 
+    select(v-model='currLangIndex', @change="handleChange")
+      option(v-for='(v, i) in language.list',
+            :value='i',
             :key='v.id') {{v.name}}
   form(@submit.prevent="login")
     fieldset.lr-login-fieldset(@keydown.13='login')
@@ -74,7 +26,7 @@
 export default {
   data(){
     return {
-      currLangId: this.$store.state.language.currId,
+      currLangIndex: this.$store.state.language.currIndex,
       isRequest: false,
       username: this.$route.query.user || '',
       password: '',
@@ -91,8 +43,18 @@ export default {
   },
   methods: {
     handleChange(e){
-
-      this.$store.commit('language/set', this.currLangId)
+      this.$store.commit('language/set', this.currLangIndex);
+      let query = this.$route.query;
+      // query.language = this.language.list[this.currLangIndex].id;
+      // var obj = Object.assign({}, query);
+      // obj.language = 
+      this.$router.push({
+        path: this.$route.path,
+        query: {
+          ...query,
+          language : this.language.list[this.currLangIndex].id
+        }
+      })
     },
     login(){
       const {username, password} = this;
