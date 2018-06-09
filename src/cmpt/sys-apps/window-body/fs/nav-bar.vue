@@ -11,10 +11,10 @@
                   v-if='v') {{v}}
     input(v-model='inputAddress', 
           @focus="handleInputFocus",
-          @blur="handleInputBlur", 
-          @keydown.13='go')
+          @blur="handleInputBlur",
+          @keydown.13='go(inputAddress)')
   .lr-fs-nav-item.lr-fs-nav-reload(v-if='address===inputAddress' @click='onChange(address)')
-  .lr-fs-nav-item.lr-fs-nav-go(v-else @click='go')
+  .lr-fs-nav-item.lr-fs-nav-go(v-else @click='go(inputAddress)')
 </template>
 <script>
 const MAX_LEN = 50;
@@ -22,9 +22,6 @@ export default {
   props: {
     onChange : {
       type: Function
-    },
-    defAddress: {
-      type: String
     }
   },
   data(){

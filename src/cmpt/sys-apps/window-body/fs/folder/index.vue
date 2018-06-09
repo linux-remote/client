@@ -37,13 +37,11 @@ export default {
     address: {
       type: String,
       required: true
+    },
+    triggerContainSame: {
     }
   },
-  watch: {
-    address(){
-      this.getData();
-    }
-  },
+
   data(){
     return {
       list: [],
@@ -77,7 +75,15 @@ export default {
       return this.$parent.$refs.navBar.go
     }
   },
-
+  watch: {
+    triggerContainSame(newVal, oldVal){
+      if(newVal.address !== oldVal.address){
+        this.newItemName = null; //bug fixed: fs-item focus 跳转后仍存在.
+        this.currItem = {};
+      }
+      this.getData();
+    }
+  },
   methods: {
     getItemAddress(item){
       let address;

@@ -1,11 +1,11 @@
 <template lang="jade">
 .lr-window-body
-  .lr-hourglass(v-show='isRequest')
+  //-.lr-hourglass(v-show='isRequest')
   NavBar(ref='navBar', :onChange="handleNavChange")
   .lr-fs-bottom-wrap
     Left
     Disk(v-if='address === ""')
-    Folder(v-else-if='address', :address='address')
+    Folder(v-else-if='address', :address='address', :triggerContainSame='triggerContainSame')
 </template>
 
 <script>
@@ -23,13 +23,16 @@ export default {
   },
   data(){
     return {
-      isRequest: false,
-      address: null
+      address: null,
+      triggerContainSame : null
     }
   },
   methods: {
     handleNavChange(address){
       this.address = address;
+      this.triggerContainSame = {
+        address
+      };
     }
   },
   mounted(){

@@ -129,9 +129,16 @@ export default {
   computed: {
     go(){
       return this.$parent.$refs.navBar.go
+    },
+    triggerContainSame(){
+      return this.$parent.triggerContainSame
     }
   },
-
+  watch: {
+    triggerContainSame(){
+      this.getData();
+    }
+  },
   methods: {
     getData(){
       this.request({
