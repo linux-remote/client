@@ -19,7 +19,7 @@ export const ONE_SEC = 1000;
 export const ONE_MIN = ONE_SEC * 60;
 
 
-function trimEnd0(str) { //去掉未尾多余的0.
+export function trimEnd0(str) { //去掉未尾多余的0.
   str = str.replace(/0+$/, '');
   var lastIndex = str.length - 1;
   return str[lastIndex] !== '.' ? str : str.substr(0, lastIndex);

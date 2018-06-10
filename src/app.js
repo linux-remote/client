@@ -2,19 +2,9 @@ import Vue from 'vue';
 import 'vue-use-vuex';
 
 import './css/style.scss';
-import request from './lib/request';
 
-Vue.prototype.request = function(opts){
-  opts.context = this;
-  request(opts);
-};
-
-Vue.prototype.noopStop = function(e){
-  e.stopPropagation();
-}
-
-import {wellSize} from './lib/util';
-Vue.filter('wellSize', wellSize);
+import './lib/vue-prototype';
+import './lib/vue-filter';
 
 import store from './store/index.js';
 import router from './router';
