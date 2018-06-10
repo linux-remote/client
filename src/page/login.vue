@@ -18,8 +18,8 @@
         label.lr-login-label {{LANG.password}}:
         input.lr-login-input(type='password' v-model='password' required="required")
       .lr-login-footer
-        button(type="submit", :class='{lr_loading:isRequest}') ok
-      .lr-login-error(v-show="error") {{LANG.submitBtn}}
+        button(type="submit", :class='{lr_loading:isRequest}') {{LANG.submitBtn}}
+      .lr-login-error(v-show="error") {{error}}
 </template>
 
 <script>
