@@ -1,13 +1,18 @@
 <style>
 .lr-resize-warp{
-  position:absolute; top:0; bottom:0;width:100%; height:100%;  z-index: -9;
+  position:absolute; 
+  top:0; 
+  bottom:0;
+  width:100%; 
+  height:100%;
+  z-index: -9;
 }
 .lr-resize-top , .lr-resize-bottom, .lr-resize-left, .lr-resize-right{
   position: absolute;
-  background: mediumvioletred;
+  /* background: mediumvioletred; */
 }
 .lr-resize-top, .lr-resize-bottom{
-  width: 100%;height: 7px;
+  width: 100%;height: 5px;
 }
 .lr-resize-top{
   bottom:100%;cursor: n-resize;
@@ -16,7 +21,9 @@
   top: 100%; cursor: s-resize;
 }
 .lr-resize-right, .lr-resize-left{
-   width: 7px; height: 100%;
+  top: 0;
+  width: 5px;
+  height: 100%;
 }
 .lr-resize-right{
   left: 100%;cursor: e-resize;
@@ -25,22 +32,22 @@
   right: 100%; cursor: w-resize;
 }
 .lr-resize-rb, .lr-resize-tl, .lr-resize-tr, .lr-resize-lb{
-  width: 7px; height: 7px;
-  background: green;
+  width: 5px; height: 5px;
+  /* background: green; */
   position: absolute;
   z-index: 2;
 }
 .lr-resize-rb{
-  right: -7px; bottom: -7px; cursor: se-resize;
+  right: -5px; bottom: -5px; cursor: se-resize;
 }
 .lr-resize-tl{
-  top: -7px; left: -7px; cursor: nw-resize;
+  top: -5px; left: -5px; cursor: nw-resize;
 }
 .lr-resize-tr{
-  top: -7px; right: -7px; cursor: ne-resize;
+  top: -5px; right: -5px; cursor: ne-resize;
 }
 .lr-resize-lb{
-  bottom: -7px; left: -7px; cursor: sw-resize;
+  bottom: -5px; left: -5px; cursor: sw-resize;
 }
 </style>
 <template lang='jade'>
@@ -70,13 +77,27 @@ export default {
   //     }
   //   }
   // },
+  computed: {
+    maxWidth(){
+      return this.$store.state.deskTopW
+    },
+    maxHeight(){
+      return this.$store.state.deskTopH
+    },
+    minWidth(){
+      return this.$parent.minWidth || 200
+    },
+    minHeight(){
+      return this.$parent.minHeight || 200
+    }
+  },
   methods:{
     resizeStart(type, e){
       this.resizeStartData = {
         x: e.clientX,
         y: e.clientY,
-        height: this.$parent.h,
-        width: this.$parent.w,
+        height: this.$parent.height,
+        width: this.$parent.width,
         direction: type
       };
 
@@ -87,30 +108,41 @@ export default {
     },
     resizeMousemoveListener(e){
       const initial = this.resizeStartData;
-      const moveX = initial.x - e.clientX;
-      const moveY = initial.y - e.clientY;
-      const data = this.$parent;
-      const maxW = 800;
+      var clientX = e.clientX;
+      var clientY = e.clientY;
 
+      if( clientX < 0){
+        clientX = 0;
+      }
+      if( clientY < 0){
+        clientY = 0;
+      }
+
+      const moveX = initial.x - clientX;
+      const moveY = initial.y - clientY;
+
+      const data = this.$parent;
       const direction = initial.direction;
       let height, width;
       if(direction.indexOf('t') !== -1){
-        height = this.minMax(data.minH, this.winH, initial.height + moveY)
-        data.y += (data.h - height);
-        data.h = height;
+        height = this.minMax(this.minHeight, this.maxHeight, initial.height + moveY);
+
+        data.positionTop += (data.height - height);
+        data.height = height;
 
       }else if(direction.indexOf('b') !== -1){
-        height = this.minMax(data.minH, this.winH, initial.height - moveY)
-        data.h = height;
+        height = this.minMax(this.minHeight, this.maxHeight, initial.height - moveY)
+        data.height = height;
       }
 
       if(direction.indexOf('l') !== -1){
-        width = this.minMax(data.minW, maxW, initial.width + moveX)
-        data.x += (data.w - width);
-        data.w = width;
+
+        width = this.minMax(this.minWidth, this.maxWidth, initial.width + moveX);
+        data.positionLeft += (data.width - width);
+        data.width = width;
       }else if(direction.indexOf('r') !== -1){
-        width = this.minMax(data.minW, maxW, initial.width - moveX)
-        data.w = width;
+        width = this.minMax(this.minWidth, this.maxWidth, initial.width - moveX)
+        data.width = width;
       }
 
     },
@@ -126,10 +158,6 @@ export default {
     resizeMouseupListener(){
       window.removeEventListener('mousemove', this.resizeMousemoveListener);
     }
-  },
-  created(){
-    this.$parent.minH = this.$parent.minH || 0;
-    this.$parent.minW = this.$parent.minW || 0;
   }
 }
 </script>

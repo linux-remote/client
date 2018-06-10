@@ -7,6 +7,7 @@ $win.on('resize', function(){
     winW: $win.width(),
     winH: $win.height()
   })
+  store.commit('setDeskTopWH');
 });
 
 window.APP = {
@@ -42,6 +43,8 @@ const store = new Vuex.Store({
 
     loginedList: [],
     // desktop
+    deskTopW: 0,
+    deskTopH: 0,
     deskInited: false,
     username:'',
     groups: [],
@@ -63,6 +66,11 @@ const store = new Vuex.Store({
     sessError: false
   },
   mutations: {
+    setDeskTopWH(state){
+      var dom = document.getElementById('lr-desktop');
+      state.deskTopW = dom.offsetWidth;
+      state.deskTopH = dom.offsetHeight;
+    },
     transferDragData(state, data){
       state.dragTransferData = data;
       document.addEventListener('dragend', function(){

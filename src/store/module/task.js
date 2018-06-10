@@ -3,9 +3,8 @@ const uniqueMap = Object.create(null);
 import {findLast, sortBy, cloneDeep} from 'lodash';
 const TASK_WIDTH = 800;
 const TASK_HEIGHT = 600;
-export default  {
-  namespaced: true,
-  state: {
+function _defState(){
+  return {
     list: [],
     latest: {}, // last created task
     current: {}, // focused task
@@ -13,13 +12,11 @@ export default  {
 
     _tmpMinAll: [],
     _tmpMinAllIsCurrFocus: false
-  },
-  // getters: {
-  //   id(){
-  //     _id = _id + 1; //自增长, 同时也是 z-index 开始层数
-  //     return _id;
-  //   }
-  // },
+  }
+}
+export default  {
+  namespaced: true,
+  state: _defState(),
   mutations: {
     add(state, appId){
       const APP = this.state.app.map[appId];
@@ -126,6 +123,9 @@ export default  {
         }
       });
       state.current.isFocus = false;
+    },
+    closeAll(state){
+      Object.assign(state, _defState());
     },
     _focusNext(state){
       const list = sortBy(state.list, 'zIndex');

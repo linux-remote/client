@@ -111,6 +111,7 @@ export default {
     // })
   },
   destroyed(){
+    this.$store.commit('task/closeAll');
     //clearInterval(this.$options._liveTTL);
   },
 

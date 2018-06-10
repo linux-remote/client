@@ -1,5 +1,5 @@
 <template lang="jade">
-.lr-top
+.lr-top(@mousedown.stop='')
   //- .lr-top-quick-item(@click='openHome') Home
   //- .lr-top-quick-item(@click='openFs')
     .lr-top-small-icon(style='background-image:url(/public/file-tree.svg)')

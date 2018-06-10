@@ -1,5 +1,5 @@
 <template lang="jade">
-#lr-desk.lr-desk(@drop='handleDeskDrop',
+#lr-desktop.lr-desk(@drop='handleDeskDrop',
          @dragover.prevent='',
          @contextmenu='handleContextmenu',
          @dragend='handleIconDragEnd')
@@ -149,6 +149,9 @@ export default {
   },
   created(){
     this.getData();
+  },
+  mounted(){
+    this.$store.commit('setDeskTopWH');
   }
 
 }

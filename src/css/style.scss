@@ -1,22 +1,21 @@
-$color: yellow;
-$taskBarBg: #000;
-$color31: #199EFF;
-$color32: #CC1814;
-$borderColor: #999;
-$bg: #fff;
-$topZindex : 9999999999;
-$barTitleColor: red;
-$barH: 25px;
-$barBg : black;
-$barColor: #fff;
-$topBarH :$barH;
-$deskBg: #fff;
-$taskBarBg : #f5f5f5;
-$taskBarHeight: 100px;
+$bg: #87CEEB;
+$bg2: rgba(#fff, .5);
+$drakColor: #3E5E6B;
+$borderColor: #ACE7FF;
+$bottomColor: #EBBC87; //6AA1B8
+
+$taskTitleH :25px;
+$taskBarH : 36px;
+$taskBarBg: $bottomColor;//#f5f5f5;
+$taskBarFocusBg: lighten($taskBarBg, 60%);
+
+$maxZindex : 2147483647; // https://stackoverflow.com/questions/491052/minimum-and-maximum-value-of-z-index
+$topLayerZindex : $maxZindex - 100;
+
+// ======================= ForMat =======================
 *{
   box-sizing: border-box;
 }
-// ======================= ForMat =======================
 html, body{
   height: 100%;
   padding: 0;
@@ -24,12 +23,70 @@ html, body{
 }
 body{
   overflow: hidden;
-  background-color: #fff;
+  background-color: $bg;
 }
+fieldset{
+  border-color: $borderColor;
+  border-width: 2px;
+  border-style: groove;
+  background-color: rgba(255,255,255, .5);
+}
+button, select{
+  padding: 0 8px;
+  min-width: 3em;
+}
+button{
+  height: 28px;
+  position: relative;
+  cursor: pointer;
+  font-size: 14px;
+  outline: none;
+}
+button:disabled{
+  cursor: not-allowed;
+  color:gray;
+  opacity: .5;
+}
+
+button.disable{
+  background: #999;
+  border-color:#999/1.1;
+  color:#fff
+}
+
+button.lr_loading{
+  cursor: auto;
+}
+button.lr_loading::before{
+  content: '';
+}
+button.lr_loading::before {
+  padding:0;
+  margin:0;
+  position: absolute;
+  top:0;
+  bottom:0;
+  right:0;
+  left:0;
+  margin:auto;
+  height: 12px;
+  width: 12px;
+  animation: rotate 0.8s infinite linear;
+  border: 3px solid $drakColor;
+  border-right-color: #fff;
+  border-radius: 50%;
+  z-index: 2;
+}
+
+@keyframes rotate { //lr_loading 动画
+  0%    { transform: rotate(0deg); }
+  100%  { transform: rotate(360deg); }
+}
+
+// ======================= global =======================
 .iconfont{
   color: #fff;
 }
-// ======================= global =======================
 .lr-h100, 
 .lr-page{
   height: 100%; 
@@ -41,14 +98,15 @@ body{
   width: 0;
   height: 0;
 }
-@import '../page/login.scss';
+@import './login.scss';
+@import './top-bar.scss';
+@import './task.scss';
+@import './start.scss';
 // ======================= desk =======================
 .lr-desk-wrap{
   flex-direction: column;
   height: 100%;
   overflow: hidden;
-  background-color: $deskBg;
-  //user-select: none;
 }
 .lr-desk{
   flex-grow: 1; 
@@ -62,234 +120,12 @@ body{
 
 // ======================= task bar =======================
 
-$taskBarH : 36px;
-$taskFocusBg: $barBg;
-$taskFocusColor: yellow;
-$taskBg: #6AA1B8;
-$taskColor: $barColor;
+
 
 // ************* bar *************
 
-.lr-task-bar{
-  background-color: $taskBarBg;
-  height:$taskBarH;
-  padding: 1px 2px;
-  flex-shrink: 0;
-  position: relative;
-  z-index: $topZindex;
-  display:flex;
-  border-top: 1px outset #d1d1d1;
-  .lr-2-control-wrap{
-    flex-shrink: 0;
-     width: $taskBarH * 2; 
-     display: flex;
-  }
-  .lr-2-control{
-    display: none;
-    width: $taskBarH; 
-    flex-shrink: 0;
-    border: 2px outset #aaa;
-    background: #999;  
-    line-height: 1;
-    text-align: center; 
-    cursor: pointer; 
-    font-size: $taskBarH - 4;
-    color: #fff;
-  }
-}
-
-.lr-task-bar-body{
-  flex-grow: 1;
-  display:flex;
-  overflow: hidden;
-}
-.lr-task-bar-item{
-  color:#000;
-  border: 2px outset darken($taskBg, 5%);
-  background-color: $taskBg;
-  padding: 10px;
-  display: flex;
-  align-items: center;
-  flex-grow:1;
-  max-width: 200px;
-  min-width: 50px;
-  
-  background-color: $taskBg;
-  overflow: hidden;
-  text-overflow:ellipsis;
-  white-space: nowrap;
-  
-  margin:0 1px;
-  cursor: default;
-  font-size: 14px;
-  &:hover, &.lr_task_bar_item_focus{
-    border-style: inset;
-    background: lighten($taskBg, 30%);
-    color:#000;
-  }
-
-}
-
-// ************* task window *************
-
-.lr-task-window{
-  position: absolute;
-  z-index: 2; 
-  top:0;
-  border: 1px outset #000;
-  display: flex;
-  background: #fff;
-  flex-direction: column;
-  bottom: 0; 
-  left: 0; 
-  right: 0;
-  border: 2px outset #eee;
-}
-.lr_task_max{
-  box-shadow: none; 
-  width: 100%;
-  height: 100%;
-  top: -$barH;
-  border:0;
-}
-.lr_task_focus{
-  border-color: darken($taskBg, 5%);
-}
-// .lr_task_unique{}
-.lr-task-title{
-  display: flex;
-  flex-shrink: 0;
-  background: #fff; 
-  height: 25px; 
-  line-height: 25px;
-  cursor: default;
-  color: #000;
-  opacity: .7;
-  border-bottom: 1px solid #aaa;
-}
-.lr-task-title-content{
-  flex-grow:1;
-  padding: 0 10px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.lr-task-control{
-  display: flex;
-  flex-shrink: 0;
-  justify-content: space-between;
-  align-items: center;
-  >div{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    width:21px; 
-    height: 21px;
-    line-height:21px;
-    flex-shrink: 0;
-    background-color: #9E703B;
-    margin-right:2px;
-    border: 1px outset lighten(#9E703B, 10%);
-    text-align: center;
-    color:#fff;
-    >span{
-      font-size: 15px;
-      -webkit-font-smoothing: none;
-    }
-    &:hover{
-      border-style: inset;
-    }
-  }
-}
-// .lr-task-title-max:hover{
-//   &::before, &::after{
-//     border-color: #000;
-//   }
-// }
 
 
-.lr_task_focus >.lr-task-title{
-  background: $taskBg;
-  opacity: 1;
-}
-
-.lr-window-body{
-  flex-grow:1; 
-  display: flex;
-  flex-direction: column;
-  background-color: #fff;
-  position: relative;
-}
-.lr-task-control-close::before{
-  content: '✖';
-}
-.lr-task-control-close::before, .lr-task-control-close::after{
-  content: '';
-  display: block;
-  position: absolute;
-  background-color: #fff;
-  left: 3px;
-  right: 3px;
-  top: 0;
-  bottom: 0;
-  margin: auto;
-  height: 1px;
-}
-
-.lr-task-control-close::before{
-  transform: rotate(45deg);
-}
-.lr-task-control-close::after{
-  transform: rotate(-45deg);
-}
-.lr-task-control-close:hover{
-  background-color: red;
-} 
-
-.lr-task-control-max::before{
-  content: '';
-  position: absolute;
-  display: block;
-  border:1px solid #fff;
-  top: 3px;
-  left: 3px;
-  right: 3px;
-  bottom: 3px;
-}
-
-.lr_task_control_shrink::before{
-  content: '';
-  position: absolute;
-  display: block;
-  top: 3px;
-  right:3px;
-  border:1px solid #fff;
-  width: 50%;
-  height: 50%;
-  z-index: 1;
-}
-
-.lr_task_control_shrink::after{
-  content: '';
-  display: block; 
-  position: absolute;
-  bottom: 3px; 
-  left:3px; 
-  border:1px solid #fff;
-  width: 50%; 
-  height: 50%;
-}
-.lr-task-control-min>span{
-  display: none;
-}
-.lr-task-control-min::before{
-  content: '';
-  height: 1px;
-  background: #fff;
-  flex-grow: 1;
-  margin: 0 3px;
-}
-// ************* end *************
 .lr-dustbin-wrap{
   display: flex;height: 100%; flex-direction: column;
   flex-grow: 1;
@@ -344,125 +180,6 @@ table.leftHead >tr>td:first-child{
 }
 
 
-
-// ************* topBar *************
-$rightCtrlWidth : 100px;
-
-// .lr-top-bg{
-//   user-select: text;
-//   height: $topBarH;
-//   background-color: #D69200;
-//   color:#aaa;
-//   padding-left: 10px;
-// }
-.lr-top{
-  height: $topBarH;
-  background-color: $taskBarBg;
-
-  display: flex;
-  flex-shrink: 0;
-  align-items: center;
-
-  position: fixed;
-  right: $rightCtrlWidth + 20;
-  
-  
-  z-index: $topZindex;
-
-  border-style: outset;
-  border-color: #d1d1d1;
-  border-width: 0 1px 1px;
-  padding: 0 5px;
-
-}
-// .lr-top-quick-item{
-//   color: yellow;
-//   border-left: 1px solid yellow;
-//   border-right: 1px solid yellow;
-//   padding: 0 5px;
-//   cursor: pointer;
-//   &:hover{
-//     background-color: #333;
-//   }
-// }
-.lr-top-small-icon{
-  background-size: 100% 100%;
-  width: $topBarH; 
-  height: $topBarH;
-}
-.lr-watch{
-  user-select: text;
-  display: flex; 
-  align-items: center;
-  border-right: 2px outset #fff;
-  padding: 0 5px;
-}
-.lr-watch-left{
-  font-size: 14px;
-}
-.lr-watch-right{
-  display: flex;
-  flex-direction: column;
-  line-height: 10px; 
-  font-size: 10px;
-  text-align: center; 
-  margin-left: 5px;
-  align-items: center;
-}
-
-.lr-user{
-  position: relative;
-  height: 100%;
-  display: flex; 
-  align-items: center;
-  .lr-user-name{
-    display: flex; 
-    align-items: center;
-    cursor: pointer;
-    margin: 0 3px;
-    padding: 0 3px;
-    &:hover, &.lr_user_hover{
-      background-color: #fff;
-    }
-    >.lr-triangle{
-      margin: 0 3px;
-      >polygon{
-        fill:#888;
-        //stroke-width:0;
-      }
-    }
-  }
-  &:hover>.lr-user-drop{
-    display: block;
-  }
-
-  >.lr-user-drop{
-    font-size: 14px;
-    position: absolute; 
-    width: 200px; 
-    right:0;
-    // top: calc(100% - 1px); 
-    top: 100%; 
-    display: block;
-    padding: 5px 0;
-    background-color: #fff;
-    border:2px outset #eee;
-    color:#000;
-    >.lr-user-p{
-      padding: 0 10px;
-      word-wrap: break-word;
-      b{
-        margin-right:.3em
-      }
-    }
-    .lr-user-logout{
-      cursor: pointer;
-      color: #000; 
-      margin-left: 10px;
-    }
-  }
-}
-//************* topBar end *************
 //************* app start *************
 .lr-sys-app-icon{
   width: 30px;
@@ -476,68 +193,6 @@ $rightCtrlWidth : 100px;
 }
 
 //************* app end *************
-
-  //************* old pro *************
-    button, select{
-      padding: 0 8px;
-      min-width: 3em;
-    }
-    button{
-      height: 28px;
-      position: relative;
-      cursor: pointer;
-      font-size: 14px;
-      outline: none;
-    }
-    button:disabled{
-      cursor: not-allowed;
-      color:gray;
-      opacity: .5;
-    }
-
-    button.disable{
-      background: #999;
-      border-color:#999/1.1;
-      color:#fff
-    }
-
-    button.lr_loading{
-      cursor: auto;
-    }
-
-    button.lr_loading::before, .spinner {
-      padding:0;
-      margin:0;
-      position: absolute;
-      top:0;
-      bottom:0;
-      right:0;
-      left:0;
-      margin:auto;
-      height: 12px;
-      width: 12px;
-      animation: rotate 0.8s infinite linear;
-      border: 3px solid #333;
-      border-right-color: #fff;
-      border-radius: 50%;
-    }
-    .spinner{
-      width: 40px; 
-      height: 40px;
-      border: 4px solid $color;
-      border-right-color:#fff;
-      z-index: 11;
-    }
-
-    button.lr_loading::before{
-      content: '';
-    }
-
-    @keyframes rotate { //lr_loading 动画
-      0%    { transform: rotate(0deg); }
-      100%  { transform: rotate(360deg); }
-    }
-    //************* old pro end *************
 
   //************* 文件管理器 *************
   .lr-fs-bottom-wrap{
@@ -888,7 +543,6 @@ $rightCtrlWidth : 100px;
 
     &:hover, &.lr_file_focus{
       background-color: #000; 
-      color:$color;
       word-break:break-all;
       
       .lr-file-name{
@@ -905,7 +559,7 @@ $rightCtrlWidth : 100px;
 
   .lr-contextmenu{
     position: absolute; 
-    z-index:$topZindex; 
+    z-index:$topLayerZindex; 
     border: 1px outset #eee;
     background: #eee; 
     top:0; 
@@ -957,7 +611,7 @@ $rightCtrlWidth : 100px;
     opacity: .5;
   }
   .lr_fly_textarea{
-    position: absolute; z-index: $topZindex; resize: none; display: block;overflow: hidden; font-size: 12px; border:0; text-align: center;padding:0;margin:0;
+    position: absolute; z-index: $topLayerZindex; resize: none; display: block;overflow: hidden; font-size: 12px; border:0; text-align: center;padding:0;margin:0;
     outline: none;
     word-wrap: normal;white-space:normal;
     word-break: break-all;
@@ -968,7 +622,7 @@ $rightCtrlWidth : 100px;
   width: 800px; 
   margin: 0 auto; 
   top: 50px;
-  z-index: $topZindex + 1;
+  z-index: $topLayerZindex + 1;
   left: 0;
   right:0;
   box-shadow: 3px 3px 3px 3px #eee;
@@ -1012,14 +666,14 @@ $rightCtrlWidth : 100px;
 }
   //*************** resizable ***************
   $resize: 5px;
-  .lr-resize-warp{
-    position:absolute; 
-    top:0; 
-    bottom:0;
-    width:100%; 
-    height:100%; 
-    background:blue; z-index: -9;
-  }
+  // .lr-resize-warp{
+  //   position:absolute; 
+  //   top:0; 
+  //   bottom:0;
+  //   width:100%; 
+  //   height:100%; 
+  //   background:blue; z-index: -9;
+  // }
   .lr-2-resize-top , .lr-2-resize-bottom, .lr-2-resize-left, .lr-2-resize-right{
     position: absolute;
     //background: red;

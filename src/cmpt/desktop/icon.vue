@@ -27,21 +27,17 @@
   text-align: center;
   overflow: hidden;
   text-overflow: ellipsis;
-
 }
 .lr-desk-icon:hover{
-  background-color: #D3D3D3;
+  background-color: rgba(255, 255, 255, 0.25);
 }
-.lr_desk_icon_focus{
-  background-color: #ddd;
-}
+
 </style>
 <template lang="jade">
 .lr-desk-icon(draggable="true",
               @contextmenu='handleContextmenu',
               @dblclick="handleDblclick",
               @dragstart.stop='handleDragStart(item, $event)',
-              :class="{lr_desk_icon_focus: app.unique}",
               :style='{left: item.x + "px", top: item.y + "px"}')
   .lr-desk-icon-img(:style="{backgroundImage: `url(${app.iconUrl})`}")
   .lr-desk-icon-text {{currTitle}}

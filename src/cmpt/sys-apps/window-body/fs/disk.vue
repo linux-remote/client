@@ -1,7 +1,7 @@
 <style>
 .lr-fieldset-body{
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   flex-wrap: wrap;
 }
 .lr-disk-item{
