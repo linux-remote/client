@@ -104,7 +104,7 @@
             .lr-disk-process(:style='{width: v.percent + "%"}')
             .lr-disk-i-process(:style='{width: v.ipercent + "%"}', :title='"inode 使用率 " + v.ipercent + "%"')
           .lr-disk-info
-            | {{(v.size - v.used)  | wellSize('K')}} 可用 共 {{v.size | wellSize('K')}} 
+            | {{(v.size - v.used)  | wellSize('K')}} 可用, 共 {{v.size | wellSize('K')}} 
 </template>
 
 <script>

@@ -1,8 +1,7 @@
 //修改自: https://github.com/hezedu/dwlib/blob/master/request.js
 // 增加了codeError, 去掉 omitEmpty, 修改了:opts.url
-import {TypeOf} from './util';
+import {TypeOf, noop} from './util';
 import store from '__ROOT__/store/index.js';
-import {noop} from 'lodash';
 const $ = window.$;
 
 const API_ROOT = window.SERVER_CONFIG.API_ROOT;

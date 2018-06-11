@@ -3,17 +3,18 @@
                 @mousedown.stop='taskFocus',
                 :style='{width:width + "px", height: height  + "px", zIndex: zIndex, top:     positionTop + "px", left: positionLeft  + "px"}' ,
                 :class='{lr_task_max: isMax, lr_task_unique: unique, lr_task_focus: isFocus}')
-  Movable.lr-task-title(@dblclick='maxToggle',
-                        :onMove='handleMove',
-                        :startX='positionLeft',
-                        :startY='positionTop')
-    .lr-task-title-content {{title}}
+  .lr-task-title(@dblclick='maxToggle')
+    Movable.lr-task-title-content(:onMove='handleMove',
+                                  :startX='positionLeft',
+                                  :startY='positionTop')
+      .lr-icon(:style="`background-image:url(${iconUrl})`")
+      | {{title}}
     .lr-task-control
       .lr-task-control-min(@click.stop='hiddenTask')
       div(@click.stop='maxToggle',
                     :class='isMax ? "lr_task_control_shrink" : "lr-task-control-max"')
       .lr-task-control-close(@click.stop='removeTask')
-  slot
+  slot(task="this.$data")
   Resizable
 </template>
 
@@ -31,18 +32,13 @@ export default {
   },
   computed:{
     deskTopW(){
-      console.log('deskTopW', this.$store.state.deskTopW)
       return this.$store.state.deskTopW
     },
     deskTopH(){
-      console.log('deskTopW', this.$store.state.deskTopW)
       return this.$store.state.deskTopH
     }
   },
   methods:{
-    // handleTitleMousemove(){
-    //   console.log('handleTitleMousemove')
-    // },
     handleMove2(x, y){
      if(y < 0){
         y = 0;
@@ -51,8 +47,6 @@ export default {
       this.positionLeft =  x;
     },
     handleMove(e){
-
-
       var data = e._movableData;
       if(this.isMax){
         this.bakBeforeMax.positionTop = 0;
@@ -112,48 +106,8 @@ export default {
     removeTask(){
       this.$store.commit('task/remove', this.index);
     },
-
     taskFocus(){
       this.$store.commit('task/focus', this.$data);
-    },
-    handleDragStart(e){
-      if(!this.draggable){
-        e.preventDefault();
-        return ;
-      }
-
-      if(!this.isFocus){
-        this.$store.commit('task/focus', this.$data);
-      }
-
-      e.dataTransfer._startClient = {
-        x: e.clientX,
-        y: e.clientY
-      }
-
-      if(this.isMax){
-        this.maxToggle();
-         var img = new Image(); 
-          img.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
-          e.dataTransfer.setDragImage(img, 0, 0)
-        
-      }
-      //console.log(e);
-    },
-    handleDragEnd(e){
-      const startClient = e.dataTransfer._startClient;
-      if(!startClient) return;
-      const positionTop = this.positionTop + (e.clientY - startClient.y);
-
-      if(positionTop < 0) {
-        this.positionTop = 0;
-      }else{
-        this.positionTop = positionTop;
-      }
-
-      this.positionLeft += (e.clientX - startClient.x);
-
-      this.draggable = false;
     }
   }
 }

@@ -14,6 +14,10 @@ export default  {
       sys_disk : {
         iconUrl: '/public/img/system-file-manager-6.png',
         title: '资源管理器'
+      },
+      sys_empty : {
+        iconUrl: '/public/img/animals-gnu.png',
+        title: '空'
       }
     }
   }

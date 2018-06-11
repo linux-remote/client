@@ -1,7 +1,7 @@
-import Vuex from 'vuex';
+
 const $ = window.$;
 const noop = () => {}
-const store = new Vuex.Store({
+const store = new window.Vuex.Store({
   state: {
     handleBlur: noop,
     top: 0,

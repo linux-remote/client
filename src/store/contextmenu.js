@@ -1,6 +1,6 @@
-import Vuex from 'vuex';
+
 const empty = [];
-const store = new Vuex.Store({
+const store = new window.Vuex.Store({
   state: {
     data: empty,
     top: 0,

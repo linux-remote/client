@@ -73,13 +73,19 @@
   cursor: default;
   color: #000;
   opacity: .7;
-  border-bottom: 1px solid #aaa;
+  border-bottom: 1px solid #eee;
 }
 .lr-task-title-content{
   flex-grow:1;
-  padding: 0 10px;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
+  display: flex;
+}
+.lr-task-title-content .lr-icon{
+  width: $taskTitleH - 2px;
+  height: $taskTitleH - 2px;
+  margin-right: 8px;
 }
 .lr-task-control{
   display: flex;

@@ -30,14 +30,12 @@ indexData.VERSION = package.version;
 var plugins = [
   new webpack.optimize.DedupePlugin(),
   //提取公共模块
-  new webpack.optimize.CommonsChunkPlugin({
-    names: [
-          //顺序不要变，名字也不要变
-          'b_2_vendor',
-          'b_1_lib',
-          'a_mainifest' //a_1_mainifest 必须在最后面
-          ],
-    filename: bundleName}),
+  // new webpack.optimize.CommonsChunkPlugin({
+  //   names: [
+  //         //顺序不要变，名字也不要变
+  //         'b_1_lib'
+  //         ],
+  //   filename: bundleName}),
 
   // new webpack.ProvidePlugin({
   //   Vue: "vue"
@@ -84,12 +82,12 @@ if (isPro) {
 module.exports = {
   context: path.join(__dirname, './src'),
   entry: { //使用开头字母排序，防止vendor随着app代玛改变而改变。hack this bug https://github.com/webpack/webpack/pull/2998
-    b_1_lib: ['lodash', 'jquery'],
-    b_2_vendor: [
-      'vue',
-      'vue-router',
-      'vuex'
-    ],
+    //b_1_lib: ['lodash'],
+    // b_2_vendor: [
+    //   'vue',
+    //   'vue-router',
+    //   'vuex'
+    // ],
     z_app: "./app.js"
   },
   output: {

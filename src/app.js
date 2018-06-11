@@ -1,5 +1,4 @@
-import Vue from 'vue';
-import 'vue-use-vuex';
+
 
 import './css/style.scss';
 
@@ -10,7 +9,7 @@ import store from './store/index.js';
 import router from './router';
 import Root from './page/root.vue';
 
-var app = new Vue({
+var app = new window.Vue({
   store,
   router,
   render: h => h(Root)

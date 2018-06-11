@@ -3,13 +3,13 @@
 <% var opts = htmlWebpackPlugin.options, data = opts.indexData; %>
   <head>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
-    <link rel="stylesheet" type="text/css" href="/public/winstrap/css/winstrap.min.css" />
     <title>Linux Remote</title>
   </head>
   <body>
   <div id="lr-app"><span>Loading...</span></div>
-  <script src='/public/winstrap/js/vendor/jquery.min.js'></script>
-  <script src='/public/winstrap/js/vendor/bootstrap.min.js'></script>
+  <% opts.nodeModuleStatic.forEach(function(v){%>
+  <script src="<%=v%>"></script><% }) %>
+  
   <script>
     var SERVER_CONFIG = <%=JSON.stringify(data)%>
   </script>

@@ -1,3 +1,4 @@
+export function noop(){};
 export const timeFormat = (date, fmt) => {
   date = date ? new Date(date) : new Date();
   fmt = fmt || 'yyyy-MM-dd HH:mm:ss';

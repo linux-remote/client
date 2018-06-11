@@ -1,4 +1,4 @@
-import Vuex from 'vuex';
+
 const $ = window.$;
 
 const $win = $(window);
@@ -22,7 +22,7 @@ import error from './module/error';
 import task from './module/task';
 import widget from './module/widget';
 import app from './module/app';
-const store = new Vuex.Store({
+const store = new window.Vuex.Store({
   modules: {
     language,
     upload,

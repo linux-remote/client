@@ -2,14 +2,12 @@
 .lr-page.lr-desk-wrap(v-if='deskInited', @mousedown='handleMousedown')
   TopBar
   DeskTop
-    SystemApps(v-for='(item, index) in tasks', :key='item.id', :index='index')
   TasksBar
 </template>
 <script>
 
 import TasksBar from '__ROOT__/cmpt/task-bar.vue';
 import TopBar from '__ROOT__/cmpt/top-bar/index.vue';
-import SystemApps from '__ROOT__/cmpt/sys-apps/index.vue';
 import DeskTop from '__ROOT__/cmpt/desktop/body.vue';
 import {createWs, logout} from '__ROOT__/lib/login';
 
@@ -17,17 +15,9 @@ export default {
   components: {
     TopBar,
     TasksBar,
-    DeskTop,
-    SystemApps,
-    
-  },
-  data(){
-    return {}
+    DeskTop
   },
   computed:{
-    tasks(){
-      return this.$store.state.task.list;
-    },
     sessError(){
       return this.$store.state.sessError
     },
@@ -76,7 +66,7 @@ export default {
       })
     },
     createdTask(){
-      this.$store.commit('task/add', 'sys_file');
+      this.$store.commit('task/add', 'sys_empty');
     },
     init(){
       const username = this.$route.params.username;

@@ -1,6 +1,5 @@
 //let _id = 3; 
 const uniqueMap = Object.create(null);
-import {findLast, sortBy, cloneDeep} from 'lodash';
 const TASK_WIDTH = 800;
 const TASK_HEIGHT = 600;
 function _defState(){
@@ -34,9 +33,16 @@ export default  {
           uniqueMap[appId] = data;
         }
       }
+      
+      var preSameTask = {zIndex: -1};
+      state.list.forEach(v => {
+        if(v.appId === appId){
+          if(preSameTask.zIndex < v.zIndex){
+            preSameTask = v;
+          }
+        }
+      })
 
-      const list = sortBy(state.list, 'zIndex');
-      const preSameTask = findLast(list,{appId}) || {};
       const isMax = preSameTask.isMax;
 
       data.width = (isMax ? APP.width : preSameTask.width) || TASK_WIDTH;
@@ -100,11 +106,11 @@ export default  {
       state.current.isFocus = false;
     },
     
-    copy(state, task){
-      const cloneTask = cloneDeep(task);
-      cloneTask.isFocus = false;
-      this.commit('task/add', cloneTask);
-    },
+    // copy(state, task){
+    //   const cloneTask = cloneDeep(task);
+    //   cloneTask.isFocus = false;
+    //   this.commit('task/add', cloneTask);
+    // },
 
     minAll(state){
       if(state._tmpMinAll.length){
@@ -128,9 +134,15 @@ export default  {
       Object.assign(state, _defState());
     },
     _focusNext(state){
-      const list = sortBy(state.list, 'zIndex');
-      const preTask = findLast(list,{isMin: false});
-      if(preTask){
+      var preTask = {zIndex : -1};
+      state.list.forEach(v => {
+        if(v.isMin === false){
+          if(preTask.zIndex < v.zIndex){
+            preTask = v;
+          }
+        }
+      })
+      if(preTask.zIndex !== -1){
         this.commit('task/focus', preTask);
       }
     },

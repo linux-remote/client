@@ -1,4 +1,3 @@
-var _ = require('lodash');
 var base = require('./dev');
 
 const conf = {
@@ -11,4 +10,4 @@ const conf = {
   }
 };
 
-module.exports =  _.merge(base, conf);
+module.exports =  Object.assign(base, conf);

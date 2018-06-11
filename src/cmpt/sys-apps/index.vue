@@ -3,6 +3,7 @@ TaskWindow(:index='index')
   FsBody(v-if='appId==="sys_file"')
   RecycleBinBody(v-else-if='appId==="sys_recycle_bin"')
   DiskBody(v-else-if='appId==="sys_disk"')
+  Empty(v-else-if='appId==="sys_empty"', :task='this.$data')
   //- edit-body(v-else-if='type==="edit"' ,:address='address')
   
   //- computer-info-body(v-else-if='type==="computerInfo"')
@@ -15,6 +16,7 @@ import TaskWindow from '../task-window.vue';
 import FsBody from './window-body/fs/index.vue';
 import RecycleBinBody from './window-body/recycle-bin.vue';
 import DiskBody from './window-body/fs/disk.vue';
+import Empty from './window-body/empty.vue';
 // import EditBody from './window-body/edit';
 // import ComputerInfoBody from './window-body/computer-info';
 export default {
@@ -22,7 +24,8 @@ export default {
     TaskWindow,
     FsBody,
     RecycleBinBody,
-    DiskBody
+    DiskBody,
+    Empty
     // EditBody,
     
     // ComputerInfoBody

@@ -98,6 +98,11 @@ button.lr_loading::before {
   width: 0;
   height: 0;
 }
+.lr-icon{
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
 @import './login.scss';
 @import './top-bar.scss';
 @import './task.scss';

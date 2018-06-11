@@ -25,11 +25,13 @@
               div(slot='menu')
                 .lr-contextmenu-item 444
                 .lr-contextmenu-item 444
-  slot
+  SystemApps(v-for='(item, index) in tasks', :key='item.id', :index='index')
 </template>
 <script>
 
 import Icon from './icon.vue';
+import SystemApps from '__ROOT__/cmpt/sys-apps/index.vue';
+
 import ContextmenuExtend from '../global/contextmenu-extend.vue';
 import Cascade from '../global/cascade.vue';
 const ICON_WIDTH = 80;
@@ -38,12 +40,18 @@ export default {
   extends: ContextmenuExtend,
   components: {
     Icon,
+    SystemApps,
     Cascade
   },
   data(){
     return {
       list: [],
       _isInDesk: false
+    }
+  },
+  computed:{
+    tasks(){
+      return this.$store.state.task.list;
     }
   },
   methods: {
