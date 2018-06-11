@@ -126,11 +126,10 @@
   display: flex;
   flex-direction: column;
   position: relative;
-  
 }
-.lr-task-control-close::before{
-  content: '✖';
-}
+// .lr-task-control-close::before{
+//   content: '✖';
+// }
 .lr-task-control-close::before, .lr-task-control-close::after{
   content: '';
   display: block;
@@ -150,9 +149,6 @@
 .lr-task-control-close::after{
   transform: rotate(-45deg);
 }
-.lr-task-control-close:hover{
-  background-color: red;
-} 
 
 .lr-task-control-max::before{
   content: '';
