@@ -14,7 +14,7 @@
       div(@click.stop='maxToggle',
                     :class='isMax ? "lr_task_control_shrink" : "lr-task-control-max"')
       .lr-task-control-close(@click.stop='removeTask')
-  slot(task="this.$data")
+  slot
   Resizable
 </template>
 

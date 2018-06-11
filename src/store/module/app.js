@@ -17,7 +17,8 @@ export default  {
       },
       sys_empty : {
         iconUrl: '/public/img/animals-gnu.png',
-        title: '空'
+        title: '空',
+        _URL: '/public/js/empty.js'
       }
     }
   }
