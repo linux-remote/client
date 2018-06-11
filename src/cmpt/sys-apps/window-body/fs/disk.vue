@@ -163,8 +163,7 @@ export default {
         url: '~/disk',
         success(data){
           let hdArr = [], memoryArr = [], cdArr = [], unknownArr = [];
-          parseHeadBody(data, function(obj, i){
-
+          parseHeadBody(data, function(obj){
             obj.available = obj.size - obj.used;
             obj.percent = (obj.used / obj.size) * 100;
             obj.iavailable = obj.itotal - obj.iused;

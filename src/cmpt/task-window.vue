@@ -40,7 +40,7 @@ export default {
   },
   methods:{
     handleMove2(x, y){
-     if(y < 0){
+      if(y < 0){
         y = 0;
       }
       this.positionTop = y;

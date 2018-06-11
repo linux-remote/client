@@ -40,7 +40,6 @@ export default {
       this.x = x;
       this.y = y;
 
-      const self = this;
       window.APP.$elMain
       .addEventListener('mousedown', this.$parent.contextmenuClose, {
         once: true,

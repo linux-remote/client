@@ -143,16 +143,16 @@ export default {
       this.$data._isInDesk = true;
     },
     getData(){
-    this.request({
-      url: '~/desktop',
-      success(result){
-        result = JSON.parse(result);
-        if(!result.length){
-          result = [{"type":"app","id":"sys_recycle_bin","x": 0,"y":0}]
+      this.request({
+        url: '~/desktop',
+        success(result){
+          result = JSON.parse(result);
+          if(!result.length){
+            result = [{"type":"app","id":"sys_recycle_bin","x": 0,"y":0}]
+          }
+          this.list = result;
         }
-        this.list = result;
-      }
-    })
+      })
     }
   },
   created(){

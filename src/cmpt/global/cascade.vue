@@ -31,7 +31,6 @@ export default {
         const left = e.clientX - e.offsetX;
         const width = this.$el.offsetWidth;
         const menuWidth = this.$refs.menu.offsetWidth;
-        console.log('left', left, 'width', width, 'menuWidth', menuWidth)
         if(left + width + menuWidth > this.$store.state.winW){
           this.styleStr = 'right: 100%';
         }else{
@@ -51,7 +50,7 @@ export default {
         })
       }
     },
-    handleMouseleave(e){
+    handleMouseleave(){
       if(this.isLeaveOutFromMenu){
         this.isLeaveOutFromMenu = false;
         return;

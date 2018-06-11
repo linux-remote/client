@@ -31,7 +31,7 @@ export default {
     }
   },
   methods: {
-    handleDragenter(e){
+    handleDragenter(){
       var data = this.$store.state.dragTransferData;
       var id = data.id;
       const isHave = this.list.find(function(v){
@@ -45,7 +45,7 @@ export default {
         e.preventDefault();
       }
     },
-    handleDrop(e){
+    handleDrop(){
       var data = this.$store.state.dragTransferData;
       this.list.push({
         id: data.id,

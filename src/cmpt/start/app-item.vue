@@ -1,6 +1,6 @@
 <template lang="jade">
 div(draggable="true",
-    @dragstart.stop='handleDragStart(item, $event)')
+    @dragstart.stop='handleDragStart')
   .lr-sys-app-icon(:style="`background-image:url(${item.iconUrl})`") 
   .lr-sys-app-title {{item.title}}
 </template>
@@ -20,7 +20,7 @@ export default {
   },
 
   methods: {
-    handleDragStart(item, e){
+    handleDragStart(){
       this.$store.commit('transferDragData', {
         isRaw: true,
         id: this.id,

@@ -42,7 +42,7 @@ export default {
     }
   },
   methods: {
-    handleChange(e){
+    handleChange(){
       this.$store.commit('language/set', this.currLangIndex);
       let query = this.$route.query;
       this.$router.push({

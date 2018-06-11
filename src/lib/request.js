@@ -1,6 +1,6 @@
 //修改自: https://github.com/hezedu/dwlib/blob/master/request.js
 // 增加了codeError, 去掉 omitEmpty, 修改了:opts.url
-import {TypeOf, noop} from './util';
+import {noop} from './util';
 import store from '__ROOT__/store/index.js';
 const $ = window.$;
 

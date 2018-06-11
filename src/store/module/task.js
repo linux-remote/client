@@ -91,8 +91,6 @@ export default  {
       this.commit('task/_focusNext');
     },
 
-
-
     remove(state, index){
       const item = state.list[index];
       if(item.unique){
