@@ -66,7 +66,7 @@ export default {
       })
     },
     createdTask(){
-      this.$store.commit('task/add', 'sys_empty');
+      this.$store.commit('task/add', 'sys_file');
     },
     init(){
       const username = this.$route.params.username;

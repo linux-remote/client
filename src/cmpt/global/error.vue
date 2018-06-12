@@ -2,8 +2,10 @@
 <template lang="jade">
 .lr-error(@mousedown='noopStop' v-if="message.length")
   .lr-error-title
-    b 错误
-    b(@click='close') ✖
+    .lr-error-content
+      .lr-icon(style="background-image: url(/public/img/dialog-error-7.png)")
+      | 错误
+    .lr-error-close(@click='close') ✖
   .lr-error-body(ref='body')
     .lr-error-item(v-for='v in message' v-html='v')
 

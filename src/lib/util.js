@@ -27,8 +27,7 @@ export function trimEnd0(str) { //去掉未尾多余的0.
 }
 const SIZE_TYPE = ['', 'K', 'M', 'G', 'T', 'P'];
 export const wellSize = (size, startUnit, fix) => {
-  // console.log('size', size, typeof size, size.length)
-  // size = Number(size);
+  
   if(size === 0){
     return '0 B';
   }

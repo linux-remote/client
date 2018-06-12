@@ -1,16 +1,13 @@
 export default  {
   namespaced: true,
   state: {
-    message: []
+    message: ['出错了!','出错了2!']
   },
   mutations: {
     show(state, message) {
-      // window.APP.$elMain.addEventListener('mousedown', () => {
-      //   this.commit('error/close');
-      // },{
-      //   once: true,
-      //   capture: true
-      // });
+      if(state.message.length > 30){
+        state.message.shift();
+      }
       state.message.push(message);
     },
     close(state){
