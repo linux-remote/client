@@ -20,7 +20,8 @@
         :class='{lr_file_hidden: item.name[0] === "."}')
         td
           .lr-name-wrap
-            .lr-icon(:class='"lr_file_type_" + item.type') 
+            .lr-icon(:class='"lr_file_type_" + item.type')
+              .lr-icon.lr-error-icon(v-if='item.linkTargetError')
             | {{item.name}}
         td 
           span(:class='{lr_per_is_on: item.is_owner}'){{item.owner}}

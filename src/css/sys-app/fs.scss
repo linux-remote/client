@@ -203,6 +203,7 @@ $fsRowItemH: 50px;
   margin-bottom: 2px;
   margin-top: 2px;
   margin-right: 3px;
+  position: relative;
   //-background-color: rgba(#fff, .5);
 }
 .lr-fs-folder-table{
@@ -261,13 +262,67 @@ background-image: url('/public/img/tango-style/inode-chardevice.png');
 }
 .lr-error-icon{
   z-index: 20;
-  background-image: url('/public/error.svg');
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  background-image: url('/public/img/nuvola-style/lockoverlay.png');
 }
 
 // ================== item end ==================
 
 
 
+
+
+//----------- permission -----------
+.lr-per-relation-wrap{
+  display: flex;
+  position: relative;
+}
+.lr-per-relation{
+  display: flex;
+  // margin-right: 1px;
+  
+  background-color: rgba(#fff, .5);
+}
+.lr-per-item{
+  color:#000;
+  
+  text-align: center;
+
+}
+.lr-per-item, .lr-per-sticky{
+  height: 1em;
+  line-height: 1em;
+  width: 1em;
+}
+.lr_is_device_type{
+  color: blue;
+}
+.lr_per_is>.lr_per_item_on{
+  background-color: rgba(green, .5);
+  color:#fff;
+}
+.lr-per-sticky{
+  position: absolute;
+  background: rgba(sienna, .5);
+  right:0;
+  bottom: 0; 
+  z-index: 2;
+}
+.lr-per-wrap{
+  display: flex;
+}
+.lr-per-ACL{
+  background-color: #FF00FF;
+  color: #fff;
+}
+
+
+//----------- permission end -----------
+/*
 .lr-file{
   width: 100%;
   height: 80px; 
@@ -328,51 +383,21 @@ background-image: url('/public/img/tango-style/inode-chardevice.png');
   background-size: 100% 100%;
   background-image: url('/public/link.svg');
 }
+.lr_file_focus{
+  overflow:visible;
+}
 
 
-//----------- permission -----------
-.lr-per-relation-wrap{
-  display: flex;
-  position: relative;
+.lr-file-name{
+   font-size: 12px;
+   text-align: center;
+   cursor: text;
+   z-index: 4;
+   white-space: pre-wrap;
+   text-overflow: ellipsis;
+   overflow: hidden;
 }
-.lr-per-relation{
-  display: flex;
-  // margin-right: 1px;
-  
-  background-color: rgba(#fff, .5);
-}
-.lr-per-item{
-  color:#000;
-  
-  text-align: center;
-
-}
-.lr-per-item, .lr-per-sticky{
-  height: 1em;
-  line-height: 1em;
-  width: 1em;
-}
-.lr_is_device_type{
-  color: blue;
-}
-.lr_per_is>.lr_per_item_on{
-  background-color: rgba(green, .5);
-  color:#fff;
-}
-.lr-per-sticky{
-  position: absolute;
-  background: rgba(sienna, .5);
-  right:0;
-  bottom: 0; 
-  z-index: 2;
-}
-.lr-per-wrap{
-  display: flex;
-}
-.lr-per-ACL{
-  background-color: #FF00FF;
-  color: #fff;
-}
+*/
 // .lr-per-relation-wrap{
 //   width: 50px;
 //   height: 50px;
@@ -411,35 +436,19 @@ background-image: url('/public/img/tango-style/inode-chardevice.png');
 //   height: 33.33%;
 // }
 
-//----------- permission end -----------
+// .lr-mask-icon, .lr-error-icon{
+//   background-size: 100% 100%;
+//   background-position: center;
+//   background-repeat: no-repeat;
+//   position: absolute;
+//   width: 100%; height: 100%; top:0; left: 0;
+// }
 
-.lr_file_focus{
-  overflow:visible;
-}
-.lr-mask-icon, .lr-error-icon{
-  background-size: 100% 100%;
-  background-position: center;
-  background-repeat: no-repeat;
-  position: absolute;
-  width: 100%; height: 100%; top:0; left: 0;
-}
-
-.lr-mask-icon{
-  z-index: 10;
-  background-size: 50% 50%;
-  background-image: url('/public/mask.svg');
-}
-
-.lr-file-name{
-   font-size: 12px;
-   text-align: center;
-   cursor: text;
-   z-index: 4;
-   white-space: pre-wrap;
-   text-overflow: ellipsis;
-   overflow: hidden;
-}
-
+// .lr-mask-icon{
+//   z-index: 10;
+//   background-size: 50% 50%;
+//   background-image: url('/public/mask.svg');
+// }
 
 // .lr_file_type_Directory > .lr-file-icon > .lr-file-icon-front{
       
