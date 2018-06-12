@@ -3,7 +3,7 @@
   //-.lr-hourglass(v-show='isRequest')
   NavBar(ref='navBar', :onChange="handleNavChange")
   .lr-fs-bottom-wrap
-    Left
+    //-Left
     Disk(v-if='address === ""')
     Folder(v-else-if='address', :address='address', :triggerContainSame='triggerContainSame')
 </template>

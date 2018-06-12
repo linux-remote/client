@@ -126,6 +126,7 @@
   display: flex;
   flex-direction: column;
   position: relative;
+  user-select: none;
 }
 // .lr-task-control-close::before{
 //   content: '✖';

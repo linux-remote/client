@@ -1,7 +1,7 @@
 <template lang="jade">
 .lr-file-icon
   .lr-file-icon-front
-  .lr-per-relation-wrap
+  //-.lr-per-relation-wrap
     .lr-per-relation(v-for='(v, k) in item.rwxs',
      :class='{lr_per_is: item["is_" + k]}')
       .lr-per-item(v-for='v2 in v' , :class='{lr_per_item_on: v2 }')

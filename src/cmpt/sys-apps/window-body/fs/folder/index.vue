@@ -4,15 +4,48 @@
   CtrlBar
   .lr-fs-folder-inner(v-if='error')
     pre.lr-fs-error(v-html='list')
-  .lr-fs-folder-inner(v-else)
-    .lr-file(v-for='item in list',
-            :key='item.name',
-            @mousedown='noopStop',
-            @dblclick='openItem(item)', @click.stop='focusItem(item)',
-            @contextmenu.prevent.stop='handleFsItemContextmenu(item, $event)',
-            :class='{lr_file_hidden: item.name[0] === ".", lr_file_focus: item.focus, ["lr_file_type_" + item.type ]: item.type}')
-      FsIcon(:item='item')
-      .lr-file-name(@click='handleItemNameClick(item, $event)') {{item.name}}
+  .lr-fs-folder-inner(v-else-if='list.length')
+    table.lr-table.lr-fs-folder-table
+      tr
+        th 名称
+        th 所有者
+        th 用户组
+        th 权限
+        th 修改日期
+        th 大小
+          span.lr_is_device_type(v-if='isHaveDevice') /设备类型
+      tr(v-for='item in list',
+        :key='item.name',
+        @dblclick='openItem(item)',
+        :class='{lr_file_hidden: item.name[0] === "."}')
+        td
+          .lr-name-wrap
+            .lr-icon(:class='"lr_file_type_" + item.type') 
+            | {{item.name}}
+        td 
+          span(:class='{lr_per_is_on: item.is_owner}'){{item.owner}}
+        td
+          span(:class='{lr_per_is_on: item.is_group}') {{item.group}}
+        td
+          .lr-per-wrap
+            .lr-per-relation-wrap
+              .lr-per-relation(v-for='(v, k) in item.rwxs',
+                              :class='{lr_per_is: item["is_" + k]}')
+                .lr-per-item(v-for='(v2, k2) in v', :class='{lr_per_item_on: v2 }') {{k2}}
+              .lr-per-sticky(v-if='item.isSticky')
+            .lr-per-ACL(v-if='item.isMask') ACL
+        td {{item.mtime}}
+        td(v-if='item.size') {{item.size | wellSize}}
+        td(v-else) 
+          span.lr_is_device_type {{item.device_type}}
+    // .lr-file(v-for='item in list',
+    //         :key='item.name',
+    //         @mousedown='noopStop',
+    //         @dblclick='openItem(item)', @click.stop='focusItem(item)',
+    //         @contextmenu.prevent.stop='handleFsItemContextmenu(item, $event)',
+    //         :class='{lr_file_hidden: item.name[0] === ".", lr_file_focus: item.focus, ["lr_file_type_" + item.type ]: item.type}')
+    //   FsIcon(:item='item')
+    //   .lr-file-name(@click='handleItemNameClick(item, $event)') {{item.name}}
   Status
 </template>
 
@@ -43,6 +76,7 @@ export default {
 
   data(){
     return {
+      theads: ['名称',  '所有者', '用户组' ,'权限', '修改日期',  '大小/设备类型'],
       list: [],
       currItem: {},
       dir: null,
@@ -101,6 +135,7 @@ export default {
         data: {dir: true},
         success(data){
           const folderArr = [], fileArr = [], hiddenArr = [];
+          var isHaveDevice = false;
           data.forEach( v => {
             if(v.name === '..') return;
             
@@ -138,7 +173,11 @@ export default {
                 v.suffix = getNameSuffix(v.name);
               }
             }
+            if(v.device_type && !isHaveDevice){
+              isHaveDevice = true;
+            }
           });
+          this.isHaveDevice = isHaveDevice;
           this.list = folderArr.concat(fileArr).concat(hiddenArr);
         },
         error(xhr){
