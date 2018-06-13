@@ -25,7 +25,7 @@ export default  {
       }else{
         APP = this.state.app.map[appId];
       }
-      console.log(appId, APP)
+      //console.log(appId, APP)
       const data = {
         appId,
         ...APP

@@ -19,7 +19,7 @@
   FsBody(v-if='appId==="sys_file"')
   RecycleBinBody(v-else-if='appId==="sys_recycle_bin"')
   DiskBody(v-else-if='appId==="sys_disk"')
-  ThirdPartyApp(v-else, :app='this.$data')
+  ThirdPartyApp(v-else, :task='this.$data')
 
 
 
@@ -31,7 +31,7 @@ import FsBody from './sys-apps/fs/index.vue';
 import RecycleBinBody from './sys-apps/recycle-bin.vue';
 import DiskBody from './sys-apps/fs/disk.vue';
 
-import ThirdPartyApp from './third-party-app.vue';
+import ThirdPartyApp from './third-party-app/index.vue';
 
 import Resizable from './unit/resizable.vue';
 import Movable from './unit/movable.vue';

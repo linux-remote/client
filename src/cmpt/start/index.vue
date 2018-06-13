@@ -49,8 +49,10 @@ export default {
         url: '/app/list',
         success(data){
           data.forEach((v) => {
+            v.main2 = '/app' + v.staticPath + '/' + v.main;
             v.iconUrl = API_ROOT + '/app' + v.staticPath + '/' + v.icon;
             v.main = API_ROOT + '/app' + v.staticPath + '/' + v.main;
+   
             delete(v.icon);
             delete(v.staticPath);
           });
