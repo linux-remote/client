@@ -1,6 +1,6 @@
 <template lang="jade">
 .lr-start
-  .lr-start-btn(@click='handleClick', :class='{lr_start_focus: isShowMenu}')
+  .lr-start-btn(@click='handleBtnClick', :class='{lr_start_focus: isShowMenu}')
   .lr-start-menu(v-show="isShowMenu")
     .lr-start-menu-item 系统信息
     .lr-start-menu-item 用户信息
@@ -31,6 +31,19 @@ export default {
     }
   },
   methods: {
+    handleBtnClick(){
+      this.isShowMenu = !this.isShowMenu;
+      if(this.isShowMenu){
+        //console.log('Listener by click');
+        document.addEventListener('mousedown', this.handleDocumentMousedown, {
+          capture: true
+        })
+      }else {
+        //console.log('remove by click');
+        document.removeEventListener('mousedown', this.handleDocumentMousedown, true);
+      }
+    },
+
     getData(){
       this.request({
         url: '/app/list',
@@ -45,28 +58,16 @@ export default {
         }
       })
     },
-    handleDocMousedown(e){
-      console.log('handleDocMousedown');
+    handleDocumentMousedown(e){
+      console.log('handleDocumentMousedown');
       if(this.$el === e.target || this.$el.contains(e.target)){
         return;
       }else{
         //console.log('remove by doc mousedown');
         document.removeEventListener('mousedown', 
-          this.handleDocMousedown, 
+          this.handleDocumentMousedown, 
           true); // true is capture! must set.
         this.isShowMenu = false;
-      }
-    },
-    handleClick(){
-      this.isShowMenu = !this.isShowMenu;
-      if(this.isShowMenu){
-        //console.log('Listener by click');
-        document.addEventListener('mousedown', this.handleDocMousedown, {
-          capture: true
-        })
-      }else {
-        //console.log('remove by click');
-        document.removeEventListener('mousedown', this.handleDocMousedown, true);
       }
     }
   },

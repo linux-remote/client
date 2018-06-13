@@ -14,16 +14,36 @@
       div(@click.stop='maxToggle',
                     :class='isMax ? "lr_task_control_shrink" : "lr-task-control-max"')
       .lr-task-control-close(@click.stop='removeTask')
-  slot
+
+      
+  FsBody(v-if='appId==="sys_file"')
+  RecycleBinBody(v-else-if='appId==="sys_recycle_bin"')
+  DiskBody(v-else-if='appId==="sys_disk"')
+  ThirdPartyApp(v-else, :app='this.$data')
+
+
+
   Resizable
 </template>
 
 <script>
+import FsBody from './sys-apps/fs/index.vue';
+import RecycleBinBody from './sys-apps/recycle-bin.vue';
+import DiskBody from './sys-apps/fs/disk.vue';
+
+import ThirdPartyApp from './third-party-app.vue';
+
 import Resizable from './unit/resizable.vue';
 import Movable from './unit/movable.vue';
 export default {
   props: ['index'],
   components: {
+    DiskBody,
+    RecycleBinBody,
+    FsBody,
+
+    ThirdPartyApp,
+
     Resizable,
     Movable
   },

@@ -18,12 +18,19 @@ export default  {
   state: _defState(),
   mutations: {
     add(state, appId){
-      const APP = this.state.app.map[appId];
+      var APP;
+      if(typeof appId === 'object'){
+        APP = appId;
+        appId = APP.id;
+      }else{
+        APP = this.state.app.map[appId];
+      }
+      console.log(appId, APP)
       const data = {
         appId,
         ...APP
       }
-
+      data.isSys = appId.indexOf('sys') === 0;
       data.unique = APP.unique || false;
 
       if(data.unique){

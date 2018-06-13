@@ -23,7 +23,7 @@
   bottom: $taskBarH;
   position: absolute;
   left: 0;
-  background-color: $bg2;
+  background-color: rgba(#fff, .7);
   width: 280px;
   height: 500px;
   border: 2px outset darken($bg2, 5%);

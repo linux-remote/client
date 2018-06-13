@@ -25,12 +25,12 @@
               div(slot='menu')
                 .lr-contextmenu-item 444
                 .lr-contextmenu-item 444
-  SystemApps(v-for='(item, index) in tasks', :key='item.id', :index='index')
+  TaskWindow(v-for='(item, index) in tasks', :key='item.id', :index='index')
 </template>
 <script>
 
 import Icon from './icon.vue';
-import SystemApps from '__ROOT__/cmpt/sys-apps/index.vue';
+import TaskWindow from '__ROOT__/cmpt/task-window.vue';
 
 import ContextmenuExtend from '../global/contextmenu-extend.vue';
 import Cascade from '../global/cascade.vue';
@@ -40,7 +40,7 @@ export default {
   extends: ContextmenuExtend,
   components: {
     Icon,
-    SystemApps,
+    TaskWindow,
     Cascade
   },
   data(){
