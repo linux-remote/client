@@ -5,6 +5,7 @@ import store from '__ROOT__/store/index.js';
 const $ = window.$;
 
 const API_ROOT = window.SERVER_CONFIG.API_ROOT;
+const JSON_CONTENT_TYPE = 'application/json; charset=utf-8';
 //const POOL = {};
 //跨站ajax请求初始化.
 if(API_ROOT.indexOf('http') === 0){
@@ -80,7 +81,13 @@ function request(opts){
   });
   const self = opts.context;
   opts.type = opts.type || 'get';
-  
+  if(opts.type === 'post' || opts.type === 'put'){
+    opts.contentType = opts.contentType || JSON_CONTENT_TYPE;
+    if(opts.contentType === JSON_CONTENT_TYPE){
+      opts.data = JSON.stringify(opts.data);
+    }
+  }
+
 
   if(url[0] === '~'){
     url = '/user/' + self.$route.params.username + url.substr(1);

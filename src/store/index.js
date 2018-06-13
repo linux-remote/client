@@ -11,7 +11,6 @@ $win.on('resize', function(){
 });
 
 window.APP = {
-  $win,
   $elMain: null,
   contextMenuTransferData: null
 }
@@ -37,12 +36,12 @@ const store = new window.Vuex.Store({
     // global
     winH: $win.height(),
     winW: $win.width(),
-    
+    //loginedMap: null,
     // sess
     isLogin: false,
     isSelfSigned: false,
 
-    loginedList: [],
+    
     // desktop
     deskTopW: 0,
     deskTopH: 0,
@@ -69,8 +68,10 @@ const store = new window.Vuex.Store({
   mutations: {
     setDeskTopWH(state){
       var dom = document.getElementById('lr-desktop');
-      state.deskTopW = dom.offsetWidth;
-      state.deskTopH = dom.offsetHeight;
+      if(dom){
+        state.deskTopW = dom.offsetWidth;
+        state.deskTopH = dom.offsetHeight;
+      }
     },
     transferDragData(state, data){
       state.dragTransferData = data;

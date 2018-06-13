@@ -19,12 +19,10 @@ export default  {
   mutations: {
     add(state, appId){
       const APP = this.getters['app/getById'](appId);
-      //console.log(appId, APP)
       const data = {
         appId,
         ...APP
       }
-      //data.isSys = appId.indexOf('sys') === 0;
       data.unique = APP.unique || false;
 
       if(data.unique){

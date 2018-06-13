@@ -145,10 +145,18 @@ export default {
       this.request({
         url: '~/desktop',
         success(result){
-          result = JSON.parse(result);
-          if(!result.length){
-            result = []
+          if(!result){
+            const app = this.$store.getters['app/getById']('sys_app_recycle_bin');
+            result = [{
+              id: 'sys_app_recycle_bin',
+              title: app.title,
+              x:0,
+              y:0
+            }]
+          }else{
+            result = JSON.parse(result);
           }
+
           this.list = result;
         }
       })

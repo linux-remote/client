@@ -14,6 +14,7 @@ import UploadBox from '__ROOT__/cmpt/global/upload/box.vue';
 import Contextmenu from '__ROOT__/cmpt/contextmenu.vue';
 import FlyTextarea from '__ROOT__/cmpt/fly-textarea';
 import Error from '__ROOT__/cmpt/global/error.vue';
+
 export default {
   components:{
     Contextmenu,
@@ -27,26 +28,14 @@ export default {
       isRequest: false
     }
   },
-  // computed: {
-  //   language(){
-  //     return this.$store.state.language.currId
-  //   }
-  // },
-  // watch: {
-  //   language(newVal){
-  //     this.getLanguage(newVal)
-  //   }
-  // },
   methods:{
-    // getLanguage(newVal){
-    //   console.log('getLanguage', newVal)
-    // },
     getData(){
       this.request({
         url: '/touch',
         stateKey: 'isRequest',
         success(data){
-          this.$store.commit('set', data);
+          console.log('data', data)
+          //this.$store.commit('set', data);
         }
       });
     }

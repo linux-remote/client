@@ -29,7 +29,6 @@ export default  {
   getters: {
     getById(state){
       return (id) => {
-        console.log('id', id)
         let key = id.indexOf('sys_app') === 0 ? 'sysMap' : 'thirdPartyMap';
         return state[key][id]
       }
