@@ -4,11 +4,15 @@
   .lr-start-menu(v-show="isShowMenu")
     .lr-start-menu-item 系统信息
     .lr-start-menu-item 用户信息
-    .lr-start-menu-item 所有程序
-    br
-    AppItem.lr-start-menu-item(v-for='(v, k) in list',
+    .lr-start-menu-item 系统程序
+    AppItem.lr-start-menu-item(v-for='(v, k) in sysAppMap',
                               :item="v",
-                              :id="k",
+                              :id='k',
+                              :key="k")
+    .lr-start-menu-item 第三方程序
+    AppItem.lr-start-menu-item(v-for='(v, k) in thirdPartyAppMap',
+                              :item="v",
+                              :id='k',
                               :key="k")
 </template>
 
@@ -22,14 +26,17 @@ export default {
   data(){
     return {
       isShowMenu: false,
-      list: []
+      appList: []
     }
   },
   computed: {
-    appList(){
-      return this.$store.state.app.map
+    sysAppMap(){
+      return this.$store.state.app.sysMap;
+    },
+    thirdPartyAppMap(){
+      return this.$store.state.app.thirdPartyMap;
     }
-  },
+  }, 
   methods: {
     handleBtnClick(){
       this.isShowMenu = !this.isShowMenu;
@@ -48,20 +55,22 @@ export default {
       this.request({
         url: '/app/list',
         success(data){
+          var map = Object.create(null);
           data.forEach((v) => {
-            v.main2 = '/app' + v.staticPath + '/' + v.main;
+            v.main = '/app' + v.staticPath + '/' + v.main;
             v.iconUrl = API_ROOT + '/app' + v.staticPath + '/' + v.icon;
-            v.main = API_ROOT + '/app' + v.staticPath + '/' + v.main;
-   
+            // v.main = API_ROOT + '/app' + v.staticPath + '/' + v.main;
             delete(v.icon);
             delete(v.staticPath);
+            map[v.id] = v;
+            delete(v.id);
           });
-          this.list = data;
+          this.$store.commit('app/setThirdPartyMap', map);
         }
       })
     },
     handleDocumentMousedown(e){
-      console.log('handleDocumentMousedown');
+      //console.log('handleDocumentMousedown');
       if(this.$el === e.target || this.$el.contains(e.target)){
         return;
       }else{

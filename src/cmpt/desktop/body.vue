@@ -80,12 +80,12 @@ export default {
       this.$data._isInDesk = false;
       const dragTransferData = this.$store.state.dragTransferData;
       if(!dragTransferData){
-        console.log('body dragend !dragTransferData');
+
         return;
       }
 
       const startClient = dragTransferData._startClient;
-      console.log('body dragend');
+      //console.log('body dragend');
 
       const vueEl = startClient._vueEl;
       let positionTop = vueEl.item.y  + (e.clientY - startClient.y);
@@ -129,11 +129,10 @@ export default {
     },
     handleDeskDrop(e){
       const dragTransferData = this.$store.state.dragTransferData;
-      if(dragTransferData && dragTransferData.isRaw){
-        
+      if(dragTransferData && dragTransferData.isFromStart){
         this.list.push({
           id: dragTransferData.id,
-          type: dragTransferData.type,
+          title: dragTransferData.title,
           x: e.clientX,
           y: e.clientY
         })
@@ -148,7 +147,7 @@ export default {
         success(result){
           result = JSON.parse(result);
           if(!result.length){
-            result = [{"type":"app","id":"sys_recycle_bin","x": 0,"y":0}]
+            result = []
           }
           this.list = result;
         }

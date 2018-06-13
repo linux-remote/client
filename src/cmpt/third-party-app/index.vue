@@ -37,30 +37,27 @@ export default {
     //     callback(null, window.MyComponent);
     //   }
     // },
-    getMain2(){
+    getMain(){
       
       const task = this.task;
       const appId = task.appId;
-      console.log('appId', appId);
 
       if(!map[appId]){
         map[appId] = true;
 
         this.request({
-          url: task.main2,
+          url: task.main,
           stateKey: 'isRequest',
           contentType: 'text/plain',
           success(code){
-  
             const fn = new Function('return ' + code);
             const Cmpt = fn();
-            console.log(Cmpt.prototype)
             if(typeof Cmpt !== 'function'){
               this.error = 'App Main must return a Vue constructor!';
               delete(map[appId]);
             }else{
               map[appId] = Cmpt;
-              this.getMain2();
+              this.getMain();
             }
           },
           error(){
@@ -80,18 +77,7 @@ export default {
     }
   },
   mounted(){
-    this.getMain2();
-
-    // this.getMain((err, Cmpt) => {
-    //   if(err){
-    //     return this.error = '加载 App main 文件失败!'
-    //   }
-
-    //   //console.log('Cmpt', Cmpt)
-
-    //   this.isGetMain = false;
-    //   new Cmpt({el: this.$el});
-    // });
+    this.getMain();
   }
 }
 </script>

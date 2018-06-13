@@ -16,20 +16,20 @@
       .lr-task-control-close(@click.stop='removeTask')
 
       
-  FsBody(v-if='appId==="sys_file"')
-  RecycleBinBody(v-else-if='appId==="sys_recycle_bin"')
-  DiskBody(v-else-if='appId==="sys_disk"')
-  ThirdPartyApp(v-else, :task='this.$data')
+  FsBody(v-if='appId==="sys_app_file"')
+  RecycleBinBody(v-else-if='appId==="sys_app_recycle_bin"')
+  DiskBody(v-else-if='appId==="sys_app_disk"')
 
+  ThirdPartyApp(v-else, :task='this.$data')
 
 
   Resizable
 </template>
 
 <script>
-import FsBody from './sys-apps/fs/index.vue';
-import RecycleBinBody from './sys-apps/recycle-bin.vue';
-import DiskBody from './sys-apps/fs/disk.vue';
+import FsBody from './sys-app/fs/index.vue';
+import RecycleBinBody from './sys-app/recycle-bin.vue';
+import DiskBody from './sys-app/fs/disk.vue';
 
 import ThirdPartyApp from './third-party-app/index.vue';
 
@@ -76,7 +76,7 @@ export default {
         if(e.clientX < halfW){
           this.bakBeforeMax.positionLeft = 0;
           e._movableData._startX
-          console.log( ' left ', e.clientX, halfW)
+          //console.log( ' left ', e.clientX, halfW)
         }else{
           var rightEdge = this.deskTopW - halfW;
           if(e.clientX > rightEdge){

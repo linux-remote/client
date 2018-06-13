@@ -40,7 +40,7 @@
               @dragstart.stop='handleDragStart(item, $event)',
               :style='{left: item.x + "px", top: item.y + "px"}')
   .lr-desk-icon-img(:style="{backgroundImage: `url(${app.iconUrl})`}")
-  .lr-desk-icon-text {{currTitle}}
+  .lr-desk-icon-text {{item.title}}
   ContextMenu(v-if="contextmenuIsShow", :close="contextmenuClose")
     .lr-contextmenu-item(@click="remove")
       | 移除
@@ -65,12 +65,11 @@ export default {
 
   computed: {
     app(){
-      return this.$store.state.app.map[this.item.id]  || this.$store.state.lr_sys_unknown_app
-    },
-    currTitle(){
-      return this.item.title || this.app.title
-    },
-
+      return this.$store.getters['app/getById'](this.item.id)
+    }
+    // currTitle(){
+    //   return this.item.title || this.app.title
+    // },
   },
   methods: {
     remove(){

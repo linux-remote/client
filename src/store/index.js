@@ -22,6 +22,7 @@ import error from './module/error';
 import task from './module/task';
 import widget from './module/widget';
 import app from './module/app';
+
 const store = new window.Vuex.Store({
   modules: {
     language,

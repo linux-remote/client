@@ -10,32 +10,30 @@ div(draggable="true",
 
 export default {
   props: {
-    item: {
-      type: Object,
-      required: true
-    },
     id: {
       type: String,
+      required: true
+    },
+    item: {
+      type: Object,
       required: true
     }
   },
 
   methods: {
     handleCLick(){
-      console.log('start handleItemCLick')
-      this.$store.commit('task/add', this.item);
+      this.$store.commit('task/add', this.id);
+      this.$parent.handleBtnClick();
     },
 
     handleDragStart(){
+      const item = this.item;
       this.$store.commit('transferDragData', {
-        isRaw: true,
+        isFromStart: true,
         id: this.id,
-        type: 'app'
+        title: item.title
       });
     }
-  },
-  mounted(){
-    this.handleCLick();
   }
 }
 </script>
