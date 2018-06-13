@@ -6,23 +6,23 @@
     .lr-start-menu-item 用户信息
     .lr-start-menu-item 所有程序
     br
-    AppItem.lr-start-menu-item(v-for='(v, k) in appList',
+    AppItem.lr-start-menu-item(v-for='(v, k) in list',
                               :item="v",
                               :id="k",
                               :key="k")
-      .lr-sys-app-icon(:style="`background-image:url(${v.iconUrl})`") 
-      .lr-sys-app-title {{v.title}}
 </template>
 
 <script>
 import AppItem from './app-item.vue';
+const API_ROOT = window.SERVER_CONFIG.API_ROOT;
 export default {
   components: {
     AppItem
   },
   data(){
     return {
-      isShowMenu: false
+      isShowMenu: false,
+      list: []
     }
   },
   computed: {
@@ -31,6 +31,20 @@ export default {
     }
   },
   methods: {
+    getData(){
+      this.request({
+        url: '/app/list',
+        success(data){
+          data.forEach((v) => {
+            v.iconUrl = API_ROOT + '/app' + v.staticPath + '/' + v.icon;
+            v.main = API_ROOT + '/app' + v.staticPath + '/' + v.main;
+            delete(v.icon);
+            delete(v.staticPath);
+          });
+          this.list = data;
+        }
+      })
+    },
     handleDocMousedown(e){
       console.log('handleDocMousedown');
       if(this.$el === e.target || this.$el.contains(e.target)){
@@ -55,6 +69,9 @@ export default {
         document.removeEventListener('mousedown', this.handleDocMousedown, true);
       }
     }
+  },
+  mounted(){
+    this.getData();
   }
 }
 </script>

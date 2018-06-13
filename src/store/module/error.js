@@ -1,7 +1,7 @@
 export default  {
   namespaced: true,
   state: {
-    message: ['出错了!','出错了2!']
+    message: []
   },
   mutations: {
     show(state, message) {
