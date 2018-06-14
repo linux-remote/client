@@ -28,7 +28,7 @@ export function logout(){
     url: '/logout',
     type: 'post',
     data: {
-      username: store.state.username
+      username: this.$route.params.username
     },
     success(){
       ws.close();

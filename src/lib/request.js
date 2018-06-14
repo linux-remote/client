@@ -25,6 +25,7 @@ function httpErrorHandler(xhr){
 
   if(xhr.status === 403 || xhr.responseText === 'LINUX_REMOTE_USER_SERVER_ERROR'){
     console.log('转向登录页');
+    request.abortAll();
     return store.commit('needRelogin');
   }
   store.commit('error/show', `http#${xhr.status}: ${xhr.responseText}`);
