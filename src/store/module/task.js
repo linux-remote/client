@@ -21,7 +21,8 @@ export default  {
       const APP = this.getters['app/getById'](appId);
       const data = {
         appId,
-        ...APP
+        APP,
+        title: APP.title
       }
       data.unique = APP.unique || false;
 

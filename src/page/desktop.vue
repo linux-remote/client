@@ -104,11 +104,9 @@ export default {
             groups: data.groups,
             homedir: data.homedir,
             hostname: data.hostname,
-            
-            quickBarItems: JSON.parse(data.quickBar),
-            recycebinIsEmpty: data.recycebinIsEmpty
+            quickBarItems: JSON.parse(data.quickBar)
           });
-
+          this.$store.commit('app/changeRecycleBinIcon', data.recycebinIsEmpty);
           this.icons = data.icons;
         }
       }

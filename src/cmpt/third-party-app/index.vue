@@ -46,7 +46,7 @@ export default {
         map[appId] = true;
 
         this.request({
-          url: task.main,
+          url: task.APP.main,
           stateKey: 'isRequest',
           contentType: 'text/plain',
           success(code){

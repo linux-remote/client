@@ -18,11 +18,7 @@ export default  {
     },
     thirdPartyMap: null
   },
-  mutations: {
-    setThirdPartyMap(state, data){
-      state.thirdPartyMap = data;
-    }
-  },
+
   getters: {
     getById(state){
       return (id) => {
@@ -30,5 +26,14 @@ export default  {
         return state[key][id]
       }
     }
-  }
+  },
+  mutations: {
+    setThirdPartyMap(state, data){
+      state.thirdPartyMap = data;
+    },
+    changeRecycleBinIcon(state, bool){
+      let name = bool ? 'user-trash.png' : 'user-trash-full-2.png';
+      state.sysMap.sys_app_recycle_bin.iconUrl = '/public/img/tango-style/' + name;
+    }
+  },
 }

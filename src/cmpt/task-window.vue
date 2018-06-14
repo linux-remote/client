@@ -7,7 +7,7 @@
     Movable.lr-task-title-content(:onMove='handleMove',
                                   :startX='positionLeft',
                                   :startY='positionTop')
-      .lr-icon(:style="`background-image:url(${iconUrl})`")
+      .lr-icon(:style="`background-image:url(${APP.iconUrl})`")
       | {{title}}
     .lr-task-control
       .lr-task-control-min(@click.stop='hiddenTask')

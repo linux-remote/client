@@ -104,7 +104,8 @@ $linkFileColor: violet;
 
 .lr-fs-ctrl-bar{
   width: 100%; 
-  flex-shrink:0; 
+  flex-shrink:0;
+  display: flex;
   height: 30px;
   background-color: #eee;
   line-height: 30px;

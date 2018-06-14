@@ -52,7 +52,6 @@ const store = new window.Vuex.Store({
     hostname: '',
 
     quickBarItems: [],
-    recycebinIsEmpty: true,
 
     // lr_sys_unknown_app : {
     //   iconUrl : '/public/img/image-missing-3.png',
