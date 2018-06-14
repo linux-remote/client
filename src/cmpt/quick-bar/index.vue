@@ -26,8 +26,12 @@ export default {
   },
   data(){
     return {
-      list: [],
       _isCanDrop: true
+    }
+  },
+  computed: {
+    list(){
+      return this.$store.state.quickBarItems
     }
   },
   methods: {
@@ -55,7 +59,7 @@ export default {
     },
     save(){
       this.request({
-        url: '~/quick_bar',
+        url: '~/desktop/quickBar',
         type: 'post',
         data: {
           data: JSON.stringify(this.list)
@@ -64,15 +68,7 @@ export default {
           console.log('save quickBar ok');
         }
       })
-    },
-  },
-  created(){
-    this.request({
-      url: '~/quick_bar',
-      success(result){
-        this.list = JSON.parse(result);
-      }
-    })
+    }
   }
 }
 </script>

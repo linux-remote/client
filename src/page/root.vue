@@ -34,7 +34,7 @@ export default {
         url: '/touch',
         stateKey: 'isRequest',
         success(data){
-          console.log('data', data)
+          //console.log('data', data)
           //this.$store.commit('set', data);
         }
       });

@@ -1,7 +1,6 @@
 export default  {
   namespaced: true,
   state: {
-    list: [],
     sysMap: {
       sys_app_file: {
         iconUrl: '/public/img/tango-style/user-home.png',
@@ -17,9 +16,7 @@ export default  {
         title: '资源管理器'
       }
     },
-    thirdPartyMap: {
-
-    }
+    thirdPartyMap: null
   },
   mutations: {
     setThirdPartyMap(state, data){

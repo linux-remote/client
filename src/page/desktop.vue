@@ -1,7 +1,7 @@
 <template lang="jade">
 .lr-page.lr-desk-wrap(v-if='deskInited', @mousedown='handleMousedown')
   TopBar
-  DeskTop
+  DeskTop(:icons='icons')
   TasksBar
 </template>
 <script>
@@ -11,11 +11,17 @@ import TopBar from '__ROOT__/cmpt/top-bar/index.vue';
 import DeskTop from '__ROOT__/cmpt/desktop/body.vue';
 import {createWs, logout} from '__ROOT__/lib/login';
 
+const API_ROOT = window.SERVER_CONFIG.API_ROOT;
 export default {
   components: {
     TopBar,
     TasksBar,
     DeskTop
+  },
+  data(){
+    return {
+      icons: null
+    }
   },
   computed:{
     sessError(){
@@ -42,67 +48,81 @@ export default {
     }
   },
   methods: {
+
     handleMousedown(){
       this.$store.commit('task/currentUnFocus');
     },
-    openOsInfo(){
-      this.$store.commit('task/add', {
-        name: 'Server Info',
-        type: 'computerInfo',
-        unique: true
-      });
-    },
-    openEmptyTask(){
-      this.$store.commit('task/add', {
-        name: 'Empty',
-        unique: true
-      });
-    },
-
     logout,
-    test500(){
-      this.request({
-        url: '~/test500'
-      })
-    },
-    createdTask(){
-      this.$store.commit('task/add', 'sys_file');
-    },
     init(){
       const username = this.$route.params.username;
-      this.request({
-        url: '~/info', 
-        success(data){
-          data.isLogin = true;
-          data.deskInited = true; //dev use.
-          data.username = username;
-          document.title = username + '@' + data.hostname;
-          this.$store.commit('set', data);
+      var count = 0, TOTAL = 2, data;
+
+      const initAppMap = () => {
+        if(!this.$store.state.app.thirdPartyMap){
+          this.request({
+            url: '/app/list',
+            success(data){
+              var map = Object.create(null);
+
+              data.forEach((v) => {
+                v.main = '/app' + v.staticPath + '/' + v.main;
+                v.iconUrl = API_ROOT + '/app' + v.staticPath + '/' + v.icon;
+                delete(v.icon);
+                delete(v.staticPath);
+                map[v.id] = v;
+                delete(v.id);
+              });
+              this.$store.commit('app/setThirdPartyMap', map);
+              initAppMap();
+            }
+          })
+        } else {
+          done();
         }
-      });
+      }
+
+      const getBundle = () => {
+        this.request({
+          url: '~/desktop/bundle',
+          success(_data){
+            data = _data;
+            done();
+          }
+        });
+      }
+
+      const done = () => {
+        count = count + 1;
+        if(count === TOTAL){
+
+          document.title = username + '@' + data.hostname;
+
+          this.$store.commit('set', {
+            isLogin: true,
+            deskInited: true,
+            username,
+            groups: data.groups,
+            homedir: data.homedir,
+            hostname: data.hostname,
+            
+            quickBarItems: JSON.parse(data.quickBar),
+            recycebinIsEmpty: data.recycebinIsEmpty
+          });
+
+          this.icons = data.icons;
+        }
+      }
 
 
-      // const TTL_TIME = 1000 * 60 * 9;
-      // this.$options._liveTTL = setInterval(()=>{
-      //   if(!this.$store.state.isLogin) return;
-      //   this.request({url: '~/live'});
-      // }, TTL_TIME)
+      initAppMap();
+      getBundle();
 
       createWs(username);
-      //this.createdTask();
-
     }
   },
-  mounted(){
 
-    // this.$store.commit('set', {
-    //   deskW: window.APP.$elDesk.width(),
-    //   deskH: window.APP.$elDesk.height()
-    // })
-  },
   destroyed(){
-    this.$store.commit('task/closeAll');
-    //clearInterval(this.$options._liveTTL);
+    this.$store.commit('clearDesktop');
   },
 
   created(){

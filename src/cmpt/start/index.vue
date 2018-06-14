@@ -18,7 +18,7 @@
 
 <script>
 import AppItem from './app-item.vue';
-const API_ROOT = window.SERVER_CONFIG.API_ROOT;
+
 export default {
   components: {
     AppItem
@@ -51,24 +51,7 @@ export default {
       }
     },
 
-    getData(){
-      this.request({
-        url: '/app/list',
-        success(data){
-          var map = Object.create(null);
-          data.forEach((v) => {
-            v.main = '/app' + v.staticPath + '/' + v.main;
-            v.iconUrl = API_ROOT + '/app' + v.staticPath + '/' + v.icon;
-            // v.main = API_ROOT + '/app' + v.staticPath + '/' + v.main;
-            delete(v.icon);
-            delete(v.staticPath);
-            map[v.id] = v;
-            delete(v.id);
-          });
-          this.$store.commit('app/setThirdPartyMap', map);
-        }
-      })
-    },
+
     handleDocumentMousedown(e){
       //console.log('handleDocumentMousedown');
       if(this.$el === e.target || this.$el.contains(e.target)){
@@ -81,9 +64,6 @@ export default {
         this.isShowMenu = false;
       }
     }
-  },
-  mounted(){
-    this.getData();
   }
 }
 </script>

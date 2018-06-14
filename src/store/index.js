@@ -16,6 +16,7 @@ window.APP = {
 }
 
 import language from './module/language';
+
 import upload from './module/upload';
 import error from './module/error';
 import task from './module/task';
@@ -38,28 +39,25 @@ const store = new window.Vuex.Store({
     winW: $win.width(),
     //loginedMap: null,
     // sess
-    isLogin: false,
-    isSelfSigned: false,
-
     
     // desktop
     deskTopW: 0,
     deskTopH: 0,
+    isLogin: false,
     deskInited: false,
+    
     username:'',
     groups: [],
     homedir: '',
     hostname: '',
 
-    lr_sys_unknown_app : {
-      iconUrl : '/public/img/image-missing-3.png',
-      title: 'lr_sys_unknown_app'
-    },
-    //arch: '',
+    quickBarItems: [],
+    recycebinIsEmpty: true,
 
-    time: 0,
-    timeZoneName: '',
-    timeZoneOffset: 0,
+    // lr_sys_unknown_app : {
+    //   iconUrl : '/public/img/image-missing-3.png',
+    //   title: 'lr_sys_unknown_app'
+    // },
 
     onFsDel: null,
     onDustbinRecycle: null,
@@ -91,6 +89,10 @@ const store = new window.Vuex.Store({
     set (state, data) {
       Object.assign(state, data);
     },
+    clearDesktop(state){
+      state.quickBarItems = [];
+      store.commit('task/closeAll');
+    }
   }
 });
 

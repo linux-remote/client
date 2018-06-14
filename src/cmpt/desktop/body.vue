@@ -43,9 +43,23 @@ export default {
     TaskWindow,
     Cascade
   },
+  props: ['icons'],
   data(){
+    var icons = this.icons;
+    if(!icons){ // 回收站可以被移除
+      const app = this.$store.getters['app/getById']('sys_app_recycle_bin');
+      icons = [{
+        id: 'sys_app_recycle_bin',
+        title: app.title,
+        x:0,
+        y:0
+      }]
+    }else{
+      icons = JSON.parse(icons);
+    }
+
     return {
-      list: [],
+      list: icons,
       _isInDesk: false
     }
   },
@@ -117,7 +131,7 @@ export default {
     },
     save(){
       this.request({
-        url: '~/desktop',
+        url: '~/desktop/icons',
         type: 'post',
         data: {
           data: JSON.stringify(this.list)
@@ -143,32 +157,22 @@ export default {
     },
     getData(){
       this.request({
-        url: '~/desktop',
+        url: '~/desktop/icons',
         success(result){
           if(!result){
-            const app = this.$store.getters['app/getById']('sys_app_recycle_bin');
-            result = [{
-              id: 'sys_app_recycle_bin',
-              title: app.title,
-              x:0,
-              y:0
-            }]
-          }else{
-            result = JSON.parse(result);
+            return;
           }
-
-          this.list = result;
+          this.list = JSON.parse(result);
         }
       })
     }
   },
-  created(){
-    this.getData();
-  },
+  // created(){
+  //   this.getData();
+  // },
   mounted(){
     this.$store.commit('setDeskTopWH');
   }
-
 }
 
 </script>
