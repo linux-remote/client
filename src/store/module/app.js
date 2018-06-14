@@ -16,14 +16,18 @@ export default  {
         title: '资源管理器'
       }
     },
-    thirdPartyMap: null
+    thirdPartyMap: null,
+    _unknownApp: {
+      iconUrl: '/public/img/image-missing-3.png',
+      IS_UNKNOWN_APP: true
+    }
   },
 
   getters: {
     getById(state){
       return (id) => {
         let key = id.indexOf('sys_app') === 0 ? 'sysMap' : 'thirdPartyMap';
-        return state[key][id]
+        return state[key][id] ||state._unknownApp
       }
     }
   },

@@ -19,6 +19,9 @@ export default  {
   mutations: {
     add(state, appId){
       const APP = this.getters['app/getById'](appId);
+      if(APP.IS_UNKNOWN_APP){
+        return alert('Unknown App!');
+      }
       const data = {
         appId,
         APP,
