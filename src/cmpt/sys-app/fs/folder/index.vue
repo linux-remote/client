@@ -39,18 +39,19 @@
         td(v-if='item.size') {{item.size | wellSize}}
         td(v-else) 
           span.lr_is_device_type {{item.device_type}}
-    // .lr-file(v-for='item in list',
-    //         :key='item.name',
-    //         @mousedown='noopStop',
-    //         @dblclick='openItem(item)', @click.stop='focusItem(item)',
-    //         @contextmenu.prevent.stop='handleFsItemContextmenu(item, $event)',
-    //         :class='{lr_file_hidden: item.name[0] === ".", lr_file_focus: item.focus, ["lr_file_type_" + item.type ]: item.type}')
-    //   FsIcon(:item='item')
-    //   .lr-file-name(@click='handleItemNameClick(item, $event)') {{item.name}}
+
   Status
 </template>
 
 <script>
+// .lr-file(v-for='item in list',
+//         :key='item.name',
+//         @mousedown='noopStop',
+//         @dblclick='openItem(item)', @click.stop='focusItem(item)',
+//         @contextmenu.prevent.stop='handleFsItemContextmenu(item, $event)',
+//         :class='{lr_file_hidden: item.name[0] === ".", lr_file_focus: item.focus, ["lr_file_type_" + item.type ]: item.type}')
+//   FsIcon(:item='item')
+//   .lr-file-name(@click='handleItemNameClick(item, $event)') {{item.name}}
 import contextmenuStore from '__ROOT__/store/contextmenu';
 import flyTextAreaStore from '__ROOT__/store/fly-textarea';
 
@@ -95,15 +96,22 @@ export default {
       return this.$store.state.groups
     },
     bodyClass(){
-      if(this.dir && !this.dir.readable){
-        return 'lr-fs-dir-unreadable'
+      var dir = this.dir;
+      if(dir){
+        if(!dir.readable){
+          return dir.isMask ? 'lr-fs-dir-mask' : 'lr-fs-dir-unreadable'
+        }
+        if(!dir.writeable){
+          return dir.isMask ? 'lr-fs-dir-mask' : 'lr-fs-dir-unwriteable'
+        }
+        if(dir.isSticky){
+          console.log('dir', dir)
+          if(!dir.rwxs.owner.w && !dir.rwxs.group.w){
+            return 'lr-fs-dir-sticky'
+          }
+        }
       }
-      if(this.dir && !this.dir.writeable){
-        return 'lr-fs-dir-unwriteable'
-      }
-      if(this.dir && this.dir.isSticky){
-        return 'lr-fs-dir-sticky'
-      }
+
     },
     go(){
       return this.$parent.$refs.navBar.go
