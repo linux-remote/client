@@ -1,63 +1,28 @@
 
 export default function initRelation(item, username, groups){
   dataFormat(item);
-  const isInGroup = (groups.indexOf(item.group) !== -1);
+  
   const rwxs = item.rwxs;
-  let readable = false, writeable = false, accessable = false;
+  let f, is_owner = false, is_group = false, is_other = false;
+
+  
   if(item.owner === username){
-    item.is_owner = true;
-    readable = rwxs.owner.r;
-    writeable = rwxs.owner.w;
-    accessable = rwxs.owner.x;
+    is_owner = true;
+    f = rwxs.owner
+  } else if(groups.indexOf(item.group) !== -1){
+    is_group = true;
+    f = rwxs.group;
+  } else {
+    is_other = true; 
+    f = rwxs.other;
   }
-  if(isInGroup){
-    item.is_group = true;
-    if(!readable){
-      readable = rwxs.group.r;
-    }
-    if(!writeable){
-      writeable = rwxs.group.w;
-    }
-    if(!accessable){
-      accessable = rwxs.group.x;
-    }
-  }
-  if(!readable){
-    readable = rwxs.other.r;
-  }
-  if(!writeable){
-    writeable = rwxs.other.w;
-  }
-  if(!accessable){
-    accessable = rwxs.group.x;
-  }
-  item.readable = readable;
-  item.writeable = writeable;
-  item.accessable = accessable;
-  item.is_other = true; //icon 用到了.
-  if(item.type === 'Directory'){
-    if(!accessable){
-      if(readable){
-        item.permiss_type = 'list';
-      }else{
-        item.permiss_type = 'none';
-      }
-    }else {
-      if(item.readable){
-        if(item.writeable){
-          item.permiss_type = 'full';
-        }else{
-          item.permiss_type = 'only_read';
-        }
-      }else {
-        if(writeable){
-          item.permiss_type = 'only_write';
-        }else{
-          item.permiss_type = 'none';
-        }
-      }
-    }
-  }
+
+  item.is_owner = is_owner;
+  item.is_group = is_group;
+  item.is_other = is_other;
+  item.readable = f.r;
+  item.writeable = f.w;
+  item.accessable = f.x;
 }
 
 function dataFormat(item){

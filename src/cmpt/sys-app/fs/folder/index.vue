@@ -98,15 +98,17 @@ export default {
     bodyClass(){
       var dir = this.dir;
       if(dir){
+        if(dir.isMask){
+          return 'lr-fs-dir-mask';
+        }
         if(!dir.readable){
-          return dir.isMask ? 'lr-fs-dir-mask' : 'lr-fs-dir-unreadable'
+          return 'lr-fs-dir-unreadable'
         }
         if(!dir.writeable){
-          return dir.isMask ? 'lr-fs-dir-mask' : 'lr-fs-dir-unwriteable'
+          return 'lr-fs-dir-unwriteable'
         }
         if(dir.isSticky){
-          console.log('dir', dir)
-          if(!dir.rwxs.owner.w && !dir.rwxs.group.w){
+          if(!dir.is_other){
             return 'lr-fs-dir-sticky'
           }
         }
@@ -161,7 +163,6 @@ export default {
                 v.group = _syl.group;
               }
             }
-
             initRelation(v, this.username, this.groups);
             
             if(v.name === '.'){
