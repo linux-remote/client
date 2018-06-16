@@ -2,6 +2,8 @@
 .lr-fs-ctrl-bar
   .lr-fs-ctrl-bar-mask(v-if='disabled')
   button.lr-upload-btn(@click='handleUploadBtnClick') 上传文件
+  .lr-icon.lr-fs-new-folder(@click='addItem("Directory")')
+  .lr-icon.lr-fs-new-file(@click='addItem("RegularFile")')
 </template>
 <script>
 export default {
@@ -12,6 +14,15 @@ export default {
     }
   },
   methods: {
+    addItem(type){
+      if(this.$parent.preCreateItem){
+        return;
+      }
+      this.$parent.preCreateItem = {
+       name: '',
+       type
+      }
+    },
     handleUploadBtnClick(){
       this.$store.commit('upload/start', this.address);
     },

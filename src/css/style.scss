@@ -54,13 +54,14 @@ button.disable{
   color:#fff
 }
 
-button.lr_loading{
+.lr_loading{
   cursor: auto;
+  position: relative;
 }
-button.lr_loading::before{
+.lr_loading::before{
   content: '';
 }
-button.lr_loading::before {
+.lr_loading::before {
   padding:0;
   margin:0;
   position: absolute;

@@ -15,33 +15,17 @@
         th 修改日期
         th 大小
           span.lr_is_device_type(v-if='isHaveDevice') /设备类型
-      tr(v-for='item in list',
-        :key='item.name',
-        @dblclick='openItem(item)',
-        :class='{lr_file_hidden: item.name[0] === "."}')
+      tr(v-if='preCreateItem', class='lr-fs-create-layer')
         td
-          .lr-name-wrap
-            .lr-icon(:class='"lr_file_type_" + item.type')
-              .lr-icon.lr-error-icon(v-if='item.linkTargetError')
-            | {{item.name}}
-        td 
-          span(:class='{lr_per_is_on: item.is_owner}'){{item.owner}}
+          PreCreate
         td
-          span(:class='{lr_per_is_on: item.is_group}') {{item.group}}
         td
-          .lr-per-wrap
-            .lr-per-relation-wrap
-              .lr-per-relation(v-for='(v, k) in item.rwxs',
-                              :class='{lr_per_is: item["is_" + k]}')
-                .lr-per-item(v-for='(v2, k2) in v', :class='{lr_per_item_on: v2 }') {{k2}}
-              .lr-per-sticky(v-if='item.isSticky')
-            .lr-per-ACL(v-if='item.isMask') ACL
-        td {{item.mtime}}
-        td(v-if='item.size') {{item.size | wellSize}}
-        td(v-else) 
-          span.lr_is_device_type {{item.device_type}}
-  // Modal(title='创建新文件', :onSubmit='handleModalSubmit')
-  //   input(v-model='inputVal', required)
+        td
+        td
+        td
+      RowItem(v-for='item in list',
+              :key='item.name',
+              :item='item')
   Status
 </template>
 
@@ -53,15 +37,18 @@ import ContextmenuExtend from '__ROOT__/cmpt/global/contextmenu/extend.vue';
 
 import Status from './status.vue';
 import CtrlBar from './ctrl-bar.vue';
-import Modal from '__ROOT__/cmpt/global/modal.vue';
+import PreCreate from './pre-create.vue';
+import RowItem from './row-item.vue';
+
 import initRelation from './permission-util';
 import {getNameSuffix} from '../fs-util';
 export default {
   extends: ContextmenuExtend,
   components:{
     CtrlBar,
+    PreCreate,
     Status,
-    Modal
+    RowItem
   },
   props: {
     address: {
@@ -76,6 +63,7 @@ export default {
     return {
       theads: ['名称',  '所有者', '用户组' ,'权限', '修改日期',  '大小/设备类型'],
       list: [],
+      preCreateItem: null,
       currItem: {},
       dir: null,
       newItemName: null
@@ -346,4 +334,54 @@ export default {
     this.getData();
   }
 }
+    // handleFsBodyContextmenu(e){
+    //   const self = this;
+    //   contextmenuStore.commit('open', {
+    //     data: [{
+    //       name: 'New File',
+    //       handleClick(){
+    //         const name = 'new-' + Date.now();
+    //         self.request({
+    //           type: 'POST',
+    //           url: '~/fs' + self.address,
+    //           data: {
+    //             name,
+    //             type: 'createFile'
+    //           },
+    //           success(){
+    //             self.newItemName = name;
+    //             self.getData();
+    //           }
+    //         })
+    //       }
+    //     },
+    //     {
+    //       name: 'New Folder',
+    //       handleClick(){
+    //         const name = 'new-' + Date.now()
+    //         self.request({
+    //           type: 'POST',
+    //           url: '~/fs' + self.address,
+    //           data: {
+    //             name,
+    //             type: 'createFolder'
+    //           },
+    //           success(){
+    //             self.newItemName = name;
+    //             self.getData();
+    //           }
+    //         })
+    //       }
+    //     },
+    //     {
+    //       name: 'Refresh',
+    //       handleClick(){
+    //         self.getData();
+    //       }
+    //     }],
+    //     top: e.clientY,
+    //     left: e.clientX
+
+    //   });
+    // },
 </script>

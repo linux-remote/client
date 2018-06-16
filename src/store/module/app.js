@@ -14,6 +14,14 @@ export default  {
       sys_app_disk : {
         iconUrl: '/public/img/system-file-manager-6.png',
         title: '资源管理器'
+      },
+      sys_app_computer: {
+        iconUrl: '/public/img/tango-style/network-server.png',
+        title: '我的电脑'
+      },
+      sys_app_editor: {
+        iconUrl: '/public/img/accessories-text-editor-6.png',
+        title: '我的电脑'
       }
     },
     thirdPartyMap: null,

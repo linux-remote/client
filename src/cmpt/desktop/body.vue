@@ -172,6 +172,7 @@ export default {
   // },
   mounted(){
     this.$store.commit('setDeskTopWH');
+    this.$store.commit('task/add', 'sys_app_file');
   }
 }
 

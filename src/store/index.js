@@ -50,6 +50,7 @@ const store = new window.Vuex.Store({
     groups: [],
     homedir: '',
     hostname: '',
+    mask: '',
 
     quickBarItems: [],
 

@@ -102,21 +102,7 @@
 }
 $linkFileColor: violet;
 
-.lr-fs-ctrl-bar{
-  width: 100%; 
-  flex-shrink:0;
-  display: flex;
-  height: 30px;
-  background-color: #eee;
-  line-height: 30px;
-  color:#000;
-  border-bottom: 1px solid #666;
-  background-color: #eee;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 20;
-}
+
 .lr-fs-folder{ // 多层 flex 嵌套会导致 overflow-y: auto; 不起作用. 2018/6/8
   flex-grow: 1;
   padding-top: 30px;
@@ -328,6 +314,36 @@ background-image: url('/public/img/tango-style/inode-chardevice.png');
   color: #fff;
 }
 
+.lr-fs-ctrl-bar{
+  width: 100%; 
+  flex-shrink:0;
+  display: flex;
+  height: 30px;
+  background-color: #eee;
+  line-height: 30px;
+  color:#000;
+  border-bottom: 1px solid #666;
+  background-color: #eee;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 20;
+  .lr-icon{
+    width: 30px;
+    height: 30px;
+  }
+}
+
+.lr-fs-new-folder{
+  background-image: url('/public/img/tango-style/folder-new-5.png');
+
+}
+.lr-fs-new-file{
+  background-image: url('/public/img/tango-style/document-new-4.png');
+}
+.lr-fs-create-layer{
+  background-color: $bg;
+}
 
 //----------- permission end -----------
 /*

@@ -19,6 +19,7 @@
   FsBody(v-if='appId==="sys_app_file"')
   RecycleBinBody(v-else-if='appId==="sys_app_recycle_bin"')
   DiskBody(v-else-if='appId==="sys_app_disk"')
+  ComputerInfo(v-else-if='appId==="sys_app_computer"')
 
   ThirdPartyApp(v-else, :task='this.$data')
 
@@ -30,6 +31,7 @@
 import FsBody from './sys-app/fs/index.vue';
 import RecycleBinBody from './sys-app/recycle-bin.vue';
 import DiskBody from './sys-app/fs/disk.vue';
+import ComputerInfo from './sys-app/computer-info.vue';
 
 import ThirdPartyApp from './third-party-app/index.vue';
 
@@ -41,6 +43,7 @@ export default {
     DiskBody,
     RecycleBinBody,
     FsBody,
+    ComputerInfo,
 
     ThirdPartyApp,
 
