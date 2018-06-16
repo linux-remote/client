@@ -22,12 +22,6 @@ var poolIndex = 0;
 
 // 默认的http处理程序
 function httpErrorHandler(xhr){
-
-  if(xhr.status === 403 || xhr.responseText === 'LINUX_REMOTE_USER_SERVER_ERROR'){
-    console.log('转向登录页');
-    request.abortAll();
-    return store.commit('needRelogin');
-  }
   store.commit('error/show', `http#${xhr.status}: ${xhr.responseText}`);
 }
 
@@ -64,11 +58,6 @@ function request(opts){
     url
   } = opts;
 
-
-  // const stateKey = opts.stateKey;
-  // const success = opts.success || noop;
-  // const complete = opts.complete || noop;
-  // const error = opts.error || httpErrorHandler;
 
   // var repeatSubmitMode = 
   //   opts.repeatSubmitMode === undefined 
@@ -154,6 +143,14 @@ function request(opts){
     complete.call(self, xhr, status);
 
     if(status !== 'success'){
+
+      if(xhr.status === 403){
+        // || xhr.responseText === 'LINUX_REMOTE_USER_SERVER_ERROR'
+        console.log('转向登录页');
+        request.abortAll();
+        return store.commit('needRelogin');
+      }
+      
       error.call(self,  xhr);
     }else{
       if(xhr.responseJSON){

@@ -44,7 +44,7 @@ export default {
     window.APP.$elMain = document.getElementById('lr-main');
   },
   created(){
-    const language = this.$route.query.language || navigator.language;
+    const language = localStorage.language || navigator.language;
     this.$store.commit('language/set', language);
     this.getData();
   }

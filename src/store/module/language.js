@@ -44,6 +44,7 @@ export default  {
       });
       i = (i === -1) ? 0 : i;
       state.currIndex = i;
+      localStorage.language = state.list[state.currIndex].id;
     }
   }
 }

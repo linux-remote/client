@@ -44,14 +44,6 @@ export default {
   methods: {
     handleChange(){
       this.$store.commit('language/set', this.currLangIndex);
-      let query = this.$route.query;
-      this.$router.push({
-        path: this.$route.path,
-        query: {
-          ...query,
-          language : this.language.list[this.currLangIndex].id
-        }
-      })
     },
     login(){
       const {username, password} = this;
@@ -72,10 +64,7 @@ export default {
       })
     },
     routeTo(username){
-      this.$router.push({
-        path: 'user/' + username,
-        query: this.$route.query
-      });
+      this.$router.push('user/' + username);
     }
   }
 }

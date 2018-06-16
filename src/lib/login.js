@@ -14,8 +14,8 @@ if(window.SERVER_CONFIG.API_ROOT === '/api'){
 }else{
   wsOrigin = wsOrigin + '//' + window.SERVER_CONFIG.API_ROOT.split('/')[2]
 }
-console.log('wsOrigin', wsOrigin);
-export function createWs(username){
+
+export function createWs(username){ // webSocket 开始
   ws = new WebSocket(`${wsOrigin}?user=${username}`);
   ws.onmessage = function (event) {
     const data = JSON.parse(event.data);
@@ -31,7 +31,9 @@ export function logout(){
       username: this.$route.params.username
     },
     success(){
-      ws.close();
+
+      ws.close(); // webSocket 退出
+
       let route = '/';
       const storeData = {
         deskInited: false,

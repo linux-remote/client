@@ -3,11 +3,6 @@
   .lr-user-name(@click='show', :class='{lr_user_hover:showDrop}') {{username}}
     <svg-triangle svgClass='lr-triangle' width='10' height='5' />
   .lr-user-drop(v-show='showDrop')
-    //- .lr-user-p(style='user-select:text' @click='noopStop')
-    //-   small uid:
-    //-   b {{user.uid}}
-    //-   small(style='margin-left:1em') gid:
-    //-   b {{user.gid}}
     .lr-user-p(style='user-select:text' @click='noopStop')
       b group:
       | {{group}}
@@ -66,9 +61,6 @@ export default {
       })
     },
     logout
-  },
-  created(){
-    //this.getData();
   }
 }
 </script>

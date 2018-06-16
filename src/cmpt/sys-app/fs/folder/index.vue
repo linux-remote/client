@@ -44,18 +44,10 @@
 </template>
 
 <script>
-// .lr-file(v-for='item in list',
-//         :key='item.name',
-//         @mousedown='noopStop',
-//         @dblclick='openItem(item)', @click.stop='focusItem(item)',
-//         @contextmenu.prevent.stop='handleFsItemContextmenu(item, $event)',
-//         :class='{lr_file_hidden: item.name[0] === ".", lr_file_focus: item.focus, ["lr_file_type_" + item.type ]: item.type}')
-//   FsIcon(:item='item')
-//   .lr-file-name(@click='handleItemNameClick(item, $event)') {{item.name}}
+
 import contextmenuStore from '__ROOT__/store/contextmenu';
 import flyTextAreaStore from '__ROOT__/store/fly-textarea';
 
-import FsIcon from './fs-icon.vue';
 import Status from './status.vue';
 import CtrlBar from './ctrl-bar.vue';
 
@@ -64,7 +56,6 @@ import {getNameSuffix} from '../fs-util';
 export default {
   components:{
     CtrlBar,
-    FsIcon,
     Status
   },
   props: {
@@ -107,10 +98,8 @@ export default {
         if(!dir.writeable){
           return 'lr-fs-dir-unwriteable'
         }
-        if(dir.isSticky){
-          if(!dir.is_other){
-            return 'lr-fs-dir-sticky'
-          }
+        if(dir.isSticky && dir.is_other){
+          return 'lr-fs-dir-sticky';
         }
       }
 
