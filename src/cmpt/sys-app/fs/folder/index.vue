@@ -1,11 +1,12 @@
 <template lang="jade">
-.lr-fs-folder(@contextmenu.prevent='handleFsBodyContextmenu',
-            @mousedown='handleFsBodyMousedown', :class='bodyClass')
+.lr-fs-folder(@mousedown='handleFsBodyMousedown', :class='bodyClass')
   CtrlBar
   .lr-fs-folder-inner(v-if='error')
     pre.lr-fs-error(v-html='list')
   .lr-fs-folder-inner(v-else-if='list.length')
-    table.lr-table.lr-fs-folder-table
+    ContextMenu(v-if="contextmenuIsShow", :close="contextmenuClose")
+      .lr-ctx-item
+    table.lr-table.lr-fs-folder-table(@contextmenu='handleContextmenu')
       tr
         th 名称
         th 所有者
@@ -39,7 +40,8 @@
         td(v-if='item.size') {{item.size | wellSize}}
         td(v-else) 
           span.lr_is_device_type {{item.device_type}}
-
+  // Modal(title='创建新文件', :onSubmit='handleModalSubmit')
+  //   input(v-model='inputVal', required)
   Status
 </template>
 
@@ -47,16 +49,19 @@
 
 import contextmenuStore from '__ROOT__/store/contextmenu';
 import flyTextAreaStore from '__ROOT__/store/fly-textarea';
+import ContextmenuExtend from '__ROOT__/cmpt/global/contextmenu/extend.vue';
 
 import Status from './status.vue';
 import CtrlBar from './ctrl-bar.vue';
-
+import Modal from '__ROOT__/cmpt/global/modal.vue';
 import initRelation from './permission-util';
 import {getNameSuffix} from '../fs-util';
 export default {
+  extends: ContextmenuExtend,
   components:{
     CtrlBar,
-    Status
+    Status,
+    Modal
   },
   props: {
     address: {
@@ -118,6 +123,10 @@ export default {
     }
   },
   methods: {
+    handleModalSubmit(){
+
+    },
+
     getItemAddress(item){
       let address;
       if(item.isSymbolicLink){
@@ -268,56 +277,7 @@ export default {
       }
       flyTextAreaStore.commit('open', data);
     },
-    handleFsBodyContextmenu(e){
-      const self = this;
-      contextmenuStore.commit('open', {
-        data: [{
-          name: 'New File',
-          handleClick(){
-            const name = 'new-' + Date.now();
-            self.request({
-              type: 'POST',
-              url: '~/fs' + self.address,
-              data: {
-                name,
-                type: 'createFile'
-              },
-              success(){
-                self.newItemName = name;
-                self.getData();
-              }
-            })
-          }
-        },
-        {
-          name: 'New Folder',
-          handleClick(){
-            const name = 'new-' + Date.now()
-            self.request({
-              type: 'POST',
-              url: '~/fs' + self.address,
-              data: {
-                name,
-                type: 'createFolder'
-              },
-              success(){
-                self.newItemName = name;
-                self.getData();
-              }
-            })
-          }
-        },
-        {
-          name: 'Refresh',
-          handleClick(){
-            self.getData();
-          }
-        }],
-        top: e.clientY,
-        left: e.clientX
 
-      });
-    },
     handleFsItemContextmenu(item, e){
       const self = this;
       this.itemFocus(item);

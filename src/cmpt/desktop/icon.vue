@@ -40,14 +40,14 @@
               @dragstart.stop='handleDragStart(item, $event)',
               :style='{left: item.x + "px", top: item.y + "px"}')
   .lr-desk-icon-img(:style="{backgroundImage: `url(${app.iconUrl})`}")
-  .lr-desk-icon-text {{item.title}}
+  .lr-desk-icon-text {{app.title}}
   ContextMenu(v-if="contextmenuIsShow", :close="contextmenuClose")
     .lr-contextmenu-item(@click="remove")
       | 移除
 
 </template>
 <script>
-import ContextmenuExtend from '../global/contextmenu-extend.vue';
+import ContextmenuExtend from '../global/contextmenu/extend.vue';
 
 export default {
   extends: ContextmenuExtend,

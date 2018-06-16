@@ -13,6 +13,9 @@ export default {
   },
   methods:{
     handleContextmenu(e){
+      if(e.target !== this.$el){
+        return;
+      }
       window.APP.contextMenuTransferData = {
         x: e.clientX,
         y: e.clientY

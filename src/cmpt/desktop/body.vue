@@ -8,23 +8,23 @@
       :index="i",
       :item="v")
   ContextMenu(v-if="contextmenuIsShow", :close="contextmenuClose")
-    .lr-contextmenu-item(@click="sortIcon")
+    .lr-ctx-item(@click="sortIcon")
       | 整理
-    .lr-contextmenu-item(@click="reload")
+    .lr-ctx-item(@click="reload")
       | 刷新
-    Cascade.lr-contextmenu-item
+    Cascade.lr-ctx-item
       | 设置桌面壁纸
       .lr-test-parent(slot='menu')
-        .lr-contextmenu-item 选择
-        .lr-contextmenu-item 上传
+        .lr-ctx-item 选择
+        .lr-ctx-item 上传
         Cascade 333
           div(slot='menu')
-            .lr-contextmenu-item 333
-            .lr-contextmenu-item 333
+            .lr-ctx-item 333
+            .lr-ctx-item 333
             Cascade 444
               div(slot='menu')
-                .lr-contextmenu-item 444
-                .lr-contextmenu-item 444
+                .lr-ctx-item 444
+                .lr-ctx-item 444
   TaskWindow(v-for='(item, index) in tasks', :key='item.id', :index='index')
 </template>
 <script>
@@ -32,7 +32,7 @@
 import Icon from './icon.vue';
 import TaskWindow from '__ROOT__/cmpt/task-window.vue';
 
-import ContextmenuExtend from '../global/contextmenu-extend.vue';
+import ContextmenuExtend from '../global/contextmenu/extend.vue';
 import Cascade from '../global/cascade.vue';
 const ICON_WIDTH = 80;
 const ICON_HEIGHT = 80;
@@ -146,7 +146,7 @@ export default {
       if(dragTransferData && dragTransferData.isFromStart){
         this.list.push({
           id: dragTransferData.id,
-          title: dragTransferData.title,
+          //title: dragTransferData.title,
           x: e.clientX,
           y: e.clientY
         })

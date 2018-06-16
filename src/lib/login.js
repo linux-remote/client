@@ -45,8 +45,11 @@ export function logout(){
         storeData.sessError = false;
       }
       this.$router.push(route);
-      store.commit('set', storeData);
+
       document.title = DOC_TITLE;
+
+      store.commit('set', storeData);
+      store.commit('clearDesktop');
     }
   })
 }

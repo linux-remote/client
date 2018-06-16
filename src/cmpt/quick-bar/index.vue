@@ -52,8 +52,7 @@ export default {
     handleDrop(){
       var data = this.$store.state.dragTransferData;
       this.list.push({
-        id: data.id,
-        type: data.type
+        id: data.id
       })
       this.save();
     },
