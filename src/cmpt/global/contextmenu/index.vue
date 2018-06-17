@@ -14,6 +14,10 @@ export default {
     }
   },
   methods:{
+    hidden(){
+      window.APP.contextMenuTransferData = null;
+      this.isShow = false;
+    },
     handleContextmenu(e){
       // if(e.target !== this.$parent.$el){
       //   return;
@@ -25,10 +29,6 @@ export default {
       this.isShow = true;
       e.stopPropagation();
       e.preventDefault();
-    },
-    contextmenuClose(){
-      window.APP.contextMenuTransferData = null;
-      this.isShow = false;
     }
   },
   mounted(){

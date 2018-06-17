@@ -21,7 +21,7 @@ export default  {
       },
       sys_app_editor: {
         iconUrl: '/public/img/accessories-text-editor-6.png',
-        title: '我的电脑'
+        title: '笔记本'
       }
     },
     thirdPartyMap: null,

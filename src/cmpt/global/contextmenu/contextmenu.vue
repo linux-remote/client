@@ -41,7 +41,7 @@ export default {
       this.y = y;
 
       window.APP.$elMain
-      .addEventListener('mousedown', this.$parent.contextmenuClose, {
+      .addEventListener('mousedown', this.$parent.hidden, {
         once: true,
         capture: true
       });

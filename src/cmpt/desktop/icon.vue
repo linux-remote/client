@@ -35,23 +35,29 @@
 </style>
 <template lang="jade">
 .lr-desk-icon(draggable="true",
-              @contextmenu='handleContextmenu',
               @dblclick="handleDblclick",
               @dragstart.stop='handleDragStart(item, $event)',
               :style='{left: item.x + "px", top: item.y + "px"}')
   .lr-desk-icon-img(:style="{backgroundImage: `url(${app.iconUrl})`}")
   .lr-desk-icon-text {{app.title}}
-  ContextMenu(v-if="contextmenuIsShow", :close="contextmenuClose")
-    .lr-contextmenu-item(@click="remove")
-      | 移除
 
+  ContextMenu(ref='ctx')
+    
+    .lr-ctx-item(@click="remove")
+      | 移除
+    .lr-ctx-item(v-if='item.id === "sys_app_recycle_bin"', @click="clearRecycleBin")
+      | 清空
+    .lr-ctx-item(@click="hidden")
+      | 隐藏
 </template>
 <script>
-import ContextmenuExtend from '../global/contextmenu/extend.vue';
 
+import ContextMenu from '../global/contextmenu/index.vue';
 export default {
-  extends: ContextmenuExtend,
 
+  components: {
+    ContextMenu
+  },
   props: {
     item: {
       type: Object,
@@ -66,14 +72,26 @@ export default {
   computed: {
     app(){
       return this.$store.getters['app/getById'](this.item.id)
-    }
+    },
     // currTitle(){
     //   return this.item.title || this.app.title
-    // },
+    // }
   },
   methods: {
+    clearRecycleBin(){
+      this.request({
+        url: '~/recycleBin',
+        type: 'delete',
+        success(){
+          this.$store.commit('onFsDel', true);
+          this.$refs.ctx.hidden();
+        }
+      })
+    },
+    hidden(){
+      this.$refs.ctx.hidden();
+    },
     remove(){
-      this.contextmenuClose();
       this.$nextTick(()=> {
         this.$parent.list.splice(this.index, 1);
         this.$parent.save();

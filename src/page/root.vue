@@ -2,7 +2,6 @@
 #lr-app.lr-h100
   #lr-main.lr-h100
     router-view
-  Contextmenu
   FlyTextarea
   UploadInput
   UploadBox
@@ -11,13 +10,11 @@
 <script>
 import UploadInput from '__ROOT__/cmpt/global/upload/input.vue';
 import UploadBox from '__ROOT__/cmpt/global/upload/box.vue';
-import Contextmenu from '__ROOT__/cmpt/contextmenu.vue';
 import FlyTextarea from '__ROOT__/cmpt/fly-textarea';
 import Error from '__ROOT__/cmpt/global/error.vue';
 
 export default {
   components:{
-    Contextmenu,
     UploadInput,
     UploadBox,
     Error,

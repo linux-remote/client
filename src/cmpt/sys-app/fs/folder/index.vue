@@ -4,9 +4,7 @@
   .lr-fs-folder-inner(v-if='error')
     pre.lr-fs-error(v-html='list')
   .lr-fs-folder-inner(v-else-if='list.length')
-    ContextMenu(v-if="contextmenuIsShow", :close="contextmenuClose")
-      .lr-ctx-item
-    table.lr-table.lr-fs-folder-table(@contextmenu='handleContextmenu')
+    table.lr-table.lr-fs-folder-table
       tr
         th 名称
         th 所有者
@@ -32,19 +30,14 @@
 
 <script>
 
-import contextmenuStore from '__ROOT__/store/contextmenu';
-
-import ContextmenuExtend from '__ROOT__/cmpt/global/contextmenu/extend.vue';
-
-import Status from './status.vue';
 import CtrlBar from './ctrl-bar.vue';
 import PreCreate from './pre-create.vue';
 import RowItem from './row-item.vue';
+import Status from './status.vue';
 
 import initRelation from './permission-util';
 import {getNameSuffix} from '../fs-util';
 export default {
-  extends: ContextmenuExtend,
   components:{
     CtrlBar,
     PreCreate,
@@ -115,7 +108,6 @@ export default {
     handleModalSubmit(){
 
     },
-
     getItemAddress(item){
       let address;
       if(item.isSymbolicLink){
@@ -198,8 +190,8 @@ export default {
         this.go(address);
       }else if(item.type === 'RegularFile'){
         this.$store.commit('task/add', {
-          type: 'edit',
-          name: item.name + '**' + this.address + '**',
+          appId: 'sys_app_editor',
+          title: item.name,
           width: 500,
           height:500,
           address
@@ -217,7 +209,6 @@ export default {
         download: true
       })
     },
-
     itemFocus(item){
       this.currItem.focus = false;
       item.focus = true;
@@ -230,82 +221,71 @@ export default {
         this.currItem.focus = false;
         this.tmp_onListener = false;
       }, {
-        once: true,
-        //capture: true
+        once: true
       })
     },
     handleFsBodyMousedown(){
       this.currItem.focus = false;
-    },
-
-    handleFsItemContextmenu(item, e){
-      const self = this;
-      this.itemFocus(item);
-      const data = [
-        {name: 'Create Symbolic Link',
-          handleClick(){
-            const name = item.name + '.lnk';
-            self.request({
-              type: 'post',
-              url: '~/fs' + self.getItemPath(item.name),
-              data: {
-                type: 'createSymbolicLink',
-                name: item.name + '.lnk'
-              },
-              success(){
-                self.newItemName = name;
-                self.getData();
-              }
-            })
-          }
-        },
-        {
-          name: 'Delete',
-          handleClick(){
-            self.request({
-              type: 'delete',
-              url: '~/fs' + self.getItemPath(item.name) + '?type=file',
-              success(){
-                this.$store.commit('onFsDel');
-                self.getData();
-              }
-            })
-          }
-        }
-      ];
-
-      if(item.type === 'RegularFile' || item.type === 'Directory'){
-
-        if(item.type === 'RegularFile' && item.readable){
-          data.unshift({
-            name: 'download',
-            handleClick(){
-              self.download(item);
-            }
-          })
-        }
-
-        data.unshift({
-          name: 'Open',
-          handleClick(){
-            self.openItem(item)
-            console.log('handleClick open');
-          }
-        })
-
-      }
-
-      contextmenuStore.commit('open', {
-        data,
-        top: e.clientY,
-        left: e.clientX
-      });
-    },
+    }
   },
   created(){
     this.getData();
   }
 }
+
+
+    // handleFsItemContextmenu(item, e){
+    //   const self = this;
+    //   this.itemFocus(item);
+    //   const data = [
+    //     {name: 'Create Symbolic Link',
+    //       handleClick(){
+    //         const name = item.name + '.lnk';
+    //         self.request({
+    //           type: 'post',
+    //           url: '~/fs' + self.getItemPath(item.name),
+    //           data: {
+    //             type: 'createSymbolicLink',
+    //             name: item.name + '.lnk'
+    //           },
+    //           success(){
+    //             self.newItemName = name;
+    //             self.getData();
+    //           }
+    //         })
+    //       }
+    //     },
+
+    //     }
+    //   ];
+
+    //   if(item.type === 'RegularFile' || item.type === 'Directory'){
+
+    //     if(item.type === 'RegularFile' && item.readable){
+    //       data.unshift({
+    //         name: 'download',
+    //         handleClick(){
+    //           self.download(item);
+    //         }
+    //       })
+    //     }
+
+    //     data.unshift({
+    //       name: 'Open',
+    //       handleClick(){
+    //         self.openItem(item)
+    //         console.log('handleClick open');
+    //       }
+    //     })
+
+    //   }
+
+    //   contextmenuStore.commit('open', {
+    //     data,
+    //     top: e.clientY,
+    //     left: e.clientX
+    //   });
+    // },
     // handleFsBodyContextmenu(e){
     //   const self = this;
     //   contextmenuStore.commit('open', {

@@ -80,9 +80,14 @@ const store = new window.Vuex.Store({
       })
     },
 
-    onFsDel(state){
+    onFsDel(state, bool){
       state.onFsDel = Date.now();
+      this.commit('app/changeRecycleBinIcon', bool)
     },
+    // onRecycle(state){
+
+    // },
+
     needRelogin(state){
       state.sessError = true;
     },

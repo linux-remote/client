@@ -49,9 +49,9 @@ export default {
   },
   methods: {
 
-    // handleMousedown(){
-    //   this.$store.commit('task/currentUnFocus');
-    // },
+    handleMousedown(){
+      this.$store.commit('task/currentUnFocus');
+    },
     logout,
     init(){
       const username = this.$route.params.username;

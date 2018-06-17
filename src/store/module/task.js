@@ -17,13 +17,23 @@ export default  {
   namespaced: true,
   state: _defState(),
   mutations: {
-    add(state, appId){
+    add(state, opts){
+      var appId;
+      if(typeof opts === 'string'){
+        appId = opts;
+        opts = {appId}
+      } else {
+         // opts 是一个对象.
+        appId = opts.appId;
+      }
       const APP = this.getters['app/getById'](appId);
+
       if(APP.IS_UNKNOWN_APP){
         return alert('Unknown App!');
       }
+
       const data = {
-        appId,
+        ...opts,
         APP,
         title: APP.title
       }

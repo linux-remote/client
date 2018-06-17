@@ -1,13 +1,15 @@
 <template lang="jade">
 #lr-desktop.lr-desk(@drop='handleDeskDrop',
-         @dragover.prevent='',
-         @contextmenu='handleContextmenu',
-         @dragend='handleIconDragEnd')
+                    @dragover.prevent='',
+                    @dragend='handleIconDragEnd')
   Icon(v-for="(v,i) in list",
       :key="v.id",
       :index="i",
       :item="v")
-  ContextMenu(v-if="contextmenuIsShow", :close="contextmenuClose")
+
+  TaskWindow(v-for='(item, index) in tasks', :key='item.id', :index='index')
+
+  ContextMenu(ref='ctx')
     .lr-ctx-item(@click="sortIcon")
       | 整理
     .lr-ctx-item(@click="reload")
@@ -25,22 +27,23 @@
               div(slot='menu')
                 .lr-ctx-item 444
                 .lr-ctx-item 444
-  TaskWindow(v-for='(item, index) in tasks', :key='item.id', :index='index')
 </template>
 <script>
 
 import Icon from './icon.vue';
 import TaskWindow from '__ROOT__/cmpt/task-window.vue';
 
-import ContextmenuExtend from '../global/contextmenu/extend.vue';
+import ContextMenu from '../global/contextmenu/index.vue';
 import Cascade from '../global/cascade.vue';
+
 const ICON_WIDTH = 80;
 const ICON_HEIGHT = 80;
 export default {
-  extends: ContextmenuExtend,
   components: {
     Icon,
     TaskWindow,
+
+    ContextMenu,
     Cascade
   },
   props: ['icons'],
@@ -81,13 +84,13 @@ export default {
         v.y = (i % maxRow) * ICON_HEIGHT;
       })
       this.save();
+      this.$refs.ctx.hidden();
     },
     reload(){
       this.getData();
-      this.contextmenuClose();
+      this.$refs.ctx.hidden();
     },
     handleIconDragEnd(e){
-      //console.log('handleIconDragEnd')
       if(!this.$data._isInDesk){
         return;
       }
@@ -146,7 +149,6 @@ export default {
       if(dragTransferData && dragTransferData.isFromStart){
         this.list.push({
           id: dragTransferData.id,
-          //title: dragTransferData.title,
           x: e.clientX,
           y: e.clientY
         })
@@ -167,9 +169,6 @@ export default {
       })
     }
   },
-  // created(){
-  //   this.getData();
-  // },
   mounted(){
     this.$store.commit('setDeskTopWH');
     this.$store.commit('task/add', 'sys_app_file');

@@ -11,7 +11,7 @@
 <script>
 
 export default {
-  props: ['address'],
+  props: ['task'],
   data(){
     return {
       isRequest: false,
@@ -29,7 +29,7 @@ export default {
     save(){
       if(this.isSaveDisabled) return;
       this.request({
-        url: '~/fs' + this.address,
+        url: '~/fs' + this.task.address,
         stateKey: 'isRequest',
         type: 'put',
         data: {text: this.data},
@@ -40,9 +40,9 @@ export default {
       })
     },
     getData(){
-      //return console.log('this.address', this.address)
+
       this.request({
-        url: '~/fs' + this.address,
+        url: '~/fs' + this.task.address,
         data: {file: true},
         success(data){
           this.oldData = data;

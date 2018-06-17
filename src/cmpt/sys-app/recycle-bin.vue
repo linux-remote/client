@@ -1,14 +1,15 @@
 <template lang="jade">
 .lr-window-body
   .lr-hourglass(v-show='isRequest')
-  h2(v-html='error' style='color:red' v-if='error')
-  h2(v-else-if='data.length === 0' style='color:gray') Empty
-  .lr-dustbin-wrap(v-else)
+
+  .lr-fs-folder-inner
     .lr-fs-ctrl-bar(style='justify-content: space-between;')
       button(@click='clearAll') Delete All
 
       .lr-fs-nav-item.lr-fs-nav-reload(@click='getData', style='background-color: #666')
-    .lr-fs-folder
+    h2(v-html='error' style='color:red' v-if='error')
+    h2(v-else-if='data.length === 0' style='color:gray') Empty
+    .lr-fs-folder(v-else)
       table.lr-info-table.lr-table(style='width:100%;')
         tr
           th name
@@ -34,6 +35,14 @@ export default {
       error: null
     }
   },
+  computed: {
+    onFsDel(){
+      return this.$store.state.onFsDel
+    },
+    isError(){
+      return !this.data && this.error
+    }
+  },
   watch: {
     onFsDel(){
       this.getData();
@@ -52,15 +61,7 @@ export default {
       this.$store.commit('app/changeRecycleBinIcon', isEmpty);
     }
   },
-  computed: {
 
-    onFsDel(){
-      return this.$store.state.onFsDel
-    },
-    isError(){
-      return !this.data && this.error
-    }
-  },
   methods: {
     recycle(item){
       this.request({
