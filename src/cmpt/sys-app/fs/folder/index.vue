@@ -23,8 +23,9 @@
         td
         td
         td
-      RowItem(v-for='item in list',
+      RowItem(v-for='(item,i) in list',
               :key='item.name',
+              :index='i',
               :item='item')
   Status
 </template>
@@ -32,7 +33,7 @@
 <script>
 
 import contextmenuStore from '__ROOT__/store/contextmenu';
-import flyTextAreaStore from '__ROOT__/store/fly-textarea';
+
 import ContextmenuExtend from '__ROOT__/cmpt/global/contextmenu/extend.vue';
 
 import Status from './status.vue';
@@ -216,34 +217,18 @@ export default {
         download: true
       })
     },
-    renameItem(item, newName){
-      // console.log('oldName', item.name, newName);
-      // return;
-      this.request({
-        url: '~/fs' + this.address,
-        type: 'post',
-        data: {type: 'rename', oldName: item.name, newName},
-        success(){
-          item.name = newName;
-          if(item.isFile){
-            item.suffix = getNameSuffix(item.name);
-          }
-          console.log('rename success');
-        }
-      })
-    },
-    focusItem(item){
-      this.itemFocus(item);
-    },
+
     itemFocus(item){
       this.currItem.focus = false;
       item.focus = true;
       this.currItem = item;
-      if(this.onListener === true) return;
-      this.onListener = true;
+      if(this.tmp_onListener === true){
+        return;
+      } 
+      this.tmp_onListener = true;
       window.APP.$elMain.addEventListener('mousedown', () => {
         this.currItem.focus = false;
-        this.onListener = false;
+        this.tmp_onListener = false;
       }, {
         once: true,
         //capture: true
@@ -251,19 +236,6 @@ export default {
     },
     handleFsBodyMousedown(){
       this.currItem.focus = false;
-    },
-    handleItemNameClick(item, e){
-      if(item !== this.currItem) return;
-      const self = this;
-      const data = {
-        target: e.target,
-        //value: item.name,
-        handleBlur : function(newName){
-          if(item.name === newName) return;
-          self.renameItem(item, newName);
-        }
-      }
-      flyTextAreaStore.commit('open', data);
     },
 
     handleFsItemContextmenu(item, e){

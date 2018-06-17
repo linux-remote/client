@@ -344,7 +344,13 @@ background-image: url('/public/img/tango-style/inode-chardevice.png');
 .lr-fs-create-layer{
   background-color: $bg;
 }
-
+.lr-fs-item-name{
+  width: 100%;
+}
+.lr_file_focus{
+  overflow:visible;
+  background-color: $bg;
+}
 //----------- permission end -----------
 /*
 .lr-file{
@@ -407,9 +413,7 @@ background-image: url('/public/img/tango-style/inode-chardevice.png');
   background-size: 100% 100%;
   background-image: url('/public/link.svg');
 }
-.lr_file_focus{
-  overflow:visible;
-}
+
 
 
 .lr-file-name{

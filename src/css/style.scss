@@ -103,6 +103,8 @@ button.disable{
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
+  width:20px; 
+  height: 20px;
 }
 @import './login.scss';
 @import './top-bar.scss';
@@ -227,6 +229,9 @@ tr.lrDustbinCovered{
   padding: 5px 10px; 
   border-bottom: 1px solid #999; 
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
   &:hover{
     background-color: green; 
     color:#fff;
@@ -234,6 +239,9 @@ tr.lrDustbinCovered{
 }
 .lr-ctx-item:last-child{
   border: 0;
+}
+.lr-ctx-item .lr-icon{
+  width:20px; height: 20px;
 }
 .lr-hourglass{
   position: absolute;top:0;left:0;right: 0;bottom: 0;margin: auto;
