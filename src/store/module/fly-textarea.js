@@ -1,7 +1,8 @@
 
 const $ = window.$;
 const noop = () => {}
-const store = new window.Vuex.Store({
+export default {
+  namespaced: true,
   state: {
     handleBlur: noop,
     top: 0,
@@ -19,7 +20,6 @@ const store = new window.Vuex.Store({
       const offset = $el.offset();
       const lineHeight = $el.css('lineHeight');
       const fontSize = $el.css('fontSize');
-      console.log('lineHeight', lineHeight);
       const data2 = {
         top: offset.top,
         left: offset.left,
@@ -39,6 +39,6 @@ const store = new window.Vuex.Store({
       state.handleBlur = noop;
     }
   }
-});
+}
 
-export default store;
+

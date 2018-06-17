@@ -1,0 +1,23 @@
+.lr-editor-body{
+  display: flex; 
+  flex-grow: 1; 
+  flex-direction: column;
+}
+.lr-editor-bar{
+  height: 30px; 
+  background-color: #eee; 
+  line-height: 30px;
+  padding: 0 10px;
+}
+.lr_editor_textarea{
+  height: 100%; 
+  width: 100%; 
+  display: block;
+  flex-grow: 1;
+  outline: none;
+  font-weight: normal;
+  font-size: 26px;
+
+  color: #000;
+  font-family: Consolas, "Courier New", monospace;
+}

@@ -2,10 +2,10 @@
 .lr-window-body
   .lr-hourglass(v-show='isRequest')
   h2(v-html='data[0]' style='color:red' v-if='error')
-  .lr-edit-body(v-else @keydown='handleKeyDown')
-    .lr-edit-bar
+  .lr-editor-body(v-else @keydown='handleKeyDown')
+    .lr-editor-bar
       button.btn.btn-sm.btn-default(style='padding: 2px' @click='save' , :disabled='isSaveDisabled') save
-    textarea.lr_edit_textarea(v-model='data')
+    textarea.lr_editor_textarea(v-model='data')
 </template>
 
 <script>
@@ -43,9 +43,7 @@ export default {
       })
     },
     getData(){
-      if(!this.task.address){
-        return;
-      }
+
       this.request({
         url: '~/fs' + this.task.address,
         data: {file: true},
@@ -72,6 +70,10 @@ export default {
     }
   },
   created(){
+    if(!this.task.address){
+      this.task.title = '新建'
+      return;
+    }
     this.getData();
   }
 }

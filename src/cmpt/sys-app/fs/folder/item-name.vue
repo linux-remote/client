@@ -4,8 +4,6 @@
 
 <script>
 import {getNameSuffix} from '../fs-util';
-import flyTextAreaStore from '__ROOT__/store/fly-textarea';
-
 export default {
   props: ['item', 'p'],
   methods: {
@@ -23,7 +21,7 @@ export default {
         }
       }
 
-      flyTextAreaStore.commit('open', data);
+      this.$store.commit('flyTextarea/open', data);
 
     },
     rename(newName){

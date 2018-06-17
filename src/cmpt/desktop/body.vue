@@ -7,8 +7,6 @@
       :index="i",
       :item="v")
 
-  TaskWindow(v-for='(item, index) in tasks', :key='item.id', :index='index')
-
   ContextMenu(ref='ctx')
     .lr-ctx-item(@click="sortIcon")
       | 整理
@@ -27,6 +25,8 @@
               div(slot='menu')
                 .lr-ctx-item 444
                 .lr-ctx-item 444
+                
+  TaskWindow(v-for='(item, index) in tasks', :key='item.id', :index='index')
 </template>
 <script>
 

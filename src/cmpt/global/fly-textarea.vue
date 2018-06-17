@@ -3,15 +3,14 @@ textarea.lr_fly_textarea(v-show='open' , :style='{top:top + "px", left: left  + 
 </template>
 
 <script>
-import store from '__ROOT__/store/fly-textarea';
+
 const $ = window.$;
 export default {
   data(){
-    return store.state
+    return this.$store.state.flyTextarea
   },
   watch:{
     open(val){
-      //console.log('new: %s, old: %s', val, oldVal)
       if(val){
         setTimeout(() => {
           $(this.$el).focus();
@@ -24,7 +23,8 @@ export default {
       $(this.$el).blur();
     },
     close(){
-      store.commit('close');
+      this.$store.commit('flyTextarea/close');
+
     },
     handleClick(){
       return false;

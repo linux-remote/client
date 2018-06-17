@@ -21,6 +21,7 @@ import upload from './module/upload';
 import error from './module/error';
 import task from './module/task';
 import widget from './module/widget';
+import flyTextarea from './module/fly-textarea';
 import app from './module/app';
 
 const store = new window.Vuex.Store({
@@ -30,6 +31,7 @@ const store = new window.Vuex.Store({
     error,
     task,
     widget,
+    flyTextarea,
     app
   },
   state: {

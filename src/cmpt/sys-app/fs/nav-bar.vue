@@ -6,7 +6,7 @@
   .lr-fs-address
     .lr-fs-address-inner(v-if="!isInputFocus")
       .lr-fs-crumb(v-for='(v, i) in addressArr',
-                  :key='v',
+                  :key='i',
                   @click='handleCrumbClick(i)',
                   v-if='v') {{v}}
     input(v-model='inputAddress', 
