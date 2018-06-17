@@ -27,7 +27,10 @@ export default {
       }
     },
     save(){
-      if(this.isSaveDisabled) return;
+      if(this.isSaveDisabled){
+        return;
+      }
+
       this.request({
         url: '~/fs' + this.task.address,
         stateKey: 'isRequest',
@@ -40,7 +43,9 @@ export default {
       })
     },
     getData(){
-
+      if(!this.task.address){
+        return;
+      }
       this.request({
         url: '~/fs' + this.task.address,
         data: {file: true},

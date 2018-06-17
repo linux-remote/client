@@ -47,8 +47,6 @@
       | 移除
     .lr-ctx-item(v-if='item.id === "sys_app_recycle_bin"', @click="clearRecycleBin")
       | 清空
-    .lr-ctx-item(@click="hidden")
-      | 隐藏
 </template>
 <script>
 
