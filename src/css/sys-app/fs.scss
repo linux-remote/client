@@ -344,17 +344,28 @@ background-image: url('/public/img/tango-style/inode-chardevice.png');
 .lr-fs-create-layer{
   background-color: $bg;
 }
-.lr_file_focus .lr-fs-item-name{
-  cursor: text;
-  // width: 100%;
-}
+
 .lr_fs_open_type_image{
   background-image: url('/public/img/tango-style/image-x-generic.png');
 }
+
 .lr_file_focus{
   overflow:visible;
-  background-color: $bg;
+  background-color: rgba($bg, .6);
+  &:hover{
+    background-color: rgba($bg, .6)!important;
+  }
 }
+.lr_file_former{
+  border-color: rgba($bg, 1)!important;
+  // border-top: 2px!important;
+  border-bottom-width: 1px!important;
+  padding-bottom: 0!important;
+
+}
+// .lr_file_focus .lr-fs-item-name{
+//   cursor: text;
+// }
 //----------- permission end -----------
 /*
 .lr-file{

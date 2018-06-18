@@ -1,13 +1,14 @@
 <template lang="jade">
 tr(@dblclick='open',
-    @click='$parent.itemFocus(item)',
-  :class='{lr_file_hidden: item.name[0] === ".", lr_file_focus: item.focus}')
+  @click='$parent.itemFocus(item)',
+  @mousedown.stop='',
+  :class='{lr_file_hidden: item.name[0] === ".", lr_file_focus: item.focus, lr_file_former: item.focus === 0}')
   td
     a(style='display:none', ref='a', download='true')
     ContextMenu
-      .lr-ctx-item(@click='winOpen')
-        .lr-icon
-        | 使用浏览器打开
+      // .lr-ctx-item(@click='winOpen')
+      //   .lr-icon
+      //   | 使用浏览器打开
       .lr-ctx-item(@click='del')
         .lr-icon(:style="{backgroundImage: 'url(' + recycleIcon + ')'}")
         | 移动到回收站
@@ -117,6 +118,7 @@ export default {
       address = typeof address === 'string' ? address : this.getRealAddress();
       window.open(this.request.wrapUrl('~/fs' + address, this.$route.params.username));
     },
+
     download(){
       const self = this;
       const url = this.getPath(this.item.name) + '?download=true';

@@ -180,11 +180,18 @@ table.leftHead >tr>td:first-child{
   td, th{
     padding: 0 10px;
   }
-  
+  tr{
+    border-style: solid;
+    border-color: transparent;
+    border-width: 1px;
+    border-bottom-width: 0px;
+    padding-bottom: 1px;
+  }
   tr:not(:first-child):hover, th:hover{
-    background-color: rgba($bg, .4); 
+    background-color: rgba($bg, .3); 
     cursor: default;
   }
+
 }
 tr.lrDustbinCovered{
   background-color: red; 

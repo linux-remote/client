@@ -180,20 +180,21 @@ export default {
       this.currItem.focus = false;
       item.focus = true;
       this.currItem = item;
-      if(this.tmp_onListener === true){
-        return;
-      } 
-      this.tmp_onListener = true;
-      window.APP.$elMain.addEventListener('mousedown', () => {
-        this.currItem.focus = false;
-        this.tmp_onListener = false;
-      }, {
-        once: true
-      })
+      // if(this.tmp_onListener === true){
+      //   return;
+      // } 
+      // this.tmp_onListener = true;
+      // window.APP.$elMain.addEventListener('mousedown', () => {
+      //   this.currItem.focus = false;
+      //   this.tmp_onListener = false;
+      // }, {
+      //   once: true
+      // })
     },
     
     handleFsBodyMousedown(){
-      this.currItem.focus = false;
+      this.currItem.focus = 0;
+
     }
   },
   created(){

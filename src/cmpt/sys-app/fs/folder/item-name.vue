@@ -10,32 +10,35 @@ export default {
   data(){
     return {
       _isClicked: false,
-      _isDblClick: false
+      _dblClick_count: 0,
     }
   },
   methods: {
     handleDblclick(){
-      this.$data._isDblClick = true;
+      this.$data._dblClick_count ++;
     },
     handleClick(e){
       const item = this.item;
-
-      if(item !== this.p.currItem){
+      if(!item.focus){
         return;
       }
-      console.log('item.focus', item.focus)
       if(this.$data._isClicked){
         return;
       }
       this.$data._isClicked = true;
 
-
+      const _dblClick_count = this.$data._dblClick_count;
       const self = this;
       setTimeout(() => {
               
-        if(self.$data._isDblClick){
+        if(self.$data._dblClick_count !== _dblClick_count | !item.focus){
+          this.$data._isClicked = false;
           return;
         }
+        if(!item.focus){
+          return;
+        }
+
         const data = {
           target: e.target,
           handleBlur : function(newName){
@@ -50,10 +53,6 @@ export default {
         self.$store.commit('flyTextarea/open', data);
         self.tmp_prevent = false;
       }, 500);
-
-
-      
-
     },
     rename(newName){
       const item = this.item;
