@@ -10,8 +10,7 @@
 export default {
   data(){
     return {
-      isRequest: false,
-      isEnter: false
+      isRequest: false
     }
   },
   computed: {
@@ -21,35 +20,34 @@ export default {
   },
   methods: {
     handleblur(){
-      if(this.isEnter){
-        console.log('blur is ENter');
+      if(!this.item.name){
+        this.$parent.preCreateItem = null;
         return;
       }
       this.submit();
     },
     handleEnter(){
-      this.isEnter = true;
-      this.submit();
+      this.$refs.input.blur();
     },
     submit(){
-      if(!this.item.name){
-        this.$parent.preCreateItem = null;
-      }else {
+
         var {name, type} = this.item;
         type = (type === 'Directory') ? 'Folder' : 'File';
         this.isRequest = true;
-        // this.request({
-        //   type: 'POST',
-        //   url: '~/fs' + this.$parent.address,
-        //   data: {
-        //     name,
-        //     type: 'create' + type
-        //   },
-        //   success(data){
-        //     console.log('success', data);
-        //   }
-        // })
-      }
+        this.request({
+          type: 'POST',
+          url: '~/fs' + this.$parent.address,
+          data: {
+            name,
+            type: 'create' + type
+          },
+          success(data){
+            this.$parent.preCreateItem = null;
+            this.$parent.getData();
+            console.log('success', data);
+          }
+        })
+
     }
   },
   mounted(){

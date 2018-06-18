@@ -344,8 +344,12 @@ background-image: url('/public/img/tango-style/inode-chardevice.png');
 .lr-fs-create-layer{
   background-color: $bg;
 }
-.lr-fs-item-name{
-  width: 100%;
+.lr_file_focus .lr-fs-item-name{
+  cursor: text;
+  // width: 100%;
+}
+.lr_fs_open_type_image{
+  background-image: url('/public/img/tango-style/image-x-generic.png');
 }
 .lr_file_focus{
   overflow:visible;

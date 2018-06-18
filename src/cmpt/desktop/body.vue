@@ -171,7 +171,7 @@ export default {
   },
   mounted(){
     this.$store.commit('setDeskTopWH');
-    this.$store.commit('task/add', 'sys_app_file');
+    this.$store.commit('task/add', {appId: 'sys_app_file', address: '/home/dw/upload'});
   }
 }
 

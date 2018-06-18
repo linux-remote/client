@@ -3,7 +3,7 @@
   CtrlBar
   .lr-fs-folder-inner(v-if='error')
     pre.lr-fs-error(v-html='list')
-  .lr-fs-folder-inner(v-else-if='list.length')
+  .lr-fs-folder-inner
     table.lr-table.lr-fs-folder-table
       tr
         th 名称
@@ -14,17 +14,14 @@
         th 大小
           span.lr_is_device_type(v-if='isHaveDevice') /设备类型
       tr(v-if='preCreateItem', class='lr-fs-create-layer')
-        td
+        td(colspan='7')
           PreCreate
-        td
-        td
-        td
-        td
-        td
+
       RowItem(v-for='(item,i) in list',
               :key='item.name',
               :index='i',
               :item='item')
+    .lr-empty(v-if='!list.length') Empty
   Status
 </template>
 
@@ -36,7 +33,7 @@ import RowItem from './row-item.vue';
 import Status from './status.vue';
 
 import initRelation from './permission-util';
-import {getNameSuffix} from '../fs-util';
+import {getNameSuffix, getOpenType, getOpenAppIcon} from './util';
 export default {
   components:{
     CtrlBar,
@@ -49,8 +46,7 @@ export default {
       type: String,
       required: true
     },
-    triggerContainSame: {
-    }
+    triggerContainSame: {}
   },
 
   data(){
@@ -60,6 +56,7 @@ export default {
       preCreateItem: null,
       currItem: {},
       dir: null,
+      isHaveDevice: false,
       newItemName: null
     }
   },
@@ -105,18 +102,6 @@ export default {
     }
   },
   methods: {
-    handleModalSubmit(){
-
-    },
-    getItemAddress(item){
-      let address;
-      if(item.isSymbolicLink){
-        address = item.linkPath;
-      }else{
-        address = this.address + '/' + item.name
-      }
-      return address;
-    },
     getData(){
       this.request({
         url: '~/fs' + this.address,
@@ -160,6 +145,13 @@ export default {
               }else{
                 fileArr.push(v);
                 v.suffix = getNameSuffix(v.name);
+                v.openType = getOpenType(v.suffix);
+                const openApp= getOpenAppIcon(v.openType);
+                if(openApp){
+                  v.openApp = openApp.app;
+                  v.openAppId = openApp.id;
+                }
+     
               }
             }
             if(v.device_type && !isHaveDevice){
@@ -184,31 +176,6 @@ export default {
         v.focus = false;
       }
     },
-    openItem(item){
-      const address = this.getItemAddress(item);
-      if(item.type === 'Directory'){
-        this.go(address);
-      }else if(item.type === 'RegularFile'){
-        this.$store.commit('task/add', {
-          appId: 'sys_app_editor',
-          title: item.name,
-          width: 500,
-          height:500,
-          address
-        });
-      }
-    },
-    getItemPath(name){
-      const a = this.address === '/' ? this.address : this.address + '/';
-      return a + name;
-    },
-    download(item){
-      const self = this;
-      this.request({
-        url: '~/fs' + self.getItemPath(item.name) + '?download=true',
-        download: true
-      })
-    },
     itemFocus(item){
       this.currItem.focus = false;
       item.focus = true;
@@ -224,6 +191,7 @@ export default {
         once: true
       })
     },
+    
     handleFsBodyMousedown(){
       this.currItem.focus = false;
     }

@@ -35,7 +35,7 @@ export default  {
     getById(state){
       return (id) => {
         let key = id.indexOf('sys_app') === 0 ? 'sysMap' : 'thirdPartyMap';
-        return state[key][id] ||state._unknownApp
+        return state[key][id] || state._unknownApp
       }
     }
   },

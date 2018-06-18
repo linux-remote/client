@@ -15,7 +15,7 @@ export default  {
         console.log('v', v);
         state.selectedFiles.push({
           address: state.address,
-          key: state.address + '/' + v.name,
+          fullPath: state.address + '/' + v.name,
           rawFile: v
         });
       })

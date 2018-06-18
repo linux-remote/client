@@ -16,7 +16,6 @@ if(API_ROOT.indexOf('http') === 0){
   });
 }
 
-
 const POOL = {};
 var poolIndex = 0;
 
@@ -43,6 +42,16 @@ const omitKeyMap = {
 const globalConfig = {
   repeatSubmitMode: undefined,
   rootUrl: API_ROOT
+}
+
+function getUserUrl(url, username){
+  if(url[0] === '~'){
+    url = '/user/' + username + url.substr(1);
+  }
+  return url;
+}
+export function wrapUrl(url, username){
+  return globalConfig.rootUrl + getUserUrl(url, username);
 }
 
 function request(opts){
@@ -72,17 +81,17 @@ function request(opts){
   const self = opts.context;
   opts.type = opts.type || 'get';
   if(opts.type === 'post' || opts.type === 'put'){
-    opts.contentType = opts.contentType || JSON_CONTENT_TYPE;
+    opts.contentType = opts.contentType === undefined ? JSON_CONTENT_TYPE : opts.contentType;
     if(opts.contentType === JSON_CONTENT_TYPE){
       opts.data = JSON.stringify(opts.data);
     }
   }
 
 
-  if(url[0] === '~'){
-    url = '/user/' + self.$route.params.username + url.substr(1);
-  }
-  opts.url =  rootUrl + url;
+  // if(url[0] === '~'){
+  //   url = '/user/' + self.$route.params.username + url.substr(1);
+  // }  
+  opts.url =  rootUrl + getUserUrl(url, self.$route.params.username);
   // if(isOmitEmptyData){
   //   if(TypeOf(opts.data) === 'Object'){
   //     opts.data = omitEmpty(opts.data);

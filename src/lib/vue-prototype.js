@@ -1,10 +1,13 @@
 const Vue = window.Vue;
-import request from './request';
+import request, {wrapUrl} from './request';
 
-Vue.prototype.request = function(opts){
+function vRequest(opts){
   opts.context = this;
   request(opts);
-};
+}
+vRequest.wrapUrl = wrapUrl;
+Vue.prototype.request = vRequest;
+
 
 Vue.prototype.noopStop = function(e){
   e.stopPropagation();

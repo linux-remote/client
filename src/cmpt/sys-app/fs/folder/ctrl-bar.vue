@@ -24,7 +24,7 @@ export default {
       }
     },
     handleUploadBtnClick(){
-      this.$store.commit('upload/start', this.address);
+      this.$store.commit('upload/start', this.$parent.address);
     },
   }
 }

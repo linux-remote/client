@@ -19,7 +19,7 @@
 </style>
 <template lang='jade'>
 .lr-upload-box(v-if="selectedFiles.length")
-  Item(v-for='item in selectedFiles', :key='item.key', :item='item') 
+  Item(v-for='item in selectedFiles', :key='item.fullPath', :item='item') 
 
 </template>
 
