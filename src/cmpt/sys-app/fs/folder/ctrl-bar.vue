@@ -20,8 +20,10 @@ export default {
       }
       this.$parent.preCreateItem = {
        name: '',
-       type
+       type,
+       size: 10
       }
+      this.$parent.itemFocus(this.$parent.preCreateItem)
     },
     handleUploadBtnClick(){
       this.$store.commit('upload/start', this.$parent.address);

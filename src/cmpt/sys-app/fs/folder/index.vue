@@ -106,7 +106,6 @@ export default {
       this.request({
         url: '~/fs/' + encodeURIComponent(this.address),
         stateKey: 'isRequest',
-        //poolKey: this.address,
         data: {dir: true},
         success(data){
           var arr = [];
@@ -134,6 +133,7 @@ export default {
       })
     },
     parseItem(v){
+      v.focus = false;
       v.size = Number(v.size);
       initRelation(v, this.username, this.groups);
 
@@ -230,19 +230,12 @@ export default {
       }
     },
     itemFocus(item){
-      this.currItem.focus = false;
       item.focus = true;
+      if(this.currItem === item){
+        return 
+      }
+      this.currItem.focus = false;
       this.currItem = item;
-      // if(this.tmp_onListener === true){
-      //   return;
-      // } 
-      // this.tmp_onListener = true;
-      // window.APP.$elMain.addEventListener('mousedown', () => {
-      //   this.currItem.focus = false;
-      //   this.tmp_onListener = false;
-      // }, {
-      //   once: true
-      // })
     },
     
     handleFsBodyMousedown(){

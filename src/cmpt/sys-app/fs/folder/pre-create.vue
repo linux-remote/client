@@ -46,6 +46,10 @@ export default {
             data.name = name;
             this.$parent.parseItem(data);
             this.$parent.reSortByItem(data, true);
+            this.$nextTick(() => {
+              this.$parent.itemFocus(data);
+            })
+            
           }
         })
 
