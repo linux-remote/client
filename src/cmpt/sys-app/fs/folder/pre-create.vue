@@ -32,11 +32,11 @@ export default {
     submit(){
 
         var {name, type} = this.item;
-        type = (type === 'Directory') ? 'Folder' : 'File';
+        type = (this.item.isFolder) ? 'Folder' : 'File';
         this.isRequest = true;
         this.request({
           type: 'POST',
-          url: '~/fs' + this.$parent.address,
+          url: '~/fs/' + encodeURIComponent(this.$parent.address),
           data: {
             name,
             type: 'create' + type

@@ -6,9 +6,6 @@ tr(@dblclick='open',
   td
     a(style='display:none', ref='a', download='true')
     ContextMenu
-      // .lr-ctx-item(@click='winOpen')
-      //   .lr-icon
-      //   | 使用浏览器打开
       .lr-ctx-item(@click='del')
         .lr-icon(:style="{backgroundImage: 'url(' + recycleIcon + ')'}")
         | 移动到回收站
@@ -84,7 +81,7 @@ export default {
     del(){
       this.request({
         type: 'delete',
-        url: '~/fs' + this.getPath(this.item.name),
+        url: '~/fs/' + encodeURIComponent(this.getPath(this.item.name)),
         success(){
           this.$store.commit('onFsDel');
           this.$parent.list.splice(this.index, 1);
@@ -116,12 +113,12 @@ export default {
 
     winOpen(address){
       address = typeof address === 'string' ? address : this.getRealAddress();
-      window.open(this.request.wrapUrl('~/fs' + address, this.$route.params.username));
+      window.open(this.request.wrapUrl('~/fs/' + encodeURIComponent(address), this.$route.params.username));
     },
 
     download(){
       const self = this;
-      const url = this.getPath(this.item.name) + '?download=true';
+      var url = this.getPath(this.item.name) + '?download=true';
       this.winOpen(url);
     }
   }

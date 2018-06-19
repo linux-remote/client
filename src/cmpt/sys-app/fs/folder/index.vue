@@ -2,7 +2,7 @@
 .lr-fs-folder(@mousedown='handleFsBodyMousedown', :class='bodyClass')
   CtrlBar
   .lr-fs-folder-inner(v-if='error')
-    pre.lr-fs-error(v-html='list')
+    pre.lr-fs-error(v-html='error')
   .lr-fs-folder-inner
     table.lr-table.lr-fs-folder-table
       tr
@@ -53,6 +53,8 @@ export default {
     return {
       theads: ['名称',  '所有者', '用户组' ,'权限', '修改日期',  '大小/设备类型'],
       list: [],
+      error: null,
+      listMap: {},
       preCreateItem: null,
       currItem: {},
       dir: null,
@@ -61,9 +63,7 @@ export default {
     }
   },
   computed: {
-    error(){
-      return !Array.isArray(this.list);
-    },
+
     username(){
       return this.$store.state.username
     },
@@ -104,17 +104,27 @@ export default {
   methods: {
     getData(){
       this.request({
-        url: '~/fs' + this.address,
+        url: '~/fs/' + encodeURIComponent(this.address),
         stateKey: 'isRequest',
         //poolKey: this.address,
         data: {dir: true},
         success(data){
-          const folderArr = [], fileArr = [], hiddenArr = [];
           var isHaveDevice = false;
+          var arr = []
           data.forEach( v => {
-            if(v.name === '..') return;
+            if(v.name === '..') {
+              return;
+            }
             
             v.size = Number(v.size);
+            initRelation(v, this.username, this.groups);
+            
+            if(v.name === '.'){
+              this.dir = v;
+              return;
+            }
+
+            arr.push(v);
 
             const _syl = v.symbolicLink;
             if(_syl){
@@ -127,44 +137,88 @@ export default {
                 v.group = _syl.group;
               }
             }
-            initRelation(v, this.username, this.groups);
-            
-            if(v.name === '.'){
-              this.dir = v;
-              return;
-            }
 
             this.focusNewItem(v);
+
             if(v.name[0] === '.'){
               v.isHidden = true;
-              hiddenArr.push(v);
             }else{
               v.isHidden = false;
-              if(v.type === 'Directory'){
-                folderArr.push(v)
-              }else{
-                fileArr.push(v);
-                v.suffix = getNameSuffix(v.name);
-                v.openType = getOpenType(v.suffix);
-                const openApp= getOpenAppIcon(v.openType);
-                if(openApp){
-                  v.openApp = openApp.app;
-                  v.openAppId = openApp.id;
-                }
-     
+            }
+
+            if(v.type === 'Directory'){
+              v.isFolder = true;
+            }else{
+              v.isFolder = false;
+            }
+
+            if(v.type === 'RegularFile'){
+              v.suffix = getNameSuffix(v.name);
+              v.openType = getOpenType(v.suffix);
+              const openApp= getOpenAppIcon(v.openType);
+              if(openApp){
+                v.openApp = openApp.app;
+                v.openAppId = openApp.id;
               }
             }
             if(v.device_type && !isHaveDevice){
               isHaveDevice = true;
             }
           });
+
           this.isHaveDevice = isHaveDevice;
-          this.list = folderArr.concat(fileArr).concat(hiddenArr);
+          
+          this.srot(arr);
         },
         error(xhr){
-          this.list = `${xhr.responseText}`
+          this.error = `${xhr.responseText}`
         }
       })
+    },
+    srot(arr){
+      const map = {
+        normal: {
+          folderArr: [],
+          fileArr: []
+        },
+        hidden: {
+          folderArr: [],
+          fileArr: []
+        }
+      }
+      arr.forEach(v => {
+        let key = 'normal'
+        if(v.isHidden){
+          key = 'hidden'
+        }
+        if(v.isFolder){
+          map[key].folderArr.push(v);
+        }else{
+          map[key].fileArr.push(v);
+        }
+      })
+      this.listMap = map;
+      this.concatList();
+    },
+    reSortByItem(v, isNew){
+      var key = v.isHidden ? 'hidden' : 'normal';
+      var key2 = v.isFolder ? 'folderArr' : 'fileArr';
+      var arr = this.listMap[key][key2];
+      if(isNew){
+        arr.push(v);
+      }
+      //console.log(arr);
+      arr.sort((a, b) => {
+        return a.name.toUpperCase() > b.name.toUpperCase()
+        });
+      this.concatList();
+    },
+    concatList(){
+      const map = this.listMap;
+      this.list = [].concat(map.normal.folderArr)
+      .concat(map.normal.fileArr)
+      .concat(map.hidden.folderArr)
+      .concat(map.hidden.fileArr);
     },
     focusNewItem(v){
       if(this.newItemName && v.name === this.newItemName){

@@ -57,15 +57,16 @@ export default {
     rename(newName){
       const item = this.item;
       this.request({
-        url: '~/fs' + this.p.address,
+        url: '~/fs/' + encodeURIComponent(this.p.address),
         type: 'post',
         data: {type: 'rename', oldName: item.name, newName},
         success(){
           item.name = newName;
-          if(item.isFile){
+          if(!item.isFolder){
             item.suffix = getNameSuffix(item.name);
           }
-          console.log('rename success');
+          this.p.reSortByItem(item);
+          //console.log('rename success');
         }
       })
     }

@@ -32,7 +32,7 @@ export default {
       }
 
       this.request({
-        url: '~/fs' + this.task.address,
+        url: '~/fs/' + encodeURIComponent(this.task.address),
         stateKey: 'isRequest',
         type: 'put',
         data: {text: this.data},
@@ -45,7 +45,8 @@ export default {
     getData(){
 
       this.request({
-        url: '~/fs' + this.task.address,
+        url: '~/fs/' + encodeURIComponent(this.task.address),
+        dataType: 'text',
         data: {file: true},
         success(data){
           this.oldData = data;
