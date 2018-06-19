@@ -32,7 +32,7 @@ export default {
     submit(){
 
         var {name, type} = this.item;
-        type = (this.item.isFolder) ? 'Folder' : 'File';
+        type = (this.item.type === 'Directory') ? 'Folder' : 'File';
         this.isRequest = true;
         this.request({
           type: 'POST',
@@ -43,8 +43,9 @@ export default {
           },
           success(data){
             this.$parent.preCreateItem = null;
-            this.$parent.getData();
-            console.log('success', data);
+            data.name = name;
+            this.$parent.parseItem(data);
+            this.$parent.reSortByItem(data, true);
           }
         })
 

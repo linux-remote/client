@@ -109,71 +109,70 @@ export default {
         //poolKey: this.address,
         data: {dir: true},
         success(data){
-          var isHaveDevice = false;
-          var arr = []
+          var arr = [];
           data.forEach( v => {
             if(v.name === '..') {
               return;
             }
-            
-            v.size = Number(v.size);
-            initRelation(v, this.username, this.groups);
-            
+
             if(v.name === '.'){
               this.dir = v;
+              v.size = Number(v.size);
+              initRelation(v, this.username, this.groups);
               return;
             }
 
             arr.push(v);
-
-            const _syl = v.symbolicLink;
-            if(_syl){
-              v.isSymbolicLink = true;
-              v.linkPath = _syl.linkPath;
-              v.linkTargetError = _syl.linkTargetError;
-              if(!v.linkTargetError){
-                v.permission = _syl.permission;
-                v.owner = _syl.owner;
-                v.group = _syl.group;
-              }
-            }
-
+            this.parseItem(v);
             this.focusNewItem(v);
-
-            if(v.name[0] === '.'){
-              v.isHidden = true;
-            }else{
-              v.isHidden = false;
-            }
-
-            if(v.type === 'Directory'){
-              v.isFolder = true;
-            }else{
-              v.isFolder = false;
-            }
-
-            if(v.type === 'RegularFile'){
-              v.suffix = getNameSuffix(v.name);
-              v.openType = getOpenType(v.suffix);
-              const openApp= getOpenAppIcon(v.openType);
-              if(openApp){
-                v.openApp = openApp.app;
-                v.openAppId = openApp.id;
-              }
-            }
-            if(v.device_type && !isHaveDevice){
-              isHaveDevice = true;
-            }
           });
-
-          this.isHaveDevice = isHaveDevice;
-          
           this.srot(arr);
         },
         error(xhr){
           this.error = `${xhr.responseText}`
         }
       })
+    },
+    parseItem(v){
+      v.size = Number(v.size);
+      initRelation(v, this.username, this.groups);
+
+      const _syl = v.symbolicLink;
+      if(_syl){
+        v.isSymbolicLink = true;
+        v.linkPath = _syl.linkPath;
+        v.linkTargetError = _syl.linkTargetError;
+        if(!v.linkTargetError){
+          v.permission = _syl.permission;
+          v.owner = _syl.owner;
+          v.group = _syl.group;
+        }
+      }
+
+      if(v.name[0] === '.'){
+        v.isHidden = true;
+      }else{
+        v.isHidden = false;
+      }
+
+      if(v.type === 'Directory'){
+        v.isFolder = true;
+      }else{
+        v.isFolder = false;
+      }
+
+      if(v.type === 'RegularFile'){
+        v.suffix = getNameSuffix(v.name);
+        v.openType = getOpenType(v.suffix);
+        const openApp= getOpenAppIcon(v.openType);
+        if(openApp){
+          v.openApp = openApp.app;
+          v.openAppId = openApp.id;
+        }
+      }
+      if(v.device_type && !this.isHaveDevice){
+        this.isHaveDevice = true;
+      }
     },
     srot(arr){
       const map = {
@@ -210,7 +209,7 @@ export default {
       //console.log(arr);
       arr.sort((a, b) => {
         return a.name.toUpperCase() > b.name.toUpperCase()
-        });
+      });
       this.concatList();
     },
     concatList(){
