@@ -40,3 +40,6 @@ export function getOpenAppIcon(openType){
     }
   }
 }
+export function encodePath(path){
+  return encodeURIComponent(path.substr(1));
+}

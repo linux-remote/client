@@ -1,12 +1,12 @@
 <template lang="jade">
 tr(@dblclick='open',
-  @click='$parent.itemFocus(item)',
+  @click='p.itemFocus(item)',
   @mousedown.stop='',
-  :class='{lr_file_hidden: item.name[0] === ".", lr_file_focus: item.focus, lr_file_former: item.focus === 0}')
+  :class='{lr_file_hidden: item.name[0] === ".", lr_file_focus: item.focus, lr_file_former: item.focus === 0, lr_file_be_selected: beSelected}')
   td
     a(style='display:none', ref='a', download='true')
     ContextMenu
-      .lr-ctx-item(@click='del')
+      .lr-ctx-item(@click='handleDel')
         .lr-icon(:style="{backgroundImage: 'url(' + recycleIcon + ')'}")
         | 移动到回收站
       .lr-ctx-item(@click='download', v-if='item.type === "RegularFile"')
@@ -15,7 +15,7 @@ tr(@dblclick='open',
     .lr-name-wrap
       .lr-icon(:class='["lr_file_type_" + item.type, {["lr_fs_open_type_" + item.openType]: item.type !== "Directory"}]', :style='iconStyle')
         .lr-icon.lr-error-icon(v-if='item.linkTargetError')
-      ItemName(:item='item', :p='$parent')
+      ItemName(:item='item', :p='p')
   td
     span(:class='{lr_per_is_on: item.is_owner}') {{item.owner}}
   td
@@ -36,15 +36,23 @@ tr(@dblclick='open',
 <script>
 import ContextMenu from '__ROOT__/cmpt/global/contextmenu/index.vue';
 import ItemName from './item-name.vue';
-
+import {encodePath} from './util';
 export default {
+  beSelectable : true,
   components: {
     ContextMenu,
     ItemName
   },
-
+  data(){
+    return {
+      beSelected: false
+    }
+  },
   props: {
     item: {
+      type: Object
+    },
+    p: {
       type: Object
     },
     index: {
@@ -64,7 +72,7 @@ export default {
   },
   methods: {
     getPath(name){
-      let address = this.$parent.address;
+      let address = this.p.address;
       const a = address === '/' ? address : address + '/';
       return a + name;
     },
@@ -73,18 +81,26 @@ export default {
       if(item.isSymbolicLink){
         address = item.linkPath;
       }else{
-        address = this.$parent.address + '/' + item.name
+        address = this.p.address + '/' + item.name
       }
       return address;
     },
-
+    handleDel(){
+      if(this.p.selectedArr.length){
+        this.p.selectedArr.forEach(item => {
+          item.del();
+        })
+      }else{
+        this.del();
+      }
+    },
     del(){
       this.request({
         type: 'delete',
-        url: '~/fs/' + encodeURIComponent(this.getPath(this.item.name)),
+        url: '~/fs/' + encodePath(this.getPath(this.item.name)),
         success(){
           this.$store.commit('onFsDel');
-          this.$parent.list.splice(this.index, 1);
+          this.p.list.splice(this.index, 1);
         }
       })
     },
@@ -93,7 +109,7 @@ export default {
       const address = this.getRealAddress();
 
       if(item.type === 'Directory'){
-        this.$parent.go(address);
+        this.p.go(address);
       }else if(item.type === 'RegularFile'){
         if(item.openType === 'image'){
           return this.winOpen(address);
@@ -104,22 +120,21 @@ export default {
             title: item.name,
             width: 500,
             height:500,
-            address
+            address: '~/fs/' + encodePath(address)
           });
         }
 
       }
     },
 
-    winOpen(address){
-      address = typeof address === 'string' ? address : this.getRealAddress();
-      window.open(this.request.wrapUrl('~/fs/' + encodeURIComponent(address), this.$route.params.username));
+    winOpen(address, queryStr = ''){
+      window.open(this.request.wrapUrl('~/fs/' + encodePath(address) + queryStr, this.$route.params.username));
     },
 
     download(){
       const self = this;
-      var url = this.getPath(this.item.name) + '?download=true';
-      this.winOpen(url);
+      var url = this.getPath(this.item.name);
+      this.winOpen(url, '?download=true');
     }
   }
 }

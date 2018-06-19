@@ -4,7 +4,7 @@
 
 <script>
 const DELAY = 500;
-import {getNameSuffix} from './util';
+import {getNameSuffix, encodePath} from './util';
 export default {
   props: ['item', 'p'],
   data(){
@@ -57,7 +57,7 @@ export default {
     rename(newName){
       const item = this.item;
       this.request({
-        url: '~/fs/' + encodeURIComponent(this.p.address),
+        url: '~/fs/' + encodePath(this.p.address),
         type: 'post',
         data: {type: 'rename', oldName: item.name, newName},
         success(){

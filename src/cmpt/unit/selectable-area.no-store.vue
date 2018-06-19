@@ -6,14 +6,14 @@ body{
   position: absolute;
   width:0;
   height: 0;
-  border: 1px dotted #000;
+  border: 1px solid #000;
   z-index: 999999999;
-  background-color: rgba(255, 0, 0, 0.5);
+  background-color: rgba(11, 170, 104, 0.5);
 }
 
 </style>
 <template lang='jade'>
-.lr-un-drag(@mousedown='mousedownListener')
+.lr-un-drag(@mousedown='mousedownListener', v-on='$listeners')
   .lr-select-warp(v-show='isSelect',
   :style='style')
     //-span X:{{offsetX}} Y: {{offsetY}} w:{{w}} h:{{h}}
@@ -22,7 +22,7 @@ body{
 
 <script>
 export default {
-  props: ['start'],
+  props: ['onSelected'],
   data(){
     return {
       isSelect : false,
@@ -75,9 +75,19 @@ export default {
       this.isSelect = false;
       this.w = 0;
       this.h = 0;
+      if(this.onSelected){
+        const arr = []
+        this.$children.forEach(item => {
+          if(item.$options.beSelectable && item.beSelected){
+            arr.push(item)
+          }
+        })
+        this.onSelected(arr);
+      }
+
     },
     mousedownListener(e){
-      e.stopPropagation();
+      //e.stopPropagation();
       const self = this;
       self.selectStart({
         offsetX : e.offsetX,
@@ -104,24 +114,26 @@ export default {
     },
     passX(item){
       //鼠标从左向右划
-      if(item.x > this.offsetX){
-        if(item.x < this.offsetX + this.w){
+      const el = item.$el;
+      if(el.offsetLeft > this.offsetX){
+        if(el.offsetLeft < this.offsetX + this.w){
           return true;
         }
       }else{ //鼠标从右向左划
-        if(item.x + item.w > this.offsetX){
+        if(el.offsetLeft + el.offsetWidth > this.offsetX){
           return true;
         }
       }
       return false;
     },
     passY(item){
-      if(item.y > this.offsetY){  //鼠标从上向下划
-        if(item.y < this.offsetY + this.h){
+      const el = item.$el;
+      if(el.offsetTop > this.offsetY){  //鼠标从上向下划
+        if(el.offsetTop < this.offsetY + this.h){
           return true;
         }
       }else{ //鼠标从下向上划
-        if(item.y + item.h > this.offsetY){
+        if(el.offsetTop + el.offsetHeight > this.offsetY){
           return true;
         }
       }
@@ -129,7 +141,7 @@ export default {
     },
     childSelect(){
       this.$children.forEach(item => {
-        if(item.beSelectable){
+        if(item.$options.beSelectable){
           if(this.passX(item) && this.passY(item)){
             item.beSelected = true;
           }else{

@@ -3,7 +3,7 @@
   CtrlBar
   .lr-fs-folder-inner(v-if='error')
     pre.lr-fs-error(v-html='error')
-  .lr-fs-folder-inner
+  Selectable.lr-fs-folder-inner(:onSelected='handleSelected')
     table.lr-table.lr-fs-folder-table
       tr
         th 名称
@@ -15,9 +15,10 @@
           span.lr_is_device_type(v-if='isHaveDevice') /设备类型
       tr(v-if='preCreateItem', class='lr-fs-create-layer')
         td(colspan='7')
-          PreCreate
+          PreCreate(:p='self')
 
       RowItem(v-for='(item,i) in list',
+              :p='self',
               :key='item.name',
               :index='i',
               :item='item')
@@ -31,15 +32,18 @@ import CtrlBar from './ctrl-bar.vue';
 import PreCreate from './pre-create.vue';
 import RowItem from './row-item.vue';
 import Status from './status.vue';
+import Selectable from '__ROOT__/cmpt/unit/selectable-area.no-store';
 
 import initRelation from './permission-util';
-import {getNameSuffix, getOpenType, getOpenAppIcon} from './util';
+import {getNameSuffix, getOpenType, getOpenAppIcon, encodePath} from './util';
 export default {
   components:{
     CtrlBar,
     PreCreate,
     Status,
-    RowItem
+    RowItem,
+
+    Selectable
   },
   props: {
     address: {
@@ -56,6 +60,7 @@ export default {
       error: null,
       listMap: {},
       preCreateItem: null,
+      selectedArr: [],
       currItem: {},
       dir: null,
       isHaveDevice: false,
@@ -63,7 +68,9 @@ export default {
     }
   },
   computed: {
-
+    self(){
+      return this;
+    },
     username(){
       return this.$store.state.username
     },
@@ -102,9 +109,13 @@ export default {
     }
   },
   methods: {
+    handleSelected(arr){
+      this.selectedArr = arr;
+    },
+
     getData(){
       this.request({
-        url: '~/fs/' + encodeURIComponent(this.address),
+        url: '~/fs/' + encodePath(this.address),
         stateKey: 'isRequest',
         data: {dir: true},
         success(data){
@@ -230,17 +241,23 @@ export default {
       }
     },
     itemFocus(item){
+      this.clearSelected();
       item.focus = true;
       if(this.currItem === item){
-        return 
+        return;
       }
       this.currItem.focus = false;
       this.currItem = item;
     },
-    
+    clearSelected(){
+      this.selectedArr.forEach(item => {
+        item.beSelected = false;
+      })
+      this.selectedArr = [];
+    },
     handleFsBodyMousedown(){
+      this.clearSelected();
       this.currItem.focus = 0;
-
     }
   },
   created(){

@@ -366,6 +366,13 @@ background-image: url('/public/img/tango-style/inode-chardevice.png');
 .lr-fs-item-name{
   min-width: 2em;
 }
+.lr_file_be_selected{
+  opacity: 1;
+  background-color: rgba($bg, .6);
+  &:hover{
+    background-color: rgba($bg, .6)!important;
+  }
+}
 // .lr_file_focus .lr-fs-item-name{
 //   cursor: text;
 // }

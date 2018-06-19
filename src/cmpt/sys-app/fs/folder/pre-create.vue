@@ -6,8 +6,9 @@
 </template>
 
 <script>
-
+import {encodePath} from './util'
 export default {
+  props: ['p'],
   data(){
     return {
       isRequest: false
@@ -15,13 +16,13 @@ export default {
   },
   computed: {
     item(){
-      return this.$parent.preCreateItem
+      return this.p.preCreateItem
     }
   },
   methods: {
     handleblur(){
       if(!this.item.name){
-        this.$parent.preCreateItem = null;
+        this.p.preCreateItem = null;
         return;
       }
       this.submit();
@@ -36,18 +37,18 @@ export default {
         this.isRequest = true;
         this.request({
           type: 'POST',
-          url: '~/fs/' + encodeURIComponent(this.$parent.address),
+          url: '~/fs/' + encodePath(this.p.address),
           data: {
             name,
             type: 'create' + type
           },
           success(data){
-            this.$parent.preCreateItem = null;
+            this.p.preCreateItem = null;
             data.name = name;
-            this.$parent.parseItem(data);
-            this.$parent.reSortByItem(data, true);
+            this.p.parseItem(data);
+            this.p.reSortByItem(data, true);
             this.$nextTick(() => {
-              this.$parent.itemFocus(data);
+              this.p.itemFocus(data);
             })
             
           }
@@ -56,6 +57,7 @@ export default {
     }
   },
   mounted(){
+    console.log(this.p)
     this.$refs.input.focus();
   }
 
