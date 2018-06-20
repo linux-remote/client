@@ -22,6 +22,8 @@
               :key='item.name',
               :index='i',
               :item='item')
+    h1(style='text-align: right;height: 1000px')
+      div(style='float:right;background: red;width: 2000px;') bottom
     .lr-empty(v-if='!list.length') Empty
   Status
 </template>

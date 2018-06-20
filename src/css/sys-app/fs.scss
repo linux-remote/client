@@ -365,6 +365,8 @@ background-image: url('/public/img/tango-style/inode-chardevice.png');
 }
 .lr-fs-item-name{
   min-width: 2em;
+  white-space: pre-wrap;
+  
 }
 .lr_file_be_selected{
   opacity: 1;

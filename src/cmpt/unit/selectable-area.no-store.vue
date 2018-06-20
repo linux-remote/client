@@ -68,10 +68,6 @@ export default {
       Object.assign(this, {
         layerX :x,
         layerY: y,
-
-        startLayerX: e.layerX,
-        startLayerY: e.layerY,
-        
         startScrollLayerX : x,
         startScrollLayerY : y,
 
@@ -86,6 +82,7 @@ export default {
       });
     },
     selecting (moveE, isLoop) {
+      
       if(!isLoop && this.$data._timerY){
         clearTimeout(this.$data._timerY);
         this.$data._timerY = null;
@@ -94,47 +91,77 @@ export default {
       var shouldLoop = false;
 
       const el = this.$el;
-      const {startScrollLayerY, startScrollLayerX, startClientX, startClientY, maxW, maxH, startScrollTop} = this;
-      
+      const {startScrollLayerY, 
+              startScrollLayerX, 
+              startClientX, 
+              startClientY, 
+              maxW, 
+              maxH} = this;
 
+      // **************************** W ******************************
 
-      var w = moveE.clientX - startClientX;
+      var scrollW = el.scrollLeft - this.startScrollLeft;
+      var w = moveE.clientX - startClientX + scrollW;
+      var x;
+
+      var sCLXw = startScrollLayerX  + w;
+      var sLcW = el.scrollLeft + el.clientWidth;
+
       if(w < 0){ // 鼠标向左划 .
-      
-        this.layerX =  startScrollLayerX + w;
-        if(this.layerX < 0){  // 左 border
-          this.layerX = 0;
+        x = sCLXw;
+
+        // 边界
+        if(x < 0){  // 左 border
+          x = 0;
           w = startScrollLayerX;
         }
-        if(this.layerX < el.scrollLeft){ // 左滚动条
-          el.scrollLeft = this.layerX;
+        w = Math.abs(w);
+
+        // ==================================================
+        if(x < el.scrollLeft){
+          el.scrollLeft = el.scrollLeft - (el.scrollLeft - this.layerX);
+          shouldLoop = true;
+        } else if(x > sLcW){
+          el.scrollLeft = el.scrollLeft + (x - sLcW);
+          shouldLoop = true;
         }
+        // ==================================================
+
       } else { // 鼠标向右划
-        this.layerX = startScrollLayerX;
-        let sxw = startScrollLayerX + w;
 
-        if(sxw > maxW){ // 右 border
+        x = startScrollLayerX;
+        // 边界
+        if(sCLXw > maxW){  //上 border
           w = maxW - startScrollLayerX;
-          sxw = startScrollLayerX + w;
         }
 
-        if(sxw > (el.scrollLeft + el.clientWidth)){  //右滚动条
-           el.scrollLeft = sxw - el.clientWidth
+        // ==================================================
+        if(sCLXw > sLcW){
+          if(maxW > sLcW){
+            el.scrollLeft = el.scrollLeft + (sCLXw - sLcW);
+            shouldLoop = true;
+          }
+        } else if(sCLXw < el.scrollLeft){
+            el.scrollLeft = el.scrollLeft - (el.scrollLeft - sCLXw);
+            shouldLoop = true;
         }
+        // ==================================================
       }
 
-      this.w = Math.abs(w);
-
+      this.layerX =  x;
+      this.w = w;
+      
       // **************************** H ******************************
 
-
         var scrollH = el.scrollTop - this.startScrollTop;
-        //var clientDistance = moveE.clientY - startClientY;
         var h = moveE.clientY - startClientY + scrollH;
-
         var y;
+
+        var sCLYh = startScrollLayerY  + h;
+        var sTcH = el.scrollTop + el.clientHeight;
+
         if(h < 0){
-          y = startScrollLayerY + h;
+          y = sCLYh;
 
           // 边界
           if(y < 0){  //上 border
@@ -143,29 +170,34 @@ export default {
           }
           h = Math.abs(h);
 
-
+          // ==================================================
           if(y < el.scrollTop){
             el.scrollTop = el.scrollTop - (el.scrollTop - this.layerY);
             shouldLoop = true;
+          } else if(y > sTcH){
+            el.scrollTop = el.scrollTop + (y - sTcH);
+            shouldLoop = true;
           }
-          
+          // ==================================================
+
         }else{
           y = startScrollLayerY;
-          
           // 边界
-          if(h + startScrollLayerY > maxH){  //上 border
+          if(sCLYh > maxH){  //上 border
             h = maxH - startScrollLayerY;
           }
-          
-          var sCLYh = this.startScrollLayerY  + h;
-          var sTcH = el.scrollTop + el.clientHeight;
+
+          // ==================================================
           if(sCLYh > sTcH){
-            //el.scrollTop = el.scrollTop - (el.scrollTop - this.layerY);
             if(maxH > sTcH){
               el.scrollTop = el.scrollTop + (sCLYh - sTcH);
               shouldLoop = true;
             }
+          } else if(sCLYh < el.scrollTop){
+              el.scrollTop = el.scrollTop - (el.scrollTop - sCLYh);
+              shouldLoop = true;
           }
+          // ==================================================
 
         }
 

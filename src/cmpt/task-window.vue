@@ -1,6 +1,7 @@
 <template lang="jade">
 .lr-task-window(v-show='!isMin',
                 @mousedown.stop='taskFocus',
+                @contextmenu.stop='',
                 :style='{width:width + "px", height: height  + "px", zIndex: zIndex, top:     positionTop + "px", left: positionLeft  + "px"}' ,
                 :class='{lr_task_max: isMax, lr_task_unique: unique, lr_task_focus: isFocus}')
   .lr-task-title(@dblclick='maxToggle')
