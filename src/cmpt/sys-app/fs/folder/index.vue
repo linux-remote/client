@@ -22,8 +22,6 @@
               :key='item.name',
               :index='i',
               :item='item')
-    h1(style='text-align: right;height: 1000px')
-      div(style='float:right;background: red;width: 2000px;') bottom
     .lr-empty(v-if='!list.length') Empty
   Status
 </template>
@@ -34,7 +32,7 @@ import CtrlBar from './ctrl-bar.vue';
 import PreCreate from './pre-create.vue';
 import RowItem from './row-item.vue';
 import Status from './status.vue';
-import Selectable from '__ROOT__/cmpt/unit/selectable-area.no-store';
+import Selectable from '__ROOT__/cmpt/unit/selectable.vue';
 
 import initRelation from './permission-util';
 import {getNameSuffix, getOpenType, getOpenAppIcon, encodePath} from './util';
