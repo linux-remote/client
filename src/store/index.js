@@ -61,7 +61,10 @@ const store = new window.Vuex.Store({
     //   title: 'lr_sys_unknown_app'
     // },
 
-    onFsDel: null,
+    recycleBinEvent: null,
+    fsEvent: {},
+
+
     onDustbinRecycle: null,
     sessError: false
   },
@@ -82,9 +85,13 @@ const store = new window.Vuex.Store({
       })
     },
 
-    onFsDel(state, bool){
-      state.onFsDel = Date.now();
+    recycleBinTrigger(state, bool){
+      state.recycleBinEvent = Date.now();
       this.commit('app/changeRecycleBinIcon', bool)
+    },
+    fsTrigger(state, data){
+      console.log('fsTrigger', data)
+      state.fsEvent = data
     },
     // onRecycle(state){
 

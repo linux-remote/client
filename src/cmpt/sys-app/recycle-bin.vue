@@ -16,13 +16,15 @@
           th sourceDir
           th deleteTime
           th
-        tr(v-for='item in data' , :class='{lrDustbinCovered: item.isCover}')
-          td {{item.name}}
+        tr(v-for='(item,i) in data' , :key='item.id', 
+        :class='{lrRecycleBinCovered: item.isCover, lrRecycleBinError: item.isError}')
+          td {{item.isError ? item.id : item.source.name}}
           td {{item.sourceDir}}
           td {{item.delTime}}
           td
-            span(v-if='item.isCover') Covered
-            button(@click='recycle(item)', v-else) Restore
+            div(v-if='!item.isError')
+              span(v-if='item.isCover') Covered
+              button(@click='recycle(item)', v-else) Restore
             button(@click='del(item)') Delete
 </template>
 
@@ -36,15 +38,15 @@ export default {
     }
   },
   computed: {
-    onFsDel(){
-      return this.$store.state.onFsDel
+    recycleBinEvent(){
+      return this.$store.state.recycleBinEvent
     },
     isError(){
       return !this.data && this.error
     }
   },
   watch: {
-    onFsDel(){
+    recycleBinEvent(){
       this.getData();
     },
     data(newVal, oldVal){
@@ -63,16 +65,31 @@ export default {
   },
 
   methods: {
-    recycle(item){
+    recycle(item, i){
       this.request({
         url: '~/recycleBin/recycle',
         data: item,
         type: 'post',
         success(){
-          //this.$store.commit('onDustbinRecycle')
-          this.getData();
+
+          this.removeItem(item);
+
+          let address = item.sourceDir
+          delete(item.delTime);
+          delete(item.isCover);
+          delete(item.sourceDir);
+          item.source.name = item.name;
+          this.$store.commit('fsTrigger', {
+            type: 'add',
+            address,
+            item: item.source
+          });
         }
       })
+    },
+    removeItem(item){
+      const i = this.data.findIndex(v => v === item);
+      this.data.splice(i, 1);
     },
     del(item){
       let name = item.delTime;
@@ -80,7 +97,7 @@ export default {
         url: '~/recycleBin/' + name,
         type: 'delete',
         success(){
-          this.getData();
+          this.removeItem(item);
         }
       })
     },
@@ -103,13 +120,25 @@ export default {
         url: '~/recycleBin',
         stateKey: 'isRequest',
         success(data){
-          this.data = data;
+          this.data = this.parseData(data);
           this.error = null;
         },
         error(xhr){
           this.error = xhr.responseText;
         }
       })
+    },
+    parseData(data){
+      data.forEach(v => {
+        v.isError = false;
+        if(v.name && v.source){
+          v.source.name = v.name;
+        } else {
+          v.isError = true;
+        }
+        delete(v.name);
+      })
+      return data;
     }
   },
 

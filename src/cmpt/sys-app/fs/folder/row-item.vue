@@ -1,8 +1,8 @@
 <template lang="jade">
 tr(@dblclick='open',
-  @click='p.itemFocus(item)',
+  @click='p.itemFocus($data)',
   @mousedown.stop='',
-  :class='{lr_file_hidden: item.name[0] === ".", lr_file_focus: item.focus, lr_file_former: item.focus === 0, lr_file_be_selected: beSelected}')
+  :class='{lr_file_hidden: item.name[0] === ".", lr_file_focus: focus, lr_file_former: focus === 0, lr_file_be_selected: beSelected}')
   td
     a(style='display:none', ref='a', download='true')
     ContextMenu
@@ -45,7 +45,8 @@ export default {
   },
   data(){
     return {
-      beSelected: false
+      beSelected: false,
+      focus: false
     }
   },
   props: {
@@ -95,12 +96,21 @@ export default {
       }
     },
     del(){
+      console.log('handleDel')
+          this.$store.commit('fsTrigger', {
+            type: 'del23',
+            index: this.index
+          });
+          return;
       this.request({
         type: 'delete',
         url: '~/fs/' + encodePath(this.getPath(this.item.name)),
         success(){
-          this.$store.commit('onFsDel');
-          this.p.list.splice(this.index, 1);
+          this.$store.commit('recycleBinTrigger');
+          this.$store.commit('fsTrigger', {
+            type: 'del',
+            index: this.index
+          });
         }
       })
     },

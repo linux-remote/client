@@ -23,7 +23,7 @@
               :index='i',
               :item='item')
     .lr-empty(v-if='!list.length') Empty
-  Status
+  //-Status
 </template>
 
 <script>
@@ -97,6 +97,9 @@ export default {
     },
     go(){
       return this.$parent.$refs.navBar.go
+    },
+    fsEvent(){
+      return this.$store.state.fsEvent
     }
   },
   watch: {
@@ -106,21 +109,19 @@ export default {
         this.currItem = {};
       }
       this.getData();
-    }
-  },
-  methods: {
-    handleSelected(arr){
-      this.selectedArr = arr;
     },
-
-    getData(){
-      this.request({
-        url: '~/fs/' + encodePath(this.address),
-        stateKey: 'isRequest',
-        data: {dir: true},
-        success(data){
+    fsEvent(e){
+      if(e.address === this.address){
+        switch (e.type){
+          case 'add':
+            if(e.item.focus === undefined){
+              this.parseItem(e.item)
+            }
+            this.reSortByItem(e.item, true)
+          break;
+          case 'getList':
           var arr = [];
-          data.forEach( v => {
+          e.list.forEach( v => {
             if(v.name === '..') {
               return;
             }
@@ -131,12 +132,64 @@ export default {
               initRelation(v, this.username, this.groups);
               return;
             }
-
             arr.push(v);
             this.parseItem(v);
-            this.focusNewItem(v);
+            //this.focusNewItem(v);
+            /*
+            {
+              accessable,
+              focus,
+              permission, // raw
+              owner, // raw
+              group, // raw
+              mtime, // raw
+              name, // raw
+              size, // raw
+              suffix,
+              type,
+              writeable,
+              isFolder,
+              isHidden,
+              isMask, // isACL
+              isSticky,
+              is_group,
+              is_other,
+              is_owner,
+              openType,
+              readable,
+              rwxs,
+            }
+            */
           });
           this.srot(arr);
+          break;
+          case 'del23':
+            console.log('del')
+            this.removeItem(e.index);
+          break;
+        }
+      }
+    }
+  },
+  methods: {
+    handleSelected(arr){
+      this.selectedArr = arr;
+    },
+    removeItem(i){
+      console.log('removeItem', i)
+      this.list.splice(i, 1);
+    },
+    getData(){
+      this.request({
+        url: '~/fs/' + encodePath(this.address),
+        stateKey: 'isRequest',
+        data: {dir: true},
+        success(data){
+          this.$store.commit('fsTrigger', {
+            type: 'getList',
+            address: this.address,
+            list: data
+          });
         },
         error(xhr){
           this.error = `${xhr.responseText}`
@@ -230,17 +283,18 @@ export default {
       .concat(map.hidden.folderArr)
       .concat(map.hidden.fileArr);
     },
-    focusNewItem(v){
-      if(this.newItemName && v.name === this.newItemName){
-        this.itemFocus(v);
-        this.newItemName = null;
-      }else if(v.name === this.currItem.name && this.currItem.focus){
-        this.itemFocus(v);
-      }else{
-        v.focus = false;
-      }
-    },
+    // focusNewItem(v){
+    //   if(this.newItemName && v.name === this.newItemName){
+    //     this.itemFocus(v);
+    //     this.newItemName = null;
+    //   }else if(v.name === this.currItem.name && this.currItem.focus){
+    //     this.itemFocus(v);
+    //   }else{
+    //     v.focus = false;
+    //   }
+    // },
     itemFocus(item){
+      console.log('itemFocus')
       this.clearSelected();
       item.focus = true;
       if(this.currItem === item){
@@ -249,12 +303,14 @@ export default {
       this.currItem.focus = false;
       this.currItem = item;
     },
+
     clearSelected(){
       this.selectedArr.forEach(item => {
         item.beSelected = false;
       })
       this.selectedArr = [];
     },
+
     handleFsBodyMousedown(){
       this.clearSelected();
       this.currItem.focus = 0;

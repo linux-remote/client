@@ -198,8 +198,12 @@ table.leftHead >tr>td:first-child{
   }
 
 }
-tr.lrDustbinCovered{
+tr.lrRecycleBinCovered{
   background-color: red; 
+  color:#fff;
+}
+.lrRecycleBinError{
+  background-color: black!important; 
   color:#fff;
 }
 

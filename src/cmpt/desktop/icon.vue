@@ -81,7 +81,7 @@ export default {
         url: '~/recycleBin',
         type: 'delete',
         success(){
-          this.$store.commit('onFsDel', true);
+          this.$store.commit('recycleBinTrigger', true);
           this.$refs.ctx.hidden();
         }
       })
