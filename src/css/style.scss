@@ -95,9 +95,14 @@ button.disable{
 .lr-page{
   display: flex;
 }
+.lr-main{
+  position: relative;
+  z-index: 1;
+}
 .lr-global{
   width: 0;
   height: 0;
+  z-index: 2;
 }
 .lr-icon{
   background-repeat: no-repeat;
@@ -318,12 +323,13 @@ tr.lrDustbinCovered{
   }
 }
 .lr-error-body{
-  max-height: 150px;
+  max-height: 50%;
   overflow: auto;
   background-color: rgba(255, 255, 255, .5);
   &::-webkit-scrollbar
   {
     width: 5px;  /* for vertical scrollbars */
+    height: 5px;
   }
 
   &::-webkit-scrollbar-track
@@ -360,7 +366,7 @@ tr.lrDustbinCovered{
 }
 
 .lr-modal-box{
-  width: 260px;
+  max-width: 100%;
   border: 1px outset #999;
   background-color: #fff;
 

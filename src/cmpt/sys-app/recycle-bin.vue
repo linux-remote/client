@@ -19,7 +19,7 @@
         tr(v-for='item in data' , :class='{lrDustbinCovered: item.isCover}')
           td {{item.name}}
           td {{item.sourceDir}}
-          td {{item.delTime | timeFormat}}
+          td {{item.delTime}}
           td
             span(v-if='item.isCover') Covered
             button(@click='recycle(item)', v-else) Restore

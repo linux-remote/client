@@ -7,7 +7,8 @@
       | 错误
     .lr-error-close(@click='close') ✖
   .lr-error-body(ref='body')
-    .lr-error-item(v-for='v in message' v-html='v')
+    .lr-error-item(v-for='v in message')
+      pre {{v}}
 
 </template>
 

@@ -1,11 +1,12 @@
 <template lang="jade">
 #lr-app.lr-h100
-  #lr-main.lr-h100
+  #lr-main.lr-h100.lr-main
     router-view
-  FlyTextarea
-  UploadInput
-  UploadBox
-  Error
+  .lr-global
+    FlyTextarea
+    UploadInput
+    UploadBox
+    Error
 </template>
 <script>
 import UploadInput from '__ROOT__/cmpt/global/upload/input.vue';
