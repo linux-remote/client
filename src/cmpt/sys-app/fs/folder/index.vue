@@ -163,8 +163,8 @@ export default {
           });
           this.srot(arr);
           break;
-          case 'del23':
-            console.log('del')
+          case 'del':
+            console.log('index del')
             this.removeItem(e.index);
           break;
         }

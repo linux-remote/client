@@ -96,18 +96,14 @@ export default {
       }
     },
     del(){
-      console.log('handleDel')
-          this.$store.commit('fsTrigger', {
-            type: 'del23',
-            index: this.index
-          });
-          return;
+
       this.request({
         type: 'delete',
         url: '~/fs/' + encodePath(this.getPath(this.item.name)),
         success(){
           this.$store.commit('recycleBinTrigger');
           this.$store.commit('fsTrigger', {
+            address: this.p.address,
             type: 'del',
             index: this.index
           });

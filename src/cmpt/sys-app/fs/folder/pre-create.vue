@@ -45,12 +45,11 @@ export default {
           success(data){
             this.p.preCreateItem = null;
             data.name = name;
-            this.p.parseItem(data);
-            this.p.reSortByItem(data, true);
-            this.$nextTick(() => {
-              this.p.itemFocus(data);
+            this.$store.commit('fsTrigger', {
+              address: this.p.address,
+              type: 'add',
+              item: data
             })
-            
           }
         })
 

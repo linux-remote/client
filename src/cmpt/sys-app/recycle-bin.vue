@@ -21,7 +21,7 @@
           td {{item.isError ? item.id : item.source.name}}
           td {{item.sourceDir}}
           td {{item.delTime}}
-          td
+          td(style='display:flex')
             div(v-if='!item.isError')
               span(v-if='item.isCover') Covered
               button(@click='recycle(item)', v-else) Restore
