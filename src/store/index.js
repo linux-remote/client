@@ -90,7 +90,6 @@ const store = new window.Vuex.Store({
       this.commit('app/changeRecycleBinIcon', bool)
     },
     fsTrigger(state, data){
-      console.log('fsTrigger', data)
       state.fsEvent = data
     },
     // onRecycle(state){

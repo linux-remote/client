@@ -10,7 +10,7 @@
 </template>
 
 <script>
-
+import {encodePath} from '__ROOT__/cmpt/sys-app/fs/folder/util';
 export default {
   props: {
     item: {
@@ -32,7 +32,7 @@ export default {
       formData.append('file', item.rawFile);
       this.request({
         type: 'put',
-        url: '~/upload' + item.address + '?type=uploadMultiple',
+        url: '~/upload/' + encodePath(item.address) + '?type=uploadMultiple',
         data: formData,
         contentType: false,
         processData: false,
@@ -43,7 +43,18 @@ export default {
           });
           return xhr;
         },
-        success(){
+        success(data){
+          const item = this.item;
+          console.log('item._isCover', item._isCover);
+
+          data.name = item.rawFile.name;
+          this.$store.commit('upload/removeItem', this.index);
+          this.$store.commit('fsTrigger', {
+            address: item.address,
+            type: item._isCover ? 'update' : 'add',
+            item: data
+          })
+          //console.log('data', data)
         }
       })
       

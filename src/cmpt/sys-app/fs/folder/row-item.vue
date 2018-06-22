@@ -1,6 +1,6 @@
 <template lang="jade">
 tr(@dblclick='open',
-  @click='p.itemFocus($data)',
+  @click='p.itemFocus($data, $event)',
   @mousedown.stop='',
   :class='{lr_file_hidden: item.name[0] === ".", lr_file_focus: focus, lr_file_former: focus === 0, lr_file_be_selected: beSelected}')
   td

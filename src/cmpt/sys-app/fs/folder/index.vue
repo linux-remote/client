@@ -1,9 +1,12 @@
 <template lang="jade">
-.lr-fs-folder(@mousedown='handleFsBodyMousedown', :class='bodyClass')
+.lr-fs-folder(@mousedown='handleFsBodyMousedown',
+              tabindex=-1,
+              @keydown.a='selectAll',
+              :class='bodyClass')
   CtrlBar
   .lr-fs-folder-inner(v-if='error')
     pre.lr-fs-error(v-html='error')
-  Selectable.lr-fs-folder-inner(:onSelected='handleSelected')
+  Selectable.lr-fs-folder-inner(:onSelected='handleSelected', ref='selectable')
     table.lr-table.lr-fs-folder-table
       tr
         th 名称
@@ -114,10 +117,19 @@ export default {
       if(e.address === this.address){
         switch (e.type){
           case 'add':
-            if(e.item.focus === undefined){
+            if(e.item.focus === undefined){ // 根据 focus 判断有没有 parse 过
               this.parseItem(e.item)
             }
             this.reSortByItem(e.item, true)
+          break;
+          case 'update':
+            if(e.item.focus === undefined){
+              this.parseItem(e.item)
+            }
+            const thisItem = this.list.find((v) => v.name === e.item.name);
+            if(thisItem){
+              Object.assign(thisItem, e.item)
+            }
           break;
           case 'getList':
           var arr = [];
@@ -175,8 +187,15 @@ export default {
     handleSelected(arr){
       this.selectedArr = arr;
     },
+    selectAll(e){
+      if(e.ctrlKey){
+        this.selectedArr = this.$refs.selectable.$children;
+        this.selectedArr.forEach(item => {
+          item.beSelected = true;
+        })
+      }
+    },
     removeItem(i){
-      console.log('removeItem', i)
       this.list.splice(i, 1);
     },
     getData(){
@@ -293,14 +312,40 @@ export default {
     //     v.focus = false;
     //   }
     // },
-    itemFocus(item){
-      console.log('itemFocus')
+    itemFocus(item, e){
       this.clearSelected();
       item.focus = true;
       if(this.currItem === item){
         return;
       }
       this.currItem.focus = false;
+      if(e){
+        if(e.ctrlKey){
+          this.currItem.beSelected = true;
+          this.selectedArr.push(item);
+          this.selectedArr.push(this.currItem);
+        }else if(e.shiftKey){
+          this.clearSelected();
+          let arr = this.$refs.selectable.$children;
+          let i1 = arr.findIndex(v => v.$data === item);
+          let i2 = arr.findIndex(v => v.$data === this.currItem);
+          let start, max;
+          if(i1 > i2){
+            start = i2;
+            max = i1; 
+          }else {
+            max = i2;
+            start = i1;
+          }
+          //console.log('start', start, 'max', max)
+          let arr2 = []
+          for(; start <= max; start++){
+            arr[start].beSelected = true;
+            arr2.push(arr[start]);
+          }
+          this.selectedArr = arr2;
+        }
+      }
       this.currItem = item;
     },
 

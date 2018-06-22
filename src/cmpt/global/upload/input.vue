@@ -29,7 +29,7 @@
           tr(v-for='(v,i) in coveredList', :key='i')
             td  {{v}}
             td
-              button(@click='skip(i)') 覆盖
+              button(@click='cover(v, i)') 覆盖
               button(@click='skip(v, i)') 跳过
       .lr-modal-footer
         button(@click='coverAll') 一律覆盖
@@ -54,24 +54,32 @@ export default {
   methods: {
     skipAll(){
       this.coveredList.forEach((name, i) => {
-        var index = this.tmp_selectedFile.findIndex((v) => {
-          v.name === name;
-        })
-        this.tmp_selectedFile.splice(index, 1);
+        this.removeItemByName(name);
       })
       this.coveredList = [];
       this.next();
     },
     coverAll(){
+      this.coveredList.forEach(name => {
+        this.setCoverByName(name);
+      })
       this.coveredList = [];
       this.next();
     },
-    cover(i){
+    cover(name, i){
+      this.setCoverByName(name);
       this.coveredList.splice(i, 1);
       this.next();
     },
+    setCoverByName(name){
+      this.tmp_selectedFile.find(v => v.rawFile.name === name)._isCover = true;
+    },
+    removeItemByName(name){
+      var index = this.tmp_selectedFile.findIndex((v) => v.rawFile.name === name)
+      this.tmp_selectedFile.splice(index, 1);
+    },
     skip(name ,i ){
-
+      this.removeItemByName(name);
       this.coveredList.splice(i, 1);
       this.next();
     },
@@ -92,7 +100,9 @@ export default {
       const selectedFile = [];
       const fileNameList = [];
       Object.keys(e.target.files).forEach(k => {
-        selectedFile.push(files[k]);
+        selectedFile.push({
+          rawFile: files[k]
+        });
         fileNameList.push(files[k].name);
       });
       
