@@ -7,7 +7,7 @@
   .lr-fs-folder-inner(v-if='error')
     pre.lr-fs-error(v-html='error')
   Selectable.lr-fs-folder-inner(:onSelected='handleSelected', ref='selectable')
-    table.lr-table.lr-fs-folder-table
+    table.lr-table.lr-fs-folder-table(:class='"lr_file_model_" + model')
       tr
         th 名称
         th 所有者
@@ -61,6 +61,7 @@ export default {
       theads: ['名称',  '所有者', '用户组' ,'权限', '修改日期',  '大小/设备类型'],
       list: [],
       error: null,
+      model: 'list',
       listMap: {},
       preCreateItem: null,
       selectedArr: [],

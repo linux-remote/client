@@ -4,6 +4,8 @@
   button.lr-upload-btn(@click='handleUploadBtnClick') 上传文件
   .lr-icon.lr-fs-new-folder(@click='addItem("Directory")')
   .lr-icon.lr-fs-new-file(@click='addItem("RegularFile")')
+  button(:class='{lr_file_model_on: $parent.model === "icon"}', @click='changeModel("icon")') 图标格式
+  button(:class='{lr_file_model_on: $parent.model === "list"}', @click='changeModel("list")') 列表格式
 </template>
 <script>
 export default {
@@ -14,6 +16,9 @@ export default {
     }
   },
   methods: {
+    changeModel(model){
+      this.$parent.model = model;
+    },
     addItem(type){
       if(this.$parent.preCreateItem){
         return;

@@ -2,9 +2,8 @@
 tr(@dblclick='open',
   @click='p.itemFocus($data, $event)',
   @mousedown.stop='',
-  :class='{lr_file_hidden: item.name[0] === ".", lr_file_focus: focus, lr_file_former: focus === 0, lr_file_be_selected: beSelected}')
+  :class='{lr_file_hidden: item.isHidden, lr_file_focus: focus, lr_file_former: focus === 0, lr_file_be_selected: beSelected}')
   td
-    a(style='display:none', ref='a', download='true')
     ContextMenu
       .lr-ctx-item(@click='handleDel')
         .lr-icon(:style="{backgroundImage: 'url(' + recycleIcon + ')'}")
@@ -27,7 +26,7 @@ tr(@dblclick='open',
                         :class='{lr_per_is: item["is_" + k]}')
           .lr-per-item(v-for='(v2, k2) in v', :class='{lr_per_item_on: v2 }') {{k2}}
         .lr-per-sticky(v-if='item.isSticky')
-      .lr-per-ACL(v-if='item.isMask') ACL
+      .lr-per-ACL ACL
   td {{item.mtime}}
   td(v-if='item.size') {{item.size | wellSize}}
   td(v-else) 

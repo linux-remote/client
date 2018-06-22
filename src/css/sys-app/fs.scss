@@ -368,6 +368,81 @@ background-image: url('/public/img/tango-style/inode-chardevice.png');
   white-space: pre-wrap;
   
 }
+.lr_file_model_on{
+  background-color: red;
+}
+.lr_file_model_icon{
+  display: flex!important;
+  flex-wrap: wrap;
+}
+.lr_file_model_icon tr:first-child{
+  display: none!important;
+}
+.lr_file_model_icon tr{
+  display: flex!important;
+  //padding: 20px 0;
+  margin: 20px;
+  border: 2px solid red;
+  flex-direction: column;
+  flex-shrink: 0;
+  height: 100px;
+  width: 100px;
+  position: relative;
+}
+.lr_file_model_icon td{
+  display: flex!important;
+  flex-grow: 1;
+  padding: 0!important;
+  .lr-name-wrap{
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    
+  }
+  .lr-icon{
+    height: 70px;
+    width: 100%;
+    margin: 0;
+   
+  }
+  .lr-fs-item-name{
+    font-weight: normal;
+  }
+}
+.lr_file_model_icon td:not(:first-child){
+  display: none!important;
+}
+.lr_file_model_icon td:nth-child(4){
+  display: flex!important;
+  .lr-per-relation-wrap{
+    position: static;
+  }
+  .lr-per-relation{
+    display: none;
+  }
+  .lr_per_is{
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 20;
+  }
+  .lr-per-ACL{
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 20;
+    font-size: 10px;
+    // width: 1em;
+    // text-align: center;
+    // word-break: break-all;
+    // line-height: 1;
+    // font-size: 12px;
+  }
+}
+
 .lr_file_be_selected{
   opacity: 1;
   background-color: rgba($bg, .6);
