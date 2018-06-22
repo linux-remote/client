@@ -26,7 +26,7 @@ tr(@dblclick='open',
                         :class='{lr_per_is: item["is_" + k]}')
           .lr-per-item(v-for='(v2, k2) in v', :class='{lr_per_item_on: v2 }') {{k2}}
         .lr-per-sticky(v-if='item.isSticky')
-      .lr-per-ACL ACL
+      .lr-per-ACL(v-if='item.isMask') ACL
   td {{item.mtime}}
   td(v-if='item.size') {{item.size | wellSize}}
   td(v-else) 
