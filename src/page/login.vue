@@ -58,9 +58,9 @@ export default {
         success(){
           this.routeTo(username);
         },
-        error(xhr){
-          this.error = `http #${xhr.status}: ${xhr.responseText}`;
-        }
+        // error(xhr){
+        //   this.error = `http #${xhr.status}: ${xhr.responseText}`;
+        // }
       })
     },
     routeTo(username){

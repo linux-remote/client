@@ -21,11 +21,11 @@ var poolIndex = 0;
 
 // 默认的http处理程序
 function httpErrorHandler(xhr){
-  store.commit('error/show', `http#${xhr.status}: ${xhr.responseText}`);
+  store.commit('error/show', `#${xhr.status}: ${xhr.responseText}`);
 }
 
 function codeErrorHandler(data){
-  store.commit('error/show', `code#${data.code}: ${data.msg}`);
+  store.commit('error/show', `*${data.code}: ${data.msg}`);
 }
 
 //过滤掉空的参数
@@ -157,7 +157,9 @@ function request(opts){
         // || xhr.responseText === 'LINUX_REMOTE_USER_SERVER_ERROR'
         console.log('转向登录页');
         request.abortAll();
-        return store.commit('needRelogin');
+        if(confirm(xhr.responseText + ' , 请重新登录')){
+          return store.commit('needRelogin');
+        }
       }
       
       error.call(self,  xhr);

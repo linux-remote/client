@@ -34,9 +34,9 @@ export default {
 
         var {name, type} = this.item;
         type = (this.item.type === 'Directory') ? 'Folder' : 'File';
-        this.isRequest = true;
         this.request({
           type: 'POST',
+          stateKey: 'isRequest',
           url: '~/fs/' + encodePath(this.p.address),
           data: {
             name,

@@ -11,6 +11,10 @@ tr(@dblclick='open',
       .lr-ctx-item(@click='download', v-if='item.type === "RegularFile"')
         .lr-icon
         | 下载
+      .lr-ctx-item(@click='createSymbolicLink', v-if='item.type !== "SymbolicLink"')
+        .lr-icon
+        | 创建软链接
+        
     .lr-name-wrap
       .lr-icon(:class='["lr_file_type_" + item.type, {["lr_fs_open_type_" + item.openType]: item.type !== "Directory"}]', :style='iconStyle')
         .lr-icon.lr-error-icon(v-if='item.linkTargetError')
@@ -85,6 +89,27 @@ export default {
       }
       return address;
     },
+    createSymbolicLink(){
+      const item = this.item;
+      const name = item.name + '.lnk';
+      const address = this.getRealAddress();
+      this.request({
+        type: 'post',
+        url: '~/fs/' + encodePath(address),
+        data: {
+          type: 'createSymbolicLink',
+          name: item.name + '.lnk'
+        },
+        success(data){
+          data.name = name;
+          this.$store.commit('fsTrigger', {
+            address: this.p.address,
+            type: 'add',
+            item: data
+          });
+        }
+      })
+    },
     handleDel(){
       if(this.p.selectedArr.length){
         this.p.selectedArr.forEach(item => {
@@ -137,7 +162,6 @@ export default {
     },
 
     download(){
-      const self = this;
       var url = this.getPath(this.item.name);
       this.winOpen(url, '?download=true');
     }

@@ -10,13 +10,13 @@
 
 <script>
 import NavBar from './nav-bar.vue';
-import Left from './left.vue';
+//import Left from './left.vue';
 import Disk from './disk.vue';
 import Folder from './folder/index.vue';
 
 export default {
   components:{
-    Left,
+    //Left,
     NavBar,
     Disk,
     Folder

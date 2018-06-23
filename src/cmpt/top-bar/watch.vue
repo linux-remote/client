@@ -2,12 +2,15 @@
 .lr-watch(v-if='clientDate')
   .lr-watch-left 
     span {{watch.year}}-{{watch.mounth}}-{{watch.day}} {{watch.hours}}:{{watch.minutes}} 
-  .lr-watch-timezone(:title='timeZone.offset.name + ", " +  timeZone.offset.hour') | {{timeZone.name}}
+  .lr-watch-timezone(:title='timeZone.offset.name + ", " +  timeZone.name') | {{formatedOffset}}
 </template>
 
 <script>
 import {ONE_MIN} from '__ROOT__/lib/util';
-
+function forMatTimeOffset(hours){
+  const i = hours.length - 2
+  return hours.substr(0, i) + ':' + hours.substr(i)
+}
 export default {
   data(){
     return {
@@ -44,10 +47,12 @@ export default {
         success(data){
           this.clientDate = new Date();
           this.now = this.clientDate.getTime();
+
           const offsetHour = Number(data.timeZone.offset.hour) / 100;
           this.time = data.time;
           this.timeZone = data.timeZone;
           this.timeZoneOffset = -(offsetHour * 60);
+          this.formatedOffset = forMatTimeOffset(data.timeZone.offset.hour)
           this.start();
         }
       })

@@ -6,7 +6,7 @@
   CtrlBar
   .lr-fs-folder-inner(v-if='error')
     pre.lr-fs-error(v-html='error')
-  Selectable.lr-fs-folder-inner(:onSelected='handleSelected', ref='selectable')
+  Selectable.lr-fs-folder-inner(:onSelected='handleSelected', v-else, ref='selectable')
     table.lr-table.lr-fs-folder-table(:class='"lr_file_model_" + model')
       tr
         th 名称
@@ -205,6 +205,7 @@ export default {
         stateKey: 'isRequest',
         data: {dir: true},
         success(data){
+          this.error = null;
           this.$store.commit('fsTrigger', {
             type: 'getList',
             address: this.address,
@@ -367,107 +368,4 @@ export default {
   }
 }
 
-
-    // handleFsItemContextmenu(item, e){
-    //   const self = this;
-    //   this.itemFocus(item);
-    //   const data = [
-    //     {name: 'Create Symbolic Link',
-    //       handleClick(){
-    //         const name = item.name + '.lnk';
-    //         self.request({
-    //           type: 'post',
-    //           url: '~/fs' + self.getItemPath(item.name),
-    //           data: {
-    //             type: 'createSymbolicLink',
-    //             name: item.name + '.lnk'
-    //           },
-    //           success(){
-    //             self.newItemName = name;
-    //             self.getData();
-    //           }
-    //         })
-    //       }
-    //     },
-
-    //     }
-    //   ];
-
-    //   if(item.type === 'RegularFile' || item.type === 'Directory'){
-
-    //     if(item.type === 'RegularFile' && item.readable){
-    //       data.unshift({
-    //         name: 'download',
-    //         handleClick(){
-    //           self.download(item);
-    //         }
-    //       })
-    //     }
-
-    //     data.unshift({
-    //       name: 'Open',
-    //       handleClick(){
-    //         self.openItem(item)
-    //         console.log('handleClick open');
-    //       }
-    //     })
-
-    //   }
-
-    //   contextmenuStore.commit('open', {
-    //     data,
-    //     top: e.clientY,
-    //     left: e.clientX
-    //   });
-    // },
-    // handleFsBodyContextmenu(e){
-    //   const self = this;
-    //   contextmenuStore.commit('open', {
-    //     data: [{
-    //       name: 'New File',
-    //       handleClick(){
-    //         const name = 'new-' + Date.now();
-    //         self.request({
-    //           type: 'POST',
-    //           url: '~/fs' + self.address,
-    //           data: {
-    //             name,
-    //             type: 'createFile'
-    //           },
-    //           success(){
-    //             self.newItemName = name;
-    //             self.getData();
-    //           }
-    //         })
-    //       }
-    //     },
-    //     {
-    //       name: 'New Folder',
-    //       handleClick(){
-    //         const name = 'new-' + Date.now()
-    //         self.request({
-    //           type: 'POST',
-    //           url: '~/fs' + self.address,
-    //           data: {
-    //             name,
-    //             type: 'createFolder'
-    //           },
-    //           success(){
-    //             self.newItemName = name;
-    //             self.getData();
-    //           }
-    //         })
-    //       }
-    //     },
-    //     {
-    //       name: 'Refresh',
-    //       handleClick(){
-    //         self.getData();
-    //       }
-    //     }],
-    //     top: e.clientY,
-    //     left: e.clientX
-
-    //   });
-    // },
 </script>
