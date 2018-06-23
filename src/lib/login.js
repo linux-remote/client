@@ -18,8 +18,7 @@ if(window.SERVER_CONFIG.API_ROOT === '/api'){
 export function createWs(username){ // webSocket 开始
   ws = new WebSocket(`${wsOrigin}?user=${username}`);
   ws.onmessage = function (event) {
-    const data = JSON.parse(event.data);
-    store.commit('set', data.data);
+    console.log('ws', event.data);
   };
 }
 
@@ -32,7 +31,7 @@ export function logout(){
     },
     success(){
 
-      ws.close(); // webSocket 退出
+      //ws.close(); // webSocket 退出
 
       let route = '/';
       const storeData = {
