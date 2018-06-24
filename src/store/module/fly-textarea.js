@@ -16,6 +16,7 @@ export default {
   },
   mutations: {
     open (state, data) {
+      console.log('flyTextarea/open')
       const $el = $(data.target);
       const offset = $el.offset();
       const lineHeight = $el.css('lineHeight');

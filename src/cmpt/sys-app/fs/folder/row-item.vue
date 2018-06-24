@@ -4,14 +4,17 @@ tr(@dblclick='open',
   @mousedown.stop='',
   :class='{lr_file_hidden: item.isHidden, lr_file_focus: focus, lr_file_former: focus === 0, lr_file_be_selected: beSelected}')
   td
-    ContextMenu
+    ContextMenu(ref='ctx')
       .lr-ctx-item(@click='handleDel')
         .lr-icon(:style="{backgroundImage: 'url(' + recycleIcon + ')'}")
         | 移动到回收站
+      //-.lr-ctx-item(@click='open', v-if='item.type === "RegularFile"')
+        .lr-icon
+        | 使用打开
       .lr-ctx-item(@click='download', v-if='item.type === "RegularFile"')
         .lr-icon
         | 下载
-      .lr-ctx-item(@click='createSymbolicLink', v-if='item.type !== "SymbolicLink"')
+      .lr-ctx-item(@click='createSymbolicLink')
         .lr-icon
         | 创建软链接
         
@@ -75,11 +78,6 @@ export default {
     }
   },
   methods: {
-    getPath(name){
-      let address = this.p.address;
-      const a = address === '/' ? address : address + '/';
-      return a + name;
-    },
     getRealAddress(){
       let address, item = this.item;
       if(item.isSymbolicLink){
@@ -90,25 +88,8 @@ export default {
       return address;
     },
     createSymbolicLink(){
-      const item = this.item;
-      const name = item.name + '.lnk';
-      const address = this.getRealAddress();
-      this.request({
-        type: 'post',
-        url: '~/fs/' + encodePath(address),
-        data: {
-          type: 'createSymbolicLink',
-          name: item.name + '.lnk'
-        },
-        success(data){
-          data.name = name;
-          this.$store.commit('fsTrigger', {
-            address: this.p.address,
-            type: 'add',
-            item: data
-          });
-        }
-      })
+      this.$refs.ctx.hidden();
+      this.p.createSysLinkName = this.item.name;
     },
     handleDel(){
       if(this.p.selectedArr.length){
@@ -123,7 +104,7 @@ export default {
 
       this.request({
         type: 'delete',
-        url: '~/fs/' + encodePath(this.getPath(this.item.name)),
+        url: '~/fs/' + encodePath(this.p.getItemPath(this.item.name)),
         success(){
           this.$store.commit('recycleBinTrigger');
           this.$store.commit('fsTrigger', {
@@ -167,7 +148,7 @@ export default {
     },
 
     download(){
-      var url = this.getPath(this.item.name);
+      var url = this.p.getItemPath(this.item.name);
       this.winOpen(url, '?download=true');
     }
   }

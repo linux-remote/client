@@ -1,6 +1,7 @@
 <template lang="jade">
 #lr-desktop.lr-desk(@drop='handleDeskDrop',
                     @dragover.prevent='',
+                    @mousedown='handleMousedown',
                     @dragend='handleIconDragEnd')
   Icon(v-for="(v,i) in list",
       :key="v.id",
@@ -60,6 +61,9 @@ export default {
     }
   },
   methods: {
+    handleMousedown(){
+      this.$store.commit('task/currentUnFocus');
+    },
     sortIcon(){
       let deskH = this.$el.offsetHeight;
       let maxRow = Math.floor(deskH / ICON_HEIGHT);

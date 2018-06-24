@@ -5,7 +5,7 @@
     .lr-upload-name {{item.rawFile.name}}
     div {{item.rawFile.size | wellSize}}
     .lr-upload-ctrl
-      button X
+      button(@click='close') X
   .lr-upload-process(:style='{width: percentage + "%"}')
 </template>
 
@@ -16,6 +16,9 @@ export default {
     item: {
       type: Object,
       required: true,
+    },
+    index: {
+      type: Number
     }
   },
   data(){
@@ -30,10 +33,11 @@ export default {
       var item = self.item;
       var formData = new FormData();
       formData.append('file', item.rawFile);
-      this.request({
+      this.$options.xhr = this.request({
         type: 'put',
-        url: '~/upload/' + encodePath(item.address) + '?type=uploadMultiple',
+        url: '~/upload/' + encodePath(item.address),
         data: formData,
+        stateKey: 'isRequest',
         contentType: false,
         processData: false,
         xhr(){
@@ -57,7 +61,14 @@ export default {
           //console.log('data', data)
         }
       })
-      
+    },
+    close(){
+      this.$parent.selectedFiles.splice(this.index, 1);
+    }
+  },
+  beforeDestroy(){
+    if(this.isRequest){
+      this.$options.xhr.abort();
     }
   },
   mounted(){

@@ -33,11 +33,6 @@ export default {
     selectedFiles(){
       return this.$store.state.upload.selectedFiles
     }
-  },
-  methods: {
-    removeItem(){
-
-    }
   }
 }
 </script>

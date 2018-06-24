@@ -19,23 +19,25 @@ export default {
     },
     handleClick(e){
       const item = this.item;
-      if(!item.focus){
+      const pData = this.$parent;
+      if(!pData.focus){
         return;
       }
+      console.log('handleClick')
       if(this.$data._isClicked){
         return;
       }
       this.$data._isClicked = true;
-
+      
       const _dblClick_count = this.$data._dblClick_count;
       const self = this;
       setTimeout(() => {
               
-        if(self.$data._dblClick_count !== _dblClick_count | !item.focus){
+        if(self.$data._dblClick_count !== _dblClick_count | !pData.focus){
           this.$data._isClicked = false;
           return;
         }
-        if(!item.focus){
+        if(!pData.focus){
           return;
         }
 

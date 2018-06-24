@@ -1,5 +1,5 @@
 <template lang="jade">
-.lr-fs-folder(@mousedown='handleFsBodyMousedown',
+.lr-fs-folder(@mousedown.stop='handleFsBodyMousedown',
               tabindex=-1,
               @keydown.a='selectAll',
               :class='bodyClass')
@@ -27,6 +27,7 @@
               :item='item')
     .lr-empty(v-if='!list.length') Empty
   //-Status
+  CreateSysLink(v-if='createSysLinkName')
 </template>
 
 <script>
@@ -36,7 +37,7 @@ import PreCreate from './pre-create.vue';
 import RowItem from './row-item.vue';
 import Status from './status.vue';
 import Selectable from '__ROOT__/cmpt/unit/selectable.vue';
-
+import CreateSysLink from './create-sys-link.vue';
 import initRelation from './permission-util';
 import {getNameSuffix, getOpenType, getOpenAppIcon, encodePath} from './util';
 export default {
@@ -45,7 +46,7 @@ export default {
     PreCreate,
     Status,
     RowItem,
-
+    CreateSysLink,
     Selectable
   },
   props: {
@@ -68,7 +69,9 @@ export default {
       currItem: {},
       dir: null,
       isHaveDevice: false,
-      newItemName: null
+      newItemName: null,
+
+      createSysLinkName: null //创建软链名字
     }
   },
   computed: {
@@ -188,6 +191,11 @@ export default {
     handleSelected(arr){
       this.selectedArr = arr;
     },
+    getItemPath(name){
+      let address = this.address;
+      const a = address === '/' ? address : address + '/';
+      return a + name;
+    },
     selectAll(e){
       if(e.ctrlKey){
         this.selectedArr = this.$refs.selectable.$children;
@@ -218,7 +226,6 @@ export default {
       })
     },
     parseItem(v){
-      v.focus = false;
       v.size = Number(v.size);
       initRelation(v, this.username, this.groups);
 
@@ -315,6 +322,7 @@ export default {
     //   }
     // },
     itemFocus(item, e){
+      console.log('itemFocus', item.focus)
       this.clearSelected();
       item.focus = true;
       if(this.currItem === item){

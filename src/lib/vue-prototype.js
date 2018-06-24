@@ -3,7 +3,7 @@ import request, {wrapUrl} from './request';
 
 function vRequest(opts){
   opts.context = this;
-  request(opts);
+  return request(opts);
 }
 vRequest.wrapUrl = wrapUrl;
 Vue.prototype.request = vRequest;

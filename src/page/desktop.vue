@@ -1,5 +1,5 @@
 <template lang="jade">
-.lr-page.lr-desk-wrap(v-if='deskInited', @mousedown='handleMousedown')
+.lr-page.lr-desk-wrap(v-if='deskInited')
   TopBar
   DeskTop(:icons='icons')
   TasksBar
@@ -49,9 +49,7 @@ export default {
   },
   methods: {
 
-    handleMousedown(){
-      this.$store.commit('task/currentUnFocus');
-    },
+
     logout,
     init(){
       const username = this.$route.params.username;

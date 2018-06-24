@@ -1,20 +1,22 @@
 
 <template lang="jade">
-.lr-task-bar
-  Start
-  QuickBar
-  BarBody
+.lr-task-bar-body
+  ContextMenu(ref='ctx')
+    .lr-ctx-item(@click='minAll') 显示桌面
+    .lr-ctx-item(@click='closeAll') 全部关闭
+  Item(v-for='(item, index) in tasks', 
+      :key='item.id',
+      :index='index',
+      :item='item')
 </template>
 
 <script>
-import Start from '../start/index.vue';
-import QuickBar from '../quick-bar/index.vue';
-import BarBody from './bar-body.vue';
+import ContextMenu from '__ROOT__/cmpt/global/contextmenu/index.vue';
+import Item from './bar-item.vue';
 export default {
   components: {
-    Start,
-    QuickBar,
-    BarBody
+    ContextMenu,
+    Item
   },
 
   computed:{
