@@ -22,23 +22,22 @@
   DiskBody(v-else-if='appId==="sys_app_disk"')
   ComputerInfo(v-else-if='appId==="sys_app_computer"')
   Editor(v-else-if='appId==="sys_app_editor"', :task='this.$data')
-  ThirdPartyApp(v-else, :task='this.$data')
+  //-ThirdPartyApp(v-else, :task='this.$data')
 
 
   Resizable
 </template>
 
 <script>
-import FsBody from './sys-app/fs/index.vue';
-import RecycleBinBody from './sys-app/recycle-bin.vue';
-import DiskBody from './sys-app/fs/disk.vue';
-import ComputerInfo from './sys-app/computer-info.vue';
-import Editor from './sys-app/editor.vue';
+import FsBody from '../sys-app/fs/index.vue';
+import RecycleBinBody from '../sys-app/recycle-bin.vue';
+import DiskBody from '../sys-app/fs/disk.vue';
+import ComputerInfo from '../sys-app/computer-info.vue';
+import Editor from '../sys-app/editor.vue';
+//import ThirdPartyApp from '../third-party-app/index.vue';
+import Resizable from '../unit/resizable.vue';
+import Movable from '../unit/movable.vue';
 
-import ThirdPartyApp from './third-party-app/index.vue';
-
-import Resizable from './unit/resizable.vue';
-import Movable from './unit/movable.vue';
 export default {
   props: ['index'],
   components: {
@@ -48,7 +47,7 @@ export default {
     ComputerInfo,
     Editor,
 
-    ThirdPartyApp,
+    //ThirdPartyApp,
 
     Resizable,
     Movable

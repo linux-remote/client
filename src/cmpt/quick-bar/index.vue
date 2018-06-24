@@ -11,8 +11,9 @@
 .lr-quick-bar(@dragenter='handleDragenter',
               @dragover='handleDragover',
               @drop='handleDrop')
-  Item(v-for="v in list",
+  Item(v-for="(v,i) in list",
       :item="v",
+      :index='i',
       :key="v.id")
 
 </template>
@@ -42,7 +43,6 @@ export default {
         return v.id === id;
       })
       this.$data._isCanDrop = isHave === undefined;
-      
     },
     handleDragover(e){
       if(this.$data._isCanDrop){

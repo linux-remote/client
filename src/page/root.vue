@@ -7,19 +7,21 @@
     UploadInput
     UploadBox
     Error
+    OpenWith
 </template>
 <script>
 import UploadInput from '__ROOT__/cmpt/global/upload/input.vue';
 import UploadBox from '__ROOT__/cmpt/global/upload/box.vue';
 import FlyTextarea from '__ROOT__/cmpt/global/fly-textarea';
 import Error from '__ROOT__/cmpt/global/error.vue';
-
+import OpenWith from '__ROOT__/cmpt/global/open-with.vue';
 export default {
   components:{
     UploadInput,
     UploadBox,
     Error,
-    FlyTextarea
+    FlyTextarea,
+    OpenWith
   },
   data(){
     return {

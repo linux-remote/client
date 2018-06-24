@@ -2,6 +2,12 @@
   justify-content:center;
   flex-direction: column;
   align-items: center;
+  fieldset{
+    border-color: $borderColor;
+    border-width: 2px;
+    border-style: groove;
+    background-color: rgba(255,255,255, .5);
+  }
 }
 
 .lr-login-h1{

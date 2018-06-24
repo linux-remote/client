@@ -2,15 +2,13 @@
 .lr-start
   .lr-start-btn(@click='handleBtnClick', :class='{lr_start_focus: isShowMenu}')
   .lr-start-menu(v-show="isShowMenu")
-    .lr-start-menu-item 系统信息
-    .lr-start-menu-item 用户信息
     .lr-start-menu-item 系统程序
     AppItem.lr-start-menu-item(v-for='(v, k) in sysAppMap',
                               :item="v",
                               :id='k',
                               :key="k")
-    .lr-start-menu-item 第三方程序
-    AppItem.lr-start-menu-item(v-for='(v, k) in thirdPartyAppMap',
+    //-.lr-start-menu-item 第三方程序
+    //-AppItem.lr-start-menu-item(v-for='(v, k) in thirdPartyAppMap',
                               :item="v",
                               :id='k',
                               :key="k")
@@ -33,9 +31,9 @@ export default {
     sysAppMap(){
       return this.$store.state.app.sysMap;
     },
-    thirdPartyAppMap(){
-      return this.$store.state.app.thirdPartyMap;
-    }
+    // thirdPartyAppMap(){
+    //   return this.$store.state.app.thirdPartyMap;
+    // }
   }, 
   methods: {
     handleBtnClick(){

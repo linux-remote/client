@@ -152,6 +152,11 @@ export default {
             height:500,
             address: '~/fs/' + encodePath(address)
           });
+        }else{
+          this.$store.commit('openWith', {
+            item,
+            address: '~/fs/' + encodePath(address)
+          });
         }
 
       }

@@ -66,7 +66,8 @@ const store = new window.Vuex.Store({
 
 
     onDustbinRecycle: null,
-    sessError: false
+    sessError: false,
+    openWidthData: null
   },
   mutations: {
     setDeskTopWH(state){
@@ -105,6 +106,13 @@ const store = new window.Vuex.Store({
     clearDesktop(state){
       state.quickBarItems = [];
       store.commit('task/closeAll');
+    },
+    openWith(state, data){
+      console.log('openWith')
+      state.openWidthData = data;
+    },
+    hiddenOpenWith(state){
+      state.openWidthData = null;
     }
   }
 });

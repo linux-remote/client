@@ -145,9 +145,9 @@ export default {
     }
   },
   computed: {
-    go(){
-      return this.$parent.$refs.navBar.go
-    },
+    // go(){
+    //   return this.$parent.$refs.navBar.go
+    // },
     triggerContainSame(){
       return this.$parent.triggerContainSame
     }
@@ -158,6 +158,12 @@ export default {
     }
   },
   methods: {
+    go(address){
+      this.$store.commit('task/add', {
+        appId: 'sys_app_file',
+        address: address
+      })
+    },
     getData(){
       this.request({
         url: '~/disk',

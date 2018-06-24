@@ -12,29 +12,17 @@
       | 整理
     .lr-ctx-item(@click="reload")
       | 刷新
-    Cascade.lr-ctx-item
-      | 设置桌面壁纸
-      .lr-test-parent(slot='menu')
-        .lr-ctx-item 选择
-        .lr-ctx-item 上传
-        Cascade 333
-          div(slot='menu')
-            .lr-ctx-item 333
-            .lr-ctx-item 333
-            Cascade 444
-              div(slot='menu')
-                .lr-ctx-item 444
-                .lr-ctx-item 444
+
                 
   TaskWindow(v-for='(item, index) in tasks', :key='item.id', :index='index')
 </template>
 <script>
 
 import Icon from './icon.vue';
-import TaskWindow from '__ROOT__/cmpt/task-window.vue';
+import TaskWindow from '__ROOT__/cmpt/task/window.vue';
 
 import ContextMenu from '../global/contextmenu/index.vue';
-import Cascade from '../global/cascade.vue';
+//import Cascade from '../global/cascade.vue';
 
 const ICON_WIDTH = 80;
 const ICON_HEIGHT = 80;
@@ -44,7 +32,7 @@ export default {
     TaskWindow,
 
     ContextMenu,
-    Cascade
+    //Cascade
   },
   props: ['icons'],
   data(){
@@ -174,5 +162,17 @@ export default {
     this.$store.commit('task/add', {appId: 'sys_app_file', address: '/home/dw/upload'});
   }
 }
-
+    // Cascade.lr-ctx-item
+    //   | 设置桌面壁纸
+    //   .lr-test-parent(slot='menu')
+    //     .lr-ctx-item 选择
+    //     .lr-ctx-item 上传
+    //     Cascade 333
+    //       div(slot='menu')
+    //         .lr-ctx-item 333
+    //         .lr-ctx-item 333
+    //         Cascade 444
+    //           div(slot='menu')
+    //             .lr-ctx-item 444
+    //             .lr-ctx-item 444
 </script>

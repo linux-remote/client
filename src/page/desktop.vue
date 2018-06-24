@@ -6,7 +6,7 @@
 </template>
 <script>
 
-import TasksBar from '__ROOT__/cmpt/task-bar.vue';
+import TasksBar from '__ROOT__/cmpt/task/bar.vue';
 import TopBar from '__ROOT__/cmpt/top-bar/index.vue';
 import DeskTop from '__ROOT__/cmpt/desktop/body.vue';
 import {logout} from '__ROOT__/lib/login';
