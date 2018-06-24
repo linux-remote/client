@@ -6,8 +6,15 @@
     <title>Linux Remote</title>
   </head>
   <body>
+
   <div id="lr-app"><span>Loading...</span></div>
-  
+  <script>
+    if(navigator.userAgent.indexOf('Chrome') === -1 || 
+      navigator.vendor.indexOf('Google Inc')=== -1){ //stackoverflow #4565112
+        document.body.innerHTML = '<h1>Sorry! This project only support Chrome now.</h1>';
+        throw new Error('This project only support Chrome.');
+    }
+  </script>
   <script src="/nodeMouduleStatic/jquery3.3.1/jquery.min.js"></script>
   <script src="/nodeMouduleStatic/vue2.5.16/vue.js"></script>
   <script src="/nodeMouduleStatic/vuex2.5.0/vuex.js"></script>

@@ -23,7 +23,6 @@ export default {
       if(!pData.focus){
         return;
       }
-      console.log('handleClick')
       if(this.$data._isClicked){
         return;
       }

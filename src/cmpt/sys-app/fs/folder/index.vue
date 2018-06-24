@@ -322,7 +322,6 @@ export default {
     //   }
     // },
     itemFocus(item, e){
-      console.log('itemFocus', item.focus)
       this.clearSelected();
       item.focus = true;
       if(this.currItem === item){

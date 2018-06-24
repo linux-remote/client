@@ -7,6 +7,13 @@
   </head>
   <body>
   <div id="lr-app"><span>Loading...</span></div>
+  <script>
+    if(navigator.userAgent.indexOf('Chrome') === -1 || 
+      navigator.vendor.indexOf('Google Inc')=== -1){ //stackoverflow #4565112
+        document.body.innerHTML = '<h1>Sorry! This project only support Chrome now.</h1>';
+        throw new Error('This project only support Chrome.');
+    }
+  </script>
   <% opts.nodeModuleStatic.forEach(function(v){%>
   <script src="<%=v%>"></script><% }) %>
   
