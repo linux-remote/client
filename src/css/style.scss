@@ -1,8 +1,8 @@
 $bg: #87CEEB;
 $bg2: rgba(#fff, .5);
-$drakColor: #3E5E6B;
+$drakColor: #4B869E; //6AA1B8
 $borderColor: #ACE7FF;
-$bottomColor: #EBBC87; //6AA1B8
+$bottomColor: #EBBC87;
 
 $taskTitleH :25px;
 $taskBarH : 36px;
@@ -220,33 +220,34 @@ tr.lrRecycleBinCovered{
 .lr-contextmenu{
   position: absolute; 
   z-index:$topLayerZindex; 
-  border: 1px outset #eee;
+  border: 2px outset $bg2;
   background: #eee; 
   top:0; 
   left:0;
   font-size: 14px;
-  width: 280px;
-  padding: 10px;
+  width: 255px;
+  padding: 2px 0;
   .lr-2-item{
     padding: 5px 10px; 
     border-bottom: 1px solid #999; 
     cursor: pointer;
 
     &:hover{
-      background-color: green; color:#fff;
+      background-color: green; 
+      color:#fff;
     }
   }
 }
 .lr-ctx-item{
-  padding: 5px 10px; 
-  border-bottom: 1px solid #999; 
+  padding: 5px 20px; 
+  //-border-bottom: 1px solid #fff; 
   cursor: pointer;
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
   &:hover{
-    background-color: green; 
-    color:#fff;
+    background-color:$drakColor;
+    color: #fff;
   }
 }
 .lr-ctx-item:last-child{

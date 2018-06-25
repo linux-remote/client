@@ -1,17 +1,3 @@
-<style>
-.lr-quick-bar-item{
-  width: 40px;
-  margin-right: 10px;
-  height: 100%;
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  border-right: 1px solid #888;
-}
-.lr-quick-bar-item:hover{
-  background-color: #000;
-}
-</style>
 <template lang="jade">
 .lr-quick-bar-item(
     :style="{backgroundImage: `url(${app.iconUrl})`}",

@@ -2,7 +2,7 @@
 .lr-start
   .lr-start-btn(@click='handleBtnClick', :class='{lr_start_focus: isShowMenu}')
   .lr-start-menu(v-show="isShowMenu")
-    .lr-start-menu-item 系统程序
+    .lr-start-menu-title 系统程序
     AppItem.lr-start-menu-item(v-for='(v, k) in sysAppMap',
                               :item="v",
                               :id='k',

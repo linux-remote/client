@@ -1,12 +1,3 @@
-<style>
-.lr-quick-bar{
-  border-right: 1px solid #d1d1d1;
-  min-width: 100px;
-  max-width: 300px;
-  display: flex;
-}
-
-</style>
 <template lang="jade">
 .lr-quick-bar(@dragenter='handleDragenter',
               @dragover='handleDragover',
