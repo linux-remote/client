@@ -324,40 +324,41 @@ export default {
     //   }
     // },
     itemFocus(item, e){
-      this.clearSelected();
+
       item.focus = true;
-      if(this.currItem === item){
-        return;
-      }
-      this.currItem.focus = false;
-      if(e){
-        if(e.ctrlKey){
-          this.currItem.beSelected = true;
-          this.selectedArr.push(item);
-          this.selectedArr.push(this.currItem);
-        }else if(e.shiftKey){
-          this.clearSelected();
-          let arr = this.$refs.selectable.$children;
-          let i1 = arr.findIndex(v => v.$data === item);
-          let i2 = arr.findIndex(v => v.$data === this.currItem);
-          let start, max;
-          if(i1 > i2){
-            start = i2;
-            max = i1; 
+      if(this.currItem !== item){
+        this.currItem.focus = false;
+        if(e){
+          if(e.ctrlKey){
+            this.currItem.beSelected = true;
+            this.selectedArr.push(item);
+            this.selectedArr.push(this.currItem);
+          }else if(e.shiftKey){
+            this.clearSelected();
+            let arr = this.$refs.selectable.$children;
+            let i1 = arr.findIndex(v => v.$data === item);
+            let i2 = arr.findIndex(v => v.$data === this.currItem);
+            let start, max;
+            if(i1 > i2){
+              start = i2;
+              max = i1; 
+            }else {
+              max = i2;
+              start = i1;
+            }
+            //console.log('start', start, 'max', max)
+            let arr2 = []
+            for(; start <= max; start++){
+              arr[start].beSelected = true;
+              arr2.push(arr[start]);
+            }
+            this.selectedArr = arr2;
           }else {
-            max = i2;
-            start = i1;
+            this.clearSelected();
           }
-          //console.log('start', start, 'max', max)
-          let arr2 = []
-          for(; start <= max; start++){
-            arr[start].beSelected = true;
-            arr2.push(arr[start]);
-          }
-          this.selectedArr = arr2;
         }
+        this.currItem = item;
       }
-      this.currItem = item;
     },
 
     clearSelected(){
