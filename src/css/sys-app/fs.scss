@@ -79,6 +79,7 @@
   position: relative;
   >input{
     flex-grow: 1;
+    border: 0;
   }
 }
 .lr-fs-address-inner{
@@ -128,12 +129,24 @@ $linkFileColor: violet;
   background-color: rgba(0,0,0, .6);
   z-index: 2;
 }
+
 .lr-upload-btn{
   position: relative;
   font-size: 12px;
   height: 24px;
+  margin-left: 1em;
+  background-image: url('/public/upload.svg');
+  background-size: contain;
+  background-position: left center;
+  background-repeat: no-repeat;
+  padding-left: 2em;
 }
-
+.lr-fs-icon-model{
+  background-image: url('/public/fs-icon-model.svg');
+}
+.lr-fs-list-model{
+  background-image: url('/public/fs-list-model.svg');
+}
 .lr-fs-error{
   font-size: 1.2em;
   font-weight: bold;
@@ -278,8 +291,9 @@ background-image: url('/public/img/tango-style/inode-chardevice.png');
   
 }
 .lr-per-item{
-  color:#000;
-  background-color: rgba(#fff, 1);
+  color:#ddd;
+  //background-color: #eee;
+  //opacity: .5;
   text-align: center;
 
 }
@@ -293,10 +307,11 @@ background-image: url('/public/img/tango-style/inode-chardevice.png');
 }
 .lr_per_item_on{
   background-color: rgba(green, .25);
+  opacity:1;
   color:#fff;
 }
 .lr_per_is>.lr_per_item_on{
-  background-color: rgba(green, 1);
+  background-color: rgba(green, .6);
   color:#fff;
 }
 .lr-per-sticky{
@@ -325,12 +340,14 @@ background-image: url('/public/img/tango-style/inode-chardevice.png');
   border-bottom: 1px solid #666;
   background-color: #eee;
   position: absolute;
+  align-items: center;
   top: 0;
   left: 0;
   z-index: 20;
   .lr-icon{
-    width: 30px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
+    margin-right: 5px;
   }
 }
 
@@ -366,7 +383,7 @@ background-image: url('/public/img/tango-style/inode-chardevice.png');
 .lr-fs-item-name{
   min-width: 2em;
   white-space: pre-wrap;
-  
+  //-font-family: 'Courier New', Courier, monospace;
 }
 .lr_file_model_on{
   background-color: red;
@@ -450,6 +467,7 @@ background-image: url('/public/img/tango-style/inode-chardevice.png');
     background-color: rgba($bg, .6)!important;
   }
 }
+
 // .lr_file_focus .lr-fs-item-name{
 //   cursor: text;
 // }

@@ -1,5 +1,5 @@
 <template lang="jade">
-textarea.lr_fly_textarea(v-show='open' , :style='{top:top + "px", left: left  + "px", width:(value.length + 2) + "em", height: height + "px", fontSize: "13px", lineHeight: "15px"}', v-model='value', @focus='select', @blur='close', @click.stop='handleClick' @keydown.13='handleKeyDown')
+textarea.lr_fly_textarea(v-show='open' , :style='{top:top + "px", left: left  + "px",  height: height + "px", fontSize: fontSize, lineHeight: "15px"}', v-model='value', @focus='select', @input='handleInput', @blur='close', @click.stop='handleClick' @keydown.13='handleKeyDown')
 </template>
 
 <script>
@@ -12,6 +12,9 @@ export default {
   watch:{
     open(val){
       if(val){
+        var vmDom = this.$options.vmDom;
+        vmDom.style.fontSize = this.fontSize;
+        this.getWidth(this.value);
         setTimeout(() => {
           $(this.$el).focus();
         })
@@ -22,9 +25,16 @@ export default {
     handleKeyDown(){
       $(this.$el).blur();
     },
+    handleInput(e){
+      this.getWidth(e.target.value);
+    },
+    getWidth(val){
+      var vmDom = this.$options.vmDom;
+      vmDom.innerText = val;
+      this.$el.style.width = (vmDom.clientWidth + 12) + "px"; 
+    },
     close(){
       this.$store.commit('flyTextarea/close');
-
     },
     handleClick(){
       return false;
@@ -32,6 +42,15 @@ export default {
     select(){
       $(this.$el).select();
     }
+  },
+  mounted(){
+    const vmDom = document.createElement('div');
+    vmDom.style.position = 'absolute';
+    vmDom.style.zIndex = 99999;
+    vmDom.style.left = '-9999999';
+    vmDom.className = 'lr_fly_textarea';
+    document.body.appendChild(vmDom)
+    this.$options.vmDom = vmDom
   }
 }
 </script>

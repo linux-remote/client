@@ -11,6 +11,7 @@
                   v-if='v') {{v}}
     input(v-model='inputAddress', 
           @focus="handleInputFocus",
+          ref='input',
           @blur="handleInputBlur",
           @keydown.13='go(inputAddress)')
   .lr-fs-nav-item.lr-fs-nav-reload(v-if='address===inputAddress' @click='onChange(address)')
@@ -62,8 +63,12 @@ export default {
     },
     handleInputFocus(){
       this.isInputFocus = true;
+        setTimeout(()=>{
+          this.$refs.input.select();
+        },200);
     },
     handleInputBlur(){
+      console.log('blur')
       this.isInputFocus = false;
     },
     handleArrowLeftClick(){

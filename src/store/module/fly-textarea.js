@@ -1,6 +1,7 @@
 
 const $ = window.$;
 const noop = () => {}
+
 export default {
   namespaced: true,
   state: {
@@ -12,7 +13,8 @@ export default {
     lineHeight: 0,
     open: false,
     value: '',
-    fontSize: ''
+    fontSize: '',
+    $el: null
   },
   mutations: {
     open (state, data) {
@@ -35,6 +37,7 @@ export default {
       Object.assign(state, data2);
     },
     close(state){
+      console.log('blur');
       state.open = false;
       state.handleBlur(state.value);
       state.handleBlur = noop;

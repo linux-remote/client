@@ -1,16 +1,17 @@
 <template lang="jade">
-.lr-fs-item-name(@click='handleClick', @dblclick='handleDblclick') {{item.name}}
+.lr-fs-item-name(@click='handleClick', :style='{visibility: isStart ? "hidden" : null}', @dblclick='handleDblclick') {{item.name}}
 </template>
 
 <script>
 const DELAY = 500;
-import {getNameSuffix, encodePath} from './util';
+import {initIconAttr, encodePath} from './util';
 export default {
   props: ['item', 'p'],
   data(){
     return {
       _isClicked: false,
       _dblClick_count: 0,
+      isStart: false
     }
   },
   methods: {
@@ -43,16 +44,16 @@ export default {
         const data = {
           target: e.target,
           handleBlur : function(newName){
+            self.isStart = false;
             self.$data._isClicked = false;
-            if(item.name === newName){
+            if(!newName || item.name === newName){
               return;
             }
-            
             self.rename(newName);
           }
         }
+        this.isStart = true;
         self.$store.commit('flyTextarea/open', data);
-        self.tmp_prevent = false;
       }, 500);
     },
     rename(newName){
@@ -64,7 +65,7 @@ export default {
         success(){
           item.name = newName;
           if(!item.isFolder){
-            item.suffix = getNameSuffix(item.name);
+            initIconAttr(item);
           }
           this.p.reSortByItem(item);
           //console.log('rename success');

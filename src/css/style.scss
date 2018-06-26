@@ -1,6 +1,6 @@
 $bg: #87CEEB;
 $bg2: rgba(#fff, .5);
-$drakColor: #4B869E; //6AA1B8
+$drakColor: #6AA1B8; //4B869E
 $borderColor: #ACE7FF;
 $bottomColor: #EBBC87;
 
@@ -288,7 +288,8 @@ tr.lrRecycleBinCovered{
 
 .lr-error{
   position: absolute; 
-  width: 500px; 
+  min-width: 500px; 
+  max-width: 80%;
   margin: 0 auto; 
   top: 30px;
   z-index: $topLayerZindex + 2;
@@ -325,7 +326,7 @@ tr.lrRecycleBinCovered{
 .lr-error-body{
   max-height: 50%;
   overflow: auto;
-  background-color: rgba(255, 255, 255, .5);
+  background-color: rgba(255, 255, 255, .7);
   &::-webkit-scrollbar
   {
     width: 5px;  /* for vertical scrollbars */
@@ -425,8 +426,8 @@ tr.lrRecycleBinCovered{
 }
 .lr-open-with-item{
   display: flex;
-  height: 50px;
-  padding: 10px;
-  background: blue;
+  padding: 10px 10px;
+
+  background: $drakColor;
   color: #fff;
 }

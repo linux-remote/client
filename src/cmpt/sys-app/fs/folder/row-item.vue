@@ -110,7 +110,7 @@ export default {
           this.$store.commit('fsTrigger', {
             address: this.p.address,
             type: 'del',
-            index: this.index
+            item: this.item
           });
         }
       })

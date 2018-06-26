@@ -39,7 +39,7 @@ import Status from './status.vue';
 import Selectable from '__ROOT__/cmpt/unit/selectable.vue';
 import CreateSysLink from './create-sys-link.vue';
 import initRelation from './permission-util';
-import {getNameSuffix, getOpenType, getOpenAppIcon, encodePath} from './util';
+import {initIconAttr, encodePath} from './util';
 export default {
   components:{
     CtrlBar,
@@ -180,8 +180,7 @@ export default {
           this.srot(arr);
           break;
           case 'del':
-            console.log('index del')
-            this.removeItem(e.index);
+            this.removeItem(e.item);
           break;
         }
       }
@@ -203,9 +202,13 @@ export default {
           item.beSelected = true;
         })
       }
+      //e.stopPropagation();
+      e.preventDefault();
     },
-    removeItem(i){
-      this.list.splice(i, 1);
+    removeItem(item){
+      const arr = this.getMapArr(item);
+      arr.splice(arr.findIndex(v => v === item), 1);
+      this.concatList();
     },
     getData(){
       this.request({
@@ -254,13 +257,7 @@ export default {
       }
 
       if(v.type === 'RegularFile'){
-        v.suffix = getNameSuffix(v.name);
-        v.openType = getOpenType(v.suffix);
-        const openApp= getOpenAppIcon(v.openType);
-        if(openApp){
-          v.openApp = openApp.app;
-          v.openAppId = openApp.id;
-        }
+        initIconAttr(v);
       }
       if(v.device_type && !this.isHaveDevice){
         this.isHaveDevice = true;
@@ -291,10 +288,13 @@ export default {
       this.listMap = map;
       this.concatList();
     },
-    reSortByItem(v, isNew){
+    getMapArr(v){
       var key = v.isHidden ? 'hidden' : 'normal';
       var key2 = v.isFolder ? 'folderArr' : 'fileArr';
-      var arr = this.listMap[key][key2];
+      return this.listMap[key][key2];
+    },
+    reSortByItem(v, isNew){
+      const arr = this.getMapArr(v);
       if(isNew){
         arr.push(v);
       }

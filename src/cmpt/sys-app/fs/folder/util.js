@@ -1,8 +1,8 @@
 import store from '__ROOT__/store/index.js';
 
-export function getItemPath(item){
+// export function getItemPath(item){
 
-}
+// }
 export const getNameSuffix = (name) => {
   const index = name.lastIndexOf('.');
   if(index !== 0 && index !== -1){
@@ -40,6 +40,16 @@ export function getOpenAppIcon(openType){
     }
   }
 }
+export function initIconAttr(v){
+  v.suffix = getNameSuffix(v.name);
+  v.openType = getOpenType(v.suffix);
+  const openApp= getOpenAppIcon(v.openType);
+  if(openApp){
+    v.openApp = openApp.app;
+    v.openAppId = openApp.id;
+  }
+}
+
 export function encodePath(path){
   return encodeURIComponent(path.substr(1));
 }
