@@ -53,10 +53,10 @@ button.disable{
   cursor: auto;
   position: relative;
 }
-.lr_loading::before{
+.lr_loading::before, .lr-hourglass::before{
   content: '';
 }
-.lr_loading::before {
+.lr_loading::before , .lr-hourglass::before{
   padding:0;
   margin:0;
   position: absolute;
@@ -73,7 +73,10 @@ button.disable{
   border-radius: 50%;
   z-index: 2;
 }
-
+.lr-hourglass::before{
+  height: 25px;
+  width: 25px;
+}
 @keyframes rotate { //lr_loading 动画
   0%    { transform: rotate(0deg); }
   100%  { transform: rotate(360deg); }
@@ -116,11 +119,11 @@ button.disable{
 .lr-desk-wrap{
   flex-direction: column;
   height: 100%;
-  overflow: hidden;
 }
 .lr-desk{
-  flex-grow: 1; 
+  flex-grow: 1;
   position: relative;
+  overflow: hidden;
 }
 
 
@@ -257,13 +260,29 @@ tr.lrRecycleBinCovered{
   width:20px; height: 20px;
 }
 .lr-hourglass{
-  position: absolute;top:0;left:0;right: 0;bottom: 0;margin: auto;
-  background-image: url('/public/hourglass.svg');
-  background-size: 100%;
-  height: 30px; width: 30px; font-size: 25px;text-align: center;line-height: 30px;
-  z-index: 3; color:#888;
-}
+  position: absolute;
+  top:0;
+  left:0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
 
+  height: 100%;
+  width: 100%; 
+  // font-size: 25px;
+  // text-align: center;
+  // line-height: 30px;
+  background-color: rgba(0,0,0, .5);
+  z-index: 30; 
+  color:#888;
+}
+// .lr-hourglass::after{
+//   background-image: url('/public/hourglass.svg');
+//   background-size: contain;
+//   background-repeat: no-repeat;
+//   background-position: center;
+//   height: 30px;
+// }
 
 .lr_fly_textarea{
   position: absolute; 

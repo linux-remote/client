@@ -1,8 +1,9 @@
 <template lang="jade">
-.lr-fs-folder(@mousedown.stop='handleFsBodyMousedown',
+.lr-fs-folder(@mousedown='handleFsBodyMousedown',
               tabindex=-1,
               @keydown.a='selectAll',
               :class='bodyClass')
+  .lr-hourglass(v-if='isRequest')
   CtrlBar
   .lr-fs-folder-inner(v-if='error')
     pre.lr-fs-error(v-html='error')
@@ -16,7 +17,7 @@
         th 修改日期
         th 大小
           span.lr_is_device_type(v-if='isHaveDevice') /设备类型
-      tr(v-if='preCreateItem', class='lr-fs-create-layer')
+      tr(v-if='preCreateItem', class='lr-fs-create-layer', @mousedown.stop='')
         td(colspan='7')
           PreCreate(:p='self')
 
@@ -70,6 +71,7 @@ export default {
       dir: null,
       isHaveDevice: false,
       newItemName: null,
+      isRequest: false,
 
       createSysLinkName: null //创建软链名字
     }

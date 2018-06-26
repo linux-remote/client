@@ -61,8 +61,10 @@ export default {
     }
   },
   methods: {
-    handleMousedown(){
-      this.$store.commit('task/currentUnFocus');
+    handleMousedown(e){
+      if(!e._isHandle){
+        this.$store.commit('task/currentUnFocus');
+      }
     },
     sortIcon(){
       let deskH = this.$el.offsetHeight;

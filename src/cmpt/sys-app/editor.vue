@@ -30,15 +30,24 @@ export default {
       if(this.isSaveDisabled){
         return;
       }
-
+      let url = this.task.address;
+      if(!url){
+        console.log('new one')
+        return;
+      } 
       this.request({
         url: this.task.address,
         stateKey: 'isRequest',
         type: 'put',
         data: {text: this.data},
         success(data){
+          data.name = this.task.title;
+          this.$store.commit('fsTrigger', {
+            address: this.task.dir,
+            type: 'update',
+            item: data
+          });
           this.oldData = this.data;
-          console.log(data);
         }
       })
     },
@@ -46,6 +55,7 @@ export default {
 
       this.request({
         url: this.task.address,
+        stateKey: 'isRequest',
         dataType: 'text',
         data: {file: true},
         success(data){

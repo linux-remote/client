@@ -1,6 +1,6 @@
 <template lang="jade">
 .lr-task-window(v-show='!isMin',
-                @mousedown.stop='taskFocus',
+                @mousedown.capture='taskFocus',
                 @contextmenu.stop='',
                 :style='{width:width + "px", height: height  + "px", zIndex: zIndex, top:     positionTop + "px", left: positionLeft  + "px"}' ,
                 :class='{lr_task_max: isMax, lr_task_unique: unique, lr_task_focus: isFocus}')
@@ -131,7 +131,8 @@ export default {
     removeTask(){
       this.$store.commit('task/remove', this.index);
     },
-    taskFocus(){
+    taskFocus(e){
+      e._isHandle = true;
       this.$store.commit('task/focus', this.$data);
     }
   }

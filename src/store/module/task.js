@@ -34,9 +34,9 @@ export default  {
 
       const data = {
         ...opts,
-        APP,
-        title: APP.title
+        APP
       }
+      data.title = data.title || APP.title;
       data.unique = APP.unique || false;
 
       if(data.unique){

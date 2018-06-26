@@ -131,6 +131,7 @@ export default {
             title: item.name,
             width: 500,
             height:500,
+            dir: this.p.address,
             address: '~/fs/' + encodePath(address)
           });
         }else{
