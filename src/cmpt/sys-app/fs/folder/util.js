@@ -43,7 +43,7 @@ export function getOpenAppIcon(openType){
 export function initIconAttr(v){
   v.suffix = getNameSuffix(v.name);
   v.openType = getOpenType(v.suffix);
-  const openApp= getOpenAppIcon(v.openType);
+  const openApp = getOpenAppIcon(v.openType);
   if(openApp){
     v.openApp = openApp.app;
     v.openAppId = openApp.id;

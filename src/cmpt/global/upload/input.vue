@@ -53,7 +53,7 @@ export default {
   },
   methods: {
     skipAll(){
-      this.coveredList.forEach((name, i) => {
+      this.coveredList.forEach((name) => {
         this.removeItemByName(name);
       })
       this.coveredList = [];

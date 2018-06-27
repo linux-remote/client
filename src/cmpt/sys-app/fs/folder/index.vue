@@ -133,7 +133,7 @@ export default {
             if(e.item.focus === undefined){
               this.parseItem(e.item)
             }
-            const thisItem = this.list.find((v) => v.name === e.item.name);
+            var thisItem = this.list.find((v) => v.name === e.item.name);
             if(thisItem){
               Object.assign(thisItem, e.item)
             }

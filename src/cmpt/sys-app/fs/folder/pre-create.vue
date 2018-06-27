@@ -35,33 +35,32 @@ export default {
       this.$refs.input.blur();
     },
     submit(){
-
-        var {name, type} = this.item;
-        type = (this.item.type === 'Directory') ? 'Folder' : 'File';
-        this.request({
-          type: 'POST',
-          stateKey: 'isRequest',
-          url: '~/fs/' + encodePath(this.p.address),
-          data: {
-            name,
-            type: 'create' + type
-          },
-          success(data){
-            data.name = name;
-            this.$store.commit('fsTrigger', {
-              address: this.p.address,
-              type: 'add',
-              item: data
-            })
-          },
-          complete(){
-            this.p.preCreateItem = null;
-          }
-          // ,
-          // error(xhr){
-          //   this.error = xhr.responseText;
-          // }
-        })
+      var {name, type} = this.item;
+      type = (this.item.type === 'Directory') ? 'Folder' : 'File';
+      this.request({
+        type: 'POST',
+        stateKey: 'isRequest',
+        url: '~/fs/' + encodePath(this.p.address),
+        data: {
+          name,
+          type: 'create' + type
+        },
+        success(data){
+          data.name = name;
+          this.$store.commit('fsTrigger', {
+            address: this.p.address,
+            type: 'add',
+            item: data
+          })
+        },
+        complete(){
+          this.p.preCreateItem = null;
+        }
+        // ,
+        // error(xhr){
+        //   this.error = xhr.responseText;
+        // }
+      })
 
     }
   },

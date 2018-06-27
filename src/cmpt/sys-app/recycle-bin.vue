@@ -68,7 +68,7 @@ export default {
   },
 
   methods: {
-    recycle(item, i){
+    recycle(item){
       this.request({
         url: '~/recycleBin/recycle',
         data: item,

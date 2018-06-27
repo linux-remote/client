@@ -17,6 +17,7 @@
   // .lr-icon.lr-fs-list-model
   // button(:class='{lr_file_model_on: $parent.model === "icon"}', @click='changeModel("icon")') 图标格式
   // button(:class='{lr_file_model_on: $parent.model === "list"}', @click='changeModel("list")') 列表格式
+
 export default {
   props: {
     disabled: {
@@ -33,9 +34,9 @@ export default {
         return;
       }
       this.$parent.preCreateItem = {
-       name: '',
-       type,
-       size: 10
+        name: '',
+        type,
+        size: 10
       }
       this.$parent.itemFocus(this.$parent.preCreateItem)
     },

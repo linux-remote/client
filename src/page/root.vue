@@ -33,10 +33,10 @@ export default {
       this.request({
         url: '/touch',
         stateKey: 'isRequest',
-        success(data){
-          //console.log('data', data)
-          //this.$store.commit('set', data);
-        }
+        // success(data){
+        //   //console.log('data', data)
+        //   //this.$store.commit('set', data);
+        // }
       });
     }
   },

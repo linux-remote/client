@@ -3,7 +3,7 @@
 </template>
 
 <script>
-const DELAY = 500;
+// const DELAY = 500;
 import {initIconAttr, encodePath} from './util';
 export default {
   props: ['item', 'p'],

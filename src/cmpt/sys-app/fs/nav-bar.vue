@@ -63,9 +63,9 @@ export default {
     },
     handleInputFocus(){
       this.isInputFocus = true;
-        setTimeout(()=>{
-          this.$refs.input.select();
-        },200);
+      setTimeout(()=>{
+        this.$refs.input.select();
+      },200);
     },
     handleInputBlur(){
       console.log('blur')
