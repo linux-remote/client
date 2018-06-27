@@ -4,7 +4,7 @@
 
   .lr-fs-folder-inner
     .lr-fs-ctrl-bar(style='justify-content: space-between;')
-      button(@click='clearAll') Delete All
+      button(@click='clearAll', :disabled='isEmpty') Delete All
 
       .lr-fs-nav-item.lr-fs-nav-reload(@click='getData', style='background-color: #666')
     h2(v-html='error' style='color:red' v-if='error')
@@ -38,6 +38,9 @@ export default {
     }
   },
   computed: {
+    isEmpty(){
+      return this.$store.state.app.sysMap.sys_app_recycle_bin.isEmpty
+    },
     recycleBinEvent(){
       return this.$store.state.recycleBinEvent
     },
@@ -93,6 +96,9 @@ export default {
     },
     del(item){
       let name = item.delTime;
+      if(!item.isError && !confirm('Are you sure to delete "' + item.source.name + '" ?')){
+        return;
+      }
       this.request({
         url: '~/recycleBin/' + name,
         type: 'delete',
@@ -102,6 +108,9 @@ export default {
       })
     },
     clearAll(){
+      if(!confirm('Are you sure to delete All?')){
+        return;
+      }
       this.request({
         url: '~/recycleBin',
         type: 'delete',

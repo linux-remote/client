@@ -45,7 +45,7 @@
     
     .lr-ctx-item(@click="remove")
       | 移除
-    .lr-ctx-item(v-if='item.id === "sys_app_recycle_bin"', @click="clearRecycleBin")
+    //-.lr-ctx-item(v-if='item.id === "sys_app_recycle_bin"', @click="clearRecycleBin")
       | 清空
 </template>
 <script>
@@ -76,16 +76,19 @@ export default {
     // }
   },
   methods: {
-    clearRecycleBin(){
-      this.request({
-        url: '~/recycleBin',
-        type: 'delete',
-        success(){
-          this.$store.commit('recycleBinTrigger', true);
-          this.$refs.ctx.hidden();
-        }
-      })
-    },
+    // clearRecycleBin(){
+    //   if(!confirm('Are you sure to delete All?')){
+    //     return;
+    //   }
+    //   this.request({
+    //     url: '~/recycleBin',
+    //     type: 'delete',
+    //     success(){
+    //       this.$store.commit('recycleBinTrigger', true);
+    //       this.$refs.ctx.hidden();
+    //     }
+    //   })
+    // },
     hidden(){
       this.$refs.ctx.hidden();
     },

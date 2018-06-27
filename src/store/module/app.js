@@ -8,6 +8,7 @@ export default  {
       },
       sys_app_recycle_bin : {
         iconUrl: '/public/img/tango-style/user-trash.png',
+        isEmpty: true,
         unique: true,
         title: '回收站'
       },
@@ -45,6 +46,7 @@ export default  {
     },
     changeRecycleBinIcon(state, bool){
       let name = bool ? 'user-trash.png' : 'user-trash-full-2.png';
+      state.sysMap.sys_app_recycle_bin.isEmpty = bool;
       state.sysMap.sys_app_recycle_bin.iconUrl = '/public/img/tango-style/' + name;
     }
   },
