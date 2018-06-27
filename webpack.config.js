@@ -1,8 +1,7 @@
 // webpack 1.13.2
-//webpack Uncaught TypeError: Cannot read property 'children' of undefined
 // https://github.com/webpack/webpack/issues/1315#issuecomment-247269598
 var path = require('path');
-var rucksack = require('rucksack-css');
+//var rucksack = require('rucksack-css');
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var confName = process.env.NODE_BUILD_CONF_NAME || 'dev';
@@ -113,7 +112,7 @@ module.exports = {
       loaders: [
         "style",
         "css",
-        "postcss",
+        //"postcss",
         "sass"
       ]
     }]
@@ -124,15 +123,14 @@ module.exports = {
       '__ROOT__' : path.join(__dirname, './src')
     }
   },
-  postcss: [
-    rucksack({
-      autoprefixer: true
-    })
-  ],
+  // postcss: [
+  //   rucksack({
+  //     autoprefixer: true
+  //   })
+  // ],
   plugins: plugins,
   devServer: {
     setup,
-    //setup: devSetup,
     contentBase: path.join(__dirname, conf.indexDir),
     hot: true
   }
