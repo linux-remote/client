@@ -4,31 +4,52 @@
   flex-grow: 1;
   display: flex;
 }
-.lr-fs-left{
-  overflow: auto;
-  width: 150px;
-  flex-shrink: 0;
-  background-color: #006400;
-  color:#fff;
-}
+
 .lr-fs-right{
   flex-grow: 1;
   flex-direction: column;
   position: relative;
   overflow: auto;
 }
-.lr-fs-bookmark{
-  height: 30px;
-  line-height: 30px;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  cursor: pointer;
-}
-.lr-fs-bookmark:hover{
-  background-color: #fff;
-  color: #000;
-}
+// *************** Left ***************
+// .lr-fs-left{
+//   overflow: auto;
+//   width: 150px;
+//   flex-shrink: 0;
+//   background-color: #fff;
+//   border-right: 1px solid #999;
+//   display: flex;
+//   flex-direction: column;
+// }
+// .lr-fs-bookmark{
+//   height: 30px;
+//   line-height: 30px;
+//   overflow: hidden;
+//   white-space: nowrap;
+//   text-overflow: ellipsis;
+//   cursor: pointer;
+//   display: flex;
+//   align-items: center;
+//   .lr-icon{
+//     height: 25px;
+//     width: 25px;
+//     margin-right: 5px;
+//     text-align: center;
+//     line-height: 25px;
+//     color: #f5f5f5;
+//     font-size: 13px;
+//   }
+// }
+
+// .lr-fs-bookmark:hover{
+//   background-color: $bg;
+//   color: #000;
+// }
+// .lr_bookmark_active{
+//   background-color: $bg;
+// }
+
+// *************** Left End ***************
 .lr-fs-nav-bar{
   background: #666; 
   border-bottom: 1px solid #000;
@@ -110,6 +131,7 @@ $linkFileColor: violet;
   padding-bottom: 18px;
   position: relative;
   overflow: auto;
+  outline: none;
 }
 .lr-fs-folder-inner{
   flex-wrap: wrap;
@@ -140,6 +162,11 @@ $linkFileColor: violet;
   background-position: left center;
   background-repeat: no-repeat;
   padding-left: 2em;
+  border: 1px solid #aaa;
+  background-color: #fff;
+  &:hover{
+    background-color: $bg;
+  }
 }
 .lr-fs-icon-model{
   background-image: url('/public/fs-icon-model.svg');
@@ -168,7 +195,7 @@ $linkFileColor: violet;
   color:#fff;
 }
 .lr-fs-dir-mask{
-  background-color: #FF00FF;
+  background-color: rgba(#FF00FF, .3);
 }
 .lr-fs-status-wrap{
   position: absolute;
@@ -207,6 +234,10 @@ $fsRowItemH: 50px;
   margin-top: 2px;
   margin-right: 3px;
   position: relative;
+  
+  &:hover{
+    background-color: $bg;
+  }
   //-background-color: rgba(#fff, .5);
 }
 .lr-fs-folder-table{
@@ -359,7 +390,10 @@ background-image: url('/public/img/tango-style/inode-chardevice.png');
   background-image: url('/public/img/tango-style/document-new-4.png');
 }
 .lr-fs-create-layer{
-  background-color: $bg;
+    background-color: $bg;
+  &:hover{
+    background-color: $bg!important;
+  }
 }
 
 .lr_fs_open_type_image{
@@ -466,6 +500,128 @@ background-image: url('/public/img/tango-style/inode-chardevice.png');
   &:hover{
     background-color: rgba($bg, .6)!important;
   }
+}
+.lr-fieldset-body{
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+.lr-disk-item{
+  flex-shrink: 0;
+  margin-right: 20px;
+  display: flex;
+  //cursor: pointer;
+  // &:hover{
+  //   background-color: rgba($bg, .5);
+  // }
+}
+.lr-disk-icon{
+  width: 50px;
+  height: 50px;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  
+}
+.lr-disk-cd{
+  background-image: url('/public/img/drive-optical-6.png');
+}
+.lr-disk-hd{
+  background-image: url('/public/img/drive-harddisk-9.png');
+}
+.lr-disk-memory{
+  background-image: url('/public/img/memory-ram.png');
+}
+.lr-disk-item-right{
+  width: 220px;
+}
+.lr-disk-process-wrap{
+  height: 18px;
+  background-color: #eee;
+  border: 1px solid #ddd;
+  width: 96%;
+  position: relative;
+}
+.lr-disk-process{
+  height: 100%;
+  background-color: #00CED1;
+}
+.lr-disk-left{
+  width: 50px;
+  margin-right: 10px;
+  position: relative;
+}
+.lr-disk-type{
+  font-size: 12px;
+  text-align: center;
+  color:#fff;
+  position: absolute;
+  top: 0;
+  left: -10px;
+  background-color: red;
+  padding: 0 3px;
+
+}
+/* .lr-disk-i-process-wrap{
+  width: 100%;
+  margin-bottom: 5px;
+  background-color: bisque;
+  border: 1px solid #ddd;
+  border-radius: 2px;
+  height: 5px;
+} */
+.lr-disk-i-process{
+  position: absolute;
+  height: 3px;
+  background-color: #006400;
+  z-index: 2;
+  top: 100%;
+  left: 0;
+}
+.lr-disk-i-process:hover{
+  background-color: #1E90FF
+}
+.lr-disk-info{
+  font-size: 13px;
+  color: #444;
+}
+.lr-disk-link{
+  text-decoration: underline;
+  color: blue;
+  cursor: pointer;
+  width: 100%;
+}
+.lr-fs-favorites{
+  flex-grow: 1;
+  position: relative;
+  width: 100%;
+  // display: flex;
+  // flex-direction: column;
+  border-top: 1px solid #999;
+  background-image: url('/public/img/favorites.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  // ::after{
+  //   content: "";
+
+  //   opacity: 0.5;
+  //   top: 0;
+  //   left: 0;
+  //   bottom: 0;
+  //   right: 0;
+  //   position: absolute;
+  //   z-index: 1;
+  // }
+}
+.lr-fs-favorites-inner{
+  height: 100%;
+  position: absolute;
+  width: 100%;
+  background-color: rgba(255,255,255, .8);
+}
+.lr-disk-link:hover{
+  color: green;
 }
 // .lr-pre-create-error-btn, .lr-pre-create-ctrl{
 //   width: 30px;

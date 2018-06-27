@@ -126,7 +126,8 @@ export default {
             if(e.item.focus === undefined){ // 根据 focus 判断有没有 parse 过
               this.parseItem(e.item)
             }
-            this.reSortByItem(e.item, true)
+            this.reSortByItem(e.item, true);
+            
           break;
           case 'update':
             if(e.item.focus === undefined){
@@ -203,9 +204,10 @@ export default {
         this.selectedArr.forEach(item => {
           item.beSelected = true;
         })
+        e.preventDefault();
       }
       //e.stopPropagation();
-      e.preventDefault();
+      
     },
     removeItem(item){
       const arr = this.getMapArr(item);

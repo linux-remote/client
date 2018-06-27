@@ -14,6 +14,10 @@ tr(@dblclick='open',
       .lr-ctx-item(@click='download', v-if='item.type === "RegularFile"')
         .lr-icon
         | 下载
+      //-.lr-ctx-item(@click='copy')
+        .lr-icon
+        | 复制
+      hr
       .lr-ctx-item(@click='createSymbolicLink')
         .lr-icon
         | 创建软链接
@@ -78,6 +82,15 @@ export default {
     }
   },
   methods: {
+    // copy(){
+
+    // },
+    // send2Desktop(){
+    //   this.$store.commit('deskTopTrigger', {
+    //     type: 'add',
+    //     item: this.item
+    //   })
+    // },
     getRealAddress(){
       let address, item = this.item;
       if(item.isSymbolicLink){

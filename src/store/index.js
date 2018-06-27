@@ -60,7 +60,7 @@ const store = new window.Vuex.Store({
     //   iconUrl : '/public/img/image-missing-3.png',
     //   title: 'lr_sys_unknown_app'
     // },
-
+    deskTopEvent: null,
     recycleBinEvent: null,
     fsEvent: {},
 
@@ -93,6 +93,9 @@ const store = new window.Vuex.Store({
     fsTrigger(state, data){
       state.fsEvent = data
     },
+    deskTopTrigger(state, data){
+      state.deskTopEvent = data;
+    },  
     // onRecycle(state){
 
     // },

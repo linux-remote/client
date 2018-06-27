@@ -1,7 +1,7 @@
 <template lang="jade">
 .lr-name-wrap
   .lr-icon(:class='"lr_file_type_" + item.type')
-  input(v-model='item.name', ref='input', :disabled='isRequest', @blur='handleblur', @keydown.13='handleEnter')
+  input(v-model='item.name', ref='input', :disabled='isRequest', @blur='handleblur', @keydown.stop.13='handleEnter')
   div(style="width: 30px;height: 30px;", class='lr_loading' v-if='isRequest')
   //-.lr-pre-create-ctrl(style="color:red;", v-else) &#10006;
   //-div(style='color:red;font-size: 12px;') {{error}}
@@ -30,7 +30,8 @@ export default {
       }
       this.submit();
     },
-    handleEnter(){
+    handleEnter(e){
+      e.stopPropagation();
       this.$refs.input.blur();
     },
     submit(){

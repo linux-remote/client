@@ -56,8 +56,21 @@ export default {
     }
   },
   computed:{
+    deskTopEvent(){
+      return this.$store.state.deskTopEvent
+    },
     tasks(){
       return this.$store.state.task.list;
+    }
+  },
+  watch: {
+    deskTopEvent(e){
+      switch(e.type){
+        case 'add':
+          this.list.push(e.item);
+          this.save();
+          break;
+      }
     }
   },
   methods: {

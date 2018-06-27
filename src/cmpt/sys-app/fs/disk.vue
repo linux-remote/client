@@ -1,96 +1,8 @@
-<style>
-.lr-fieldset-body{
-  display: flex;
-  justify-content: flex-start;
-  flex-wrap: wrap;
-}
-.lr-disk-item{
-  flex-shrink: 0;
-  margin-right: 20px;
-  display: flex;
-}
-.lr-disk-icon{
-  width: 50px;
-  height: 50px;
-  background-position: center;
-  background-size: contain;
-  background-repeat: no-repeat;
-  
-}
-.lr-disk-cd{
-  background-image: url('/public/img/drive-optical-6.png');
-}
-.lr-disk-hd{
-  background-image: url('/public/img/drive-harddisk-9.png');
-}
-.lr-disk-memory{
-  background-image: url('/public/img/memory-ram.png');
-}
-.lr-disk-item-right{
-  width: 220px;
-}
-.lr-disk-process-wrap{
-  height: 18px;
-  background-color: #eee;
-  border: 1px solid #ddd;
-  width: 100%;
-  position: relative;
-}
-.lr-disk-process{
-  height: 100%;
-  background-color: #00CED1;
-}
-.lr-disk-left{
-  width: 50px;
-  margin-right: 10px;
-  position: relative;
-}
-.lr-disk-type{
-  font-size: 12px;
-  text-align: center;
-  color:#fff;
-  position: absolute;
-  top: 0;
-  left: -10px;
-  background-color: red;
-  padding: 0 3px;
-
-}
-/* .lr-disk-i-process-wrap{
-  width: 100%;
-  margin-bottom: 5px;
-  background-color: bisque;
-  border: 1px solid #ddd;
-  border-radius: 2px;
-  height: 5px;
-} */
-.lr-disk-i-process{
-  position: absolute;
-  height: 3px;
-  background-color: #006400;
-  z-index: 2;
-  top: 100%;
-  left: 0;
-}
-.lr-disk-i-process:hover{
-  background-color: #1E90FF
-}
-.lr-disk-info{
-  font-size: 13px;
-  color: #444;
-}
-.lr-disk-link{
-  text-decoration: underline;
-  color: blue;
-  cursor: pointer;
-  width: 100%;
-}
-.lr-disk-link:hover{
-  color: green;
-}
-</style>
 <template lang="jade">
 .lr-fs-right
+  ContextMenu(ref='ctx')
+    .lr-ctx-item(@click='reload') 刷新
+  .lr-hourglass(v-if='isRequest')
   fieldset(v-for='field in map', v-if='field.list.length')
     legend {{field.title}}
     .lr-fieldset-body
@@ -108,6 +20,7 @@
 </template>
 
 <script>
+import ContextMenu from '__ROOT__/cmpt/global/contextmenu/index.vue';
 ///dev/sr0
 function parseHeadBody({head, body}, ite){
   return body.map((line, j) => {
@@ -121,6 +34,9 @@ function parseHeadBody({head, body}, ite){
 }
 import {trimEnd0} from '__ROOT__/lib/util'
 export default {
+  components: {
+    ContextMenu
+  },
   data(){
     return {
       isRequest: false,
@@ -164,9 +80,14 @@ export default {
         address: address
       })
     },
+    reload(){
+      this.getData();
+      this.$refs.ctx.hidden();
+    },
     getData(){
       this.request({
         url: '~/disk',
+        stateKey: 'isRequest',
         success(data){
           let hdArr = [], memoryArr = [], cdArr = [], unknownArr = [];
           parseHeadBody(data, function(obj){
