@@ -1,38 +1,3 @@
-<style>
-.lr-desk-icon{
-  position: absolute;
-  width: 80px;
-  height: 80px;
-  user-select: none;
-  display:flex;
-  flex-direction: column;
-  align-items: center;
-    z-index:1;
-}
-
-.lr-desk-icon-img{
-  /* height: 60px; */
-  height: 50px;
-  width: 100%;
-  background-position: center;
-  background-size: contain;
-  background-repeat: no-repeat;
-}
-.lr-desk-icon-text{
-  font-size: 12px;
-  line-height: 15px;
-  word-break: break-all;
-  height: 30px;
-  width: 100%;
-  text-align: center;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.lr-desk-icon:hover{
-  background-color: rgba(255, 255, 255, 0.25);
-}
-
-</style>
 <template lang="jade">
 .lr-desk-icon(draggable="true",
               @dblclick="handleDblclick",
