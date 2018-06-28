@@ -6,6 +6,14 @@ export default  {
         id: 'en-US',
         name: 'English(US)',
         data: {
+          global: {
+            folder: 'folder path',
+            fileName: 'file name',
+            saveAs: 'Save As',
+            openWith: 'Open With',
+            ok: 'OK',
+            cancel: 'cancel'
+          },
           loginPage: {
             langTitle: 'language',
             title: 'login',
@@ -52,6 +60,14 @@ export default  {
         id: 'zh-CN',
         name: '中文(简体)',
         data: {
+          global: {
+            folder: '目录',
+            fileName: '文件名',
+            saveAs: '存储为',
+            openWith: '打开方式',
+            ok: '确定',
+            cancel: '取消'
+          },
           loginPage: {
             langTitle: '语言',
             title: '登录',

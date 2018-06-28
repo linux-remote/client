@@ -441,6 +441,19 @@ tr.lrRecycleBinCovered{
   border-top: 2px solid $bg;
   padding: 5px 10px;
   text-align: right;
+  button{
+    margin: 0 5px;
+  }
+}
+.lr-modal-item{
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+.lr-btn-primary{
+  background-color: $drakColor;
+  color: #fff;
+  border-color: $bg;
 }
 
 

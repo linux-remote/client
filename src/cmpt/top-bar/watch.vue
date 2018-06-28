@@ -32,12 +32,14 @@ export default {
     watch(){
       const d = new Date(this.now - this.timeDiff);
       let min = d.getMinutes();
+      let hours = d.getHours();
       min = (min < 10) ? ('0' + min) : min;
+      hours = (hours < 10) ? ('0' + hours) : hours;
       return {
         year: d.getFullYear(),
         mounth: d.getMonth() + 1,
         day: d.getDate(),
-        hours: d.getHours(),
+        hours,
         minutes: min,
         seconds: d.getSeconds()
       }
