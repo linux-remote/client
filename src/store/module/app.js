@@ -49,7 +49,7 @@ export default  {
 
   getters: {
     getById(state, getter, rootState){
-      var self = this;
+
       return (id) => {
         let key = id.indexOf('sys_app') === 0 ? 'sysMap' : 'thirdPartyMap';
         var app = state[key][id];

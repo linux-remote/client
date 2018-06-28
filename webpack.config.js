@@ -118,7 +118,7 @@ module.exports = {
     }]
   },
   resolve: {
-    extensions: ['', '.js', '.vue'],
+    extensions: ['', '.js'],
     alias: {
       '__ROOT__' : path.join(__dirname, './src')
     }

@@ -67,7 +67,6 @@ export default {
       this.$refs.input.select();
     },
     handleInputBlur(){
-      var bak = this.inputAddress
       this.$refs.input.value = '';
       this.$refs.input.value = this.inputAddress;
       this.isInputFocus = false;

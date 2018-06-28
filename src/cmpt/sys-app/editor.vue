@@ -46,7 +46,7 @@ export default {
         e.preventDefault();
       }
     },
-    submit(e){
+    submit(){
 
       // console.log('folderPath', this.folderPath, 'flieName',this.flieName )
       // console.log('pathJoin', pathJoin(this.folderPath , this.flieName) )
