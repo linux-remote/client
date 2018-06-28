@@ -23,7 +23,8 @@
       td {{wellTotalMem}}
     tr
       td(style='color:gray') uptime:
-      td {{wellUptime}}
+      td {{uptime}} 
+        small seconds
     tr
       td(style='color:gray') loadavg:
       td {{loadavg.join(' , ')}}
@@ -78,30 +79,30 @@ export default {
     wellTotalMem(){
       return wellSize(this.totalmem, 2);
     },
-    wellUptime(){
-      let s = this.uptime;
-      let  _a, m , h , d;
-      if(s >= 60){
-        _a = s % 60;
-        m = (s - _a) / 60;
-        s = _a;
-      }
-      if(m >= 60){
-        _a = m % 60;
-        h = (m - _a) / 60
-        m = _a;
-      }
-      if(h >= 24){
-        _a = h % 24;
-        d = (h - _a) / 24
-        h = _a;
-      }
-      d = (d ? '' : d + ' Days ');
-      h = (h ? '' : h + ' hours ');
-      m = (m ? '' : m + ' minutes ');
-      //s = s + ' Seconds';
-      return d + h + m
-    }
+    // wellUptime(){
+    //   let s = this.uptime;
+    //   let  _a, m , h , d;
+    //   if(s >= 60){
+    //     _a = s % 60;
+    //     m = (s - _a) / 60;
+    //     s = _a;
+    //   }
+    //   if(m >= 60){
+    //     _a = m % 60;
+    //     h = (m - _a) / 60
+    //     m = _a;
+    //   }
+    //   if(h >= 24){
+    //     _a = h % 24;
+    //     d = (h - _a) / 24
+    //     h = _a;
+    //   }
+    //   d = (d ? '' : d + ' Days ');
+    //   h = (h ? '' : h + ' hours ');
+    //   m = (m ? '' : m + ' minutes ');
+    //   //s = s + ' Seconds';
+    //   return d + h + m
+    // }
   },
   methods: {
     getData(){

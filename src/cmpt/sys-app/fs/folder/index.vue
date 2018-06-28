@@ -10,13 +10,13 @@
   Selectable.lr-fs-folder-inner(:onSelected='handleSelected', v-else, ref='selectable')
     table.lr-table.lr-fs-folder-table(:class='"lr_file_model_" + model')
       tr
-        th 名称
-        th 所有者
-        th 用户组
-        th 权限
-        th 修改日期
-        th 大小
-          span.lr_is_device_type(v-if='isHaveDevice') /设备类型
+        th {{LANG.th.name}}
+        th {{LANG.th.owner}}
+        th {{LANG.th.group}}
+        th {{LANG.th.permission}}
+        th {{LANG.th.mtime}}
+        th {{LANG.th.size}}
+          span.lr_is_device_type(v-if='isHaveDevice') /{{LANG.th.deviceType}}
       tr(v-if='preCreateItem', class='lr-fs-create-layer', @mousedown.stop='')
         td(colspan='7')
           PreCreate(:p='self')
@@ -102,7 +102,9 @@ export default {
           return 'lr-fs-dir-sticky';
         }
       }
-
+    },
+    LANG(){
+      return this.$store.getters['language/currLanguage'].sys_app_file
     },
     go(){
       return this.$parent.$refs.navBar.go

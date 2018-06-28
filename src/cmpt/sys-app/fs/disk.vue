@@ -1,7 +1,7 @@
 <template lang="jade">
 .lr-fs-right
   ContextMenu(ref='ctx')
-    .lr-ctx-item(@click='reload') 刷新
+    .lr-ctx-item(@click='reload') {{LANG.ctx.Refresh}}
   .lr-hourglass(v-if='isRequest')
   fieldset(v-for='field in map', v-if='field.list.length')
     legend {{field.title}}
@@ -16,7 +16,7 @@
             .lr-disk-process(:style='{width: v.percent + "%"}')
             .lr-disk-i-process(:style='{width: v.ipercent + "%"}', :title='"inode 使用率 " + v.ipercent + "%"')
           .lr-disk-info
-            | {{(v.size - v.used)  | wellSize('K')}} 可用, 共 {{v.size | wellSize('K')}} 
+            | {{(v.size - v.used)  | wellSize('K')}} {{LANG.freeAndTotal}} {{v.size | wellSize('K')}} 
 </template>
 
 <script>
@@ -64,6 +64,9 @@ export default {
     // go(){
     //   return this.$parent.$refs.navBar.go
     // },
+    LANG(){
+      return this.$store.getters['language/currLanguage'].sys_app_disk
+    },
     triggerContainSame(){
       return this.$parent.triggerContainSame
     }

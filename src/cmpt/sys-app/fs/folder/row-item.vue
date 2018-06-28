@@ -7,20 +7,20 @@ tr(@dblclick='open',
     ContextMenu(ref='ctx')
       .lr-ctx-item(@click='handleDel')
         .lr-icon(:style="{backgroundImage: 'url(' + recycleIcon + ')'}")
-        | 移动到回收站
+        | {{LANG.remove}}
       //-.lr-ctx-item(@click='open', v-if='item.type === "RegularFile"')
         .lr-icon
         | 使用打开
       .lr-ctx-item(@click='download', v-if='item.type === "RegularFile"')
         .lr-icon
-        | 下载
+        | {{LANG.download}}
       //-.lr-ctx-item(@click='copy')
         .lr-icon
         | 复制
       hr
       .lr-ctx-item(@click='createSymbolicLink')
         .lr-icon
-        | 创建软链接
+        | {{LANG.createSymbolicLink}}
         
     .lr-name-wrap
       .lr-icon(:class='["lr_file_type_" + item.type, {["lr_fs_open_type_" + item.openType]: item.type !== "Directory"}]', :style='iconStyle')
@@ -71,6 +71,9 @@ export default {
     }
   },
   computed: {
+    LANG(){
+      return this.p.LANG.ctx
+    },
     recycleIcon(){
       return this.$store.state.app.sysMap.sys_app_recycle_bin.iconUrl
     },

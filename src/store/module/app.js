@@ -4,25 +4,40 @@ export default  {
     sysMap: {
       sys_app_file: {
         iconUrl: '/public/img/tango-style/user-home.png',
-        title: '文件管理器'
+        name: {
+          'zh-CN': '文件管理器',
+          'en-US': 'FS Manager'
+        }
       },
       sys_app_recycle_bin : {
         iconUrl: '/public/img/tango-style/user-trash.png',
         isEmpty: true,
         unique: true,
-        title: '回收站'
+        name: {
+          'zh-CN': '回收站',
+          'en-US': 'Recycle Bin'
+        }
       },
       sys_app_disk : {
         iconUrl: '/public/img/system-file-manager-6.png',
-        title: '资源管理器'
+        name: {
+          'zh-CN': '存储管理器',
+          'en-US': 'Storage Manager'
+        }
       },
       sys_app_computer: {
-        iconUrl: '/public/img/tango-style/network-server.png',
-        title: '我的电脑'
+        iconUrl: '/public/img/virt-manager.png',
+        name: {
+          'zh-CN': '系统信息',
+          'en-US': 'System Info'
+        }
       },
       sys_app_editor: {
         iconUrl: '/public/img/accessories-text-editor-6.png',
-        title: '笔记本'
+        name: {
+          'zh-CN': '笔记本',
+          'en-US': 'Notebook'
+        }
       }
     },
     thirdPartyMap: null,
@@ -33,10 +48,19 @@ export default  {
   },
 
   getters: {
-    getById(state){
+    getById(state, getter, rootState){
+      var self = this;
       return (id) => {
         let key = id.indexOf('sys_app') === 0 ? 'sysMap' : 'thirdPartyMap';
-        return state[key][id] || state._unknownApp
+        var app = state[key][id];
+        if(app){
+          if(app.name){
+            app.title = app.name[rootState.language.currId]
+          }
+          
+          return app;
+        }
+        return  state._unknownApp
       }
     }
   },

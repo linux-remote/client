@@ -82,7 +82,6 @@ export default {
   },
   created(){
     if(!this.task.address){
-      this.task.title = '新建'
       return;
     }
     this.getData();

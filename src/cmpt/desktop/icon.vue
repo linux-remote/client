@@ -9,7 +9,7 @@
   ContextMenu(ref='ctx')
     
     .lr-ctx-item(@click="remove")
-      | 移除
+      | {{$parent.LANG.ctx.remove}}
     //-.lr-ctx-item(v-if='item.id === "sys_app_recycle_bin"', @click="clearRecycleBin")
       | 清空
 </template>

@@ -24,6 +24,7 @@ html, body{
 body{
   overflow: hidden;
   background-color: $bg;
+  font-family: arial,sans-serif;
 }
 
 button, select{
@@ -196,7 +197,10 @@ table.leftHead >tr>td:first-child{
 }
 .lr-small-table{
   width: 100%;
-  font-size: 12px;
+  font-size: 13px;
+  td{
+    padding: 2px 5px;
+  }
 }
 .lr-table{
   border-spacing: 0;

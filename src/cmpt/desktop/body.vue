@@ -10,9 +10,9 @@
 
   ContextMenu(ref='ctx')
     .lr-ctx-item(@click="sortIcon")
-      | 整理
+      | {{LANG.ctx.SortOut}}
     .lr-ctx-item(@click="reload")
-      | 刷新
+      | {{LANG.ctx.Refresh}}
 
                 
   TaskWindow(v-for='(item, index) in tasks', :key='item.id', :index='index')
@@ -58,6 +58,9 @@ export default {
   computed:{
     deskTopEvent(){
       return this.$store.state.deskTopEvent
+    },
+    LANG(){
+      return this.$store.getters['language/currLanguage'].deskTop
     },
     tasks(){
       return this.$store.state.task.list;

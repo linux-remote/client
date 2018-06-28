@@ -8,7 +8,7 @@
    
   button.lr-upload-btn(@click='handleUploadBtnClick')
     .lr-fs-upload
-    | 上传文件
+    | {{$parent.LANG.upload}}
 
 </template>
 <script>
