@@ -1,7 +1,7 @@
 <template lang="jade">
 .lr-fs-nav-bar
   .lr-fs-nav-item.lr-fs-nav-left(@click='handleArrowLeftClick', :class='{lr_fs_nav_disabled:backStack.length === 0}')
-  .lr-fs-nav-item.lr-fs-nav-up(@click='handleArrowUpClick', :class='{lr_fs_nav_disabled:address === ""}')
+  .lr-fs-nav-item.lr-fs-nav-up(@click='handleArrowUpClick', :class='{lr_fs_nav_disabled:address === "/"}')
   .lr-fs-nav-item.lr-fs-nav-right(@click='handleArrowRightClick', :class='{lr_fs_nav_disabled:goStack.length === 0}')
   .lr-fs-address
     .lr-fs-address-inner(v-if="!isInputFocus")
@@ -38,7 +38,7 @@ export default {
     address(){
       var len = this.addressArr.length;
       if(!len){  //''.split('/')  [""]
-        return '';
+        return '/';
       }
       if(len === 1){  //''.split('/')  [""]
         return '/';
@@ -63,12 +63,13 @@ export default {
     },
     handleInputFocus(){
       this.isInputFocus = true;
-      setTimeout(()=>{
-        this.$refs.input.select();
-      },200);
+
+      this.$refs.input.select();
     },
     handleInputBlur(){
-      console.log('blur')
+      var bak = this.inputAddress
+      this.$refs.input.value = '';
+      this.$refs.input.value = this.inputAddress;
       this.isInputFocus = false;
     },
     handleArrowLeftClick(){
@@ -87,6 +88,9 @@ export default {
       this.addressArr = pop;
     },
     handleArrowUpClick(){
+      if(this.address === "/"){
+        return;
+      }
       var len = this.addressArr.length - 1;
       let arr = this.addressArr.slice(0, len);
       this.go(arr);

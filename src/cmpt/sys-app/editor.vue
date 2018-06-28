@@ -55,10 +55,12 @@ export default {
       const address = pathJoin(this.folderPath , this.flieName);
       this.task.address = '~/fs/' + encodePath(address)
       this.task.title = this.flieName
-      this.save(true);
-      this.hiddenModal();
+      this.save(() => {
+        this.hiddenModal();
+      });
+      
     },
-    save(isAdd){
+    save(cb){
       if(this.isSaveDisabled){
         return;
       }
@@ -77,10 +79,11 @@ export default {
           data.name = this.task.title;
           this.$store.commit('fsTrigger', {
             address: this.task.dir,
-            type: isAdd ? 'add' : 'update',
+            type: cb ? 'add' : 'update',
             item: data
           });
           this.oldData = this.data;
+          cb || cb();
         }
       })
     },

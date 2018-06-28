@@ -1,10 +1,8 @@
 <template lang="jade">
-.lr-watch(v-if='clientDate',:title='timeZone.offset.name + ", " +  formatedOffset + ", " + timeZone.name')
+.lr-watch(v-if='clientDate')
   .lr-watch-left 
-    span(style='font-size: 16px')  {{watch.hours}}:{{watch.minutes}}
-  .lr-watch-timezone
-    div(style='color:#000;font-size: 13px') {{watch.year}}-{{watch.mounth}}-{{watch.day}}
-    div {{timeZone.name}}
+    span {{watch.year}}-{{watch.mounth}}-{{watch.day}} {{watch.hours}}:{{watch.minutes}}
+  .lr-watch-timezone(:title='timeZone.offset.name + ", " + timeZone.name') | {{formatedOffset}}
 </template>
 
 <script>
