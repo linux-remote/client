@@ -11,3 +11,5 @@
 /static-server.js
 /webpack.config.js
 /index.html
+/.vscode
+/.setup.js
