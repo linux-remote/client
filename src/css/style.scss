@@ -499,3 +499,14 @@ tr.lrRecycleBinCovered{
   background: $drakColor;
   color: #fff;
 }
+.lr-drop-menu-wrap{
+  position: relative;
+}
+.lr-drop-menu{
+  position: absolute; 
+  top: 120%;
+  right: -5px;
+  width: 255px;
+  background-color: #fff;
+  border: 2px outset #eee;
+}

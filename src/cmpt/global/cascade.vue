@@ -6,7 +6,8 @@
   position: absolute;
   top: 0;
   min-width: 200px;
-  background-color: red;
+  background-color: #fff;
+  color: #000;
 }
 </style>
 <template lang="jade">

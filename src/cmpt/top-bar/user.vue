@@ -42,7 +42,7 @@ export default {
       return this.$store.state.groups[0]
     },
     groups(){
-      return this.$store.state.groups.join(',')
+      return this.$store.state.groups.join(' , ')
     },
     homedir(){
       return this.$store.state.homedir;
