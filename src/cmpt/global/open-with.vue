@@ -2,14 +2,14 @@
 <template lang="jade">
 .lr-modal(v-if='data', @click='hidden')
   .lr-modal-box(@click.stop='')
-    .lr-modal-title {{LANG.openWith}}
+    .lr-modal-title {{LANG.global.openWith}}
     .lr-modal-body
       .lr-open-with-item
         .lr-icon(:style="{backgroundImage: `url(${sysEditor.iconUrl})`}")
-        | {{sysEditor.title}}
+        | {{editorTitle}}
     .lr-modal-footer
-      button(@click='open') {{LANG.ok}}
-      button(@click='hidden') {{LANG.cancel}}
+      button(@click='open') {{LANG.global.ok}}
+      button(@click='hidden') {{LANG.global.cancel}}
 </template>
 
 <script>
@@ -20,7 +20,10 @@ export default {
       return this.$store.state.openWidthData
     },
     LANG(){
-      return this.$store.getters['language/currLanguage'].global
+      return this.$store.getters['language/currLanguage']
+    },
+    editorTitle(){
+      return this.LANG.sys_app_editor.title
     },
     sysEditor(){
       return this.$store.getters['app/getById']('sys_app_editor')

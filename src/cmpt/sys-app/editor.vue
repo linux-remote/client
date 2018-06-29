@@ -69,7 +69,8 @@ export default {
         this.isShowModal = true;
         console.log('new one')
         return;
-      } 
+      }
+      var isAdd = typeof cb === 'function';
       this.request({
         url: this.task.address,
         stateKey: 'isRequest',
@@ -79,11 +80,11 @@ export default {
           data.name = this.task.title;
           this.$store.commit('fsTrigger', {
             address: this.task.dir,
-            type: cb ? 'add' : 'update',
+            type: isAdd ? 'add' : 'update',
             item: data
           });
           this.oldData = this.data;
-          cb || cb();
+          isAdd && cb();
         }
       })
     },
