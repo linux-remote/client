@@ -132,6 +132,7 @@ module.exports = {
   devServer: {
     setup,
     contentBase: path.join(__dirname, conf.indexDir),
-    hot: true
+    hot: true,
+    noInfo: true
   }
 };

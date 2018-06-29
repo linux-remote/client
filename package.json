@@ -10,7 +10,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack-dev-server -d --hidden --history-api-fallback --hot --inline --progress --colors --port 4000",
+    "start": "webpack-dev-server -d --hide-modules --progress --hot --inline --colors --port 4000",
     "build": "webpack --colors",
     "pro": "node script/pro"
   },
