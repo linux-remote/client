@@ -45,7 +45,7 @@ export default {
     changeLANG(index){
       this.currLangIndex = index;
       this.$store.commit('language/set', this.currLangIndex);
-      this.$refs.drop.showDrop = false;
+      this.$refs.drop.hidden();
       //location.reload(false);
     }
   }

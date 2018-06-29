@@ -1,19 +1,20 @@
 import store from '__ROOT__/store/index.js';
 const DOC_TITLE = document.title;
 
-var ws, wsOrigin,
-  isSSL = location.protocol.indexOf('https') !== -1 ||
-  window.SERVER_CONFIG.API_ROOT.indexOf('https') !== -1
-if(isSSL){
-  wsOrigin = 'wss:'
-}else{
-  wsOrigin = 'ws:'
-}
-if(window.SERVER_CONFIG.API_ROOT === '/api'){
-  wsOrigin = wsOrigin + '//' + location.host;
-}else{
-  wsOrigin = wsOrigin + '//' + window.SERVER_CONFIG.API_ROOT.split('/')[2]
-}
+// var wsOrigin,
+//   ws,
+//   isSSL = location.protocol.indexOf('https') !== -1 ||
+//   window.SERVER_CONFIG.API_ROOT.indexOf('https') !== -1
+// if(isSSL){
+//   wsOrigin = 'wss:'
+// }else{
+//   wsOrigin = 'ws:'
+// }
+// if(window.SERVER_CONFIG.API_ROOT === '/api'){
+//   wsOrigin = wsOrigin + '//' + location.host;
+// }else{
+//   wsOrigin = wsOrigin + '//' + window.SERVER_CONFIG.API_ROOT.split('/')[2]
+// }
 
 // export function createWs(username){ // webSocket 开始
 //   ws = new WebSocket(`${wsOrigin}?user=${username}`);

@@ -18,16 +18,20 @@ export default {
   methods:{
     show(){
       if(!this.showDrop){
-        document.addEventListener('click', () => {
-          this.showDrop = false;
-        }, {
+        document.addEventListener('click', this.handleDocClick, {
           once: true
         });
-      };
+      }
       this.showDrop = !this.showDrop;
     },
+    handleDocClick(){
+      this.showDrop = false;
+    },
     hidden(){
-      this.showDrop = false
+      this.showDrop = false;
+      document.removeEventListener('click', this.handleDocClick, {
+        once: true
+      });
     }
   }
 }
