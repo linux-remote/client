@@ -1,6 +1,6 @@
 <template lang="jade">
 .lr-drop-menu-wrap
-  .lr-drop-menu-btn(@click='show', :class='{lr_drop_menu_active:showDrop}')
+  .lr-drop-menu-btn(@click.stop='show', :class='{lr_drop_menu_active:showDrop}')
     slot
   .lr-drop-menu(v-show='showDrop', @click='noopStop')
     slot(name='menu')
@@ -17,15 +17,17 @@ export default {
   },
   methods:{
     show(){
-      if(this.showDrop) return;
-      this.showDrop = true;
-      setTimeout(()=>{
+      if(!this.showDrop){
         document.addEventListener('click', () => {
           this.showDrop = false;
         }, {
           once: true
         });
-      })
+      };
+      this.showDrop = !this.showDrop;
+    },
+    hidden(){
+      this.showDrop = false
     }
   }
 }

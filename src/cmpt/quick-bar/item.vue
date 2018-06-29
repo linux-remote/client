@@ -4,7 +4,7 @@
     @click="handleClick"
     )
     ContextMenu
-      .lr-ctx-item(@click='remove') 移除
+      .lr-ctx-item(@click='remove') {{$parent.LANG.remove}}
 </template>
 
 <script>

@@ -3,7 +3,7 @@ div(draggable="true",
     @dragstart.stop='handleDragStart',
     @click='handleCLick')
   .lr-sys-app-icon(:style="`background-image:url(${item.iconUrl})`") 
-  .lr-sys-app-title {{item.title}}
+  .lr-sys-app-title {{LANG.title}}
 </template>
 
 <script>
@@ -19,7 +19,14 @@ export default {
       required: true
     }
   },
-
+  computed: {
+    app(){
+      return this.$store.getters['app/getById'](this.item.id)
+    },
+    LANG(){
+      return this.$store.getters['language/currLanguage'][this.id]
+    }
+  },
   methods: {
     handleCLick(){
       this.$store.commit('task/add', this.id);

@@ -19,6 +19,7 @@ export default  {
         }
       },
       sys_app_disk : {
+        unique: true,
         iconUrl: '/public/img/system-file-manager-6.png',
         name: {
           'zh-CN': '存储管理器',
@@ -26,6 +27,7 @@ export default  {
         }
       },
       sys_app_computer: {
+        unique: true,
         iconUrl: '/public/img/virt-manager.png',
         name: {
           'zh-CN': '系统信息',
@@ -34,6 +36,7 @@ export default  {
       },
       sys_app_editor: {
         iconUrl: '/public/img/accessories-text-editor-6.png',
+        title: null,
         name: {
           'zh-CN': '笔记本',
           'en-US': 'Notebook'
@@ -48,14 +51,14 @@ export default  {
   },
 
   getters: {
-    getById(state, getter, rootState){
+    getById(state, getters, rootState, rootGetters){
 
       return (id) => {
         let key = id.indexOf('sys_app') === 0 ? 'sysMap' : 'thirdPartyMap';
         var app = state[key][id];
         if(app){
           if(app.name){
-            app.title = app.name[rootState.language.currId]
+            app.title = rootGetters['language/currLanguage'][id].title
           }
           
           return app;

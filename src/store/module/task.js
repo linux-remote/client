@@ -36,7 +36,7 @@ export default  {
         ...opts,
         APP
       }
-      data.title = data.title || APP.title;
+      data.title = data.title || null;
       data.unique = APP.unique || false;
 
       if(data.unique){

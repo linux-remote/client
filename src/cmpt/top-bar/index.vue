@@ -5,18 +5,18 @@
     .lr-top-small-icon(style='background-image:url(/public/file-tree.svg)')
   Watch
   User
-  //-Menu
+  Menu
 </template>
 
 <script>
 import Watch from './watch.vue';
 import User from './user.vue';
-//-import Menu from './menu.vue';
+import Menu from './menu.vue';
 export default {
   components:{
     Watch,
     User,
-    //-Menu
+    Menu
   }
 }
 </script>

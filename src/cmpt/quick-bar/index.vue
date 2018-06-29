@@ -24,6 +24,9 @@ export default {
   computed: {
     list(){
       return this.$store.state.quickBarItems
+    },
+    LANG(){
+      return this.$store.getters['language/currLanguage'].global
     }
   },
   methods: {

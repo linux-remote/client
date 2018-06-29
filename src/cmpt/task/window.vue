@@ -9,7 +9,7 @@
                                   :startX='positionLeft',
                                   :startY='positionTop')
       .lr-icon(:style="`background-image:url(${APP.iconUrl})`")
-      | {{title}}
+      | {{currTitle}}
     .lr-task-control
       .lr-task-control-min(@click.stop='hiddenTask')
       div(@click.stop='maxToggle',
@@ -56,6 +56,9 @@ export default {
     return this.$store.state.task.list[this.index];
   },
   computed:{
+    currTitle(){
+      return this.title || this.$store.getters['language/currLanguage'][this.appId].title
+    },
     deskTopW(){
       return this.$store.state.deskTopW
     },

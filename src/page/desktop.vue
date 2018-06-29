@@ -103,7 +103,7 @@ export default {
             homedir: data.homedir,
             hostname: data.hostname,
             mask: data.mask,
-            quickBarItems: JSON.parse(data.quickBar)
+            quickBarItems: data.quickBar ? JSON.parse(data.quickBar) : [{id: 'sys_app_file'}]
           });
           this.$store.commit('app/changeRecycleBinIcon', data.recycebinIsEmpty);
           this.icons = data.icons;

@@ -74,10 +74,10 @@ $topBarRight : 100px;
   padding: 5px 10px;
   word-wrap: break-word;
   b{
-    margin-right:.3em
+    margin-right:.3em;
   }
   a{
-    color: $drakColor;
+    color: #4B869E;
   }
 }
 .lr-user-name{
@@ -105,4 +105,9 @@ $topBarRight : 100px;
 }
 .lr-menu{
   background-image: url('/public/menu.svg')
+}
+.lr-drop-menu-btn{
+  &.lr_drop_menu_active, &:hover{
+    background-color: $bg2;
+  }
 }

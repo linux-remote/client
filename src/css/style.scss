@@ -284,9 +284,15 @@ tr.lrRecycleBinCovered{
   display: flex;
   align-items: center;
   justify-content: space-between;
+  a{
+    color:#4169E1;
+  }
   &:hover{
     background-color:$drakColor;
     color: #fff;
+    >a {
+      color: #fff;
+    }
   }
 }
 .lr-ctx-item:last-child{
@@ -509,4 +515,14 @@ tr.lrRecycleBinCovered{
   width: 255px;
   background-color: #fff;
   border: 2px outset #eee;
+}
+.lr_lang_item::before{
+  content: '';
+  width: 10px;
+  height: 10px;
+  background-color: $bg;
+  visibility: hidden;
+}
+.lr_lang_active::before{
+  visibility:visible;
 }

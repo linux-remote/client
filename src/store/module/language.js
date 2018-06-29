@@ -13,13 +13,13 @@ export default  {
             openWith: 'Open With',
             ok: 'OK',
             cancel: 'cancel',
-
+            remove: 'remove',
             fileAlreadyExist: 'file already exist',
             cover: 'Cover',
             skip: 'Skip',
             coverAll: 'Cover All',
-            skipAll: 'Skip All'
-            
+            skipAll: 'Skip All',
+            donate: 'Donate'
           },
           loginPage: {
             langTitle: 'language',
@@ -38,13 +38,24 @@ export default  {
               remove: 'remove'
             }
           },
+          sys_app_recycle_bin: {
+            title: 'Recycle Bin'
+          },
           sys_app_disk: {
             ctx: {
               Refresh: 'Refresh'
             },
+            title: 'Storage Manager',
             freeAndTotal: 'free of'
           },
+          sys_app_computer: {
+            title: 'System Info'
+          },
+          sys_app_editor: {
+            title: 'Notebook'
+          },
           sys_app_file: {
+            title: 'FS Manager',
             ctx: {
               remove: 'mv into recycle bin',
               download: 'download',
@@ -74,12 +85,13 @@ export default  {
             openWith: '打开方式',
             ok: '确定',
             cancel: '取消',
-
+            remove: 'remove',
             fileAlreadyExist: '文件已存在',
             cover: '覆盖',
             skip: '跳过',
             coverAll: '一律覆盖',
-            skipAll: '一律跳过'
+            skipAll: '一律跳过',
+            donate: '捐赠'
           },
           loginPage: {
             langTitle: '语言',
@@ -98,13 +110,24 @@ export default  {
               remove: '移除'
             }
           },
+          sys_app_editor: {
+            title: '笔记本'
+          },
+          sys_app_recycle_bin: {
+            title: '回收站'
+          },
+          sys_app_computer: {
+            title: '系统信息'
+          },
           sys_app_disk: {
             ctx: {
               Refresh: '刷新'
             },
+            title: '存储管理器',
             freeAndTotal: '可用, 共'
           },
           sys_app_file: {
+            title: '文件管理器',
             ctx: {
               remove: '移动到回收站',
               download: '下载',

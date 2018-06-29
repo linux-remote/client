@@ -20,6 +20,9 @@
       .lr-login-footer
         button(type="submit", :class='{lr_loading:isRequest}') {{LANG.submitBtn}}
       .lr-login-error(v-show="error") {{error}}
+  .lr-login-bottom
+    a(href='https://github.com/linux-remote/linux-remote/blob/master/LICENSE', target='_blank') Licenses
+    a(href='https://github.com/linux-remote', target='_blank') Source code
 </template>
 
 <script>

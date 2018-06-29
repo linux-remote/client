@@ -15,12 +15,12 @@ if(window.SERVER_CONFIG.API_ROOT === '/api'){
   wsOrigin = wsOrigin + '//' + window.SERVER_CONFIG.API_ROOT.split('/')[2]
 }
 
-export function createWs(username){ // webSocket 开始
-  ws = new WebSocket(`${wsOrigin}?user=${username}`);
-  ws.onmessage = function (event) {
-    console.log('ws', event.data);
-  };
-}
+// export function createWs(username){ // webSocket 开始
+//   ws = new WebSocket(`${wsOrigin}?user=${username}`);
+//   ws.onmessage = function (event) {
+//     console.log('ws', event.data);
+//   };
+// }
 
 export function logout(){
   this.request({

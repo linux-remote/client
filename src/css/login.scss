@@ -58,3 +58,17 @@
   font-size: 14px;
   width: 100%;
 }
+.lr-login-bottom{
+  position: absolute;
+  bottom: 1px;
+  width: 980px;
+  margin: 0 auto;
+  text-align: right;
+  color: #fff;
+  font-size: 15px;
+
+  a{
+    color: #fff;
+    margin: 0 5px;
+  }
+}

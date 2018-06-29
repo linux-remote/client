@@ -4,7 +4,7 @@
               @dragstart.stop='handleDragStart(item, $event)',
               :style='{left: item.x + "px", top: item.y + "px"}')
   .lr-desk-icon-img(:style="{backgroundImage: `url(${app.iconUrl})`}")
-  .lr-desk-icon-text {{app.title}}
+  .lr-desk-icon-text {{LANG.title}}
 
   ContextMenu(ref='ctx')
     
@@ -36,9 +36,9 @@ export default {
     app(){
       return this.$store.getters['app/getById'](this.item.id)
     },
-    // currTitle(){
-    //   return this.item.title || this.app.title
-    // }
+    LANG(){
+      return this.$store.getters['language/currLanguage'][this.item.id]
+    }
   },
   methods: {
     // clearRecycleBin(){
