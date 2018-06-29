@@ -2,14 +2,14 @@
 <template lang="jade">
 .lr-modal(v-if='data', @click='hidden')
   .lr-modal-box(@click.stop='')
-    .lr-modal-title 打开方式
+    .lr-modal-title {{LANG.openWith}}
     .lr-modal-body
       .lr-open-with-item
         .lr-icon(:style="{backgroundImage: `url(${sysEditor.iconUrl})`}")
         | {{sysEditor.title}}
     .lr-modal-footer
-      button(@click='open') 确定
-      button(@click='hidden') 取消
+      button(@click='open') {{LANG.ok}}
+      button(@click='hidden') {{LANG.cancel}}
 </template>
 
 <script>
@@ -18,6 +18,9 @@ export default {
   computed: {
     data(){
       return this.$store.state.openWidthData
+    },
+    LANG(){
+      return this.$store.getters['language/currLanguage'].global
     },
     sysEditor(){
       return this.$store.getters['app/getById']('sys_app_editor')

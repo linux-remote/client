@@ -23,18 +23,18 @@
   input(type='file' multiple="true" ref='uploadBtn' id='lr-upload-input' style="display:none" @change='handleChange')
   .lr-upload-modal(v-if='coveredList.length')
     .lr-modal-box
-      .lr-modal-title 文件已存在
+      .lr-modal-title {{LANG.fileAlreadyExist}}
       .lr-modal-body
         table
           tr(v-for='(v,i) in coveredList', :key='i')
             td  {{v}}
             td
-              button(@click='cover(v, i)') 覆盖
-              button(@click='skip(v, i)') 跳过
+              button(@click='cover(v, i)') {{LANG.cover}}
+              button(@click='skip(v, i)') {{LANG.skip}}
       .lr-modal-footer
-        button(@click='coverAll') 一律覆盖
-        button(@click='skipAll') 一律跳过
-        button(@click='cancel') 取消上传
+        button(@click='coverAll') {{LANG.coverAll}}
+        button(@click='skipAll') {{LANG.skipAll}}
+        button(@click='cancel') {{LANG.cancel}}
 </template>
 
 <script>
@@ -49,7 +49,10 @@ export default {
   computed: {
     address(){
       return this.$store.state.upload.address
-    }
+    },
+    LANG(){
+      return this.$store.getters['language/currLanguage'].global
+    },
   },
   methods: {
     skipAll(){

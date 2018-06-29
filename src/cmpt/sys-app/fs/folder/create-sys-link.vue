@@ -1,19 +1,24 @@
 <template lang="jade">
 .lr-modal
   .lr-modal-box
-    .lr-modal-title 创建软链接
+    .lr-modal-title {{LANG.sys_app_file.ctx.createSymbolicLink}}
     .lr-modal-body
       input(v-model='name', ref='input', required="required")
     .lr-modal-footer
-      button(@click='submit') 确定
-      button(@click='close') 取消
+      button(@click='submit') {{LANG.global.ok}}
+      button(@click='close') {{LANG.global.cancel}}
 </template>
 
 <script>
 import {encodePath} from './util';
 export default {
 
+  computed: {
 
+    LANG(){
+      return this.$store.getters['language/currLanguage']
+    },
+  },
   data(){
     return {
       name: this.$parent.createSysLinkName + '.lnk'

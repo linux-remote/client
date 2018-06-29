@@ -12,7 +12,14 @@ export default  {
             saveAs: 'Save As',
             openWith: 'Open With',
             ok: 'OK',
-            cancel: 'cancel'
+            cancel: 'cancel',
+
+            fileAlreadyExist: 'file already exist',
+            cover: 'Cover',
+            skip: 'Skip',
+            coverAll: 'Cover All',
+            skipAll: 'Skip All'
+            
           },
           loginPage: {
             langTitle: 'language',
@@ -66,7 +73,13 @@ export default  {
             saveAs: '存储为',
             openWith: '打开方式',
             ok: '确定',
-            cancel: '取消'
+            cancel: '取消',
+
+            fileAlreadyExist: '文件已存在',
+            cover: '覆盖',
+            skip: '跳过',
+            coverAll: '一律覆盖',
+            skipAll: '一律跳过'
           },
           loginPage: {
             langTitle: '语言',
