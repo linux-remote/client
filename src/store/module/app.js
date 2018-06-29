@@ -4,43 +4,43 @@ export default  {
     sysMap: {
       sys_app_file: {
         iconUrl: '/public/img/tango-style/user-home.png',
-        name: {
-          'zh-CN': '文件管理器',
-          'en-US': 'FS Manager'
-        }
+        // name: {
+        //   'zh-CN': '文件管理器',
+        //   'en-US': 'FS Manager'
+        // }
       },
       sys_app_recycle_bin : {
         iconUrl: '/public/img/tango-style/user-trash.png',
         isEmpty: true,
         unique: true,
-        name: {
-          'zh-CN': '回收站',
-          'en-US': 'Recycle Bin'
-        }
+        // name: {
+        //   'zh-CN': '回收站',
+        //   'en-US': 'Recycle Bin'
+        // }
       },
       sys_app_disk : {
         unique: true,
         iconUrl: '/public/img/system-file-manager-6.png',
-        name: {
-          'zh-CN': '存储管理器',
-          'en-US': 'Storage Manager'
-        }
+        // name: {
+        //   'zh-CN': '存储管理器',
+        //   'en-US': 'Storage Manager'
+        // }
       },
       sys_app_computer: {
         unique: true,
         iconUrl: '/public/img/virt-manager.png',
-        name: {
-          'zh-CN': '系统信息',
-          'en-US': 'System Info'
-        }
+        // name: {
+        //   'zh-CN': '系统信息',
+        //   'en-US': 'System Info'
+        // }
       },
       sys_app_editor: {
         iconUrl: '/public/img/accessories-text-editor-6.png',
-        title: null,
-        name: {
-          'zh-CN': '笔记本',
-          'en-US': 'Notebook'
-        }
+        // title: null,
+        // name: {
+        //   'zh-CN': '笔记本',
+        //   'en-US': 'Notebook'
+        // }
       }
     },
     thirdPartyMap: null,
@@ -57,9 +57,9 @@ export default  {
         let key = id.indexOf('sys_app') === 0 ? 'sysMap' : 'thirdPartyMap';
         var app = state[key][id];
         if(app){
-          if(app.name){
-            app.title = rootGetters['language/currLanguage'][id].title
-          }
+          // if(app.name){
+          //   app.title = rootGetters['language/currLanguage'][id].title
+          // }
           
           return app;
         }
