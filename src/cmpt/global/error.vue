@@ -26,6 +26,11 @@ export default {
           this.$refs.body.scrollTop = 9999999;
         }
       })
+    },
+    $route(){
+      if(this.message.length){
+        this.close();
+      }
     }
   },
   methods: {

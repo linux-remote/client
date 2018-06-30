@@ -1,6 +1,7 @@
 <template lang="jade">
 #lr-desktop.lr-desk(@drop='handleDeskDrop',
-                    @dragover.prevent='',
+                    @dragenter='handleDragenter',
+                    @dragover='handleDragover',
                     @mousedown='handleMousedown',
                     @dragend='handleIconDragEnd')
   Icon(v-for="(v,i) in list",
@@ -52,7 +53,8 @@ export default {
 
     return {
       list: icons,
-      _isInDesk: false
+      _isInDesk: false,
+      _isCanDrop: true
     }
   },
   computed:{
@@ -77,6 +79,20 @@ export default {
     }
   },
   methods: {
+    handleDragenter(){
+      var data = this.$store.state.dragTransferData;
+      var id = data.id;
+      console.log('id', id)
+      const isHave = this.list.find(function(v){
+        return v.id === id;
+      })
+      this.$data._isCanDrop = isHave === undefined;
+    },
+    handleDragover(e){
+      if(this.$data._isCanDrop){
+        e.preventDefault();
+      }
+    },
     handleMousedown(e){
       if(!e._isHandle){
         this.$store.commit('task/currentUnFocus');
