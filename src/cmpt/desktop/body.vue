@@ -81,6 +81,9 @@ export default {
   methods: {
     handleDragenter(){
       var data = this.$store.state.dragTransferData;
+      if(data._isFromDeskTop){
+        return;
+      }
       var id = data.id;
       console.log('id', id)
       const isHave = this.list.find(function(v){

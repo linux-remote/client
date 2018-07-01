@@ -70,6 +70,7 @@ export default {
       this.$store.commit('transferDragData', {
         id: this.item.id,
         type: this.item.type,
+        _isFromDeskTop: true,
         _startClient : {
           x: e.clientX,
           y: e.clientY,
