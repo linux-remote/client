@@ -12,7 +12,8 @@ if(API_ROOT.indexOf('http') === 0){
   $.ajaxSetup({
     xhrFields: {
       withCredentials: true
-    }
+    },
+    headers: {'X-Requested-With': 'XMLHttpRequest'}
   });
 }
 
