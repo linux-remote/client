@@ -71,17 +71,21 @@ export default {
     recycle(item){
       this.request({
         url: '~/recycleBin/recycle',
-        data: item,
+        data: {
+          id: item.id,
+          sourceDir: item.sourceDir,
+          name: item.source.name
+        },
         type: 'post',
         success(){
 
           this.removeItem(item);
 
           let address = item.sourceDir
-          delete(item.delTime);
-          delete(item.isCover);
-          delete(item.sourceDir);
-          item.source.name = item.name;
+          // delete(item.delTime);
+          // delete(item.isCover);
+          // delete(item.sourceDir);
+          // item.source.name = item.name;
           this.$store.commit('fsTrigger', {
             type: 'add',
             address,
@@ -95,12 +99,12 @@ export default {
       this.data.splice(i, 1);
     },
     del(item){
-      let name = item.delTime;
+
       if(!item.isError && !confirm('Are you sure to delete "' + item.source.name + '" ?')){
         return;
       }
       this.request({
-        url: '~/recycleBin/' + name,
+        url: '~/recycleBin/' + item.id,
         type: 'delete',
         success(){
           this.removeItem(item);

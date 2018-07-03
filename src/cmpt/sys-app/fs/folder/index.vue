@@ -327,19 +327,32 @@ export default {
     //     v.focus = false;
     //   }
     // },
+
     itemFocus(item, e){
 
       item.focus = true;
       if(this.currItem !== item){
-        this.currItem.focus = false;
+        
         if(e){
+          let arr = this.$refs.selectable.$children;
+
           if(e.ctrlKey){
-            this.currItem.beSelected = true;
-            this.selectedArr.push(item);
-            this.selectedArr.push(this.currItem);
+            console.log('this.currItem.focus', this.currItem.focus)
+            if(!this.selectedArr.length && this.currItem.focus === true && !this.currItem.beSelected){
+              this.currItem.beSelected = true;
+              this.selectedArr.push(arr.find((v) => v.$data === this.currItem));
+            }
+
+            if(!item.beSelected){
+              item.beSelected = true;
+              this.selectedArr.push(arr.find((v) => v.$data === item));
+            }
+            
+            //this.selectedArr.push(this.currItem);
+            //console.log(this.selectedArr.length);
           }else if(e.shiftKey){
             this.clearSelected();
-            let arr = this.$refs.selectable.$children;
+            
             let i1 = arr.findIndex(v => v.$data === item);
             let i2 = arr.findIndex(v => v.$data === this.currItem);
             let start, max;
@@ -361,6 +374,7 @@ export default {
             this.clearSelected();
           }
         }
+        this.currItem.focus = false;
         this.currItem = item;
       }
     },
