@@ -1,7 +1,7 @@
 <template lang="jade">
 .lr-fs-nav-bar
   .lr-fs-nav-item.lr-fs-nav-left(@click='handleArrowLeftClick', :class='{lr_fs_nav_disabled:backStack.length === 0}')
-  .lr-fs-nav-item.lr-fs-nav-up(@click='handleArrowUpClick', :class='{lr_fs_nav_disabled:address === "/"}')
+  .lr-fs-nav-item.lr-fs-nav-up(@click='handleArrowUpClick', :class='{lr_fs_nav_disabled:address === ""}')
   .lr-fs-nav-item.lr-fs-nav-right(@click='handleArrowRightClick', :class='{lr_fs_nav_disabled:goStack.length === 0}')
   .lr-fs-address
     .lr-fs-address-inner(v-if="!isInputFocus")
@@ -36,10 +36,12 @@ export default {
   },
   computed: {
     address(){
+      
       var len = this.addressArr.length;
       if(!len){  //''.split('/')  [""]
-        return '/';
+        return '';
       }
+      
       if(len === 1){  //''.split('/')  [""]
         return '/';
       }
@@ -48,6 +50,7 @@ export default {
   },
   watch: {
     address(v){
+      console.log('watch', this.addressArr.length)
       this.inputAddress = v;
       this.onChange(v);
     }
@@ -87,7 +90,7 @@ export default {
       this.addressArr = pop;
     },
     handleArrowUpClick(){
-      if(this.address === "/"){
+      if(this.address === ""){
         return;
       }
       var len = this.addressArr.length - 1;
@@ -109,6 +112,7 @@ export default {
     },
     setAddress(path){
       if(typeof path === 'string'){
+        
         if(!path){
           this.addressArr = []
         }else {
@@ -118,9 +122,10 @@ export default {
             this.addressArr = path.split('/');
           }
         }
-      }else{
+      }else{ // Array
         this.addressArr = path;
       }
+      console.log(this.address)
     }
   }
 }

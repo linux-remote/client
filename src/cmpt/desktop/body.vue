@@ -81,6 +81,9 @@ export default {
   methods: {
     handleDragenter(){
       var data = this.$store.state.dragTransferData;
+      if(!data){
+        return;
+      }
       if(data._isFromDeskTop){
         return;
       }
