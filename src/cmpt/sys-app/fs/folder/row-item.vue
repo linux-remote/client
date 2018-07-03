@@ -110,6 +110,7 @@ export default {
     handleDel(){
       if(this.p.selectedArr.length){
         this.p.selectedArr.forEach(item => {
+          console.log('item', item)
           item.del();
         })
       }else{

@@ -6,7 +6,7 @@
   fieldset(v-for='field in map', v-if='field.list.length')
     legend {{field.title}}
     .lr-fieldset-body
-      .lr-disk-item(v-for='(v, i) in field.list', :key='i')
+      .lr-disk-item(v-for='(v, i) in field.list', :key='i', :title='v.source')
         .lr-disk-left
           .lr-disk-icon(:class='"lr-disk-" + v.type')
           .lr-disk-type {{v.fstype}} 
@@ -98,7 +98,8 @@ export default {
             obj.percent = (obj.used / obj.size) * 100;
             obj.iavailable = obj.itotal - obj.iused;
             obj.ipercent = trimEnd0(((obj.iused / obj.itotal) * 100).toFixed(2));
-            if(obj.source.indexOf('/dev/sr') === 0){
+            var source = obj.source;
+            if(source.indexOf('/dev/sr') === 0){
               obj.type = 'cd';
               cdArr.push(obj);
             }else {
@@ -106,7 +107,9 @@ export default {
                 obj.type = 'memory'
                 memoryArr.push(obj);
               }else {
-                if(obj.source.indexOf('/dev/sd') === 0 || obj.fstype === 'vboxsf'){
+                if(source.indexOf('/dev/sd') === 0 || 
+                source.indexOf('/dev/vda') === 0 ||
+                obj.fstype === 'vboxsf'){// vda RAID, http://www.webhostingtalk.com/showthread.php?t=1266066
                   obj.type = 'hd';
                   hdArr.push(obj);
                 }else {
