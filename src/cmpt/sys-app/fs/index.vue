@@ -4,27 +4,38 @@
   NavBar(ref='navBar', :onChange="handleNavChange")
   .lr-fs-bottom-wrap
     //-Left
-    Disk(v-if='address === ""')
+    .lr-fs-index(v-if='address === ""')
+      div(@click='go("/")') /
+      div(@click='go(homedir)') Home
     Folder(v-else-if='address', :address='address', :triggerContainSame='triggerContainSame')
 </template>
 
 <script>
 import NavBar from './nav-bar.vue';
 //-import Left from './left.vue';
-import Disk from './disk.vue';
+//import Disk from './disk.vue';
 import Folder from './folder/index.vue';
 
 export default {
   components:{
     //-Left,
     NavBar,
-    Disk,
+    //-Disk,
     Folder
   },
   data(){
     return {
       address: null,
       triggerContainSame : null
+    }
+  },
+  computed: {
+
+    go(){
+      return this.$refs.navBar.go
+    },
+    homedir(){
+      return this.$store.state.homedir
     }
   },
   methods: {

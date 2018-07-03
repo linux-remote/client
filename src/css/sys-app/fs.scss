@@ -11,6 +11,26 @@
   position: relative;
   overflow: auto;
 }
+
+.lr-fs-index{
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-size: 2em;
+  >div{
+    text-align: center;
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer;
+    margin: 10px;
+    padding: 0 5px;
+    &:hover{
+      background-color: $bg;
+    }
+  }
+}
 // *************** Left ***************
 // .lr-fs-left{
 //   overflow: auto;
