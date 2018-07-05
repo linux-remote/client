@@ -50,7 +50,7 @@ export default {
   },
   watch: {
     address(v){
-      console.log('watch', this.addressArr.length)
+      //console.log('watch', this.addressArr.length)
       this.inputAddress = v;
       this.onChange(v);
     }
