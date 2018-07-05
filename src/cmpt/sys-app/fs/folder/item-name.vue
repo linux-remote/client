@@ -19,6 +19,9 @@ export default {
       this.$data._dblClick_count ++;
     },
     handleClick(e){
+      if(e.ctrlKey || e.shiftKey){
+        return;
+      }
       const item = this.item;
       const pData = this.$parent;
       if(!pData.focus){
