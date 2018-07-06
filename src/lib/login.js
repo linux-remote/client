@@ -32,7 +32,7 @@ export function createWs(username){ // webSocket 开始
       store.commit('users/set', data);
     }
   };
-  ws.onclose = function(event){
+  ws.onclose = function(){
     if(store.state.isLogin){
       setTimeout(function(){
         console.log('re create ws', loopCount);
