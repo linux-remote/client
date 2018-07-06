@@ -20,7 +20,9 @@ export default  {
             skip: 'Skip',
             coverAll: 'Cover All',
             skipAll: 'Skip All',
-            donate: 'Donate'
+            donate: 'Donate',
+            currently: 'Currently',
+            peopleUse: 'people using'
           },
           loginPage: {
             langTitle: 'language',
@@ -93,7 +95,9 @@ export default  {
             skip: '跳过',
             coverAll: '一律覆盖',
             skipAll: '一律跳过',
-            donate: '捐赠'
+            donate: '捐赠',
+            currently: '当前有',
+            peopleUse: '人在使用'
           },
           loginPage: {
             langTitle: '语言',

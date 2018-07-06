@@ -20,9 +20,10 @@ import language from './module/language';
 import upload from './module/upload';
 import error from './module/error';
 import task from './module/task';
-import widget from './module/widget';
+//import widget from './module/widget';
 import flyTextarea from './module/fly-textarea';
 import app from './module/app';
+import users from './module/users';
 
 const store = new window.Vuex.Store({
   modules: {
@@ -30,7 +31,8 @@ const store = new window.Vuex.Store({
     upload,
     error,
     task,
-    widget,
+    //widget,
+    users,
     flyTextarea,
     app
   },

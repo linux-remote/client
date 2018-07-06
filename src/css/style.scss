@@ -526,3 +526,128 @@ tr.lrRecycleBinCovered{
 .lr_lang_active::before{
   visibility:visible;
 }
+.lr-chat{
+  position: fixed;
+  z-index: 2;
+  width: 350px;
+  
+  bottom: 10px + $taskBarH;
+  left: 10px;
+  background-color: $bg2;
+  display: flex;
+  flex-direction: column;
+}
+.lr-chat-title{
+  height: 40px;
+  border-bottom: 1px solid $drakColor;
+  line-height: 40px;
+  padding-left:10px;
+  flex-shrink: 0;
+  color:#333;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .lr-chart-ctrl{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 21px;
+    height: 21px;
+    line-height: 21px;
+    flex-shrink: 0;
+    background-color: $drakColor;
+    margin-right: 2px;
+    border: 1px outset #999;
+    text-align: center;
+    color: #fff;
+  }
+}
+.lr-chat-bottom{
+  flex-grow: 1;
+  display: flex;
+  height: 260px;
+}
+.lr-chat-left{
+  width: 80px;
+  border-right: 1px solid #666;
+  flex-shrink: 0;
+  div{
+    border-bottom: 1px solid #ccc;
+  }
+}
+.lr-chat-right{
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+}
+.lr-chat-body{
+  overflow: auto;
+  flex-grow: 1;
+  background-color: rgba(255, 255, 255, .7);
+  &::-webkit-scrollbar
+  {
+    width: 5px;  /* for vertical scrollbars */
+    height: 5px;
+  }
+
+  &::-webkit-scrollbar-track
+  {
+    background: rgba(#888, 0.1);
+  }
+
+  &::-webkit-scrollbar-thumb
+  {
+    background: rgba(#888, .4);
+  }
+}
+
+.lr-chat-input-wrap{
+  flex-shrink: 0;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  input{
+    flex-grow: 1;
+  }
+  button{
+    flex-shrink: 0;
+    height: 25px;
+    margin-left: 10px;
+  }
+}
+.lr-chat-msg-item{
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  .lr-chat-name{
+    background-color: $drakColor;
+    color: #fff;
+    margin-right: 5px;
+  }
+}
+.lr-chat-msg-item.lr_chat_my_msg{
+  justify-content: flex-end;
+  .lr-chat-name{
+
+    margin-right: 2px;
+    margin-left: 5px;
+  }
+
+}
+.lr-chat-name {
+  max-width: 80px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: $drakColor;
+  flex-shrink: 0;
+  padding: 2px;
+}
+.lr_chat_name_is_me{
+  background: $drakColor;
+  color:#fff;
+}
+.lr-chat-name small{
+  font-size: 10px;
+}

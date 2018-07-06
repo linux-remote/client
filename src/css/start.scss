@@ -25,6 +25,7 @@
 .lr-start-menu{
   bottom: $taskBarH;
   position: absolute;
+  z-index: $topLayerZindex + 2;
   left: 0;
   background-color: rgba(#fff, .8);
   width: 280px;

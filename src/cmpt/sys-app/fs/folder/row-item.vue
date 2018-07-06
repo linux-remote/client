@@ -99,7 +99,7 @@ export default {
       if(item.isSymbolicLink){
         address = item.linkPath;
       }else{
-        address = this.p.address + '/' + item.name
+        address = this.p.getItemPath(item.name)
       }
       return address;
     },
