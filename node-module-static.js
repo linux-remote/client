@@ -13,7 +13,10 @@ function getDir(moduleName){
 }
 
 function getVersion(dir){
-  return require(dir + '/package.json').version;
+  var pkg = require(dir + '/package.json');
+  var version = pkg.version;
+  pkg = null;
+  return version;
 }
 
 module.exports = function(name){
