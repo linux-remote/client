@@ -111,6 +111,7 @@ const store = new window.Vuex.Store({
     clearDesktop(state){
       state.quickBarItems = [];
       store.commit('task/closeAll');
+      store.commit('users/clear');
     },
     openWith(state, data){
       console.log('openWith')

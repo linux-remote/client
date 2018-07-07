@@ -2,7 +2,7 @@
 .lr-watch(v-if='clientDate')
   .lr-watch-left 
     span {{watch.year}}-{{watch.mounth}}-{{watch.day}} {{watch.hours}}:{{watch.minutes}}
-  .lr-watch-timezone(:title='timeZone.offset.name + ", " + timeZone.name') | {{formatedOffset}}
+  .lr-watch-timezone(:title='timeZone.offset.name + ", " + formatedOffset') | {{timeZone.name}}
 </template>
 
 <script>

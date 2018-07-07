@@ -1,11 +1,13 @@
-export default  {
-  namespaced: true,
-  state: {
+function _defState(){
+  return {
     total: 0,
     list: [],
-    messages: [],
-    id: null
-  },
+    messages: []
+  }
+}
+export default  {
+  namespaced: true,
+  state: _defState(),
   mutations: {
     set(state, data){
       Object.assign(state, data);
@@ -16,6 +18,9 @@ export default  {
       if(state.messages.length > 30){
         state.messages.shift();
       }
+    },
+    clear(state){
+      Object.assign(state, _defState())
     }
   }
 }
