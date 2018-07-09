@@ -582,25 +582,26 @@ background-image: url('/public/img/tango-style/inode-chardevice.png');
   padding: 0 3px;
 
 }
-/* .lr-disk-i-process-wrap{
-  width: 100%;
-  margin-bottom: 5px;
-  background-color: bisque;
-  border: 1px solid #ddd;
-  border-radius: 2px;
-  height: 5px;
-} */
-.lr-disk-i-process{
-  position: absolute;
-  height: 3px;
-  background-color: #006400;
+.lr-disk-i-process-wrap{
+  width: 96%;
+
+  background-color: #87CEEB;
+
   z-index: 2;
   top: 100%;
   left: 0;
+  height: 3px;
+  margin-bottom: 2px;
 }
-.lr-disk-i-process:hover{
-  background-color: #1E90FF
+.lr-disk-i-process-wrap:hover{
+  opacity: .7;
 }
+.lr-disk-i-process{
+  height: 100%;
+  background-color: #006400;
+  width: 0;
+}
+
 .lr-disk-info{
   font-size: 13px;
   color: #444;

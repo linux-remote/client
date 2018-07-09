@@ -14,7 +14,8 @@
           .lr-disk-link(@click='go(v.target)') {{v.target}}
           .lr-disk-process-wrap
             .lr-disk-process(:style='{width: v.percent + "%"}')
-            .lr-disk-i-process(:style='{width: v.ipercent + "%"}', :title='"inode 使用率 " + v.ipercent + "%"')
+          .lr-disk-i-process-wrap(:title='"inode usage rate: " + v.ipercent + "%"')
+            .lr-disk-i-process(:style='{width: v.ipercent + "%"}')
           .lr-disk-info
             | {{(v.size - v.used)  | wellSize('K')}} {{LANG.freeAndTotal}} {{v.size | wellSize('K')}} 
 </template>
