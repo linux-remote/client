@@ -16,7 +16,7 @@ export const pathJoin = (dir, name) => {
 }
 var _map = {
   'image': ['jpg', 'png', 'jpeg', 'webp', 'svg', 'gif','bmp', 'ico'],
-  'text': ['js', 'txt', 'sh', 'vue', 'css', 'html', 'ejs', 'json', 'scss']
+  'text': ['js', 'txt', 'sh', 'vue', 'css', 'html', 'ejs', 'json', 'scss', 'conf']
 }
 const openType = Object.create(null);
 
