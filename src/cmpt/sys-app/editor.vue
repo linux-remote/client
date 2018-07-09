@@ -1,7 +1,7 @@
 <template lang="jade">
 .lr-window-body
   .lr-hourglass(v-show='isRequest')
-  h2(v-html='data[0]' style='color:red' v-if='error')
+  h2(v-text='data[0]' style='color:red' v-if='error')
   .lr-editor-body(v-else @keydown='handleKeyDown')
     .lr-editor-bar
       button.btn.btn-sm.btn-default(style='padding: 2px' @click='save' , :disabled='isSaveDisabled') save

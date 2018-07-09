@@ -6,7 +6,7 @@
   .lr-hourglass(v-if='isRequest')
   CtrlBar
   .lr-fs-folder-inner(v-if='error')
-    pre.lr-fs-error(v-html='error')
+    pre.lr-fs-error(v-text='error')
   Selectable.lr-fs-folder-inner(:onSelected='handleSelected', v-else, ref='selectable')
     table.lr-table.lr-fs-folder-table(:class='"lr_file_model_" + model')
       tr

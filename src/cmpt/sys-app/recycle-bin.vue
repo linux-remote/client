@@ -7,7 +7,7 @@
       button(@click='clearAll', :disabled='isEmpty') Delete All
 
       .lr-fs-nav-item.lr-fs-nav-reload(@click='getData', style='background-color: #666')
-    h2(v-html='error' style='color:red' v-if='error')
+    h2(v-text='error' style='color:red' v-if='error')
     h2(v-else-if='data.length === 0' style='color:gray') Empty
     .lr-fs-folder(v-else)
       table.lr-info-table.lr-table(style='width:100%;')
