@@ -1,8 +1,7 @@
 <template lang="jade">
 .lr-chat(v-if='users.list.length')
   .lr-chat-title
-    div
-      {{LANG.currently}} 
+    div {{LANG.currently}} 
       b(style="color:#EEA1AF") {{users.list.length}} 
       | {{LANG.peopleUse}} linux-remote
 
