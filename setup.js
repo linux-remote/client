@@ -20,7 +20,7 @@ for(let name in map){
   v.jsPath = jsPath;
   distJsPathArr.push(jsPath);
 }
-console.log('map', map);
+
 function setup(app){
   app.use('/public', eStatic(publicPath));
   app.use(favicon(faviconPath));
@@ -28,7 +28,6 @@ function setup(app){
   for(let i in map){
     let v = map[i];
     const filePath = path.join(v.fsDir, v.distName);
-    console.log('filePath', filePath, v.url);
     app.use(v.jsPath, eStatic(filePath, {maxAge}));
   }
 };
