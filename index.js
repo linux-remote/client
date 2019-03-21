@@ -4,7 +4,7 @@ const path = require('path');
 const publicPath = require('lr-public');
 
 map['jquery'] = nodeModuleStatic('jquery');
-map['vue.runtime'] = nodeModuleStatic('vue', 'vue.runtime');
+map['vue.runtime'] = nodeModuleStatic('vue');
 map['vuex'] = nodeModuleStatic('vuex');
 map['vue-router'] = nodeModuleStatic('vue-router');
 

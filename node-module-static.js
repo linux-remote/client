@@ -19,7 +19,7 @@ function getVersion(dir){
   return version;
 }
 
-module.exports = function(name, otherFileName){
+module.exports = function(name){
   var dir = getDir(name);
   var v = getVersion(dir);
   return {

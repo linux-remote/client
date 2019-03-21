@@ -13,17 +13,23 @@ var distJsPathArr = [];
 
 for(let name in map){
   var distName = IS_PRO ? name + '.min' : name;
+  distName = distName + '.js';
   var v = map[name];
-  var jsPath = v.url + '/' + distName + '.js';
+  v.distName = distName;
+  var jsPath = v.url + '/' + distName;
+  v.jsPath = jsPath;
   distJsPathArr.push(jsPath);
 }
-
+console.log('map', map);
 function setup(app){
   app.use('/public', eStatic(publicPath));
   app.use(favicon(faviconPath));
+  const maxAge = IS_PRO ? HALF_YEAR_TIME : 0;
   for(let i in map){
     let v = map[i];
-    app.use(v.url, eStatic(v.fsDir, {maxAge:HALF_YEAR_TIME}));
+    const filePath = path.join(v.fsDir, v.distName);
+    console.log('filePath', filePath, v.url);
+    app.use(v.jsPath, eStatic(filePath, {maxAge}));
   }
 };
 
