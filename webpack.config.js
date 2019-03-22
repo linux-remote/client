@@ -1,22 +1,29 @@
-var path = require('path');
-var webpack = require('webpack');
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
-var HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require('path');
+const webpack = require('webpack');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
+const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const NODE_ENV = process.env.NODE_ENV || 'development';
+const isPro = NODE_ENV === 'production';
 
-var confName = process.env.NODE_BUILD_CONF_NAME || 'dev';
-var conf = require('./config/' + confName);
-var package = require('./package.json');
-var setup = require('./setup');
-var isPro = process.env.NODE_ENV === 'production';
+const confName = process.env.NODE_BUILD_CONF_NAME || 'dev';
+
+const conf = require('./config/' + confName);
+const package = require('./package.json');
+const setup = require('./setup');
+
 var bundleName = conf.bundleName;
 var chunkName = conf.chunkName;
+var optimization;
 
 var outputPath, publicPath, cssRule;
 if(confName === 'dev' && !isPro){ //使用 命令weblack
   outputPath = path.join(__dirname, conf.indexDir, '/dist/dev/build');
   publicPath = conf.baseUrl + '/dist/dev/build/';
   cssRule = {
-    test: /\.scss$/,
+    test: /(\.scss$)|(\.css$)/,
     use: ['style-loader', 'css-loader', 'sass-loader'],
     include: path.join(__dirname, './src')
   }
@@ -25,12 +32,15 @@ if(confName === 'dev' && !isPro){ //使用 命令weblack
   outputPath = path.join(__dirname, conf.indexDir, '/build');
   publicPath = conf.baseUrl + '/build/';
   cssRule = {
-    test: /\.scss$/,
+    test: /(\.scss$)|(\.css$)/,
     //use: ["css-loader", "postcss-loader", "sass-loader"]
-    use: ExtractTextPlugin.extract({
-      use: ["css-loader",  "sass-loader"],
-      fallback: "style-loader"
-    })
+    use: [
+      { 
+        loader: MiniCssExtractPlugin.loader
+      },
+      
+      "css-loader",  "sass-loader"
+    ]
   }
 
 }
@@ -41,10 +51,10 @@ indexData.VERSION = package.version;
 
 // ***************************** plugins *****************************
 var plugins = [
-
+  new VueLoaderPlugin(),
   new webpack.DefinePlugin({
     'process.env': {
-      NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'development')
+      NODE_ENV: JSON.stringify(NODE_ENV)
     }
   }),
 
@@ -64,6 +74,10 @@ var rules = [
     exclude: /node_modules/
   },
   {
+    test: /\.jade$/,
+    loader: 'pug-plain-loader'
+  },
+  {
     test: /\.vue$/,
     loader: 'vue-loader'
   },
@@ -71,32 +85,51 @@ var rules = [
 ]
 // ***************************** 环境适配 *****************************
 if (isPro) {
+  optimization = {
+    minimizer: [
+      new UglifyJsPlugin(),
+      new OptimizeCSSAssetsPlugin({})
+    ]
+  }
+
   plugins = plugins.concat([//正式环境下压缩
-    new ExtractTextPlugin("styles_[contenthash].css"),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false,
-      },
-      sourceMap: false,
-      output: {
-        comments: false,
-      }
+    new MiniCssExtractPlugin({
+      // Options similar to the same options in webpackOptions.output
+      // both options are optional
+      filename: "styles_[name]_[contenthash].css",
+      chunkFilename: "chunk_[id]_[contenthash].css"
     }),
+
+    // new webpack.optimize.UglifyJsPlugin({
+    //   compress: {
+    //     warnings: false,
+    //   },
+    //   sourceMap: false,
+    //   output: {
+    //     comments: false,
+    //   }
+    // }),
+
     new webpack.LoaderOptionsPlugin({
       minimize: true
-    }) 
+    })
+
   ]);
 
+  // -------- pre lint --------
   rules.unshift({
     enforce: "pre",
     test: /(\.js|\.vue)$/,
     include: [path.resolve(__dirname, "src")],
     loader: "eslint-loader"
   })
+
 };
 
 // ***************************** conf *****************************
-module.exports = {
+const webpackConf = {
+  mode: NODE_ENV,
+  optimization,
   context: path.join(__dirname, './src'),
   entry: {
     z_app: "./app.js"
@@ -118,7 +151,7 @@ module.exports = {
   },
   plugins: plugins,
   devServer: {
-    setup,
+    before: setup,
     contentBase: path.join(__dirname, conf.indexDir),
     hot: true,
     noInfo: true
@@ -127,3 +160,5 @@ module.exports = {
     hints: false
   }
 };
+
+module.exports = webpackConf;

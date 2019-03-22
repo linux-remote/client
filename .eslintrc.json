@@ -4,16 +4,17 @@
         "commonjs": true,
         "es6": true
     },
-    "extends": "eslint:recommended",
-    "parser": "babel-eslint",
+    "extends": ["eslint:recommended", "plugin:vue/recommended", "plugin:vue/strongly-recommended", "plugin:vue/essential"],
+    
     "parserOptions": {
+        "parser": "babel-eslint",
         "ecmaFeatures": {
             "experimentalObjectRestSpread": true
         },
         "sourceType": "module"
     },
     "plugins": [
-        "html"
+        "vue"
     ],
     "rules": {
         "indent": [
@@ -33,6 +34,13 @@
         "no-console": 0,
         "linebreak-style": 0,
         "quotes": 0,
-        "semi": 0
+        "semi": 0,
+
+        "vue/require-prop-types": 0,
+        "vue/no-reserved-keys": 0,
+        "vue/order-in-components": 0,
+        "vue/require-default-prop": 0,
+        "vue/return-in-computed-property": 0
+
     }
 }

@@ -1,9 +1,12 @@
-var child_process = require('child_process');
-var path = require('path');
-var del = require('fuckwinfsdel');
-var NAME = process.env.NODE_BUILD_CONF_NAME;
-var conf = require('../config/' + NAME);
-var clearDir = path.join(__dirname,'../', conf.indexDir, 'build');
+const path = require('path');
+const child_process = require('child_process');
+const del = require('fuckwinfsdel');
+const NAME = process.env.NODE_BUILD_CONF_NAME;
+const webpack = require('webpack');
+const fs = require('fs');
+const webpackConf = require('../webpack.config');
+const conf = require('../config/' + NAME);
+const clearDir = path.join(__dirname,'../', conf.indexDir, 'build');
 
 module.exports = function(){
   var build_sh = 'webpack --colors';
@@ -13,11 +16,21 @@ module.exports = function(){
       console.error(err);
     }
     console.log('开始build...');
-    child_process.exec(build_sh, function(err, result){
-      if(err){
-        return console.log('build 失败', err);
+    webpack(webpackConf,  function(err, stats){
+      if(err || stats.hasErrors()){
+        return console.log('build 失败', err, stats.toString('errors-only'));
       }
-      console.log(result);
+      // const json = stats.toJson();
+      // console.log('json', Object.keys(json));
+      console.log(stats.toString({
+        // Add console colors
+        colors: true,
+        chunks: false,
+        modules: false,
+        children: false
+      }));
+      console.log('build 成功');
+
     });
   })
 }
