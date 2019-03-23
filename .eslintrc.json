@@ -8,9 +8,7 @@
     
     "parserOptions": {
         "parser": "babel-eslint",
-        "ecmaFeatures": {
-            "experimentalObjectRestSpread": true
-        },
+        "ecmaVersion": 2018,
         "sourceType": "module"
     },
     "plugins": [
