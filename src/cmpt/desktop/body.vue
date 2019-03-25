@@ -14,7 +14,7 @@
       | {{LANG.ctx.SortOut}}
     .lr-ctx-item(@click="reload")
       | {{LANG.ctx.Refresh}}
-  UsersChat
+  //- UsersChat
   TaskWindow(v-for='(item, index) in tasks', :key='item.id', :index='index')
 </template>
 <script>
@@ -24,14 +24,14 @@ import TaskWindow from '__ROOT__/cmpt/task/window.vue';
 
 import ContextMenu from '../global/contextmenu/index.vue';
 //import Cascade from '../global/cascade.vue';
-import UsersChat from './chat.vue';
+// import UsersChat from './chat.vue';
 const ICON_WIDTH = 80;
 const ICON_HEIGHT = 80;
 export default {
   components: {
     Icon,
     TaskWindow,
-    UsersChat,
+    // UsersChat,
     ContextMenu,
     //Cascade
   },
