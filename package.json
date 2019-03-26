@@ -13,7 +13,8 @@
     "start": "webpack-dev-server -d --progress --hot --inline --colors --port 4000",
     "build": "webpack --colors --hide-modules",
     "_pro_build": "webpack --colors",
-    "pro": "node script/pro"
+    "pro": "node script/pro",
+    "installPreView": "npm i lr-public jquery vue vue-router vuex --no-bin-links"
   },
   "dependencies": {
     "express": "^4.15.3",
