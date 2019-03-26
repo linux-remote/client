@@ -1,6 +1,6 @@
 {
   "name": "linux-remote-client",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "author": "hezedu",
   "description": "linuxRemote's client",
   "main": "index.js",
