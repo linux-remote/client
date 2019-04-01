@@ -1,6 +1,6 @@
 const favicon = require('serve-favicon');
-const path = require('path');
-var eStatic = require('express').static;
+const eStatic = require('express').static;
+
 
 const DAY_TIME = 1000 * 60 * 60 * 24 //一天
 const MONTH_TIME  = DAY_TIME * 30 //一月
@@ -9,16 +9,30 @@ const IS_PRO = process.env.NODE_ENV === 'production';
 const  {nodeModuleStaticMap, faviconPath, publicPath} = require('./index');
 const map = nodeModuleStaticMap;
 
-var distJsPathArr = [];
-
+var indexJsPathArr = [];
+var indexCssPathArr = [];
+function pushIndexPath(_path) {
+  if(/\.css$/.test(_path)){
+    indexCssPathArr.push(_path);
+  }else {
+    indexJsPathArr.push(_path);
+  }
+}
 for(let name in map){
-  var distName = IS_PRO ? name + '.min' : name;
-  distName = distName + '.js';
   var v = map[name];
-  v.distName = distName;
-  var jsPath = v.url + '/' + distName;
-  v.jsPath = jsPath;
-  distJsPathArr.push(jsPath);
+  if(v.files) {
+    v.files.forEach(_name => {
+      pushIndexPath(v.url + '/' + _name);
+    });
+  } else {
+    var distName = IS_PRO ? name + '.min' : name;
+    distName = distName + '.js';
+    v.distName = distName;
+    var jsPath = v.url + '/' + distName;
+    // v.jsPath = jsPath;
+    indexJsPathArr.push(jsPath);
+  }
+
 }
 
 function setup(app){
@@ -27,11 +41,14 @@ function setup(app){
   const maxAge = IS_PRO ? HALF_YEAR_TIME : 0;
   for(let i in map){
     let v = map[i];
-    const filePath = path.join(v.fsDir, v.distName);
-    app.use(v.jsPath, eStatic(filePath, {maxAge}));
+    // const filePath = path.join(v.fsDir, v.distName);
+    app.use(v.url, eStatic(v.fsDir, {maxAge}));
   }
 };
 
-setup.nodeModuleStatic = distJsPathArr;
+setup.nodeModuleStatic = {
+  cssArr: indexCssPathArr,
+  jsArr: indexJsPathArr
+};
 
 module.exports = setup;

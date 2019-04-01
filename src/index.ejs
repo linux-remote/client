@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html>
-<% var opts = htmlWebpackPlugin.options, data = opts.indexData; %>
+<% var opts = htmlWebpackPlugin.options, data = opts.indexData, statics = opts.nodeModuleStatic; %>
   <head>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <% statics.cssArr.forEach(function(v){%>
+    <link href="<%=v%>" rel="stylesheet"><% })%>
     <title>Linux Remote</title>
   </head>
   <body>
@@ -14,7 +16,7 @@
         throw new Error('This project only support Chrome.');
     }
   </script>
-  <% opts.nodeModuleStatic.forEach(function(v){%>
+  <% statics.jsArr.forEach(function(v){%>
   <script src="<%=v%>"></script><% }) %>
   
   <script>

@@ -1,12 +1,17 @@
-const nodeModuleStatic = require('./node-module-static');
+const { getUrlAndDir, wrapUrl } = require('./node-module-static');
 const map = Object.create(null);
 const path = require('path');
 const publicPath = require('lr-public');
 
-map['jquery'] = nodeModuleStatic('jquery');
-map['vue.runtime'] = nodeModuleStatic('vue');
-map['vuex'] = nodeModuleStatic('vuex');
-map['vue-router'] = nodeModuleStatic('vue-router');
+map['jquery'] = getUrlAndDir('jquery');
+map['@hezedu/winstrap'] = getUrlAndDir('@hezedu/winstrap');
+map['@hezedu/winstrap'].files = ['css/winstrap.min.css', 
+'js/vendor/bootstrap.min.js'];
+
+map['vue.runtime'] = getUrlAndDir('vue');
+map['vuex'] = getUrlAndDir('vuex');
+map['vue-router'] = getUrlAndDir('vue-router');
+
 
 
 exports.publicPath = publicPath;

@@ -1,7 +1,7 @@
 {
   "name": "linux-remote-client",
   "version": "1.2.6",
-  "author": "hezedu",
+  "author": "dw <hezedu@hotmail.com>",
   "description": "linuxRemote's client",
   "main": "index.js",
   "repository": {
@@ -14,9 +14,10 @@
     "build": "webpack --colors --hide-modules",
     "_pro_build": "webpack --colors",
     "pro": "node script/pro",
-    "installPreView": "npm i lr-public jquery vue vue-router vuex --no-bin-links"
+    "installPreView": "npm i lr-public jquery vue vue-router vuex @hezedu/winstrap --no-bin-links"
   },
   "dependencies": {
+    "@hezedu/winstrap": "^0.5.14",
     "express": "^4.15.3",
     "jquery": "3.3.1",
     "lr-public": "0.0.1",
