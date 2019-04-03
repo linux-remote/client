@@ -18,7 +18,14 @@
       .form-group
         label {{LANG.password}}
         input.form-control(type='password' v-model='password' required="required")
-      button.btn.btn-default.btn-block.theme-dark.no-outline(type="submit", :class='{lr_loading:isRequest}') {{LANG.submitBtn}}
+      LoadingBtn.btn-default.btn-block.theme-dark.no-outline(type="submit", :text="LANG.submitBtn", :isLoading="isRequest")
+      //- button.btn.btn-default.btn-block.theme-dark.no-outline() {{LANG.submitBtn}}
+      //-   .progress-bar(v-if="!isRequest")
+      //-     .progress-circle
+      //-     .progress-circle
+      //-     .progress-circle
+      //-     .progress-circle
+      //-     .progress-circle
     //-fieldset.lr-login-fieldset(@keydown.13='login')
       legend.lr-login-legend {{LANG.title}}
       .lr-login-row
@@ -30,13 +37,17 @@
       .lr-login-footer
         button(type="submit", :class='{lr_loading:isRequest}') {{LANG.submitBtn}}
       .lr-login-error(v-show="error") {{error}}
-  .lr-login-bottom
+  //-.lr-login-bottom
     a(href='https://github.com/linux-remote/linux-remote/blob/master/LICENSE', target='_blank') Licenses
     a(href='https://github.com/linux-remote', target='_blank') Source code
 </template>
 
 <script>
+import LoadingBtn from '../cmpt/loading-btn.vue';
 export default {
+  components: {
+    LoadingBtn
+  },
   data(){
     return {
       currLangIndex: this.$store.state.language.currIndex,

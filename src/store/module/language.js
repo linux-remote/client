@@ -158,7 +158,8 @@ export default  {
   },
   getters: {
     currLanguage(state){
-      return state.list[state.currIndex].data;
+      return state.list[0].data; // 总是 英文
+      // return state.list[state.currIndex].data;
     }
   },
   mutations: {
