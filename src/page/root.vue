@@ -1,6 +1,6 @@
 <template lang="jade">
-#lr-app.lr-h100
-  #lr-main.lr-h100.lr-main
+#lr-app
+  #lr-main
     router-view
   .lr-global
     FlyTextarea

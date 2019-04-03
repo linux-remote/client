@@ -1,15 +1,25 @@
 
 <template lang="jade">
-.lr-page.lr-login-warp
-  h1.lr-login-h1 Linux Remote
-  fieldset
-    legend.lr-login-legend {{LANG.langTitle}}
-    select(v-model='currLangIndex', @change="handleChange")
-      option(v-for='(v, i) in language.list',
-            :value='i',
-            :key='v.id') {{v.name}}
-  form(@submit.prevent="login")
-    fieldset.lr-login-fieldset(@keydown.13='login')
+.lr-page.lr-center-flex.lr-login-wrap.theme-dark.color-fill-accent-vivid-high
+  img.lr-login-logo(src="/public/img/windows-linux-logo-c.png")
+  h2 Linux Remote
+  .lr-login-box
+    
+    //- fieldset
+    //-   legend.lr-login-legend {{LANG.langTitle}}
+    //-   select(v-model='currLangIndex', @change="handleChange")
+    //-     option(v-for='(v, i) in language.list',
+    //-           :value='i',
+    //-           :key='v.id') {{v.name}}
+    form.theme-dark(@submit.prevent="login")
+      .form-group
+        label {{LANG.username}}
+        input.form-control( v-model='username' required="required")
+      .form-group
+        label {{LANG.password}}
+        input.form-control(type='password' v-model='password' required="required")
+      button.btn.btn-default.btn-block.theme-dark.no-outline(type="submit", :class='{lr_loading:isRequest}') {{LANG.submitBtn}}
+    //-fieldset.lr-login-fieldset(@keydown.13='login')
       legend.lr-login-legend {{LANG.title}}
       .lr-login-row
         label.lr-login-label {{LANG.username}}:
