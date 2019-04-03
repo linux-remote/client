@@ -2,8 +2,9 @@
 <template lang="jade">
 .lr-task-bar-item(@click = 'handleClick',
                   :class='{lr_task_bar_item_focus: item.isFocus, lr_task_bar_item_close: item.isMin, lr_task_bar_item_max: item.isMax}')
-  .lr-icon(:style="{backgroundImage: `url(${item.APP.iconUrl})`}")
-  | {{itemTitle}}
+  .lr-task-bar-item-inner
+    .lr-icon(:style="{backgroundImage: `url(${item.APP.iconUrl})`}")
+    | {{itemTitle}}
   ContextMenu
     .lr-ctx-item(@click='close') {{LANG.global.close}}
 </template>

@@ -1,14 +1,10 @@
-
-
-
 .lr-task-bar{
-  position: relative;
   z-index: $topLayerZindex;
-  background-color: $taskBarBg;
-  border-top: 1px solid $borderColor;
   height:$taskBarH;
-  padding: 1px;
-  flex-shrink: 0;
+  position: absolute;
+  width: 100%;
+  left: 0;
+  bottom: 0;
   display:flex;
 }
 
@@ -18,41 +14,89 @@
   overflow: hidden;
   padding-left: 1px;
 }
-.lr-task-bar-item{
-  color:#000;
-  border: 2px outset darken($taskBarBg, 5%);
+.lr-task-bar-place{
+  flex-grow: 1;
   background-color: $taskBarBg;
-  padding: 10px;
-  display: flex;
-  align-items: center;
-  flex-grow:1;
+}
+.lr-task-bar-item {
+  background-color: $taskBarBg;
+  color:#fff;
+  position: relative;
+  flex-grow: 1;
   max-width: 200px;
   min-width: 50px;
   overflow: hidden;
   text-overflow:ellipsis;
   white-space: nowrap;
-  margin:0 1px;
   cursor: default;
   font-size: 14px;
-  &:hover {
-    background-color: lighten($taskBarBg, 15%);
-  }
-  &.lr_task_bar_item_focus{
-    border-style: inset;  
-    background-color: $taskBarFocusBg;
-  }
+  border-right: 1px solid $taskBarBg;
+  // &:hover .lr-task-bar-item-inner {
+  //   background-color: rgba(255, 255, 255, .5);
+  // }
+  // &.lr_task_bar_item_focus .lr-task-bar-item-inner{
+  //   background-color: rgba(255, 255, 255, .7);
+  // }
   .lr-icon{
     margin-right: 4px;
   }
+
+  &::before, &::after{
+    background-color: $taskBarBg;
+    content: '';
+    display: block;
+    width: 4px;
+    transition: width .1s;
+    height: 100%;
+    top: 0;
+    position: absolute;
+  }
+  &::before{
+    left: 0;
+  }
+  &::after{
+    right: 0;
+    transition: width .2s;
+  }
+  &:hover, &.lr_task_bar_item_focus{
+    // background: none;
+    &::before, &::after {
+      width: 0;
+    }
+  }
+  &:hover {
+    .lr-task-bar-item-inner{
+      background-color: rgba(255, 255, 255, .1);
+      // background-color: lighten($color: #0063b1, $amount: 10%);
+    }
+  }
+  &.lr_task_bar_item_focus{
+    .lr-task-bar-item-inner{
+      background-color: rgba(255, 255, 255, .2);
+    }
+    &:hover{
+      .lr-task-bar-item-inner{
+        background-color: rgba(255, 255, 255, 0.225);
+      }
+    }
+  }
 }
+
+.lr-task-bar-item-inner {
+  height: 100%;
+  border-bottom: 2px solid #83c0ef;
+  display: flex;
+  align-items: center;
+}
+
+
+
+
 .lr-quick-bar{
   border-right: 1px solid #FFD8AC;
-  // border-left: 2px solid #F8C68E;
-  // margin-left: 3px;
-  //background-color: #D1A878;
   min-width: 50px;
   max-width: 300px;
-
+  background-color: $taskBarBg;
   display: flex;
 }
 .lr-quick-bar-item{
@@ -73,7 +117,7 @@
   border: 1px outset #000;
   display: flex;
   flex-direction: column;
-  bottom: 0; 
+  bottom: 0;
   left: 0; 
   right: 0;
   border: 2px outset #eee;
