@@ -4,17 +4,20 @@
   Start
   QuickBar
   BarBody
+  Watch
 </template>
 
 <script>
 import Start from '../start/index.vue';
 import QuickBar from '../quick-bar/index.vue';
 import BarBody from './bar-body.vue';
+import Watch from '../watch.vue';
 export default {
   components: {
     Start,
     QuickBar,
-    BarBody
+    BarBody,
+    Watch
   },
 
   computed:{

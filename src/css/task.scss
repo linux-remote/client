@@ -6,6 +6,7 @@
   left: 0;
   bottom: 0;
   display:flex;
+  background-color: $taskBarBg;
 }
 
 .lr-task-bar-body{
@@ -14,10 +15,10 @@
   overflow: hidden;
   padding-left: 1px;
 }
-.lr-task-bar-place{
-  flex-grow: 1;
-  background-color: $taskBarBg;
-}
+// .lr-task-bar-place{
+//   flex-grow: 1;
+//   background-color: $taskBarBg;
+// }
 .lr-task-bar-item {
   background-color: $taskBarBg;
   color:#fff;
@@ -93,7 +94,6 @@
 
 
 .lr-quick-bar{
-  border-right: 1px solid #FFD8AC;
   min-width: 50px;
   max-width: 300px;
   background-color: $taskBarBg;

@@ -8,7 +8,7 @@
       :key='item.id',
       :index='index',
       :item='item')
-  .lr-task-bar-place
+  //-.lr-task-bar-place
 </template>
 
 <script>

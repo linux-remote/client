@@ -27,15 +27,20 @@ $topBarRight : 100px;
   height: $taskTitleH;
 }
 .lr-watch{
-  user-select: text;
-  display: flex; 
+  user-select: none;
+  display: flex;
+  text-align: center; 
   align-items: center;
-  border-right: 1px solid #fff;
-  padding: 0 5px;
+  flex-direction: column;
+  color: #fff;
+  font-size: 12px;
+  line-height: 20px;
+  padding: 0 10px;
+  // cursor: pointer;
 }
-.lr-watch-left{
-  font-size: 14px;
-}
+// .lr-watch-left {
+//   font-size: 14px;
+// }
 .lr-watch-timezone{
   display: flex;
   flex-direction: column;

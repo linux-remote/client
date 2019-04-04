@@ -1,11 +1,12 @@
+
 <template lang="jade">
 .lr-watch(v-if='clientDate')
-  .lr-watch-left 
-    span {{watch.year}}-{{watch.mounth}}-{{watch.day}} {{watch.hours}}:{{watch.minutes}}
-  .lr-watch-timezone(:title='timeZone.offset.name + ", " + formatedOffset') | {{timeZone.name}}
+  div {{watch.hours}}:{{watch.minutes}}
+  div {{watch.year}}/{{watch.mounth}}/{{watch.day}}
 </template>
 
 <script>
+//- .lr-watch-timezone(:title='timeZone.offset.name + ", " + formatedOffset') | {{timeZone.name}}
 import {ONE_MIN} from '__ROOT__/lib/util';
 function forMatTimeOffset(hours){
   const i = hours.length - 2
