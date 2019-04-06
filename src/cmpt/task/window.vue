@@ -11,10 +11,14 @@
       .lr-icon(:style="`background-image:url(${APP.iconUrl})`")
       | {{currTitle}}
     .lr-task-control
-      .lr-task-control-min(@click.stop='hiddenTask')
-      div(@click.stop='maxToggle',
+      .lr-task-ctrl-item(@click.stop='hiddenTask')
+        span.glyph.glyph-remove
+      .lr-task-ctrl-item(@click.stop='maxToggle',
                     :class='isMax ? "lr_task_control_shrink" : "lr-task-control-max"')
-      .lr-task-control-close(@click.stop='removeTask')
+        span.glyph.glyph-add
+      .lr-task-ctrl-item.lr-task-ctrl-colse(@click.stop='removeTask')
+        span.glyph.glyph-cancel
+
 
       
   FsBody(v-if='appId==="sys_app_file"')

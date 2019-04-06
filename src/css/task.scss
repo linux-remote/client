@@ -1,3 +1,4 @@
+// -------------------- task bar --------------------
 .lr-task-bar{
   z-index: $topLayerZindex;
   height:$taskBarH;
@@ -32,12 +33,6 @@
   cursor: default;
   font-size: 14px;
   border-right: 1px solid $taskBarBg;
-  // &:hover .lr-task-bar-item-inner {
-  //   background-color: rgba(255, 255, 255, .5);
-  // }
-  // &.lr_task_bar_item_focus .lr-task-bar-item-inner{
-  //   background-color: rgba(255, 255, 255, .7);
-  // }
   .lr-icon{
     margin-right: 4px;
   }
@@ -91,7 +86,7 @@
 }
 
 
-
+// ------- quick bar -------
 
 .lr-quick-bar{
   min-width: 50px;
@@ -110,20 +105,24 @@
 .lr-quick-bar-item:hover{
   background-color: lighten($taskBarBg, 15%);
 }
+
+// -------------------- task body --------------------
+
 .lr-task-window{
   position: absolute;
   z-index: 2; 
   top:0;
-  border: 1px outset #000;
+  border: 1px solid rgba(#333, .3);
   display: flex;
   flex-direction: column;
   bottom: 0;
   left: 0; 
   right: 0;
-  border: 2px outset #eee;
   background-color:#fff;
+  box-shadow: rgba(#000, .22) 3px 3px 15px 0;
 }
-.lr_task_max{
+
+.lr_task_max { // 最大化窗口
   box-shadow: none; 
   width: 100%;
   height: 100%;
@@ -131,19 +130,18 @@
 }
 
 .lr_task_focus{
-  border-color: lighten($taskBarBg, 5%);
+  border-color: #1883d7; 
 }
 
 .lr-task-title{
   display: flex;
   flex-shrink: 0;
-  background: $taskBarFocusBg;
-  height: 25px; 
-  line-height: 25px;
-  cursor: default;
-  color: #000;
-  opacity: .7;
-  border-bottom: 1px solid #eee;
+  background: #fff; 
+  color: #999;
+  height: 30px; 
+  line-height: 30px;
+  font-size: 13px;
+  // font-family: 'Microsoft YaHei', Arial;
 }
 .lr-task-title-content{
   flex-grow:1;
@@ -157,39 +155,10 @@
   height: $taskTitleH - 2px;
   margin-right: 8px;
 }
-.lr-task-control{
-  display: flex;
-  flex-shrink: 0;
-  justify-content: space-between;
-  align-items: center;
-  >div{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    width:21px; 
-    height: 21px;
-    line-height:21px;
-    flex-shrink: 0;
-    background-color: #9E703B;
-    margin-right:2px;
-    border: 1px outset lighten(#9E703B, 10%);
-    text-align: center;
-    color:#fff;
-    >span{
-      font-size: 15px;
-      -webkit-font-smoothing: none;
-    }
-    &:hover{
-      border-style: inset;
-      background-color: lighten(#9E703B, 10%);
-    }
-  }
-}
 
-.lr_task_focus >.lr-task-title{
-  background: $taskBarBg;
-  opacity: 1;
+
+.lr_task_focus >.lr-task-title{ 
+  color: #000;
 }
 
 .lr-window-body{
@@ -199,89 +168,93 @@
   position: relative;
   user-select: none;
 }
+
+// ------- right control -------
+
+.lr-task-control{
+  display: flex;
+  flex-shrink: 0;
+  justify-content: space-between;
+  align-items: center;
+}
+.lr-task-ctrl-item{
+  width: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 29px;
+  color: #000;
+  &:hover{
+    background-color: #e5e5e5;
+  }
+}
+.lr-task-ctrl-colse{
+  transition: all .15s;
+  &:hover{
+    background-color: #e81123;
+    color: #fff;
+  }
+}
 // .lr-task-control-close::before{
 //   content: '✖';
 // }
-.lr-task-control-close::before, .lr-task-control-close::after{
-  content: '';
-  display: block;
-  position: absolute;
-  background-color: #fff;
-  left: 3px;
-  right: 3px;
-  top: 0;
-  bottom: 0;
-  margin: auto;
-  height: 1px;
-}
-
-.lr-task-control-close::before{
-  transform: rotate(45deg);
-}
-.lr-task-control-close::after{
-  transform: rotate(-45deg);
-}
-
-.lr-task-control-max::before{
-  content: '';
-  position: absolute;
-  display: block;
-  border:1px solid #fff;
-  top: 3px;
-  left: 3px;
-  right: 3px;
-  bottom: 3px;
-}
-.lr_task_control_shrink::before, .lr_task_control_shrink::after{
-  width: 50%; 
-  height: 50%;
-  background-color: inherit;
-  border:1px solid #fff;
-  content: '';
-  display: block; 
-  position: absolute;
-}
-.lr_task_control_shrink::before{
-  top: 2px;
-  right:2px;
-}
-
-.lr_task_control_shrink::after{
-  bottom: 2px; 
-  left:2px; 
-  z-index: 2;
-}
-
-.lr-task-control-min>span{
-  display: none;
-}
-.lr-task-control-min::before{
-  content: '';
-  height: 1px;
-  background: #fff;
-  flex-grow: 1;
-  margin: 0 3px;
-}
-
-// .lr_task_max .lr-task-title{
-//   background-color: $bg!important;
-//   opacity: 1;
+// .lr-task-control-close::before, .lr-task-control-close::after{
+//   content: '';
+//   display: block;
+//   position: absolute;
+//   background-color: #fff;
+//   left: 3px;
+//   right: 3px;
+//   top: 0;
+//   bottom: 0;
+//   margin: auto;
+//   height: 1px;
 // }
 
-// .lr-task-bar-control-wrap{
-//   flex-shrink: 0;
-//    width: $taskBarH * 2; 
-//    display: flex;
+// .lr-task-control-close::before{
+//   transform: rotate(45deg);
 // }
-// .lr-task-bar-control{
+// .lr-task-control-close::after{
+//   transform: rotate(-45deg);
+// }
+
+// .lr-task-control-max::before{
+//   content: '';
+//   position: absolute;
+//   display: block;
+//   border:1px solid #fff;
+//   top: 3px;
+//   left: 3px;
+//   right: 3px;
+//   bottom: 3px;
+// }
+// .lr_task_control_shrink::before, .lr_task_control_shrink::after{
+//   width: 50%; 
+//   height: 50%;
+//   background-color: inherit;
+//   border:1px solid #fff;
+//   content: '';
+//   display: block; 
+//   position: absolute;
+// }
+// .lr_task_control_shrink::before{
+//   top: 2px;
+//   right:2px;
+// }
+
+// .lr_task_control_shrink::after{
+//   bottom: 2px; 
+//   left:2px; 
+//   z-index: 2;
+// }
+
+// .lr-task-control-min>span{
 //   display: none;
-//   width: $taskBarH; 
-//   flex-shrink: 0;
-//   border: 2px outset #aaa;
-//   background: #999;  
-//   line-height: 1;
-//   text-align: center; 
-//   cursor: pointer; 
-//   font-size: $taskBarH - 4;
-//   color: #fff;
+// }
+// .lr-task-control-min::before{
+//   content: '';
+//   height: 1px;
+//   background: #fff;
+//   flex-grow: 1;
+//   margin: 0 3px;
 // }
