@@ -28,7 +28,6 @@
   background-repeat: no-repeat;
 }
 .lr-desk-icon-text{
-  font-size: 12px;
   line-height: 15px;
   word-break: break-all;
   height: 30px;
@@ -36,6 +35,9 @@
   text-align: center;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-shadow: 1px 2px #000;
+  color:#fff;
+  font-size: 13px;
 }
 .lr-desk-icon:hover{
   background-color: rgba(255, 255, 255, 0.25);
