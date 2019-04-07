@@ -72,8 +72,9 @@
 
 // *************** Left End ***************
 .lr-fs-nav-bar{
-  background: #666; 
-  border-bottom: 1px solid #000;
+  padding-top: 5px;
+  padding-left: 5px;
+  border-top: 1px solid #dadbdc;
   display: flex;
   align-items: center;
   height: 31px; 
@@ -82,67 +83,82 @@
 }
 
 .lr-fs-nav-item{
-  width: 30px;
-  height: 30px;
-  background-size: 80%;
-  background-position: center;
-  background-repeat: no-repeat;
-  &:hover{
-    background-color: #000;
+  width: 24px;
+  height: 23px;
+  font-size: 14px;
+  color: #808080;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 3px;
+
+  &.lr_fs_nav_disabled{
+    color: #dfdfdf;
+    pointer-events: none;
   }
 }
+// .lr-fs-nav-up:hover {
+//   background-color: #e5f3ff;
+//   border: 1px solid #cce8ff;
+//   color: #808080;
+// }
 
-.lr_fs_nav_disabled{
-    opacity: .5;
- }
-
-.lr-fs-nav-up{
-  background-image: url('/public/arrow-up.svg');
-}
-.lr-fs-nav-left{
-  background-image: url('/public/arrow-left.svg');
-}
-.lr-fs-nav-right{
-  background-image: url('/public/arrow-right.svg');
-}
-.lr-fs-nav-go{
-  background-image: url('/public/go.svg');
-}
-.lr-fs-nav-reload{
-  background-image: url('/public/reload.svg');
-}
 
 
 .lr-fs-address{
   flex-grow:1; 
   display: flex;
   background-color: #fff;
-  height: 25px;
+  height: 20px;
   position: relative;
+  margin-top: 1px;
+  font-size: 12px;
   >input{
     flex-grow: 1;
-    border: 0;
+    border: 1px solid #d9d9d9;
   }
 }
 .lr-fs-address-inner{
   position: absolute;
-  height: 100%;
   max-width: 90%;
   display: flex;
   background-color: #fff;
+  
+  height: 18px;
+  line-height: 15px;
+  margin: 1px;
 }
 .lr-fs-crumb{
-  color: blue;
-  white-space: pre-wrap;
+  color: #000;
+  transition: all .15s;
   cursor: pointer;
-  //text-decoration: underline;
-  &::before{
-    content: '/';
-    color: #000;
-    margin: 0 10px;
-    //text-decoration: none;
+  border: 1px solid transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  >.glyph{
+    color: #808080;
+    font-size: 7px;
+    margin: 1px 5px 0;
   }
+  //text-decoration: underline;
+  // &::before{
+  //   content: '/';
+  //   color: #000;
+  //   margin: 0 10px;
+  //   //text-decoration: none;
+  // }
 }
+.lr-fs-crumb-name {
+  white-space: pre-wrap;
+  padding-left: 3px;
+  padding-right: 3px;
+}
+.lr-fs-nav-item:hover,  .lr-fs-crumb:hover{
+  background-color: #e5f3ff;
+  border: 1px solid #cce8ff;
+}
+
 $linkFileColor: violet;
 
 
