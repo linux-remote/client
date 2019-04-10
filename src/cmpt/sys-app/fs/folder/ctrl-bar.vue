@@ -6,9 +6,9 @@
   .lr-icon.lr-fs-new-folder(@click='addItem("Directory")')
   .lr-icon.lr-fs-new-file(@click='addItem("RegularFile")')
    
-  button.lr-upload-btn(@click='handleUploadBtnClick')
-    .lr-fs-upload
-    | {{$parent.LANG.upload}}
+  button.btn.btn-primary.btn-xs(@click='handleUploadBtnClick')
+    span.glyph.glyph-upload
+    span {{$parent.LANG.upload}}
 
 </template>
 <script>

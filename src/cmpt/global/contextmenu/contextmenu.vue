@@ -1,5 +1,5 @@
 <template lang="jade">
-#lr-contextmenu.lr-contextmenu(:style='{top: y + "px", left: x + "px"}')
+.lr-contextmenu(:style='{top: y + "px", left: x + "px"}')
   slot
 </template>
 

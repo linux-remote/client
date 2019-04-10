@@ -1,5 +1,5 @@
 <template lang="jade">
-textarea.lr_fly_textarea(v-show='open' , :style='{top:top + "px", left: left  + "px",  height: height + "px", fontSize: fontSize, lineHeight: "15px"}', v-model='value', @focus='select', @input='handleInput', @blur='close', @click.stop='handleClick' @keydown.13='handleKeyDown')
+textarea.lr_fly_textarea(v-if='open' , :style='{top:top + "px", left: left  + "px",  height: height + "px", fontSize: fontSize, lineHeight: "15px"}', v-model='value', @focus='select', @input='handleInput', @blur='close', @click.stop='handleClick' @keydown.13='handleKeyDown')
 </template>
 
 <script>

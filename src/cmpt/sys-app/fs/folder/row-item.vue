@@ -6,20 +6,17 @@ tr(@dblclick='open',
   td
     ContextMenu(ref='ctx')
       .lr-ctx-item(@click='handleDel')
-        .lr-icon(:style="{backgroundImage: 'url(' + recycleIcon + ')'}")
         | {{LANG.remove}}
       //-.lr-ctx-item(@click='open', v-if='item.type === "RegularFile"')
         .lr-icon
         | 使用打开
       .lr-ctx-item(@click='download', v-if='item.type === "RegularFile"')
-        .lr-icon
         | {{LANG.download}}
       //-.lr-ctx-item(@click='copy')
         .lr-icon
         | 复制
       hr
       .lr-ctx-item(@click='createSymbolicLink')
-        .lr-icon
         | {{LANG.createSymbolicLink}}
         
     .lr-name-wrap
@@ -74,9 +71,7 @@ export default {
     LANG(){
       return this.p.LANG.ctx
     },
-    recycleIcon(){
-      return this.$store.state.app.sysMap.sys_app_recycle_bin.iconUrl
-    },
+
     iconStyle(){
       const app = this.item.openApp
       return app ? 

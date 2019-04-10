@@ -4,29 +4,31 @@
               @keydown.a='selectAll',
               :class='bodyClass')
   .lr-hourglass(v-if='isRequest')
-  CtrlBar
+  //- CtrlBar
   .lr-fs-folder-inner(v-if='error')
     pre.lr-fs-error(v-text='error')
   Selectable.lr-fs-folder-inner(:onSelected='handleSelected', v-else, ref='selectable')
-    table.lr-table.lr-fs-folder-table(:class='"lr_file_model_" + model')
-      tr
-        th {{LANG.th.name}}
-        th {{LANG.th.owner}}
-        th {{LANG.th.group}}
-        th {{LANG.th.permission}}
-        th {{LANG.th.mtime}}
-        th {{LANG.th.size}}
-          span.lr_is_device_type(v-if='isHaveDevice') /{{LANG.th.deviceType}}
-      tr(v-if='preCreateItem', class='lr-fs-create-layer', @mousedown.stop='')
-        td(colspan='7')
-          PreCreate(:p='self')
+    table.lr-fs-table(:class='"lr_file_model_" + model')
+      thead
+        tr
+          th {{LANG.th.name}}
+          th {{LANG.th.owner}}
+          th {{LANG.th.group}}
+          th {{LANG.th.permission}}
+          th {{LANG.th.mtime}}
+          th {{LANG.th.size}}
+            span.lr_is_device_type(v-if='isHaveDevice') /{{LANG.th.deviceType}}
+      tbody
+        tr(v-if='preCreateItem', class='lr-fs-create-layer', @mousedown.stop='')
+          td(colspan='7')
+            PreCreate(:p='self')
 
-      RowItem(v-for='(item,i) in list',
-              :p='self',
-              :key='item.name',
-              :index='i',
-              :item='item')
-    .lr-empty(v-if='!list.length') Empty
+        RowItem(v-for='(item,i) in list',
+                :p='self',
+                :key='item.name',
+                :index='i',
+                :item='item')
+    .lr-fs-empty(v-if='!list.length') This folder is empty.
   //-Status
   CreateSysLink(v-if='createSysLinkName')
 </template>

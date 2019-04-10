@@ -1,12 +1,60 @@
 // body {
 //   font-family: "Segoe UI",'Microsoft YaHei', Selawik,Tahoma,Verdana,Arial,sans-serif;
 // }
-@import './variable.scss';
+$bg: #87CEEB;
+$bg2: rgba(#fff, .5);
+$drakColor: #6AA1B8; //4B869E
+$borderColor: #ACE7FF;
+$bottomColor: #EBBC87;
 
+$activeBorderColor: #cce8ff;
+$activeBgColor: rgba($activeBorderColor, .5);
+
+$taskTitleH :25px;
+$taskBarH : 40px;
+$taskBarBg: rgba(0, 0, 0, .85);//#f5f5f5;
+$taskBarFocusBg: lighten($taskBarBg, 60%);
+
+$maxZindex : 2147483647; // https://stackoverflow.com/questions/491052/minimum-and-maximum-value-of-z-index
+$topLayerZindex : $maxZindex - 100;
+
+body {
+  height: 100vh;
+  overflow: hidden;
+  font-family: 'Microsoft YaHei', "Segoe UI", Selawik,Tahoma,Verdana,Arial,sans-serif;
+}
 .lr-page {
   height: 100vh;
 }
+.lr-hover-item {
+  transition: all .15s;
+  border: 1px solid transparent;
+}
+// .lr-hover-slight-item:hover {
+//   background-color: #e5f3ff;
+// }
+.lr-hover-item:hover, .lr_active{
+  background-color: $activeBgColor;
+  border: 1px solid $activeBorderColor;
+}
 
+
+// Fixed: https://github.com/winjs/winstrap/issues/181
+.btn-group-sm>.btn, .btn-group-xs>.btn, .btn-sm, .btn-xs {
+  font-size: 12px;
+  line-height: 1.5625;
+  border-radius: 0;
+  padding: 1px 5px;
+  min-width: 100px;
+}
+
+.lr-icon{
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  width:20px; 
+  height: 20px;
+}
 .lr-center-flex{
   display: flex;
   justify-content: center;
@@ -54,44 +102,40 @@
   font-size: 14px;
   width: 248px;
   padding: 4px 2px;
-  box-shadow: rgba(#000, .7) 5px 5px 5px -4px;
+  box-shadow: rgba(#000, .75) 5px 5px 5px -5px;
   // box-shadow: rgba(#000, .7) 6px 6px 4px -4px;
-  // .lr-2-item{
-  //   padding: 5px 10px; 
 
-
-  // }
+  hr {
+    margin: 3px 10px;
+    border-color: #919191;
+  }
 }
 .lr-ctx-item{
-  padding: 5px 20px; 
-  line-height: 1;
+  height: 28px;
+  line-height: 28px;
   //-border-bottom: 1px solid #fff; 
   color: #000;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  // transition: all .15s;
+  text-transform:capitalize;
+  cursor: default;
+  user-select: none;
+  padding: 0 10px 0 34px;
   &:hover{
     background-color: #d9d9d9; 
   }
-  // a{
-  //   color:#4169E1;
-  // }
-  // &:hover{
-  //   background-color:$drakColor;
-  //   color: #fff;
-  //   >a {
-  //     color: #fff;
-  //   }
-  // }
+
 }
-.lr-ctx-item:last-child{
-  border: 0;
+.lr-ctx-hr{
+  height: 1px;
+  background-color: #919191;
+  margin: 0 10px; 
 }
-.lr-ctx-item .lr-icon{
-  width:20px; height: 20px;
-}
+
+// .lr-ctx-item:last-child{
+//   border: 0;
+// }
+// .lr-ctx-item .lr-icon{
+//   width:20px; height: 20px;
+// }
 .lr-hourglass{
   position: absolute;
   top:0;
@@ -284,12 +328,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.lr-empty{
-  width: 100%;
-  text-align: center;
-  color: #606060;
-  margin-top: 20px;
-}
+
 .lr-open-with-item{
   display: flex;
   padding: 10px 10px;
@@ -320,10 +359,506 @@
 }
 
 
-@import './desktop.scss';
-@import './top-bar.scss';
-@import './task.scss';
-@import './start.scss';
+.lr-desk-wrap {
+  display: flex;
+  flex-direction: column;
+}
+.lr-desk{
+  flex-grow: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+a.lr-desk-icon{
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  user-select: none;
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  z-index:1;
+  text-decoration: none;
+
+  &:focus, &:hover{
+    background-color: rgba(255, 255, 255, 0.25);
+    &::after{
+      content: '';
+      display: block;
+      position: absolute;
+      top: 1px;
+      left: 1px;
+      right: 1px;
+      bottom: 1px;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      z-index: -1;
+    }
+  }
+  &:focus {
+    outline: none;
+  }
+}
+
+
+.lr-desk-icon-img{
+  /* height: 60px; */
+  height: 50px;
+  width: 100%;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.lr-desk-icon-text{
+  line-height: 15px;
+  word-break: break-all;
+  height: 30px;
+  width: 100%;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-shadow: 1px 2px #000;
+  color:#fff;
+  font-size: 13px;
+}
+
+.lr_be_selected{
+  background-color: green;
+}
+
+$topBarRight : 100px;
+
+.lr-top{
+  height: $taskTitleH;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  
+  position: fixed;
+  top: 0;
+  right: $topBarRight + 20;
+  
+  //color: #fff;
+  z-index: $topLayerZindex;
+  //background-color: rgba(#000, .5);
+  //z-index: 2;
+  //background-color: #333;
+  border-style: outset;
+  border-color: #fff;
+  border-width: 0 1px 1px;
+  padding: 0 5px;
+}
+
+.lr-top-small-icon{
+  background-size: 100% 100%;
+  width: $taskTitleH; 
+  height: $taskTitleH;
+}
+.lr-watch{
+  user-select: none;
+  display: flex;
+  text-align: center; 
+  align-items: center;
+  flex-direction: column;
+  color: #fff;
+  font-size: 12px;
+  line-height: 20px;
+  padding: 0 10px;
+  // cursor: pointer;
+}
+// .lr-watch-left {
+//   font-size: 14px;
+// }
+.lr-watch-timezone{
+  display: flex;
+  flex-direction: column;
+  line-height: 12px; 
+  font-size: 12px;
+  text-align: center; 
+  margin-left: 5px;
+  align-items: center;
+  color: #606060;
+  cursor: default;
+}
+
+.lr-user{
+  position: relative;
+  height: 100%;
+  display: flex; 
+  align-items: center;
+  //-padding-right: 5px;
+  &:hover>.lr-user-drop{
+    display: block;
+  }
+}
+.lr-user-drop{
+  font-size: 14px;
+  position: absolute;
+  width: 200px; 
+  right:0;
+  top: 100%; 
+  display: block;
+  padding: 5px 0;
+  background-color: #fff;
+  border:2px outset #eee;
+  color:#000;
+}
+.lr-user-p{
+  padding: 5px 10px;
+  word-wrap: break-word;
+  b{
+    margin-right:.3em;
+  }
+  a{
+    color: #4B869E;
+  }
+}
+.lr-user-name{
+  display: flex; 
+  align-items: center;
+  cursor: pointer;
+  margin: 0 3px;
+  padding: 0 3px;
+
+  &:hover, &.lr_user_hover{
+    background-color: rgba(#fff, .5);
+
+  }
+  >.lr-triangle{
+    margin: 0 3px;
+    >polygon{
+      fill:#666;
+    }
+  }
+}
+.lr-user-logout{
+  cursor: pointer;
+  color: #000; 
+  margin-left: 10px;
+}
+.lr-menu{
+  background-image: url('/public/menu.svg')
+}
+.lr-drop-menu-btn{
+  &.lr_drop_menu_active, &:hover{
+    background-color: $bg2;
+  }
+}
+.lr-start{
+  width: 50px;
+  position: relative;
+  display: flex;
+}
+
+.lr-start-btn{
+  width: 100%;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url('/public/img/tango-style/start-here.png');
+  border: 2px outset darken($taskBarBg, 5%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &:hover{
+    background-color: lighten($taskBarBg, 15%);
+  }
+}
+.lr_start_focus{
+  background-color: $taskBarFocusBg;
+  border-style: inset;
+}
+.lr-start-menu{
+  bottom: $taskBarH;
+  position: absolute;
+  z-index: $topLayerZindex + 2;
+  left: 0;
+  background-color: rgba(#fff, .8);
+  width: 280px;
+  height: 500px;
+  border: 2px outset darken($bg2, 5%);
+  border-bottom: 0;
+  display: flex;
+  flex-direction: column;
+}
+.lr-start-menu-item, .lr-start-menu-title{
+  width: 100%;
+  height: 35px;
+  line-height: 35px;
+  padding-left: 10px;
+  border-bottom: 1px solid darken($bg, 10%);
+  display: flex;
+}
+.lr-start-menu-title{
+  color: #666;
+}
+.lr-start-menu-item{
+  cursor: pointer;
+}
+.lr-start-menu-item:hover{
+  background-color:darken($bg, 10%);
+  color:#000;
+}
+// -------------------- task bar --------------------
+.lr-task-bar{
+  z-index: $topLayerZindex;
+  height:$taskBarH;
+  position: absolute;
+  width: 100%;
+  left: 0;
+  bottom: 0;
+  display:flex;
+  background-color: $taskBarBg;
+}
+
+.lr-task-bar-body{
+  flex-grow: 1;
+  display:flex;
+  overflow: hidden;
+  padding-left: 1px;
+}
+// .lr-task-bar-place{
+//   flex-grow: 1;
+//   background-color: $taskBarBg;
+// }
+.lr-task-bar-item {
+  background-color: $taskBarBg;
+  color:#fff;
+  position: relative;
+  flex-grow: 1;
+  max-width: 200px;
+  min-width: 50px;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+  cursor: default;
+  font-size: 14px;
+  border-right: 1px solid $taskBarBg;
+  .lr-icon{
+    margin-right: 4px;
+  }
+
+  &::before, &::after{
+    background-color: $taskBarBg;
+    content: '';
+    display: block;
+    width: 4px;
+    transition: width .1s;
+    height: 100%;
+    top: 0;
+    position: absolute;
+  }
+  &::before{
+    left: 0;
+  }
+  &::after{
+    right: 0;
+    transition: width .2s;
+  }
+  &:hover, &.lr_task_bar_item_focus{
+    // background: none;
+    &::before, &::after {
+      width: 0;
+    }
+  }
+  &:hover {
+    .lr-task-bar-item-inner{
+      background-color: rgba(255, 255, 255, .1);
+      // background-color: lighten($color: #0063b1, $amount: 10%);
+    }
+  }
+  &.lr_task_bar_item_focus{
+    .lr-task-bar-item-inner{
+      background-color: rgba(255, 255, 255, .2);
+    }
+    &:hover{
+      .lr-task-bar-item-inner{
+        background-color: rgba(255, 255, 255, 0.225);
+      }
+    }
+  }
+}
+
+.lr-task-bar-item-inner {
+  height: 100%;
+  border-bottom: 2px solid #83c0ef;
+  display: flex;
+  align-items: center;
+}
+
+
+// ------- quick bar -------
+
+.lr-quick-bar{
+  min-width: 50px;
+  max-width: 300px;
+  background-color: $taskBarBg;
+  display: flex;
+}
+.lr-quick-bar-item{
+  width: 40px;
+  // margin-right: 1px;
+  height: 100%;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.lr-quick-bar-item:hover{
+  background-color: lighten($taskBarBg, 15%);
+}
+
+// -------------------- task body --------------------
+
+.lr-task-window{
+  position: absolute;
+  z-index: 2; 
+  top:0;
+  border: 1px solid rgba(#333, .3);
+  display: flex;
+  flex-direction: column;
+  bottom: 0;
+  left: 0; 
+  right: 0;
+  background-color:#fff;
+  box-shadow: rgba(#000, .22) 3px 3px 15px 0;
+}
+
+.lr_task_max { // 最大化窗口
+  box-shadow: none; 
+  width: 100%;
+  height: 100%;
+  border:0;
+}
+
+.lr_task_focus{
+  border-color: #1883d7; 
+}
+
+.lr-task-title{
+  display: flex;
+  flex-shrink: 0;
+  background: #fff; 
+  color: #999;
+  height: 30px; 
+  line-height: 30px;
+  font-size: 13px;
+  // font-family: 'Microsoft YaHei', Arial;
+}
+.lr-task-title-content{
+  flex-grow:1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: flex;
+}
+.lr-task-title-content .lr-icon{
+  width: $taskTitleH - 2px;
+  height: $taskTitleH - 2px;
+  margin-right: 8px;
+}
+
+
+.lr_task_focus >.lr-task-title{ 
+  color: #000;
+}
+
+.lr-window-body{
+  flex-grow:1; 
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  user-select: none;
+}
+
+// ------- right control -------
+
+.lr-task-control{
+  display: flex;
+  flex-shrink: 0;
+  justify-content: space-between;
+  align-items: center;
+}
+.lr-task-ctrl-item{
+  width: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 29px;
+  color: #000;
+  &:hover{
+    background-color: #e5e5e5;
+  }
+}
+.lr-task-ctrl-colse{
+  transition: all .15s;
+  &:hover{
+    background-color: #e81123;
+    color: #fff;
+  }
+}
+// .lr-task-control-close::before{
+//   content: '✖';
+// }
+// .lr-task-control-close::before, .lr-task-control-close::after{
+//   content: '';
+//   display: block;
+//   position: absolute;
+//   background-color: #fff;
+//   left: 3px;
+//   right: 3px;
+//   top: 0;
+//   bottom: 0;
+//   margin: auto;
+//   height: 1px;
+// }
+
+// .lr-task-control-close::before{
+//   transform: rotate(45deg);
+// }
+// .lr-task-control-close::after{
+//   transform: rotate(-45deg);
+// }
+
+// .lr-task-control-max::before{
+//   content: '';
+//   position: absolute;
+//   display: block;
+//   border:1px solid #fff;
+//   top: 3px;
+//   left: 3px;
+//   right: 3px;
+//   bottom: 3px;
+// }
+// .lr_task_control_shrink::before, .lr_task_control_shrink::after{
+//   width: 50%; 
+//   height: 50%;
+//   background-color: inherit;
+//   border:1px solid #fff;
+//   content: '';
+//   display: block; 
+//   position: absolute;
+// }
+// .lr_task_control_shrink::before{
+//   top: 2px;
+//   right:2px;
+// }
+
+// .lr_task_control_shrink::after{
+//   bottom: 2px; 
+//   left:2px; 
+//   z-index: 2;
+// }
+
+// .lr-task-control-min>span{
+//   display: none;
+// }
+// .lr-task-control-min::before{
+//   content: '';
+//   height: 1px;
+//   background: #fff;
+//   flex-grow: 1;
+//   margin: 0 3px;
+// }
+
 @import './sys-app/fs.scss';
 @import './sys-app/editor.scss';
 

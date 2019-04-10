@@ -1,5 +1,6 @@
 <template lang="jade">
-.lr-desk-icon(draggable="true",
+a.lr-desk-icon(draggable="true",
+               href="javascript:;",
               @dblclick="handleDblclick",
               @dragstart.stop='handleDragStart(item, $event)',
               :style='{left: item.x + "px", top: item.y + "px"}')
