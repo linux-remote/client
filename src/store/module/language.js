@@ -37,7 +37,7 @@ export default  {
           deskTop: {
             ctx: {
               Refresh: 'Refresh',
-              SortOut: 'Sort out',
+              SortOut: 'Sort by name',
               remove: 'remove'
             }
           },

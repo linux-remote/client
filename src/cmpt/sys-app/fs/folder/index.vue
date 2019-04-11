@@ -18,7 +18,7 @@
           th {{LANG.th.mtime}}
           th {{LANG.th.size}}
             span.lr_is_device_type(v-if='isHaveDevice') /{{LANG.th.deviceType}}
-      tbody
+      tbody.lr-fs-tbody
         tr(v-if='preCreateItem', class='lr-fs-create-layer', @mousedown.stop='')
           td(colspan='7')
             PreCreate(:p='self')
@@ -205,8 +205,8 @@ export default {
     selectAll(e){
       if(e.ctrlKey){
         this.selectedArr = this.$refs.selectable.$children;
-        this.selectedArr.forEach(item => {
-          item.beSelected = true;
+        this.selectedArr.forEach((item, i) => {
+          item.onSelected(i);
         })
         e.preventDefault();
       }
@@ -340,13 +340,13 @@ export default {
 
           if(e.ctrlKey){
             console.log('this.currItem.focus', this.currItem.focus)
-            if(!this.selectedArr.length && this.currItem.focus === true && !this.currItem.beSelected){
-              this.currItem.beSelected = true;
+            if(!this.selectedArr.length && this.currItem.focus === true && !this.currItem.isBeSelected){
+              this.currItem.isBeSelected = true;
               this.selectedArr.push(arr.find((v) => v.$data === this.currItem));
             }
 
-            if(!item.beSelected){
-              item.beSelected = true;
+            if(!item.isBeSelected){
+              item.isBeSelected = true;
               this.selectedArr.push(arr.find((v) => v.$data === item));
             }
             
@@ -368,7 +368,7 @@ export default {
             //console.log('start', start, 'max', max)
             let arr2 = []
             for(; start <= max; start++){
-              arr[start].beSelected = true;
+              arr[start].isBeSelected = true;
               arr2.push(arr[start]);
             }
             this.selectedArr = arr2;
@@ -383,7 +383,7 @@ export default {
 
     clearSelected(){
       this.selectedArr.forEach(item => {
-        item.beSelected = false;
+        item.onUnSelected();
       })
       this.selectedArr = [];
     },

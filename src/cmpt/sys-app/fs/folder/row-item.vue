@@ -2,7 +2,7 @@
 tr(@dblclick='open',
   @click='p.itemFocus($data, $event)',
   @mousedown.stop='',
-  :class='{lr_file_hidden: item.isHidden, lr_file_focus: focus, lr_file_former: focus === 0, lr_file_be_selected: beSelected}')
+  :class='{lr_file_hidden: item.isHidden, lr_file_focus: focus, lr_file_be_selected: isBeSelected, lr_file_be_selected_first: isFirstSelect, lr_file_former: focus === 0}')
   td
     ContextMenu(ref='ctx')
       .lr-ctx-item(@click='handleDel')
@@ -52,7 +52,8 @@ export default {
   },
   data(){
     return {
-      beSelected: false,
+      isBeSelected: false,
+      isFirstSelect: false,
       focus: false
     }
   },
@@ -80,6 +81,14 @@ export default {
     }
   },
   methods: {
+    onSelected(i){
+      this.isBeSelected = true;
+      this.isFirstSelect  = i === 0;
+    },
+    onUnSelected(i){
+      this.isBeSelected = false;
+      this.isFirstSelect = false;
+    },
     // copy(){
 
     // },

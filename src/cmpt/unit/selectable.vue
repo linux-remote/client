@@ -30,7 +30,6 @@ export default {
       layerY : 0,
       w: 0,
       h: 0,
-
       _timer: null
     }
   },
@@ -44,8 +43,8 @@ export default {
     // clearSelected(){
     //   if(!this.isSelect){
     //     this.$children.forEach(item => {
-    //       if(item.beSelectable && item.beSelected){
-    //         item.beSelected = false;
+    //       if(item.beSelectable && item.isBeSelected){
+    //         item.isBeSelected = false;
     //       }
     //     });
     //   }
@@ -222,7 +221,7 @@ export default {
 
     },
     selectEnd () {
-      this.childSelect();
+      const arr = this.childSelect();
       if(this.$data._timer){
         clearTimeout(this.$data._timer);
       }
@@ -230,12 +229,12 @@ export default {
       this.w = 0;
       this.h = 0;
       if(this.onSelected){
-        const arr = []
-        this.$children.forEach(item => {
-          if(item.$options.beSelectable && item.beSelected){
-            arr.push(item)
-          }
-        })
+        // const arr = []
+        // this.$children.forEach(item => {
+        //   if(item.$options.beSelectable && item.isBeSelected){
+        //     arr.push(item)
+        //   }
+        // })
         this.onSelected(arr);
       }
 
@@ -287,15 +286,20 @@ export default {
       return false;
     },
     childSelect(){
-      this.$children.forEach(item => {
+      let selectIndex = 0;
+      const arr = [];
+      this.$children.forEach((item, i) => {
         if(item.$options.beSelectable){
           if(this.passX(item) && this.passY(item)){
-            item.beSelected = true;
+            item.onSelected(selectIndex);
+            selectIndex = selectIndex + 1;
+            arr.push(item);
           }else{
-            item.beSelected = false;
+            item.onUnSelected();
           }
         }
-      })
+      });
+      return arr;
     }
   },
   // mounted(){
