@@ -332,55 +332,54 @@ export default {
 
     itemFocus(item, e){
 
+      let arr = this.$refs.selectable.$children;
+
+      if(e.ctrlKey){ // ctrl
+        this.handleItemCtrlClick(item);
+      }else if(e.shiftKey){ // shift
+        this.handleItemShiftClick(item);
+      }else {
+        this.clearSelected();
+      }
+
       item.focus = true;
       if(this.currItem !== item){
-        
-        if(e){
-          let arr = this.$refs.selectable.$children;
-
-          if(e.ctrlKey){
-            console.log('this.currItem.focus', this.currItem.focus)
-            if(!this.selectedArr.length && this.currItem.focus === true && !this.currItem.isBeSelected){
-              this.currItem.isBeSelected = true;
-              this.selectedArr.push(arr.find((v) => v.$data === this.currItem));
-            }
-
-            if(!item.isBeSelected){
-              item.isBeSelected = true;
-              this.selectedArr.push(arr.find((v) => v.$data === item));
-            }
-            
-            //this.selectedArr.push(this.currItem);
-            //console.log(this.selectedArr.length);
-          }else if(e.shiftKey){
-            this.clearSelected();
-            
-            let i1 = arr.findIndex(v => v.$data === item);
-            let i2 = arr.findIndex(v => v.$data === this.currItem);
-            let start, max;
-            if(i1 > i2){
-              start = i2;
-              max = i1; 
-            }else {
-              max = i2;
-              start = i1;
-            }
-            //console.log('start', start, 'max', max)
-            let arr2 = []
-            for(; start <= max; start++){
-              arr[start].isBeSelected = true;
-              arr2.push(arr[start]);
-            }
-            this.selectedArr = arr2;
-          }else {
-            this.clearSelected();
-          }
-        }
         this.currItem.focus = false;
         this.currItem = item;
       }
     },
+    handleItemCtrlClick(item) {
+        console.log('this.currItem.focus', this.currItem.focus)
+        if(!this.selectedArr.length && this.currItem.focus === true && !this.currItem.isBeSelected){
+          this.currItem.isBeSelected = true;
+          this.selectedArr.push(arr.find((v) => v.$data === this.currItem));
+        }
 
+        if(!item.isBeSelected){
+          item.isBeSelected = true;
+          this.selectedArr.push(arr.find((v) => v.$data === item));
+        }
+    },
+    handleItemShiftClick(item){
+        this.clearSelected();
+        let i1 = arr.findIndex(v => v.$data === item);
+        let i2 = arr.findIndex(v => v.$data === this.currItem);
+        let start, max;
+        if(i1 > i2){
+          start = i2;
+          max = i1; 
+        }else {
+          max = i2;
+          start = i1;
+        }
+        //console.log('start', start, 'max', max)
+        let arr2 = []
+        for(; start <= max; start++){
+          arr[start].isBeSelected = true;
+          arr2.push(arr[start]);
+        }
+        this.selectedArr = arr2;
+    },
     clearSelected(){
       this.selectedArr.forEach(item => {
         item.onUnSelected();
