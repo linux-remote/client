@@ -12,7 +12,7 @@
 <template lang='jade'>
 div(@mousedown='mousedownListener', v-on='$listeners')
   .lr-select-area(v-show='isSelect',:style='style')
-    span X:{{layerX}} Y: {{layerY}} w:{{w}} h:{{h}}
+    //- span X:{{layerX}} Y: {{layerY}} w:{{w}} h:{{h}}
   slot
 </template>
 

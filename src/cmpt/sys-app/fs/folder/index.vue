@@ -373,7 +373,6 @@ export default {
         this.selectItem(item);
         this.focusItem(item);
       }
-      console.log('handleItemClick item', item);
     },
 
     handleItemCtrlClick(item) {
@@ -389,9 +388,10 @@ export default {
     },
 
     handleItemShiftClick(item){
-      const arr = this.list;
-      // this.clearSelected();
+      this.focusItem(item);
       
+      const arr = this.list;
+
       let i1 = arr.findIndex(v => v === item);
       let i2 = arr.findIndex(v => {
         return v.isBeSelected;
