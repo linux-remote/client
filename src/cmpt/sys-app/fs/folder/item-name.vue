@@ -19,12 +19,13 @@ export default {
       this.$data._dblClick_count ++;
     },
     handleClick(e){
+ 
       if(e.ctrlKey || e.shiftKey){
         return;
       }
       const item = this.item;
-      const pData = this.$parent;
-      if(!pData.focus){
+      console.log('item', item)
+      if(!item.focus){
         return;
       }
       if(this.$data._isClicked){
@@ -36,11 +37,11 @@ export default {
       const self = this;
       setTimeout(() => {
               
-        if(self.$data._dblClick_count !== _dblClick_count | !pData.focus){
+        if(self.$data._dblClick_count !== _dblClick_count | !item.focus){
           this.$data._isClicked = false;
           return;
         }
-        if(!pData.focus){
+        if(!item.focus){
           return;
         }
 
