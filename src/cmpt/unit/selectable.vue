@@ -3,10 +3,10 @@
   position: absolute;
   width:0;
   height: 0;
-  border: 1px solid #000;
+  border: 1px solid #0078d7;
   z-index: 999999999;
-  background-color: rgba(11, 170, 104, 0.5);
-
+  /* background-color: rgba(11, 170, 104, 0.5); */
+  background-color: rgba(#0078d7, 0.34);
 }
 </style>
 <template lang='jade'>

@@ -147,7 +147,7 @@ export default {
             }
           break;
           case 'getList':
-          this.srot(e.list);
+          this.sort(e.list);
           break;
           case 'del':
             this.removeItem(e.item);
@@ -229,7 +229,7 @@ export default {
       })
     },
     getFormatedListAndDir(list) {
-      var arr = [], dir;
+      let arr = [], dir;
       list.forEach( v => {
         if(v.name === '..') {
           return;
@@ -270,10 +270,26 @@ export default {
         }
         */
       });
+      arr = this.sortByName(arr);
       return {
         list: arr,
         dir
       };
+    },
+    sortByName(arr) {
+      // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
+      return arr.sort((a, b) => {
+          var nameA = a.name.toUpperCase(); // ignore upper and lowercase
+          var nameB = b.name.toUpperCase(); // ignore upper and lowercase
+          if (nameA < nameB) {
+            return -1;
+          }
+          if (nameA > nameB) {
+            return 1;
+          }
+          // names must be equal
+          return 0;
+      })
     },
     wrapItem(v){
       v.size = Number(v.size);
@@ -312,7 +328,7 @@ export default {
       v.focus = false;
       v.isBeSelected = false;
     },
-    srot(arr){
+    sort(arr){
       const map = {
         normal: {
           folderArr: [],
@@ -389,7 +405,7 @@ export default {
 
     handleItemShiftClick(item){
       this.focusItem(item);
-      
+
       const arr = this.list;
 
       let i1 = arr.findIndex(v => v === item);
