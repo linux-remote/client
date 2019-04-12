@@ -23,11 +23,13 @@
           td(colspan='7')
             PreCreate(:p='self')
 
-        RowItem(v-for='(item,i) in list',
+        RowItem(v-for='(item, i) in list',
                 :p='self',
                 :key='item.name',
                 :index='i',
-                :item='item')
+                :item='item',
+                @click='handleItemClick(item, $event)',
+  :class='{lr_file_hidden: item.isHidden, lr_file_focus: item.focus,  lr_file_be_selected: item.isBeSelected, lr_file_former: item.focus === 0}')
     .lr-fs-empty(v-if='!list.length') This folder is empty.
   //-Status
   CreateSysLink(v-if='createSysLinkName')
@@ -68,14 +70,16 @@ export default {
       model: 'list',
       listMap: {},
       preCreateItem: null,
-      selectedArr: [],
+      
       currItem: {},
       dir: null,
       isHaveDevice: false,
       newItemName: null,
       isRequest: false,
 
-      createSysLinkName: null //创建软链名字
+      createSysLinkName: null, //创建软链名字
+
+      _selectedItems: new Set
     }
   },
   computed: {
@@ -128,14 +132,14 @@ export default {
         switch (e.type){
           case 'add':
             if(e.item.focus === undefined){ // 根据 focus 判断有没有 parse 过
-              this.parseItem(e.item)
+              this.wrapItem(e.item)
             }
             this.reSortByItem(e.item, true);
             
           break;
           case 'update':
             if(e.item.focus === undefined){
-              this.parseItem(e.item)
+              this.wrapItem(e.item)
             }
             var thisItem = this.list.find((v) => v.name === e.item.name);
             if(thisItem){
@@ -143,48 +147,7 @@ export default {
             }
           break;
           case 'getList':
-          var arr = [];
-          e.list.forEach( v => {
-            if(v.name === '..') {
-              return;
-            }
-
-            if(v.name === '.'){
-              this.dir = v;
-              v.size = Number(v.size);
-              initRelation(v, this.username, this.groups);
-              return;
-            }
-            arr.push(v);
-            this.parseItem(v);
-            //this.focusNewItem(v);
-            /*
-            {
-              accessable,
-              focus,
-              permission, // raw
-              owner, // raw
-              group, // raw
-              mtime, // raw
-              name, // raw
-              size, // raw
-              suffix,
-              type,
-              writeable,
-              isFolder,
-              isHidden,
-              isMask, // isACL
-              isSticky,
-              is_group,
-              is_other,
-              is_owner,
-              openType,
-              readable,
-              rwxs,
-            }
-            */
-          });
-          this.srot(arr);
+          this.srot(e.list);
           break;
           case 'del':
             this.removeItem(e.item);
@@ -195,23 +158,50 @@ export default {
   },
   methods: {
     handleSelected(arr){
-      this.selectedArr = arr;
+      this.$data._selectedItems = new Set(arr);
     },
     getItemPath(name){
       let address = this.address;
       const a = address === '/' ? address : address + '/';
       return a + name;
     },
+
+    selectItem(item) {
+      item.isBeSelected = true;
+      this.$data._selectedItems.add(item);
+    },
+    unSelectItem(item) {
+      item.isBeSelected = false;
+      this.$data._selectedItems.delete(item);
+    },
+    clearSelected(){
+      this.$data._selectedItems.forEach(item => {
+        item.isBeSelected = false;
+      });
+      console.log('clearSelected');
+      this.$data._selectedItems.clear();
+    },
     selectAll(e){
       if(e.ctrlKey){
-        this.selectedArr = this.$refs.selectable.$children;
-        this.selectedArr.forEach((item, i) => {
-          item.onSelected(i);
+        if(this.currItem) {
+          this.currItem.focus = 0;
+        }
+        const arr = this.list;
+        arr.forEach(item => {
+          item.isBeSelected = true;
         })
+        this.$data._selectedItems = new Set(arr);
+
         e.preventDefault();
       }
       //e.stopPropagation();
-      
+    },
+    focusItem(item) {
+      item.focus = true;
+      if(this.currItem !== item){
+        this.currItem.focus = false;
+        this.currItem = item;
+      }
     },
     removeItem(item){
       const arr = this.getMapArr(item);
@@ -224,11 +214,13 @@ export default {
         stateKey: 'isRequest',
         data: {dir: true},
         success(data){
+          const result = this.getFormatedListAndDir(data);
+          this.dir = result.dir;
           this.error = null;
           this.$store.commit('fsTrigger', {
             type: 'getList',
             address: this.address,
-            list: data
+            list: result.list
           });
         },
         error(xhr){
@@ -236,7 +228,54 @@ export default {
         }
       })
     },
-    parseItem(v){
+    getFormatedListAndDir(list) {
+      var arr = [], dir;
+      list.forEach( v => {
+        if(v.name === '..') {
+          return;
+        }
+
+        if(v.name === '.'){
+          dir = v;
+          v.size = Number(v.size);
+          initRelation(v, this.username, this.groups);
+          return;
+        }
+        this.wrapItem(v);
+        arr.push(v);
+        //this.focusNewItem(v);
+        /*
+        {
+          accessable,
+          focus,
+          permission, // raw
+          owner, // raw
+          group, // raw
+          mtime, // raw
+          name, // raw
+          size, // raw
+          suffix,
+          type,
+          writeable,
+          isFolder,
+          isHidden,
+          isMask, // isACL
+          isSticky,
+          is_group,
+          is_other,
+          is_owner,
+          openType,
+          readable,
+          rwxs,
+        }
+        */
+      });
+      return {
+        list: arr,
+        dir
+      };
+    },
+    wrapItem(v){
       v.size = Number(v.size);
       initRelation(v, this.username, this.groups);
 
@@ -270,6 +309,8 @@ export default {
       if(v.device_type && !this.isHaveDevice){
         this.isHaveDevice = true;
       }
+      v.focus = false;
+      v.isBeSelected = false;
     },
     srot(arr){
       const map = {
@@ -319,77 +360,69 @@ export default {
       .concat(map.hidden.folderArr)
       .concat(map.hidden.fileArr);
     },
-    // focusNewItem(v){
-    //   if(this.newItemName && v.name === this.newItemName){
-    //     this.itemFocus(v);
-    //     this.newItemName = null;
-    //   }else if(v.name === this.currItem.name && this.currItem.focus){
-    //     this.itemFocus(v);
-    //   }else{
-    //     v.focus = false;
-    //   }
-    // },
 
-    itemFocus(item, e){
 
-      let arr = this.$refs.selectable.$children;
 
+    handleItemClick(item, e) {
       if(e.ctrlKey){ // ctrl
         this.handleItemCtrlClick(item);
       }else if(e.shiftKey){ // shift
         this.handleItemShiftClick(item);
       }else {
         this.clearSelected();
+        this.selectItem(item);
+        this.focusItem(item);
       }
-
-      item.focus = true;
-      if(this.currItem !== item){
-        this.currItem.focus = false;
-        this.currItem = item;
-      }
+      console.log('handleItemClick item', item);
     },
+
     handleItemCtrlClick(item) {
-        console.log('this.currItem.focus', this.currItem.focus)
-        if(!this.selectedArr.length && this.currItem.focus === true && !this.currItem.isBeSelected){
-          this.currItem.isBeSelected = true;
-          this.selectedArr.push(arr.find((v) => v.$data === this.currItem));
+      if(!item.isBeSelected) {
+        this.selectItem(item);
+        this.focusItem(item);
+      } else {
+        this.unSelectItem(item);
+        if(item.focus){
+          this.unFocusCurrItem();
         }
-
-        if(!item.isBeSelected){
-          item.isBeSelected = true;
-          this.selectedArr.push(arr.find((v) => v.$data === item));
-        }
+      }
     },
+
     handleItemShiftClick(item){
-        this.clearSelected();
-        let i1 = arr.findIndex(v => v.$data === item);
-        let i2 = arr.findIndex(v => v.$data === this.currItem);
-        let start, max;
-        if(i1 > i2){
-          start = i2;
-          max = i1; 
-        }else {
-          max = i2;
-          start = i1;
-        }
-        //console.log('start', start, 'max', max)
-        let arr2 = []
-        for(; start <= max; start++){
-          arr[start].isBeSelected = true;
-          arr2.push(arr[start]);
-        }
-        this.selectedArr = arr2;
-    },
-    clearSelected(){
-      this.selectedArr.forEach(item => {
-        item.onUnSelected();
-      })
-      this.selectedArr = [];
+      const arr = this.list;
+      // this.clearSelected();
+      
+      let i1 = arr.findIndex(v => v === item);
+      let i2 = arr.findIndex(v => {
+        return v.isBeSelected;
+      });
+      if(i2 === -1) {
+        i2 = 0;
+      }
+      let start, max;
+      if(i1 > i2){
+        start = i2;
+        max = i1; 
+      }else {
+        max = i2;
+        start = i1;
+      }
+      console.log('start', start, 'max', max, 'i1', i1, 'i2', i2);
+      let arr2 = [];
+      for(; start <= max; start++){
+        arr[start].isBeSelected = true;
+        arr2.push(arr[start]);
+      }
+      this.$data._selectedItems = new Set(arr2);
     },
 
+
+    unFocusCurrItem() {
+      this.currItem.focus = 0;
+    },
     handleFsBodyMousedown(){
       this.clearSelected();
-      this.currItem.focus = 0;
+      this.unFocusCurrItem();
     }
   },
   created(){
