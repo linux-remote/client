@@ -6,6 +6,8 @@ tr(@dblclick='open',
     ContextMenu(ref='ctx')
       .lr-ctx-item(@click='handleDel')
         | {{LANG.remove}}
+      .lr-ctx-item(@click='handleDel')
+        | {{LANG.rename}}
       //-.lr-ctx-item(@click='open', v-if='item.type === "RegularFile"')
         .lr-icon
         | 使用打开

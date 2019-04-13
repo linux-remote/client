@@ -61,6 +61,7 @@ export default  {
             title: 'FS Manager',
             ctx: {
               remove: 'delete',
+              rename: 'rename',
               download: 'download',
               createSymbolicLink: 'create symbolic link'
             },

@@ -24,7 +24,6 @@ export default {
         return;
       }
       const item = this.item;
-      console.log('item', item)
       if(!item.focus){
         return;
       }
