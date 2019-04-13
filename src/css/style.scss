@@ -119,7 +119,8 @@ body {
   user-select: none;
   padding: 0 10px 0 34px;
   &:first-letter {
-    text-transform:capitalize;
+    // https://zhidao.baidu.com/question/1695348555292540668.html
+    text-transform:uppercase;
   }
   &:hover{
     background-color: #d9d9d9; 

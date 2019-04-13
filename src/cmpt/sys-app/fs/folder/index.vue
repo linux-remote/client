@@ -175,11 +175,13 @@ export default {
       this.$data._selectedItems.delete(item);
     },
     clearSelected(){
-      this.$data._selectedItems.forEach(item => {
-        item.isBeSelected = false;
-      });
-      console.log('clearSelected');
-      this.$data._selectedItems.clear();
+      const _set = this.$data._selectedItems;
+      if(_set.size){
+        _set.forEach(item => {
+          item.isBeSelected = false;
+        });
+        _set.clear();
+      }
     },
     selectAll(e){
       if(e.ctrlKey){

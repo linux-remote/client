@@ -107,9 +107,8 @@ export default {
       this.p.createSysLinkName = this.item.name;
     },
     handleDel(){
-      if(this.p.selectedArr.length){
-        this.p.selectedArr.forEach(item => {
-          console.log('item', item)
+      if(this.p.$data._selectedItems.size){
+        this.p.$data._selectedItems.forEach(item => {
           item.del();
         })
       }else{
