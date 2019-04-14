@@ -3,7 +3,7 @@
                 @mousedown.capture='taskFocus',
                 @contextmenu.stop='',
                 :style='{width:width + "px", height: height  + "px", zIndex: zIndex, top:     positionTop + "px", left: positionLeft  + "px"}' ,
-                :class='{lr_task_max: isMax, lr_task_unique: unique, lr_task_focus: isFocus}')
+                :class='{lr_task_max: isMax, lr_task_unique: unique, lr_task_un_focus: !isFocus}')
   .lr-task-title(@dblclick='maxToggle')
     Movable.lr-task-title-content(:onMove='handleMove',
                                   :startX='positionLeft',

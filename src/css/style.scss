@@ -717,7 +717,7 @@ $topBarRight : 100px;
   position: absolute;
   z-index: 2; 
   top:0;
-  border: 1px solid rgba(#333, .3);
+  border: 1px solid #1883d7;
   display: flex;
   flex-direction: column;
   bottom: 0;
@@ -734,15 +734,14 @@ $topBarRight : 100px;
   border:0;
 }
 
-.lr_task_focus{
-  border-color: #1883d7; 
-}
+
 
 .lr-task-title{
   display: flex;
   flex-shrink: 0;
   background: #fff; 
-  color: #999;
+  color: #000;
+  
   height: 30px; 
   line-height: 30px;
   font-size: 13px;
@@ -761,9 +760,11 @@ $topBarRight : 100px;
   margin-right: 8px;
 }
 
-
-.lr_task_focus >.lr-task-title{ 
-  color: #000;
+.lr_task_un_focus{
+  border-color: rgba(#333, .3);
+  >.lr-task-title{
+    color: #999;
+  }
 }
 
 .lr-window-body{

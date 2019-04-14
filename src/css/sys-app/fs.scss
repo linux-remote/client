@@ -544,7 +544,25 @@ tr.lr_file_be_selected.lr_file_former{
   }
 }
 
-
+.lr_task_un_focus tr.lr_file_be_selected {
+  td {
+    background-color: #d9d9d9!important;
+    border-color: transparent!important;
+  }
+}
+// .lr_task_un_focus tr.lr_file_former{
+//   td {
+//     border-color: #b9b9b9!important;
+//     border-left-color: transparent!important;
+//     border-right-color: transparent!important;
+//   }
+// }
+// .lr_task_un_focus tr.lr_file_focus {
+//   td {
+//     border-color: transparent!important;
+//   }
+  
+// }
 .lr-fs-item-name{
   min-width: 2em;
   white-space: pre-wrap;
