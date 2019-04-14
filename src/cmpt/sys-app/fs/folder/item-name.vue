@@ -44,20 +44,25 @@ export default {
           return;
         }
 
-        const data = {
-          target: e.target,
-          handleBlur : function(newName){
-            self.isStart = false;
-            self.$data._isClicked = false;
-            if(!newName || item.name === newName){
-              return;
-            }
-            self.rename(newName);
-          }
-        }
-        this.isStart = true;
-        self.$store.commit('flyTextarea/open', data);
+        this.startRename();
       }, 500);
+    },
+    startRename() {
+      const self = this;
+      const item = self.item;
+      const data = {
+        target: this.$el,
+        handleBlur : function(newName){
+          self.isStart = false;
+          self.$data._isClicked = false;
+          if(!newName || item.name === newName){
+            return;
+          }
+          self.rename(newName);
+        }
+      }
+      self.isStart = true;
+      self.$store.commit('flyTextarea/open', data);
     },
     rename(newName){
       const item = this.item;

@@ -289,10 +289,10 @@ $fsRowItemH: 50px;
 }
 
 .lr_file_hidden{
-  opacity: .6;
-  &:hover{
-    opacity:1;
+  .lr-icon {
+    opacity: .6;
   }
+
 }
 .lr_per_is_on{
   background-color: rgba(green, .5);
@@ -489,7 +489,6 @@ background-image: url('/public/img/tango-style/inode-chardevice.png');
   }
 }
 .lr_file_be_selected{
-  opacity: 1;
   td {
     border-top: 1px solid #a5d6ff;
     background-color: $activeBgColor;
@@ -505,7 +504,7 @@ background-image: url('/public/img/tango-style/inode-chardevice.png');
   // }
 }
 
-
+// $activeBorderColor: red;
 tr.lr_file_focus, tr.lr_file_former{
   td:first-child{
     border-left: 1px solid $activeBorderColor!important;
@@ -537,7 +536,7 @@ tr.lr_file_be_selected.lr_file_former + tr.lr_file_be_selected {
     border-top-color: transparent!important;
   }
 }
-tr.lr_file_be_selected.lr_file_former {
+tr.lr_file_be_selected.lr_file_former{
   td {
     border-color: #7bc3ff!important;
   }

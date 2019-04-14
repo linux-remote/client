@@ -15,7 +15,8 @@
         span.glyph.glyph-remove
       .lr-task-ctrl-item(@click.stop='maxToggle',
                     :class='isMax ? "lr_task_control_shrink" : "lr-task-control-max"')
-        span.glyph.glyph-add
+        span.glyph.glyph-stop
+        span.glyph.glyph-stop.lr-task-glyph-stop-2
       .lr-task-ctrl-item.lr-task-ctrl-colse(@click.stop='removeTask')
         span.glyph.glyph-cancel
 

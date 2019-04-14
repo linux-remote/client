@@ -232,7 +232,7 @@ export default {
         const arr = [];
         this.$children.forEach(item => {
           if(item.$options.beSelectable && item.isBeSelected){
-            arr.push(item.item);
+            arr.push(item);
           }
         })
         this.onSelected(arr);

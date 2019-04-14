@@ -33,6 +33,9 @@
     .lr-fs-empty(v-if='!list.length') This folder is empty.
   //-Status
   CreateSysLink(v-if='createSysLinkName')
+  ContextMenu
+    .lr-ctx-item
+      | new Folder
 </template>
 
 <script>
@@ -43,6 +46,7 @@ import RowItem from './row-item.vue';
 import Status from './status.vue';
 import Selectable from '__ROOT__/cmpt/unit/selectable.vue';
 import CreateSysLink from './create-sys-link.vue';
+import ContextMenu from '__ROOT__/cmpt/global/contextmenu/index.vue';
 import initRelation from './permission-util';
 import {initIconAttr, encodePath} from './util';
 export default {
@@ -52,7 +56,8 @@ export default {
     Status,
     RowItem,
     CreateSysLink,
-    Selectable
+    Selectable,
+    ContextMenu
   },
   props: {
     address: {
@@ -382,15 +387,20 @@ export default {
 
 
     handleItemClick(item, e) {
-      if(e.ctrlKey){ // ctrl
-        this.handleItemCtrlClick(item);
-      }else if(e.shiftKey){ // shift
+      if(e.shiftKey) {
         this.handleItemShiftClick(item);
-      }else {
-        this.clearSelected();
-        this.selectItem(item);
-        this.focusItem(item);
+        this.$options._isPreClickShirt = true;
+      } else {
+        this.$options._isPreClickShirt = false;
+        if(e.ctrlKey){ // ctrl
+          this.handleItemCtrlClick(item);
+        } else {
+          this.clearSelected();
+          this.selectItem(item);
+          this.focusItem(item);
+        }
       }
+
     },
 
     handleItemCtrlClick(item) {
@@ -404,34 +414,50 @@ export default {
         }
       }
     },
-
+    // _checkIsContinuity(i1, i2){
+    //   let i = i1;
+    //   const arr = this.list;
+    //   for(; i < i2; i ++) {
+    //     if(!arr[i].isBeSelected){
+          
+    //     }
+    //   }
+    // },
     handleItemShiftClick(item){
-      this.focusItem(item);
+      
 
       const arr = this.list;
-
-      let i1 = arr.findIndex(v => v === item);
-      let i2 = arr.findIndex(v => {
-        return v.isBeSelected;
-      });
-      if(i2 === -1) {
-        i2 = 0;
+      let currIndex = arr.findIndex(v => v === item);
+      let firstSelectIndex;
+      let focusIndex = arr.findIndex(v => v === this.currItem);;
+      if (this.$options._isPreClickShirt) {
+        firstSelectIndex = arr.findIndex(v => {
+          return v.isBeSelected;
+        });
+      } else {
+        firstSelectIndex = focusIndex;
+      }
+      if(firstSelectIndex === -1) {
+        firstSelectIndex = 0;
       }
       let start, max;
-      if(i1 > i2){
-        start = i2;
-        max = i1; 
-      }else {
-        max = i2;
-        start = i1;
+      if(currIndex > firstSelectIndex){ // 选择了第一行下面
+        start = firstSelectIndex;
+        max = currIndex;
+
+      }else { // 选择了上面
+        start = currIndex;
+        max = focusIndex;
       }
-      console.log('start', start, 'max', max, 'i1', i1, 'i2', i2);
+      // console.log('start', start, 'max', max, 'currIndex', currIndex, 'firstSelectIndex', firstSelectIndex);
+      this.clearSelected();
       let arr2 = [];
       for(; start <= max; start++){
         arr[start].isBeSelected = true;
         arr2.push(arr[start]);
       }
       this.$data._selectedItems = new Set(arr2);
+      this.focusItem(item);
     },
 
 

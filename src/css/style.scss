@@ -787,6 +787,7 @@ $topBarRight : 100px;
   justify-content: center;
   height: 29px;
   color: #000;
+  background-color: #fff;
   &:hover{
     background-color: #e5e5e5;
   }
@@ -796,6 +797,29 @@ $topBarRight : 100px;
   &:hover{
     background-color: #e81123;
     color: #fff;
+  }
+}
+.lr-task-glyph-stop-2 {
+  display: none;
+}
+$taskGlyphPositon: 10px;
+$taskGlyphPositonX: 14px;
+.lr_task_control_shrink {
+  position: relative;
+  .glyph {
+    position: absolute;
+    background-color: inherit;
+  }
+  .glyph:first-child{
+    bottom: $taskGlyphPositon;
+    right: $taskGlyphPositonX;
+  } 
+  .lr-task-glyph-stop-2 {
+    display: block;
+    top: $taskGlyphPositon;
+    left: $taskGlyphPositonX;
+    z-index: 2;
+    
   }
 }
 // .lr-task-control-close::before{

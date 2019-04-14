@@ -6,7 +6,7 @@ tr(@dblclick='open',
     ContextMenu(ref='ctx')
       .lr-ctx-item(@click='handleDel')
         | {{LANG.remove}}
-      .lr-ctx-item(@click='handleDel')
+      .lr-ctx-item(@click='handleRename')
         | {{LANG.rename}}
       //-.lr-ctx-item(@click='open', v-if='item.type === "RegularFile"')
         .lr-icon
@@ -23,7 +23,7 @@ tr(@dblclick='open',
     .lr-name-wrap
       .lr-icon(:class='["lr_file_type_" + item.type, {["lr_fs_open_type_" + item.openType]: item.type !== "Directory"}]', :style='iconStyle')
         .lr-icon.lr-error-icon(v-if='item.linkTargetError')
-      ItemName(:item='item', :p='p')
+      ItemName(:item='item', :p='p', ref="name")
   td
     span(:class='{lr_per_is_on: item.is_owner}') {{item.owner}}
   td
@@ -166,6 +166,10 @@ export default {
     download(){
       var url = this.p.getItemPath(this.item.name);
       this.winOpen(url, '?download=true');
+    },
+    handleRename() {
+      this.$refs.name.startRename();
+      console.log('handleRename');
     }
   }
 }
