@@ -520,6 +520,7 @@ tr.lr_file_focus, tr.lr_file_former{
   //   background-color: $activeBgColor;
   // }
 }
+
 tr.lr_file_focus {
   overflow:visible;
   background-color: $activeBgColor;
@@ -538,7 +539,8 @@ tr.lr_file_be_selected.lr_file_former + tr.lr_file_be_selected {
 }
 tr.lr_file_be_selected.lr_file_former{
   td {
-    border-color: #7bc3ff!important;
+    border-top-color: #7bc3ff!important;
+    border-bottom-color: #7bc3ff!important;
   }
 }
 

@@ -404,14 +404,14 @@ export default {
     },
 
     handleItemCtrlClick(item) {
+      this.unFocusCurrItem();
       if(!item.isBeSelected) {
         this.selectItem(item);
         this.focusItem(item);
       } else {
         this.unSelectItem(item);
-        if(item.focus){
-          this.unFocusCurrItem();
-        }
+        this.focusItem(item);
+        this.unFocusCurrItem();
       }
     },
     // _checkIsContinuity(i1, i2){
@@ -458,6 +458,7 @@ export default {
       }
       this.$data._selectedItems = new Set(arr2);
       this.focusItem(item);
+      this.unFocusCurrItem();
     },
 
 
