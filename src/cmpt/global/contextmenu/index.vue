@@ -5,6 +5,12 @@ ContextMenu(v-if='isShow')
 <script>
 import ContextMenu from './contextmenu.vue';
 export default {
+  props: {
+    isStop: {
+      type: Boolean,
+      default: true
+    }
+  },
   components: {
     ContextMenu
   },
@@ -18,16 +24,18 @@ export default {
       window.APP.contextMenuTransferData = null;
       this.isShow = false;
     },
-    handleContextmenu(e){
-      // if(e.target !== this.$parent.$el){
-      //   return;
-      // }
+    show(e) {
       window.APP.contextMenuTransferData = {
         x: e.clientX,
         y: e.clientY
       }
       this.isShow = true;
-      e.stopPropagation();
+    },
+    handleContextmenu(e){
+      if(this.isStop) {
+        this.show(e);
+        e.stopPropagation();
+      }
       e.preventDefault();
     }
   },

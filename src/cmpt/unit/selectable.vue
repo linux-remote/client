@@ -18,7 +18,7 @@ div(@mousedown='mousedownListener', v-on='$listeners')
 
 <script>
 export default {
-  props: ['onSelected'],
+  // props: ['selectEed'],
   data(){
     return {
       isSelect : false,
@@ -227,16 +227,17 @@ export default {
       this.isSelect = false;
       this.w = 0;
       this.h = 0;
-      if(this.onSelected){
-        // const arr = this.childSelect();
-        const arr = [];
-        this.$children.forEach(item => {
-          if(item.$options.beSelectable && item.isBeSelected){
-            arr.push(item);
-          }
-        })
-        this.onSelected(arr);
-      }
+      this.$emit('selectEed');
+      // if(this.onSelected){
+      //   // const arr = this.childSelect();
+      //   const arr = [];
+      //   this.$children.forEach(item => {
+      //     if(item.$options.beSelectable && item.isBeSelected){
+      //       arr.push(item);
+      //     }
+      //   })
+      //   this.onSelected(arr);
+      // }
 
     },
     mousedownListener(e){

@@ -7,7 +7,7 @@
   //- CtrlBar
   .lr-fs-folder-inner(v-if='error')
     pre.lr-fs-error(v-text='error')
-  Selectable.lr-fs-folder-inner(:onSelected='handleSelected', v-else, ref='selectable')
+  Selectable.lr-fs-folder-inner(@selectEed='handleSelected', v-else, ref='selectable')
     table.lr-fs-table(:class='"lr_file_model_" + model')
       thead
         tr
@@ -83,8 +83,6 @@ export default {
       isRequest: false,
 
       createSysLinkName: null, //创建软链名字
-
-      _selectedItems: new Set
     }
   },
   computed: {
@@ -161,9 +159,12 @@ export default {
       }
     }
   },
+
   methods: {
-    handleSelected(arr){
-      this.$data._selectedItems = new Set(arr);
+    handleSelected(){
+      console.log('handleSelected');
+      const selectedItems = this.list.filter(item => item.isBeSelected);
+      this.$options._selectedItems = new Set(selectedItems);
     },
     getItemPath(name){
       let address = this.address;
@@ -173,14 +174,14 @@ export default {
 
     selectItem(item) {
       item.isBeSelected = true;
-      this.$data._selectedItems.add(item);
+      this.$options._selectedItems.add(item);
     },
     unSelectItem(item) {
       item.isBeSelected = false;
-      this.$data._selectedItems.delete(item);
+      this.$options._selectedItems.delete(item);
     },
     clearSelected(){
-      const _set = this.$data._selectedItems;
+      const _set = this.$options._selectedItems;
       if(_set.size){
         _set.forEach(item => {
           item.isBeSelected = false;
@@ -197,7 +198,7 @@ export default {
         arr.forEach(item => {
           item.isBeSelected = true;
         })
-        this.$data._selectedItems = new Set(arr);
+        this.$options._selectedItems = new Set(arr);
 
         e.preventDefault();
       }
@@ -456,7 +457,7 @@ export default {
         arr[start].isBeSelected = true;
         arr2.push(arr[start]);
       }
-      this.$data._selectedItems = new Set(arr2);
+      this.$options._selectedItems = new Set(arr2);
       this.focusItem(item);
       this.unFocusCurrItem();
     },
@@ -471,6 +472,7 @@ export default {
     }
   },
   created(){
+    this.$options._selectedItems = new Set;
     this.getData();
   }
 }

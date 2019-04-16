@@ -3,7 +3,7 @@ tr(@dblclick='open',
    @mousedown.stop='',
    v-on="$listeners")
   td
-    ContextMenu(ref='ctx')
+    ContextMenu(ref='ctx', :isStop="item.focus === true")
       .lr-ctx-item(@click='handleDel')
         | {{LANG.remove}}
       .lr-ctx-item(@click='handleRename')
@@ -107,13 +107,14 @@ export default {
       this.p.createSysLinkName = this.item.name;
     },
     handleDel(){
-      if(this.p.$data._selectedItems.size){
-        this.p.$data._selectedItems.forEach(item => {
-          item.del();
-        })
-      }else{
-        this.del();
-      }
+      this.$emit('del', this);
+      // if(this.p.$data._selectedItems.size){
+      //   this.p.$data._selectedItems.forEach(item => {
+      //     item.del();
+      //   })
+      // }else{
+      //   this.del();
+      // }
     },
     del(){
 
