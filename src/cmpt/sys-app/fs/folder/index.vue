@@ -28,6 +28,7 @@
                 :key='item.name',
                 :index='i',
                 :item='item',
+                @del="handleItemDel",
                 @click='handleItemClick(item, $event)',
   :class='{lr_file_hidden: item.isHidden, lr_file_focus: item.focus,  lr_file_be_selected: item.isBeSelected, lr_file_former: item.focus === 0}')
     .lr-fs-empty(v-if='!list.length') This folder is empty.
@@ -215,6 +216,15 @@ export default {
       const arr = this.getMapArr(item);
       arr.splice(arr.findIndex(v => v === item), 1);
       this.concatList();
+    },
+    handleItemDel() {
+      const _set = this.$options._selectedItems;
+      if(_set.size){
+        _set.forEach(item => {
+          item._del();
+        });
+        _set.clear();
+      }
     },
     getData(){
       this.request({

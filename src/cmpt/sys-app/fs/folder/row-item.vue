@@ -52,6 +52,9 @@ export default {
     ItemName
   },
   data(){
+    this.item._del = () => {
+      this.del();
+    }
     return this.item
   },
   props: {
@@ -107,7 +110,7 @@ export default {
       this.p.createSysLinkName = this.item.name;
     },
     handleDel(){
-      this.$emit('del', this);
+      this.$emit('del');
       // if(this.p.$data._selectedItems.size){
       //   this.p.$data._selectedItems.forEach(item => {
       //     item.del();
