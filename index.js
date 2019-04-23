@@ -1,4 +1,4 @@
-const { getUrlAndDir, wrapUrl } = require('./node-module-static');
+const { getUrlAndDir } = require('./node-module-static');
 const map = Object.create(null);
 const path = require('path');
 const publicPath = require('lr-public');
@@ -11,8 +11,7 @@ map['@hezedu/winstrap'].files = ['css/winstrap.min.css',
 map['vue.runtime'] = getUrlAndDir('vue');
 map['vuex'] = getUrlAndDir('vuex');
 map['vue-router'] = getUrlAndDir('vue-router');
-
-
+map['requirejs'] = getUrlAndDir('requirejs');
 
 exports.publicPath = publicPath;
 exports.faviconPath = path.join(__dirname,  'logo_def.png');

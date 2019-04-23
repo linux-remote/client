@@ -202,7 +202,7 @@ export default {
   },
   mounted(){
     this.$store.commit('setDeskTopWH');
-    //-this.$store.commit('task/add', {appId: 'sys_app_file', address: '/home/dw/upload'});
+    this.$store.commit('task/add', {appId: 'sys_app_terminal'});
   }
 }
     // Cascade.lr-ctx-item

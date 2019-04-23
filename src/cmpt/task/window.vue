@@ -23,6 +23,7 @@
 
       
   FsBody(v-if='appId==="sys_app_file"')
+  Terminal(v-if='appId==="sys_app_terminal"')
   RecycleBinBody(v-else-if='appId==="sys_app_recycle_bin"')
   DiskBody(v-else-if='appId==="sys_app_disk"')
   ComputerInfo(v-else-if='appId==="sys_app_computer"')
@@ -39,6 +40,7 @@ import RecycleBinBody from '../sys-app/recycle-bin.vue';
 import DiskBody from '../sys-app/fs/disk.vue';
 import ComputerInfo from '../sys-app/computer-info.vue';
 import Editor from '../sys-app/editor.vue';
+import Terminal from '../sys-app/terminal/index.vue';
 //import ThirdPartyApp from '../third-party-app/index.vue';
 import Resizable from '../unit/resizable.vue';
 import Movable from '../unit/movable.vue';
@@ -51,7 +53,7 @@ export default {
     FsBody,
     ComputerInfo,
     Editor,
-
+    Terminal,
     //ThirdPartyApp,
 
     Resizable,

@@ -25,6 +25,9 @@ for(let name in map){
       pushIndexPath(v.url + '/' + _name);
     });
   } else {
+    if (/\.js$/.test(name)) {
+      name = name.replace(/\.js$/, '');
+    }
     var distName = IS_PRO ? name + '.min' : name;
     distName = distName + '.js';
     v.distName = distName;

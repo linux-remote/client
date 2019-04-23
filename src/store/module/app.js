@@ -41,6 +41,14 @@ export default  {
         //   'zh-CN': '笔记本',
         //   'en-US': 'Notebook'
         // }
+      },
+      sys_app_terminal: {
+        iconUrl: '/public/img/kterm.png',
+        // title: null,
+        // name: {
+        //   'zh-CN': '笔记本',
+        //   'en-US': 'Notebook'
+        // }
       }
     },
     thirdPartyMap: null,

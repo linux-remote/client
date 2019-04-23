@@ -57,6 +57,9 @@ export default  {
           sys_app_editor: {
             title: 'Notebook'
           },
+          sys_app_terminal: {
+            title: 'Terminal'
+          },
           sys_app_file: {
             title: 'FS Manager',
             ctx: {

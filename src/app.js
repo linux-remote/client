@@ -1,5 +1,4 @@
 
-
 import './css/style.scss';
 
 import './lib/vue-prototype';
