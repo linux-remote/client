@@ -8,33 +8,59 @@ export default {
   props: ['task'],
   data(){
     return {
-      isRequest: false,
-      colAndRows: {
-        cols: 87,
-        rows: 26
-      }
+      isRequest: false
     }
   },
   methods: {
-    create() {
+
+    create(Terminal) {
+      const isWindows = ['Windows', 'Win16', 'Win32', 'WinCE'].indexOf(navigator.platform) >= 0;
       const $opt = this.$options;
-      this.request({
-        type: 'post',
-        url: '~/terminals',
-        data: this.colAndRows,
-        success: (pid) => {
-          // const socket = new WebSocket(wsOrigin + 
-          //   '/api/user/' + 
-          //   this.$route.params.username + 
-          //   '/terminals/' + 
-          //   pid);
-          const socket = new WebSocket(wsOrigin + 
-            '/terminal?user=dw&pid=' + pid);
-          socket.onopen = this.run;
-          socket.onerror = this.termOnError;
-          $opt.socket = socket;
+
+      const term = new Terminal({
+        windowsMode: isWindows
+      });
+
+      $opt.term = term;
+      term.open(this.$el);
+      
+      // resize: 
+      term.onResize((size) => {
+        if (!$opt.pid) {
+          return;
         }
-      })
+        const cols = size.cols;
+        const rows = size.rows;
+        const url = '/terminals/' + $opt.pid + '/size?cols=' + cols + '&rows=' + rows;
+
+        this.request({
+          type: 'post',
+          url
+        });
+
+      });
+
+      term.fit(); 
+      term.focus();
+
+      // fit is called within a setTimeout, cols and rows need this.
+      setTimeout(() => {
+        this.request({
+          type: 'post',
+          url: `~/terminals?cols=${term.cols}&rows=${term.rows}`,
+
+          success: (pid) => {
+            $opt.pid = pid;
+            const socket = new WebSocket(wsOrigin + 
+              '/terminal?user=' + this.$route.params.username + '&pid=' + pid);
+            socket.onopen = this.run;
+            socket.onerror = this.termOnError;
+            $opt.socket = socket;
+          }
+        })
+      }, 0);
+
+
     },
     run() {
       const term = this.$options.term;
@@ -50,11 +76,7 @@ export default {
     '/public/xterm/addons/fit/fit.js'], (Terminal, attach, fit) => {
       Terminal.applyAddon(attach);
       Terminal.applyAddon(fit);
-      const term = new Terminal;
-      term.open(this.$el);
-      term.fit();
-      this.$options.term = term;
-      this.create();
+      this.create(Terminal);
     })
   }
 }
