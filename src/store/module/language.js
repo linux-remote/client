@@ -60,6 +60,9 @@ export default  {
           sys_app_terminal: {
             title: 'Terminal'
           },
+          sys_app_task_manager: {
+            title: 'Task Manager'
+          },
           sys_app_file: {
             title: 'FS Manager',
             ctx: {

@@ -49,6 +49,14 @@ export default  {
         //   'zh-CN': '笔记本',
         //   'en-US': 'Notebook'
         // }
+      },
+      sys_app_task_manager: {
+        iconUrl: '/public/img/utilities-system-monitor-6.png',
+        // title: null,
+        // name: {
+        //   'zh-CN': '笔记本',
+        //   'en-US': 'Notebook'
+        // }
       }
     },
     thirdPartyMap: null,

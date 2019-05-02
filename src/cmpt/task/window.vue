@@ -28,6 +28,7 @@
   DiskBody(v-else-if='appId==="sys_app_disk"')
   ComputerInfo(v-else-if='appId==="sys_app_computer"')
   Editor(v-else-if='appId==="sys_app_editor"', :task='this.$data')
+  TaskManager(v-else-if='appId==="sys_app_task_manager"')
   //-ThirdPartyApp(v-else, :task='this.$data')
 
 
@@ -41,6 +42,7 @@ import DiskBody from '../sys-app/fs/disk.vue';
 import ComputerInfo from '../sys-app/computer-info.vue';
 import Editor from '../sys-app/editor.vue';
 import Terminal from '../sys-app/terminal/index.vue';
+import TaskManager from '../sys-app/task-manager.vue';
 //import ThirdPartyApp from '../third-party-app/index.vue';
 import Resizable from '../unit/resizable.vue';
 import Movable from '../unit/movable.vue';
@@ -54,6 +56,7 @@ export default {
     ComputerInfo,
     Editor,
     Terminal,
+    TaskManager,
     //ThirdPartyApp,
 
     Resizable,
