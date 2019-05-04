@@ -2,7 +2,7 @@
 .lr-window-body
 </template>
 <script>
-import { getWsOrigin } from './util';
+import { getWsOrigin } from '../util';
 const wsOrigin = getWsOrigin();
 export default {
   props: ['task'],
@@ -78,6 +78,9 @@ export default {
       Terminal.applyAddon(fit);
       this.create(Terminal);
     })
+  },
+  destroyed() {
+    this.$options.socket.close();
   }
 }
 

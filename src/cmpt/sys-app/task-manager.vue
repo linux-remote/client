@@ -4,6 +4,8 @@
 </template>
 
 <script>
+import { getWsOrigin } from './util';
+const wsOrigin = getWsOrigin();
 export default {
   data(){
     return {
@@ -14,33 +16,17 @@ export default {
   },
 
   methods: {
-    getData(cb) {
-      // this.result = '';
-      this.request({
-        url: '~/ps',
-        success(data) {
-          this.result = data;
-          cb();
-        }
-      })
-    },
-    loop() {
-      this.$options.timer = null;
-      this.getData(() => {
-        this.$options.timer = setTimeout(() => {
-          this.loop();
-        }, this.interval);
-      })
-    }
   },
-
   created(){
-    this.loop();
+    const socket = new WebSocket(wsOrigin + 
+              '/ps?user=' + this.$route.params.username);
+    socket.onmessage = (e) => {
+      this.result = e.data;
+    };
+    this.$options.socket = socket;
   },
   destroyed() {
-    if(this.$options.timer) {
-      clearTimeout(this.$options.timer);
-    }
+    this.$options.socket.close();
   }
 }
 </script>
