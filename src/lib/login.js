@@ -53,8 +53,10 @@ export function logout(){
     data: {
       username: this.$route.params.username
     },
-    success(){
-
+    success(data){
+      // {loginedList: []}
+      this.$store.commit('set', data);
+      
       let route = '/';
       const storeData = {
         deskInited: false,

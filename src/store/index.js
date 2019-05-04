@@ -41,7 +41,7 @@ const store = new window.Vuex.Store({
     // global
     winH: $win.height(),
     winW: $win.width(),
-    //loginedMap: null,
+    loginedList: [],
     // sess
     
     // desktop
