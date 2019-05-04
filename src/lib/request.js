@@ -1,5 +1,5 @@
 //修改自: https://github.com/hezedu/dwlib/blob/master/request.js
-// 增加了codeError, 去掉 omitEmpty, 修改了:opts.url
+// 去掉 omitEmpty, 修改了:opts.url
 import {noop} from './util';
 import store from '__ROOT__/store/index.js';
 const $ = window.$;
@@ -25,9 +25,6 @@ function httpErrorHandler(xhr){
   store.commit('error/show', `#${xhr.status}: ${xhr.responseText}`);
 }
 
-function codeErrorHandler(data){
-  store.commit('error/show', `*${data.code}: ${data.msg}`);
-}
 
 //过滤掉空的参数
 const omitKeyMap = {
@@ -36,7 +33,6 @@ const omitKeyMap = {
   complete: true,
   success: true,
   error: true,
-  codeError: true,
   rootUrl: true
 };
 
@@ -61,7 +57,6 @@ function request(opts){
     success = noop,
     complete = noop,
     error = httpErrorHandler,
-    codeError = codeErrorHandler,
     //isOmitEmptyData = true,
     repeatSubmitMode = globalConfig.repeatSubmitMode,
     rootUrl = globalConfig.rootUrl,
@@ -165,15 +160,7 @@ function request(opts){
       
       error.call(self,  xhr);
     }else{
-      if(xhr.responseJSON){
-        if(xhr.responseJSON.code){
-          codeError.call(self, xhr.responseJSON);
-        }else{
-          success.call(self, xhr.responseJSON.data);
-        }
-      }else{
-        success.call(self, xhr.responseText);
-      }
+      success.call(self, xhr.responseJSON || xhr.responseText);
     }
   }
 

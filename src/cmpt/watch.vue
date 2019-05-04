@@ -6,7 +6,6 @@
 </template>
 
 <script>
-//- .lr-watch-timezone(:title='timeZone.offset.name + ", " + formatedOffset') | {{timeZone.name}}
 import {ONE_MIN} from '__ROOT__/lib/util';
 function forMatTimeOffset(hours){
   const i = hours.length - 2
@@ -19,7 +18,6 @@ export default {
       count:0,
       now: 0,
       time: 0,
-      timeZone: {},
       timeZoneOffset: 0
     }
   },
@@ -47,16 +45,13 @@ export default {
   methods:{
     getData(){
       this.request({
-        url: '/time',
+        url: '~/time',
         success(data){
           this.clientDate = new Date();
           this.now = this.clientDate.getTime();
 
-          const offsetHour = Number(data.timeZone.offset.hour) / 100;
           this.time = data.time;
-          this.timeZone = data.timeZone;
-          this.timeZoneOffset = -(offsetHour * 60);
-          this.formatedOffset = forMatTimeOffset(data.timeZone.offset.hour)
+          this.timeZoneOffset = data.timeZoneOffset;
           this.start();
         }
       })

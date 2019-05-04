@@ -53,31 +53,31 @@ export default {
     logout,
     init(){
       const username = this.$route.params.username;
-      var count = 0, TOTAL = 2, data;
+      var count = 0, TOTAL = 1, data;
 
-      const initAppMap = () => {
-        if(!this.$store.state.app.thirdPartyMap){
-          this.request({
-            url: '/app/list',
-            success(data){
-              var map = Object.create(null);
+      // const initAppMap = () => {
+      //   if(!this.$store.state.app.thirdPartyMap){
+      //     this.request({
+      //       url: '/app/list',
+      //       success(data){
+      //         var map = Object.create(null);
 
-              data.forEach((v) => {
-                v.main = '/app' + v.staticPath + '/' + v.main;
-                v.iconUrl = API_ROOT + '/app' + v.staticPath + '/' + v.icon;
-                delete(v.icon);
-                delete(v.staticPath);
-                map[v.id] = v;
-                delete(v.id);
-              });
-              this.$store.commit('app/setThirdPartyMap', map);
-              initAppMap();
-            }
-          })
-        } else {
-          done();
-        }
-      }
+      //         data.forEach((v) => {
+      //           v.main = '/app' + v.staticPath + '/' + v.main;
+      //           v.iconUrl = API_ROOT + '/app' + v.staticPath + '/' + v.icon;
+      //           delete(v.icon);
+      //           delete(v.staticPath);
+      //           map[v.id] = v;
+      //           delete(v.id);
+      //         });
+      //         this.$store.commit('app/setThirdPartyMap', map);
+      //         initAppMap();
+      //       }
+      //     })
+      //   } else {
+      //     done();
+      //   }
+      // }
 
       const getBundle = () => {
         this.request({
@@ -111,7 +111,7 @@ export default {
       }
 
 
-      initAppMap();
+      // initAppMap();
       getBundle();
 
       createWs(username);
