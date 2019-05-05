@@ -57,16 +57,38 @@ body {
   width:20px; 
   height: 20px;
 }
-.lr-center-flex{
+
+.lr-login-box-wrap{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.lr-login-wrap{
+  display: flex;
+  justify-content: center;
+  padding-top: 1px;
+  h2 {
+    color: #fff;
+  }
+}
+.lr-logined-wrap{
+
+  margin-right: 40px;
+  padding-right: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
-}
-.lr-login-wrap{
-  flex-direction: column;
-  justify-content: flex-start;
-  h2 {
-    color: #fff;
+  border-right: 1px solid rgba(#fff, .6);
+
+  .entity-list-item{
+    display: block;
+    color: #000;
+    width: 200px;
+    background-color: rgba(#fff, 1);
+    &:hover{
+      text-decoration: none;
+    }
   }
 }
 .lr-login-logo{
@@ -74,6 +96,12 @@ body {
   height: 160px;
   display: block;
   margin-top: 140px;
+}
+.lr_login_have_logined{
+  justify-content: center;
+  .lr-login-logo{
+    margin-top: 0;
+  }
 }
 .lr-login-box{
   width: 296px;

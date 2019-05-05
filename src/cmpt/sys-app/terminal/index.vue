@@ -2,8 +2,7 @@
 .lr-window-body
 </template>
 <script>
-import { getWsOrigin } from '../util';
-const wsOrigin = getWsOrigin();
+import { composeUserWsUrl } from '../util';
 export default {
   props: ['task'],
   data(){
@@ -51,8 +50,8 @@ export default {
 
           success: (pid) => {
             $opt.pid = pid;
-            const socket = new WebSocket(wsOrigin + 
-              '/terminal?user=' + this.$route.params.username + '&pid=' + pid);
+            const url = composeUserWsUrl(this.$route.params.username, 'terminal?pid=' + pid);
+            const socket = new WebSocket(url);
             socket.onopen = this.run;
             socket.onerror = this.termOnError;
             $opt.socket = socket;

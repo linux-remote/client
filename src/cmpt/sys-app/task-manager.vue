@@ -4,8 +4,7 @@
 </template>
 
 <script>
-import { getWsOrigin } from './util';
-const wsOrigin = getWsOrigin();
+import { composeUserWsUrl } from './util';
 export default {
   data(){
     return {
@@ -18,8 +17,8 @@ export default {
   methods: {
   },
   created(){
-    const socket = new WebSocket(wsOrigin + 
-              '/ps?user=' + this.$route.params.username);
+    const url = composeUserWsUrl(this.$route.params.username, 'ps');
+    const socket = new WebSocket(url);
     socket.onmessage = (e) => {
       this.result = e.data;
     };

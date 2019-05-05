@@ -1,9 +1,14 @@
 
 <template lang="jade">
-.lr-page.lr-center-flex.lr-login-wrap.theme-dark.color-fill-accent-vivid-high
-  ul(v-if="loginedList.length")
-    li(v-for="username in loginedList", :key="username") {{username}}
-  div
+.lr-page.lr-login-wrap.theme-dark.color-fill-accent-vivid-high
+  .lr-logined-wrap(v-if="loginedList.length")
+    .entity-list.entity-list-expandable
+      router-link.entity-list-item(v-for="username in loginedList", :key="username", :to="'/user/' + username")
+        .item-icon
+          span.glyph.glyph-contact-2
+        .item-content-primary
+          .content-text-primary {{username}}
+  .lr-login-box-wrap(:class="{lr_login_have_logined: loginedList.length}")
     img.lr-login-logo(src="/public/img/windows-linux-logo-c.png")
     h2 Linux Remote
     .lr-login-box
@@ -44,7 +49,8 @@ export default {
   },
   computed: {
     loginedList() {
-      return this.$store.state.loginedList
+      return ['dw']
+      //return this.$store.state.loginedList
     },
     language(){
       return this.$store.state.language;

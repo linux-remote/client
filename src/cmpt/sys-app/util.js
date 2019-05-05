@@ -14,3 +14,9 @@ export function getWsOrigin() {
   }
   return wsOrigin;
 }
+
+export const wsOrigin = getWsOrigin();
+
+export function composeUserWsUrl(username, subPath) {
+  return `${wsOrigin}/user/${username}/${subPath}`;
+}
