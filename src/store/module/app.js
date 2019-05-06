@@ -52,6 +52,7 @@ export default  {
       },
       sys_app_task_manager: {
         iconUrl: '/public/img/utilities-system-monitor-6.png',
+        unique: true,
         // title: null,
         // name: {
         //   'zh-CN': '笔记本',

@@ -49,8 +49,7 @@ export default {
   },
   computed: {
     loginedList() {
-      return ['dw']
-      //return this.$store.state.loginedList
+      return this.$store.state.loginedList
     },
     language(){
       return this.$store.state.language;
