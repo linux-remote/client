@@ -202,7 +202,8 @@ export default {
   },
   mounted(){
     this.$store.commit('setDeskTopWH');
-    this.$store.commit('task/add', {appId: 'sys_app_task_manager'});
+    // this.$store.commit('task/add', {appId: 'sys_app_task_manager'});
+    this.$store.commit('task/add', {appId: 'sys_app_file'});
   }
 }
     // Cascade.lr-ctx-item

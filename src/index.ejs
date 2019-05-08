@@ -18,7 +18,7 @@
   </script>
   <% statics.jsArr.forEach(function(v){%>
   <script src="<%=v%>"></script><% }) %>
-  
+  <script src="/public/js/require-2.3.6.min.js"></script>
   <script>
     var SERVER_CONFIG = <%=JSON.stringify(data)%>
   </script>

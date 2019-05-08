@@ -70,11 +70,16 @@ export default {
     }
   },
   mounted(){
-    window.require(['/public/xterm/xterm.js', 
-    '/public/xterm/addons/attach/attach.js', 
-    '/public/xterm/addons/fit/fit.js'], (Terminal, attach, fit) => {
+    window.require(['/public/xterm-3.12.0-build/xterm.min.js', 
+    '/public/xterm-3.12.0-build/addons/attach.min.js', 
+    '/public/xterm-3.12.0-build/addons/fit.min.js',
+    '/public/xterm-3.12.0-build/addons/webLinks.min.js'], (Terminal, attach, fit, webLinks) => {
       Terminal.applyAddon(attach);
       Terminal.applyAddon(fit);
+      Terminal.applyAddon(webLinks);
+      // Uncaught TypeError: Cannot read property 'Browser' of undefined
+      // Terminal.applyAddon(zmodem);
+
       this.create(Terminal);
     })
   },
