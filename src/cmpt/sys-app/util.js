@@ -20,3 +20,33 @@ export const wsOrigin = getWsOrigin();
 export function composeUserWsUrl(username, subPath) {
   return `${wsOrigin}/user/${username}/${subPath}`;
 }
+
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
+export function sortByNumberKey(list, key, isAsc) {
+  if(isAsc) {
+    list.sort((a, b) => {
+      return a[key] - b[key];
+    });
+  } else {
+    list.sort((a, b) => {
+      return b[key] - a[key];
+    });
+  }
+
+}
+export function sortByStrKey(list, key) {
+  // sort by name
+  list.sort(function(a, b) {
+    var nameA = a[key].toUpperCase(); // ignore upper and lowercase
+    var nameB = b[key].toUpperCase(); // ignore upper and lowercase
+    if (nameA < nameB) {
+      return -1;
+    }
+    if (nameA > nameB) {
+      return 1;
+    }
+
+    // names must be equal
+    return 0;
+  });
+}

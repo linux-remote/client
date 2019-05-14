@@ -43,7 +43,7 @@ import DiskBody from '../sys-app/disk.vue';
 import ComputerInfo from '../sys-app/computer-info.vue';
 import Editor from '../sys-app/editor.vue';
 import Terminal from '../sys-app/terminal/index.vue';
-import TaskManager from '../sys-app/task-manager/index.vue';
+import TaskManager from '../sys-app/task-manager/task-manager.vue';
 import Settings from '../sys-app/settings/settings.vue';
 //import ThirdPartyApp from '../third-party-app/index.vue';
 import Resizable from '../unit/resizable.vue';

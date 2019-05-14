@@ -1,0 +1,105 @@
+// .lr-tm-pre{
+//   display: block;
+//   padding: 0;
+//   margin: 0;
+//   overflow: auto; // winstarp
+// }
+table.lr-tm-table{
+  &, th, td {
+    border: 1px solid #ccc;
+  }
+
+  span{
+    color: #aaa;
+    font-size: 12px;
+  }
+}
+.lr-tm-list{
+  cursor: default;
+  user-select: none;
+}
+.lr-tm-cpu-process{
+  height: 100px;
+  width: 40px;
+  background-color: #ccc;
+  position: relative;
+}
+.lr-tm-cpu-process-bar{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 0;
+  background-color: $color1;
+  width: 100%;
+}
+.lr-tm-cpus{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1px;
+  label{
+    font-weight: normal;
+    font-size: 1.5em;
+    margin-right: 2em;
+  }
+}
+.lr-tm-tasks{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+}
+.lr-tm-porcess{
+  height: 25px;
+  line-height: 25px;
+  background-color: #ccc;
+  color: #fff;
+  width: 300px;
+  display: flex;
+  position: relative;
+}
+.lr-tm-porcess-bar{
+  background-color: $color1;
+  height: 100%;
+  width: 0;
+  text-indent: 10px;
+  visibility: visible;
+  white-space: nowrap;
+  cursor: default;
+  user-select: none;
+}
+.lr-tm-mems-wrap{
+  padding: 1px;
+}
+.lr-tm-mems{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2px;
+  
+  span {
+    width: 142px;
+  }
+}
+.lr-tm-mem-bc-bg{
+  background-color: rgba(yellow, .5);
+}
+.lr-tm-avail-porcess{
+  justify-content: flex-end;
+  background: rgba(#ccc, .3);
+  color: #000;
+  .lr-tm-porcess-bar{
+    background-color: green;
+  }
+}
+.lr-tm-porcess-info{
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  cursor: default;
+  user-select: none;
+}

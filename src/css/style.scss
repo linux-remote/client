@@ -6,7 +6,7 @@ $bg2: rgba(#fff, .5);
 $drakColor: #6AA1B8; //4B869E
 $borderColor: #ACE7FF;
 $bottomColor: #EBBC87;
-
+$color1: #000;
 // $activeBorderColor: #cce8ff;
 $activeBorderColor: #99d1ff;
 // $activeBgColor: rgba($activeBorderColor, .5);
@@ -64,6 +64,7 @@ body {
   background: none;
   height: auto;
 }
+
 @import './login.scss';
 
 
@@ -614,7 +615,6 @@ $topBarRight : 100px;
   &:hover {
     .lr-task-bar-item-inner{
       background-color: rgba(255, 255, 255, .1);
-      // background-color: lighten($color: #0063b1, $amount: 10%);
     }
   }
   &.lr_task_bar_item_focus{
@@ -838,7 +838,7 @@ $taskGlyphPositonX: 14px;
 
 @import './sys-app/fs.scss';
 @import './sys-app/editor.scss';
-@import './sys-app/task-manager.scss';
+@import '../cmpt/sys-app/task-manager/task-manager.scss';
 @import './xterm-3.12.0.css';
 //************* app start *************
 .lr-sys-app-icon{

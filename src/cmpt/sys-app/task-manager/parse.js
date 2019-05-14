@@ -27,7 +27,7 @@ function parseHead(str) {
   let str_4 = str[4].split('.');
   result.swap = _common(str_4[0]); // KiB
   if(str_4[1]){
-    result.mem.avail = _avail_mem(str_4[1]);
+    result.mem_avail = _avail_mem(str_4[1]);
   }
   return result;
 }
@@ -63,7 +63,7 @@ function _avail_mem(avail){
   avail = avail.trim();
   const i = avail.indexOf(' ');
   const avail_v = avail.substr(0, i);
-  return avail_v;
+  return Number(avail_v);
 }
 // PID USER      PR  NI    VIRT    RES    SHR S %CPU %MEM     TIME+ COMMAND
 // 27213 root      20   0 1181148  44804  22792 S 15.3  4.4  29:15.75 node
