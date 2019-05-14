@@ -39,7 +39,7 @@ export default {
   },
   computed: {
     isEmpty(){
-      return this.$store.state.app.sysMap.sys_app_recycle_bin.isEmpty
+      return this.$store.state.sysApps.sysMap.sys_app_recycle_bin.isEmpty
     },
     recycleBinEvent(){
       return this.$store.state.recycleBinEvent
@@ -63,7 +63,7 @@ export default {
           return;
         }
       }
-      this.$store.commit('app/changeRecycleBinIcon', isEmpty);
+      this.$store.commit('sysApps/changeRecycleBinIcon', isEmpty);
     }
   },
 

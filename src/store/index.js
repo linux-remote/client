@@ -22,7 +22,7 @@ import error from './module/error';
 import task from './module/task';
 //import widget from './module/widget';
 import flyTextarea from './module/fly-textarea';
-import app from './module/app';
+import sysApps from './module/app';
 import users from './module/users';
 
 const store = new window.Vuex.Store({
@@ -34,7 +34,7 @@ const store = new window.Vuex.Store({
     //widget,
     users,
     flyTextarea,
-    app
+    sysApps
   },
   state: {
     dragTransferData: null,
@@ -90,7 +90,7 @@ const store = new window.Vuex.Store({
 
     recycleBinTrigger(state, bool){
       state.recycleBinEvent = Date.now();
-      this.commit('app/changeRecycleBinIcon', bool)
+      this.commit('sysApps/changeRecycleBinIcon', bool)
     },
     fsTrigger(state, data){
       state.fsEvent = data

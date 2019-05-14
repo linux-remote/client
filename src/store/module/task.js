@@ -26,7 +26,7 @@ export default  {
          // opts 是一个对象.
         appId = opts.appId;
       }
-      const APP = this.getters['app/getById'](appId);
+      const APP = this.getters['sysApps/getById'](appId);
 
       if(APP.IS_UNKNOWN_APP){
         return alert('Unknown App!');

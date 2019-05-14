@@ -56,7 +56,7 @@ export default {
       var count = 0, TOTAL = 1, data;
 
       // const initAppMap = () => {
-      //   if(!this.$store.state.app.thirdPartyMap){
+      //   if(!this.$store.state.sysApps.thirdPartyMap){
       //     this.request({
       //       url: '/app/list',
       //       success(data){
@@ -70,7 +70,7 @@ export default {
       //           map[v.id] = v;
       //           delete(v.id);
       //         });
-      //         this.$store.commit('app/setThirdPartyMap', map);
+      //         this.$store.commit('sysApps/setThirdPartyMap', map);
       //         initAppMap();
       //       }
       //     })
@@ -105,7 +105,7 @@ export default {
             mask: data.mask,
             quickBarItems: data.quickBar ? JSON.parse(data.quickBar) : [{id: 'sys_app_file'}]
           });
-          this.$store.commit('app/changeRecycleBinIcon', data.recycebinIsEmpty);
+          this.$store.commit('sysApps/changeRecycleBinIcon', data.recycebinIsEmpty);
           this.icons = data.icons;
         }
       }

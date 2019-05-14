@@ -26,7 +26,7 @@ export default {
       return this.LANG.sys_app_editor.title
     },
     sysEditor(){
-      return this.$store.getters['app/getById']('sys_app_editor')
+      return this.$store.getters['sysApps/getById']('sys_app_editor')
     }
   },
   methods: {

@@ -29,13 +29,13 @@ export default {
   },
   computed: {
     sysAppMap(){
-      return this.$store.state.app.sysMap;
+      return this.$store.state.sysApps.sysMap;
     },
     LANG(){
       return this.$store.getters['language/currLanguage'].start
     }
     // thirdPartyAppMap(){
-    //   return this.$store.state.app.thirdPartyMap;
+    //   return this.$store.state.sysApps.thirdPartyMap;
     // }
   }, 
   methods: {

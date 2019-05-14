@@ -40,7 +40,7 @@ export function getOpenAppIcon(openType){
   if(relationAppMap[openType]){
     return {
       id: appId,
-      app: store.getters['app/getById'](appId)
+      app: store.getters['sysApps/getById'](appId)
     }
   }
 }

@@ -21,7 +21,7 @@ export default {
   },
   computed: {
     app(){
-      return this.$store.getters['app/getById'](this.item.id)
+      return this.$store.getters['sysApps/getById'](this.item.id)
     },
     LANG(){
       return this.$store.getters['language/currLanguage'][this.id]

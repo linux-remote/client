@@ -23,7 +23,7 @@
 export default {
   computed: {
     computerIcon(){
-      return this.$store.state.app.sysMap.sys_app_disk.iconUrl
+      return this.$store.state.sysApps.sysMap.sys_app_disk.iconUrl
     },
     go(){
       return this.$parent.$refs.navBar.go
