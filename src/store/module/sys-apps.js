@@ -1,4 +1,6 @@
-export default  {
+
+import request from '../../lib/request';
+export default   {
   namespaced: true,
   state: {
     sysMap: {
@@ -13,6 +15,7 @@ export default  {
         iconUrl: '/public/img/tango-style/user-trash.png',
         isEmpty: true,
         unique: true,
+        ctx: ['empty']
         // name: {
         //   'zh-CN': '回收站',
         //   'en-US': 'Recycle Bin'
@@ -94,4 +97,18 @@ export default  {
       state.sysMap.sys_app_recycle_bin.iconUrl = '/public/img/tango-style/' + name;
     }
   },
+  actions: {
+    sys_app_recycle_bin_empty({ commit, state }){
+      const self = this;
+      request({
+        context: state.sysMap.sys_app_recycle_bin,
+        url: '~/recycleBin',
+        type: 'delete',
+        success() {
+          self.commit('recycleBinTrigger', true);
+        }
+      })
+      
+    }
+  }
 }

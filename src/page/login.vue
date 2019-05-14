@@ -74,6 +74,7 @@ export default {
         },
         success(data){
           // {loginedList: []}
+          data.username = username;
           this.$store.commit('set', data);
           this.routeTo(username);
         },

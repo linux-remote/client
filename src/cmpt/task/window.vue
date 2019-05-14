@@ -37,7 +37,7 @@
 
 <script>
 import FsBody from '../sys-app/fs/index.vue';
-import RecycleBinBody from '../sys-app/recycle-bin.vue';
+import RecycleBinBody from '../sys-app/recycle-bin/recycle-bin.vue';
 import DiskBody from '../sys-app/disk.vue';
 import ComputerInfo from '../sys-app/computer-info.vue';
 import Editor from '../sys-app/editor.vue';

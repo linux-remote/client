@@ -1,6 +1,5 @@
 
 const $ = window.$;
-
 const $win = $(window);
 $win.on('resize', function(){
   store.commit('set', {
@@ -24,7 +23,7 @@ import task from './module/task';
 import flyTextarea from './module/fly-textarea';
 import sysApps from './module/sys-apps';
 import users from './module/users';
-
+sysApps
 const store = new window.Vuex.Store({
   modules: {
     language,

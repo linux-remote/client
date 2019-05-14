@@ -2,6 +2,7 @@
 // 去掉 omitEmpty, 修改了:opts.url
 import {noop} from './util';
 import store from '__ROOT__/store/index.js';
+import router from '../router';
 const $ = window.$;
 
 const API_ROOT = window.SERVER_CONFIG.API_ROOT;
@@ -84,10 +85,7 @@ function request(opts){
   }
 
 
-  // if(url[0] === '~'){
-  //   url = '/user/' + self.$route.params.username + url.substr(1);
-  // }  
-  opts.url =  rootUrl + getUserUrl(url, self.$route.params.username);
+  opts.url =  rootUrl + getUserUrl(url, router.currentRoute.params.username);
   // if(isOmitEmptyData){
   //   if(TypeOf(opts.data) === 'Object'){
   //     opts.data = omitEmpty(opts.data);

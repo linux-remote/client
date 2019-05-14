@@ -39,17 +39,20 @@ export default {
   data(){
     var icons = this.icons;
     if(!icons){ // 回收站可以被移除
-      const app = this.$store.getters['sysApps/getById']('sys_app_recycle_bin');
+      
       icons = [{
         id: 'sys_app_recycle_bin',
-        title: app.title,
         x:0,
         y:0
       }]
     }else{
       icons = JSON.parse(icons);
     }
-
+    
+    icons.forEach(v => {
+      const app = this.$store.getters['sysApps/getById'](v.id);
+      Object.assign(v, app);
+    })
     return {
       list: icons,
       _isInDesk: false,
@@ -203,7 +206,7 @@ export default {
   mounted(){
     this.$store.commit('setDeskTopWH');
     // this.$store.commit('task/add', {appId: 'sys_app_task_manager'});
-    this.$store.commit('task/add', {appId: 'sys_app_file'});
+    this.$store.commit('task/add', {appId: 'sys_app_recycle_bin'});
   }
 }
     // Cascade.lr-ctx-item

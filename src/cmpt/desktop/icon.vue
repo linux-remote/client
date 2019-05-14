@@ -10,6 +10,8 @@ button.lr-desk-icon(draggable="true",
     
     .lr-ctx-item(@click="remove")
       | {{$parent.LANG.ctx.remove}}
+    template(v-if="item.ctx")
+      .lr-ctx-item(v-for="name in item.ctx", @click="handleSpecialCtxClick(item.id, name)") {{name}}
     //-.lr-ctx-item(v-if='item.id === "sys_app_recycle_bin"', @click="clearRecycleBin")
       | 清空
 </template>
@@ -56,6 +58,10 @@ export default {
     // },
     hidden(){
       this.$refs.ctx.hidden();
+    },
+    handleSpecialCtxClick(id, name) {
+      this.$store.dispatch(`sysApps/${id}_${name}`);
+      this.hidden();
     },
     remove(){
       this.$nextTick(()=> {
