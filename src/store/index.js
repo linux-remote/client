@@ -22,7 +22,7 @@ import error from './module/error';
 import task from './module/task';
 //import widget from './module/widget';
 import flyTextarea from './module/fly-textarea';
-import sysApps from './module/app';
+import sysApps from './module/sys-apps';
 import users from './module/users';
 
 const store = new window.Vuex.Store({
