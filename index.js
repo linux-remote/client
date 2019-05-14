@@ -4,9 +4,9 @@ const path = require('path');
 const publicPath = require('lr-public');
 
 map['jquery'] = getUrlAndDir('jquery');
-// map['@hezedu/winstrap'] = getUrlAndDir('@hezedu/winstrap');
-// map['@hezedu/winstrap'].files = ['css/winstrap.min.css', 
-// 'js/vendor/bootstrap.min.js'];
+map['@hezedu/winstrap'] = getUrlAndDir('@hezedu/winstrap');
+map['@hezedu/winstrap'].files = ['css/winstrap.min.css', 
+'js/vendor/bootstrap.min.js'];
 
 map['vue.runtime'] = getUrlAndDir('vue');
 map['vuex'] = getUrlAndDir('vuex');
