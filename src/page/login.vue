@@ -5,7 +5,7 @@
     .entity-list.entity-list-expandable
       router-link.entity-list-item(v-for="username in loginedList", :key="username", :to="'/user/' + username")
         .item-icon
-          span.glyph.glyph-contact-2
+          span.glyph.glyph-contact
         .item-content-primary
           .content-text-primary {{username}}
   .lr-login-box-wrap(:class="{lr_login_have_logined: loginedList.length}")

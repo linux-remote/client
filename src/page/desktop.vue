@@ -1,20 +1,17 @@
 <template lang="jade">
 .lr-page.lr-desk-wrap(v-if='deskInited', style="background-color: #0063b1")
-  TopBar
   DeskTop(:icons='icons')
   TasksBar
 </template>
 <script>
 import DeskTop from '__ROOT__/cmpt/desktop/body.vue';
 import TasksBar from '__ROOT__/cmpt/task/bar.vue';
-import TopBar from '__ROOT__/cmpt/top-bar/index.vue';
 
 import {logout, createWs} from '__ROOT__/lib/login';
 
 const API_ROOT = window.SERVER_CONFIG.API_ROOT;
 export default {
   components: {
-    TopBar,
     TasksBar,
     DeskTop
   },

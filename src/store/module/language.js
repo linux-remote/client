@@ -63,6 +63,9 @@ export default  {
           sys_app_task_manager: {
             title: 'Task Manager'
           },
+          sys_app_settings: {
+            title: 'Settings'
+          },
           sys_app_file: {
             title: 'FS Manager',
             ctx: {

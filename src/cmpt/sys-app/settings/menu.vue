@@ -1,6 +1,7 @@
 <template lang="jade">
 DropMenu(ref='drop')
-  .lr-icon.lr-menu
+  h2 Settings
+    span.glyph.glyph-chevron-down-2
   div(slot='menu')
 
     Cascade.lr-ctx-item 

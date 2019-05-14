@@ -61,6 +61,16 @@ export default   {
         //   'zh-CN': '笔记本',
         //   'en-US': 'Notebook'
         // }
+      },
+      sys_app_settings: {
+        iconUrl: '/public/img/system-settings.png',
+        unique: true,
+        hidden: true
+        // title: null,
+        // name: {
+        //   'zh-CN': '笔记本',
+        //   'en-US': 'Notebook'
+        // }
       }
     },
     thirdPartyMap: null,

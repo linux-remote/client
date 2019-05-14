@@ -57,7 +57,13 @@ body {
   width:20px; 
   height: 20px;
 }
-
+.lr-clear-btn{
+  border: 0;
+  margin: 0;
+  padding: 0;
+  background: none;
+  height: auto;
+}
 @import './login.scss';
 
 
@@ -537,69 +543,12 @@ $topBarRight : 100px;
   color: #000; 
   margin-left: 10px;
 }
-.lr-menu{
-  background-image: url('/public/menu.svg')
-}
 .lr-drop-menu-btn{
   &.lr_drop_menu_active, &:hover{
     background-color: $bg2;
   }
 }
-.lr-start{
-  width: 50px;
-  position: relative;
-  display: flex;
-}
-
-.lr-start-btn{
-  width: 100%;
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-image: url('/public/img/tango-style/start-here.png');
-  border: 2px outset darken($taskBarBg, 5%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  &:hover{
-    background-color: lighten($taskBarBg, 15%);
-  }
-}
-.lr_start_focus{
-  background-color: $taskBarFocusBg;
-  border-style: inset;
-}
-.lr-start-menu{
-  bottom: $taskBarH;
-  position: absolute;
-  z-index: $topLayerZindex + 2;
-  left: 0;
-  background-color: rgba(#fff, .8);
-  width: 280px;
-  height: 500px;
-  border: 2px outset darken($bg2, 5%);
-  border-bottom: 0;
-  display: flex;
-  flex-direction: column;
-}
-.lr-start-menu-item, .lr-start-menu-title{
-  width: 100%;
-  height: 35px;
-  line-height: 35px;
-  padding-left: 10px;
-  border-bottom: 1px solid darken($bg, 10%);
-  display: flex;
-}
-.lr-start-menu-title{
-  color: #666;
-}
-.lr-start-menu-item{
-  cursor: pointer;
-}
-.lr-start-menu-item:hover{
-  background-color:darken($bg, 10%);
-  color:#000;
-}
+@import '../cmpt/start/start.scss';
 // -------------------- task bar --------------------
 .lr-task-bar{
   z-index: $topLayerZindex;
@@ -891,6 +840,19 @@ $taskGlyphPositonX: 14px;
 @import './sys-app/editor.scss';
 @import './sys-app/task-manager.scss';
 @import './xterm-3.12.0.css';
+//************* app start *************
+.lr-sys-app-icon{
+  width: 30px;
+  height: 30px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+.lr-sys-app-title{
+  padding-left: 10px;
+}
+
+//************* app end *************
 // .lr-chat{
 //   position: fixed;
 //   z-index: 2;

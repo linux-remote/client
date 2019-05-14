@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import Start from '../start/index.vue';
+import Start from '../start/start.vue';
 import QuickBar from '../quick-bar/index.vue';
 import BarBody from './bar-body.vue';
 import Watch from '../watch.vue';
