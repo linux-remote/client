@@ -1,16 +1,15 @@
 <template lang="jade">
 .lr-window-body
+  
   .lr-hourglass(v-show='isRequest')
-
+  .lr-rb-ctrl-bar
+    button.btn(@click='clearAll', :disabled='isEmpty') Delete All
+    button.btn(@click='getData') Reload
   .lr-fs-folder-inner
-    .lr-fs-ctrl-bar(style='justify-content: space-between;')
-      button(@click='clearAll', :disabled='isEmpty') Delete All
-
-      .lr-fs-nav-item.lr-fs-nav-reload(@click='getData', style='background-color: #666')
     h2(v-text='error' style='color:red' v-if='error')
     h2(v-else-if='data.length === 0' style='color:gray') Empty
     .lr-fs-folder(v-else)
-      table.lr-info-table.lr-table(style='width:100%;')
+      table.table.lr-info-table.lr-table(style='width:100%;')
         tr
           th name
           th sourceDir
@@ -142,21 +141,25 @@ export default {
       })
     },
     parseData(data){
+      const arr = [];
       data.forEach(v => {
-        v.isError = false;
-        if(v.name && v.source){
-          v.source.name = v.name;
-        } else {
-          v.isError = true;
+        if(v.id !== '.' && v.id !== '..'){
+          arr.push(v);
+          v.isError = false;
+          if(v.name && v.source){
+            v.source.name = v.name;
+          } else {
+            v.isError = true;
+          }
+          delete(v.name);
         }
-        delete(v.name);
       })
-      return data;
+      return arr;
     }
   },
 
   created(){
-    this.getData()
+    this.getData();
   }
 }
 </script>
