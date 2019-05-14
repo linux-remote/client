@@ -1,8 +1,10 @@
 const { getUrlAndDir } = require('./node-module-static');
 const map = Object.create(null);
 const path = require('path');
-const publicPath = require('lr-public');
-
+let publicPath = require('lr-public');
+if(process.env.NODE_ENV !== 'production') {
+  publicPath = path.join(__dirname, '../lr-public/public');
+}
 map['jquery'] = getUrlAndDir('jquery');
 map['@hezedu/winstrap'] = getUrlAndDir('@hezedu/winstrap');
 map['@hezedu/winstrap'].files = ['css/winstrap.min.css', 

@@ -370,7 +370,7 @@ body {
   background-position: center;
 }
 
-a.lr-desk-icon{
+button.lr-desk-icon{
   position: absolute;
   width: 80px;
   height: 80px;
@@ -380,7 +380,8 @@ a.lr-desk-icon{
   align-items: center;
   z-index:1;
   text-decoration: none;
-
+  background: none;
+  border: 0;
   &:focus, &:hover{
     background-color: rgba(255, 255, 255, 0.25);
     &::after{
