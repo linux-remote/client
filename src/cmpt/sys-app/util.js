@@ -50,3 +50,9 @@ export function sortByStrKey(list, key) {
     return 0;
   });
 }
+// export function pureObj(obj){
+//   const obj2 = Object.create(null);
+//   Object.keys[obj].forEach(k => {
+//     obj2[k] = obj[k]
+//   })
+// }

@@ -21,30 +21,20 @@
         span.glyph.glyph-cancel
 
 
-      
-  FsBody(v-if='appId==="sys_app_file"')
-  Terminal(v-if='appId==="sys_app_terminal"')
-  RecycleBinBody(v-else-if='appId==="sys_app_recycle_bin"')
-  DiskBody(v-else-if='appId==="sys_app_disk"')
-  ComputerInfo(v-else-if='appId==="sys_app_computer"')
-  Editor(v-else-if='appId==="sys_app_editor"', :task='this.$data')
-  TaskManager(v-else-if='appId==="sys_app_task_manager"')
-  Settings(v-else-if='appId==="sys_app_settings"')
-  //-ThirdPartyApp(v-else, :task='this.$data')
+  component(:is="appId", :task='this.$data', ref="body")
 
-
-  Resizable
+  Resizable(:onResized="handleResized")
 </template>
 
 <script>
-import FsBody from '../sys-app/fs/index.vue';
-import RecycleBinBody from '../sys-app/recycle-bin/recycle-bin.vue';
-import DiskBody from '../sys-app/disk.vue';
-import ComputerInfo from '../sys-app/computer-info.vue';
-import Editor from '../sys-app/editor.vue';
-import Terminal from '../sys-app/terminal/index.vue';
-import TaskManager from '../sys-app/task-manager/task-manager.vue';
-import Settings from '../sys-app/settings/settings.vue';
+import sys_app_file from '../sys-app/fs/index.vue';
+import sys_app_recycle_bin from '../sys-app/recycle-bin/recycle-bin.vue';
+import sys_app_disk from '../sys-app/disk.vue';
+import sys_app_computer from '../sys-app/computer-info.vue';
+import sys_app_editor from '../sys-app/editor.vue';
+import sys_app_terminal from '../sys-app/terminal/index.vue';
+import sys_app_task_manager from '../sys-app/task-manager/task-manager.vue';
+import sys_app_settings from '../sys-app/settings/settings.vue';
 //import ThirdPartyApp from '../third-party-app/index.vue';
 import Resizable from '../unit/resizable.vue';
 import Movable from '../unit/movable.vue';
@@ -52,14 +42,14 @@ import Movable from '../unit/movable.vue';
 export default {
   props: ['index'],
   components: {
-    DiskBody,
-    RecycleBinBody,
-    FsBody,
-    ComputerInfo,
-    Editor,
-    Terminal,
-    TaskManager,
-    Settings,
+    sys_app_disk,
+    sys_app_recycle_bin,
+    sys_app_file,
+    sys_app_computer,
+    sys_app_editor,
+    sys_app_terminal,
+    sys_app_task_manager,
+    sys_app_settings,
     //ThirdPartyApp,
 
     Resizable,
@@ -120,10 +110,17 @@ export default {
       this.positionLeft =  data.newX;
       
     },
+    handleResized(e) {
+      this.$refs.body.$emit('resized');
+    },
     maxToggle(){
       if(this.bakBeforeMax){
+        let _isResize = this.isMaxToggletriggerResize();
         Object.assign(this, this.bakBeforeMax);
         this.bakBeforeMax = null;
+        if(_isResize){
+          this.$refs.body.$emit('resized');
+        }
       }else{
         this.bakBeforeMax = {
           isMax: this.isMax,
@@ -138,8 +135,18 @@ export default {
         this.width = this.deskTopW;
         this.positionTop = 0;
         this.positionLeft = 0;
+        let _isResize = this.isMaxToggletriggerResize();
+        if(_isResize){
+          this.$refs.body.$emit('resized');
+        }
       }
-
+    },
+    isMaxToggletriggerResize(){
+      let a = this.bakBeforeMax;
+      if(a.height !== this.height || a.width !== this.width){
+        return true;
+      }
+      return false;
     },
     hiddenTask(){
       this.$store.commit('task/hidden', this.$data);

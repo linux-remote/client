@@ -30,7 +30,7 @@ export default {
         }
         const cols = size.cols;
         const rows = size.rows;
-        const url = '/terminals/' + $opt.pid + '/size?cols=' + cols + '&rows=' + rows;
+        const url = '~/terminals/' + $opt.pid + '/size?cols=' + cols + '&rows=' + rows;
 
         this.request({
           type: 'post',
@@ -59,7 +59,13 @@ export default {
         })
       }, 0);
 
+      this.$on('resized', () => {
+        this.$nextTick(() => {
+          console.log('resized', arguments)
+          term.fit();
+        })
 
+      });
     },
     run() {
       const term = this.$options.term;

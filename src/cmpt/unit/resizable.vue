@@ -64,6 +64,7 @@
 
 <script>
 export default {
+  props: ['onResized'],
   // props: {
   //   data: {
   //     type: Object,
@@ -156,6 +157,18 @@ export default {
       }
     },
     resizeMouseupListener(){
+      if(this.onResized){
+        let startData = this.resizeStartData;
+        let height = this.$parent.height;
+        let width = this.$parent.width;
+        if(height !== startData.height || width !== startData.width) {
+          this.onResized({
+            height,
+            width
+          })
+        }
+      }
+
       window.removeEventListener('mousemove', this.resizeMousemoveListener);
     }
   }
