@@ -1,0 +1,22 @@
+// ------- quick bar -------
+
+.lr-quick-bar{
+  background-color: rgba(#000, .5);
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: $taskBarH;
+  width: $quickBarW;
+  display: none;
+}
+.lr-quick-bar-item{
+  width: 40px;
+  // margin-right: 1px;
+  height: 40px;
+  background-size: contain;
+  background-position: right center;
+  background-repeat: no-repeat;
+}
+.lr-quick-bar-item:hover{
+  background-color: lighten($taskBarBg, 15%);
+}

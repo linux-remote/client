@@ -7,6 +7,7 @@ $drakColor: #6AA1B8; //4B869E
 $borderColor: #ACE7FF;
 $bottomColor: #EBBC87;
 $color1: #000;
+
 // $activeBorderColor: #cce8ff;
 $activeBorderColor: #99d1ff;
 // $activeBgColor: rgba($activeBorderColor, .5);
@@ -16,6 +17,7 @@ $taskTitleH :25px;
 $taskBarH : 40px;
 $taskBarBg: rgba(0, 0, 0, .85);//#f5f5f5;
 $taskBarFocusBg: lighten($taskBarBg, 60%);
+$quickBarW: 40px;
 
 $maxZindex : 2147483647; // https://stackoverflow.com/questions/491052/minimum-and-maximum-value-of-z-index
 $topLayerZindex : $maxZindex - 100;
@@ -367,6 +369,7 @@ body {
   position: relative;
   padding-bottom: $taskBarH;
   background-image: url('/public/img/bg-blaze-100.jpg');
+  background-color: #0063b1;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -636,25 +639,7 @@ $topBarRight : 100px;
 }
 
 
-// ------- quick bar -------
 
-.lr-quick-bar{
-  min-width: 50px;
-  max-width: 300px;
-  background-color: $taskBarBg;
-  display: flex;
-}
-.lr-quick-bar-item{
-  width: 40px;
-  // margin-right: 1px;
-  height: 100%;
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-.lr-quick-bar-item:hover{
-  background-color: lighten($taskBarBg, 15%);
-}
 
 // -------------------- task body --------------------
 
@@ -769,7 +754,7 @@ $taskGlyphPositonX: 14px;
     
   }
 }
-
+@import '../cmpt/quick-bar/quick-bar.scss';
 @import '../cmpt/sys-app/fs/fs.scss';
 @import '../cmpt/sys-app/editor/editor.scss';
 @import '../cmpt/sys-app/task-manager/task-manager.scss';
