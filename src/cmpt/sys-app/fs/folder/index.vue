@@ -29,9 +29,10 @@
                 :item='item',
                 @del="handleItemDel",
                 @click='handleItemClick(item, $event)',
-  :class='{lr_file_hidden: item.isHidden, lr_file_focus: item.focus,  lr_file_be_selected: item.isBeSelected, lr_file_former: item.focus === 0}')
+                :class='{lr_file_hidden: item.isHidden, lr_file_focus: item.focus,  lr_file_be_selected: item.isBeSelected, lr_file_former: item.focus === 0}')
     .lr-fs-empty(v-if='!list.length') This folder is empty.
-  //-Status
+    div(style="height: 1px")
+  Status
   CreateSysLink(v-if='createSysLinkName')
   ContextMenu
     .lr-ctx-item
