@@ -4,7 +4,7 @@ export default   {
   namespaced: true,
   state: {
     sysMap: {
-      sys_app_file: {
+      sys_app_fs: {
         iconUrl: '/public/img/tango-style/user-home.png',
         // name: {
         //   'zh-CN': '文件管理器',

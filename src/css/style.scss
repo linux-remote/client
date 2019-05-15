@@ -772,72 +772,9 @@ $taskGlyphPositonX: 14px;
     
   }
 }
-// .lr-task-control-close::before{
-//   content: '✖';
-// }
-// .lr-task-control-close::before, .lr-task-control-close::after{
-//   content: '';
-//   display: block;
-//   position: absolute;
-//   background-color: #fff;
-//   left: 3px;
-//   right: 3px;
-//   top: 0;
-//   bottom: 0;
-//   margin: auto;
-//   height: 1px;
-// }
 
-// .lr-task-control-close::before{
-//   transform: rotate(45deg);
-// }
-// .lr-task-control-close::after{
-//   transform: rotate(-45deg);
-// }
-
-// .lr-task-control-max::before{
-//   content: '';
-//   position: absolute;
-//   display: block;
-//   border:1px solid #fff;
-//   top: 3px;
-//   left: 3px;
-//   right: 3px;
-//   bottom: 3px;
-// }
-// .lr_task_control_shrink::before, .lr_task_control_shrink::after{
-//   width: 50%; 
-//   height: 50%;
-//   background-color: inherit;
-//   border:1px solid #fff;
-//   content: '';
-//   display: block; 
-//   position: absolute;
-// }
-// .lr_task_control_shrink::before{
-//   top: 2px;
-//   right:2px;
-// }
-
-// .lr_task_control_shrink::after{
-//   bottom: 2px; 
-//   left:2px; 
-//   z-index: 2;
-// }
-
-// .lr-task-control-min>span{
-//   display: none;
-// }
-// .lr-task-control-min::before{
-//   content: '';
-//   height: 1px;
-//   background: #fff;
-//   flex-grow: 1;
-//   margin: 0 3px;
-// }
-
-@import './sys-app/fs.scss';
-@import './sys-app/editor.scss';
+@import '../cmpt/sys-app/fs/fs.scss';
+@import '../cmpt/sys-app/editor/editor.scss';
 @import '../cmpt/sys-app/task-manager/task-manager.scss';
 @import '../cmpt/sys-app/recycle-bin/recycle-bin.scss';
 @import './xterm-3.12.0.css';

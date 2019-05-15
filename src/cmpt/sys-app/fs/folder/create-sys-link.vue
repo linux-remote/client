@@ -1,7 +1,7 @@
 <template lang="jade">
 .lr-modal
   .lr-modal-box
-    .lr-modal-title {{LANG.sys_app_file.ctx.createSymbolicLink}}
+    .lr-modal-title {{LANG.sys_app_fs.ctx.createSymbolicLink}}
     .lr-modal-body
       input(v-model='name', ref='input', required="required")
     .lr-modal-footer

@@ -27,11 +27,11 @@
 </template>
 
 <script>
-import sys_app_file from '../sys-app/fs/index.vue';
+import sys_app_fs from '../sys-app/fs/index.vue';
 import sys_app_recycle_bin from '../sys-app/recycle-bin/recycle-bin.vue';
 import sys_app_disk from '../sys-app/disk.vue';
 import sys_app_computer from '../sys-app/computer-info.vue';
-import sys_app_editor from '../sys-app/editor.vue';
+import sys_app_editor from '../sys-app/editor/editor.vue';
 import sys_app_terminal from '../sys-app/terminal/index.vue';
 import sys_app_task_manager from '../sys-app/task-manager/task-manager.vue';
 import sys_app_settings from '../sys-app/settings/settings.vue';
@@ -44,7 +44,7 @@ export default {
   components: {
     sys_app_disk,
     sys_app_recycle_bin,
-    sys_app_file,
+    sys_app_fs,
     sys_app_computer,
     sys_app_editor,
     sys_app_terminal,

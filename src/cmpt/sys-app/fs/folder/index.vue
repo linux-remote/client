@@ -4,7 +4,7 @@
               @keydown.a='selectAll',
               :class='bodyClass')
   .lr-hourglass(v-if='isRequest')
-  //- CtrlBar
+  CtrlBar
   .lr-fs-folder-inner(v-if='error')
     pre.lr-fs-error(v-text='error')
   Selectable.lr-fs-folder-inner(@selectEed='handleSelected', v-else, ref='selectable')
@@ -114,7 +114,7 @@ export default {
       }
     },
     LANG(){
-      return this.$store.getters['language/currLanguage'].sys_app_file
+      return this.$store.getters['language/currLanguage'].sys_app_fs
     },
     go(){
       return this.$parent.$refs.navBar.go

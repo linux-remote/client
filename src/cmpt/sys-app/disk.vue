@@ -80,7 +80,7 @@ export default {
   methods: {
     go(address){
       this.$store.commit('task/add', {
-        appId: 'sys_app_file',
+        appId: 'sys_app_fs',
         address
       })
     },

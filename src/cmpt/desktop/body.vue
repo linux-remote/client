@@ -205,7 +205,7 @@ export default {
   },
   mounted(){
     this.$store.commit('setDeskTopWH');
-    this.$store.commit('task/add', {appId: 'sys_app_terminal'});
+    this.$store.commit('task/add', {appId: 'sys_app_fs'});
     // this.$store.commit('task/add', {appId: 'sys_app_settings'});
   }
 }

@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import {encodePath, pathJoin} from './fs/folder/util';
+import {encodePath, pathJoin} from '../fs/folder/util';
 export default {
   props: ['task'],
   data(){

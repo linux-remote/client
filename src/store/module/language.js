@@ -66,7 +66,7 @@ export default  {
           sys_app_settings: {
             title: 'Settings'
           },
-          sys_app_file: {
+          sys_app_fs: {
             title: 'FS Manager',
             ctx: {
               remove: 'delete',
@@ -142,7 +142,7 @@ export default  {
       //       title: '存储管理器',
       //       freeAndTotal: '可用, 共'
       //     },
-      //     sys_app_file: {
+      //     sys_app_fs: {
       //       title: '文件管理器',
       //       ctx: {
       //         remove: '移动到回收站',
