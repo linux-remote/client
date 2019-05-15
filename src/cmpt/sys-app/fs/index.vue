@@ -1,5 +1,5 @@
 <template lang="jade">
-.lr-window-body
+div
   //-.lr-hourglass(v-show='isRequest')
   NavBar(ref='navBar', :onChange="handleNavChange")
   .lr-fs-bottom-wrap

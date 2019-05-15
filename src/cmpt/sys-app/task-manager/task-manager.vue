@@ -1,5 +1,5 @@
 <template lang="jade">
-.lr-window-body
+div
   table.lr-tm-table(v-if="total")
     tbody
       tr
