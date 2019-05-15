@@ -38,28 +38,33 @@ export default  {
       }
       data.title = data.title || null;
       data.unique = APP.unique || false;
+      data.width = APP.width || TASK_WIDTH;
+      data.height = APP.height || TASK_HEIGHT;
 
       if(data.unique){
         if(uniqueMap[appId]){
           return this.commit('task/show', uniqueMap[appId]);
         }else{
+
           uniqueMap[appId] = data;
         }
+      } else {
+        let preSameTask = {zIndex: -1, width: data.width, height: data.height};
+        state.list.forEach(v => {
+          if(v.appId === appId){
+            if(preSameTask.zIndex < v.zIndex){
+              preSameTask = v;
+            }
+          }
+        });
+  
+        const isMax = preSameTask.isMax;
+        data.width = isMax ? data.width : preSameTask.width;
+        data.height = isMax ? data.height : preSameTask.height;
+        
       }
       
-      var preSameTask = {zIndex: -1};
-      state.list.forEach(v => {
-        if(v.appId === appId){
-          if(preSameTask.zIndex < v.zIndex){
-            preSameTask = v;
-          }
-        }
-      })
 
-      const isMax = preSameTask.isMax;
-
-      data.width = (isMax ? APP.width : preSameTask.width) || TASK_WIDTH;
-      data.height = (isMax ? APP.height : preSameTask.height) || TASK_HEIGHT;
       data.draggable = false;
       data.isMin = false;
       data.isMax = false;

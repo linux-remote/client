@@ -1,7 +1,8 @@
 <template lang="jade">
-div
+.lr-window-body
 </template>
 <script>
+// 742 440
 import { composeUserWsUrl } from '../util';
 export default {
   props: ['task'],

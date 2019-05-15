@@ -715,10 +715,8 @@ $topBarRight : 100px;
 
 .lr-window-body{
   height: 100%;
-  display: flex;
-  flex-direction: column;
   position: relative;
-  overflow: auto;
+  overflow: hidden;
 }
 
 // ------- right control -------

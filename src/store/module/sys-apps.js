@@ -47,6 +47,8 @@ export default   {
       },
       sys_app_terminal: {
         iconUrl: '/public/img/kterm.png',
+        width: 742,
+        height: 440
         // title: null,
         // name: {
         //   'zh-CN': '笔记本',
