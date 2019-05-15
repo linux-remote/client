@@ -1,9 +1,15 @@
 
 //************* 文件管理器 *************
+$fsNavBarH: 31px;
+.lr-fs-wrap{
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  padding-top: $fsNavBarH;
+}
 .lr-fs-bottom-wrap{
-  flex-grow: 1;
-  display: flex;
-  overflow: auto;
+  height: 100%;
+  overflow: hidden;
 }
 
 .lr-fs-right{
@@ -86,9 +92,13 @@
   border-top: 1px solid #dadbdc;
   display: flex;
   align-items: center;
-  height: 31px; 
+  height: $fsNavBarH;
   line-height: 30px;
   flex-shrink: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
 }
 
 .lr-fs-nav-item{
@@ -171,22 +181,16 @@ $linkFileColor: violet;
 
 
 .lr-fs-folder{ // 多层 flex 嵌套会导致 overflow-y: auto; 不起作用. 2018/6/8
-  flex-grow: 1;
-  padding-top: 15px;
+  height: 100%;
   padding-bottom: 28px;
   padding-left: 2px;
   padding-right: 2px;
   position: relative;
-  overflow: auto;
-  outline: none;
+  overflow: hidden;
 }
 .lr-fs-folder-inner{
-  flex-wrap: wrap;
-  align-content:flex-start; 
-  display: flex;
-  position: relative;
-  width: 100%;
   height: 100%;
+  position: relative;
   overflow: auto;
 }
 
@@ -444,6 +448,7 @@ background-image: url('/public/img/tango-style/inode-chardevice.png');
   border-collapse: separate;
   font-size: 12px;
   margin-left: 15px;
+  display: block;
   th {
     border-bottom: 0!important;
     border-right: 1px solid #e5e5e5!important;

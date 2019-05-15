@@ -1,6 +1,5 @@
 <template lang="jade">
 .lr-fs-folder(@mousedown='handleFsBodyMousedown',
-              tabindex=-1,
               @keydown.a='selectAll',
               :class='bodyClass')
   .lr-hourglass(v-if='isRequest')

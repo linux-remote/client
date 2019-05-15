@@ -664,13 +664,12 @@ $topBarRight : 100px;
   z-index: 2; 
   top:0;
   border: 1px solid #1883d7;
-  display: flex;
-  flex-direction: column;
   bottom: 0;
   left: 0; 
   right: 0;
   background-color:#fff;
   box-shadow: rgba(#000, .22) 3px 3px 15px 0;
+  padding-top: $taskTitleH;
 }
 
 .lr_task_max { // 最大化窗口
@@ -682,6 +681,10 @@ $topBarRight : 100px;
 
 
 .lr-task-title {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
   display: flex;
   flex-shrink: 0;
   background: #fff; 
@@ -712,7 +715,7 @@ $topBarRight : 100px;
 }
 
 .lr-window-body{
-  flex-grow: 1;
+  height: 100%;
   display: flex;
   flex-direction: column;
   position: relative;
