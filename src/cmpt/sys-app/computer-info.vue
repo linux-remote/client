@@ -1,5 +1,5 @@
 <template lang="jade">
-div(style='user-select:text')
+.lr-window-body(style='user-select:text')
   .lr-hourglass(v-show='isRequest')
 
   table.lr-info-table.lr-computer-table(v-if='platform')

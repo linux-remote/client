@@ -1,5 +1,5 @@
 <template lang="jade">
-div
+.lr-window-body
   
   .lr-hourglass(v-show='isRequest')
   .lr-rb-ctrl-bar

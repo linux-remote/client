@@ -1,5 +1,5 @@
 <template lang="jade">
-div
+.lr-window-body
   Menu
 </template>
 <script>

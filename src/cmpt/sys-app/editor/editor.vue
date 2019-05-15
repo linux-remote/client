@@ -1,5 +1,5 @@
 <template lang="jade">
-div
+.lr-window-body
   .lr-hourglass(v-show='isRequest')
   h2(v-text='data[0]' style='color:red' v-if='error')
   .lr-editor-body(v-else @keydown='handleKeyDown')
