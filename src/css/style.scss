@@ -19,7 +19,7 @@ $taskBarFocusBg: lighten($taskBarBg, 60%);
 
 $maxZindex : 2147483647; // https://stackoverflow.com/questions/491052/minimum-and-maximum-value-of-z-index
 $topLayerZindex : $maxZindex - 100;
-
+$taskTitleH: 30px;
 body {
   height: 100vh;
   overflow: hidden;
@@ -681,19 +681,17 @@ $topBarRight : 100px;
 }
 
 
-
-.lr-task-title{
+.lr-task-title {
   display: flex;
   flex-shrink: 0;
   background: #fff; 
   color: #000;
-  
-  height: 30px; 
-  line-height: 30px;
+  height: $taskTitleH; 
+  line-height: $taskTitleH;
   font-size: 13px;
   // font-family: 'Microsoft YaHei', Arial;
 }
-.lr-task-title-content{
+.lr-task-title-content {
   flex-grow:1;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -719,7 +717,6 @@ $topBarRight : 100px;
   flex-direction: column;
   position: relative;
   overflow: auto;
-  // user-select: none;
 }
 
 // ------- right control -------

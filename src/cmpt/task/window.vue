@@ -21,7 +21,7 @@
         span.glyph.glyph-cancel
 
 
-  component(:is="appId", :task='this.$data', ref="body")
+  component(:is="appId", :task='this.$data', ref="body", class="lr-window-body")
 
   Resizable(:onResized="handleResized")
 </template>

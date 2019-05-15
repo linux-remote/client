@@ -1,5 +1,5 @@
 <template lang="jade">
-.lr-window-body
+div
 </template>
 <script>
 import { composeUserWsUrl } from '../util';
