@@ -363,21 +363,21 @@ body {
 }
 
 
-.lr-desk-wrap {
-  display: flex;
-  flex-direction: column;
-}
-.lr-desk{
-  flex-grow: 1;
+.lr-desktop-wrap {
   position: relative;
-  overflow: hidden;
+  padding-bottom: $taskBarH;
   background-image: url('/public/img/bg-blaze-100.jpg');
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
 }
+.lr-desktop{
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
 
-button.lr-desk-icon{
+button.lr-desktop-icon{
   position: absolute;
   width: 80px;
   height: 80px;
@@ -409,7 +409,7 @@ button.lr-desk-icon{
 }
 
 
-.lr-desk-icon-img{
+.lr-desktop-icon-img{
   /* height: 60px; */
   height: 50px;
   width: 100%;
@@ -417,7 +417,7 @@ button.lr-desk-icon{
   background-size: contain;
   background-repeat: no-repeat;
 }
-.lr-desk-icon-text{
+.lr-desktop-icon-text{
   line-height: 15px;
   word-break: break-all;
   height: 30px;
@@ -552,7 +552,6 @@ $topBarRight : 100px;
 @import '../cmpt/start/start.scss';
 // -------------------- task bar --------------------
 .lr-task-bar{
-  z-index: $topLayerZindex;
   height:$taskBarH;
   position: absolute;
   width: 100%;

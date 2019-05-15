@@ -1,10 +1,10 @@
 <template lang="jade">
-button.lr-desk-icon(draggable="true",
+button.lr-desktop-icon(draggable="true",
               @dblclick="handleDblclick",
               @dragstart.stop='handleDragStart(item, $event)',
               :style='{left: item.x + "px", top: item.y + "px"}')
-  .lr-desk-icon-img(:style="{backgroundImage: `url(${app.iconUrl})`}")
-  .lr-desk-icon-text {{LANG.title}}
+  .lr-desktop-icon-img(:style="{backgroundImage: `url(${app.iconUrl})`}")
+  .lr-desktop-icon-text {{LANG.title}}
 
   ContextMenu(ref='ctx')
     

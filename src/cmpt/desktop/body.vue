@@ -1,5 +1,5 @@
 <template lang="jade">
-#lr-desktop.lr-desk(@drop='handleDeskDrop',
+#lr-desktop.lr-desktop(@drop='handleDeskDrop',
                     @dragenter='handleDragenter',
                     @dragover='handleDragover',
                     @mousedown='handleMousedown',

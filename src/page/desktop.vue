@@ -1,5 +1,5 @@
 <template lang="jade">
-.lr-page.lr-desk-wrap(v-if='deskInited', style="background-color: #0063b1")
+.lr-page.lr-desktop-wrap(v-if='deskInited', style="background-color: #0063b1")
   DeskTop(:icons='icons')
   TasksBar
 </template>
