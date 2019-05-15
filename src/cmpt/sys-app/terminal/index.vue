@@ -61,7 +61,6 @@ export default {
 
       this.$on('resized', () => {
         this.$nextTick(() => {
-          console.log('resized', arguments)
           term.fit();
         })
 
