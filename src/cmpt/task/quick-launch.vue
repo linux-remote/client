@@ -2,7 +2,6 @@
 <template lang="jade">
 .lr-quick-launch(@mousedown="handleMousedown")
 </template>
-
 <script>
 export default {
   computed:{
@@ -12,7 +11,6 @@ export default {
   },
   methods: {
     handleMousedown(){
-      this.isLaunch = !this.isLaunch;
       this.$store.commit('toggleQuickLaunch');
     }
   }

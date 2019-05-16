@@ -371,12 +371,11 @@ body {
   background-size: cover;
   background-position: center;
 }
-.lr-desktop{
+.lr-desktop, .lr-desktop-icons{
   height: 100%;
   position: relative;
   overflow: hidden;
 }
-
 button.lr-desktop-icon{
   position: absolute;
   width: 80px;
@@ -430,7 +429,14 @@ button.lr-desktop-icon{
   font-size: 13px;
 }
 .lr_desktop_launch{ // #f20505 #730202
-  background: #730202;
+  
+  .lr-desktop-icons{
+    z-index: $maxZindex;
+    background: #730202;
+  }
+  // .lr-quick-launch{
+  //   background: #730202;
+  // }
 }
 .lr_be_selected{
   background-color: green;

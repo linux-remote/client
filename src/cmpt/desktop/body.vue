@@ -4,10 +4,11 @@
                     @dragover='handleDragover',
                     @mousedown='handleMousedown',
                     @dragend='handleIconDragEnd')
-  Icon(v-for="(v,i) in list",
-      :key="v.id",
-      :index="i",
-      :item="v")
+  .lr-desktop-icons
+    Icon(v-for="(v,i) in list",
+        :key="v.id",
+        :index="i",
+        :item="v")
 
   ContextMenu(ref='ctx')
     .lr-ctx-item(@click="sortIcon")
