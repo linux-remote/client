@@ -18,27 +18,11 @@ $maxZindex : 2147483647; // https://stackoverflow.com/questions/491052/minimum-a
 $topLayerZindex : $maxZindex - 100;
 
 
-
 body {
   height: 100vh;
   overflow: hidden;
   font-family: 'Microsoft YaHei', "Segoe UI", Selawik,Tahoma,Verdana,Arial,sans-serif;
 }
-.lr-page {
-  height: 100vh;
-}
-.lr-hover-item {
-  transition: all .15s;
-  border: 1px solid transparent;
-}
-// .lr-hover-slight-item:hover {
-//   background-color: #e5f3ff;
-// }
-.lr-hover-item:hover, .lr_active{
-  background-color: $activeBgColor;
-  border: 1px solid $activeBorderColor;
-}
-
 
 // Fixed: https://github.com/winjs/winstrap/issues/181
 .btn-group-sm>.btn, .btn-group-xs>.btn, .btn-sm, .btn-xs {
@@ -48,6 +32,14 @@ body {
   padding: 1px 5px;
   min-width: 100px;
 }
+
+.lr-page {
+  height: 100vh;
+}
+
+@import './login.scss';
+
+
 
 .lr-icon{
   background-repeat: no-repeat;
@@ -64,9 +56,6 @@ body {
   height: auto;
 }
 
-@import './login.scss';
-
-
 .loading-btn{
   position: relative;
   &:disabled>span{
@@ -81,16 +70,6 @@ body {
   margin: 0 auto;
 }
 
-.lr-progress{
-  height: 50px;
-  flex-shrink: 0;
-  // width: 100%;
-  // background-color: #eee;
-  // display: block;
-  .lr-progress-bar { // winstarp BUG
-    height: 100%; 
-  }
-}
 
 .lr-contextmenu{
   position: absolute; 
@@ -339,17 +318,7 @@ body {
   background: $drakColor;
   color: #fff;
 }
-.lr-drop-menu-wrap{
-  position: relative;
-}
-.lr-drop-menu{
-  position: absolute; 
-  top: 120%;
-  right: -5px;
-  width: 255px;
-  background-color: #fff;
-  border: 2px outset #eee;
-}
+
 .lr_lang_item::before{
   content: '';
   width: 10px;
@@ -444,32 +413,7 @@ button.lr-desktop-icon{
 
 $topBarRight : 100px;
 
-.lr-top{
-  height: $taskTitleH;
-  display: flex;
-  flex-shrink: 0;
-  align-items: center;
-  
-  position: fixed;
-  top: 0;
-  right: $topBarRight + 20;
-  
-  //color: #fff;
-  z-index: $topLayerZindex;
-  //background-color: rgba(#000, .5);
-  //z-index: 2;
-  //background-color: #333;
-  border-style: outset;
-  border-color: #fff;
-  border-width: 0 1px 1px;
-  padding: 0 5px;
-}
 
-.lr-top-small-icon{
-  background-size: 100% 100%;
-  width: $taskTitleH; 
-  height: $taskTitleH;
-}
 .lr-watch{
   user-select: none;
   display: flex;
@@ -480,84 +424,9 @@ $topBarRight : 100px;
   font-size: 12px;
   line-height: 20px;
   padding: 0 10px;
-  // cursor: pointer;
-}
-// .lr-watch-left {
-//   font-size: 14px;
-// }
-.lr-watch-timezone{
-  display: flex;
-  flex-direction: column;
-  line-height: 12px; 
-  font-size: 12px;
-  text-align: center; 
-  margin-left: 5px;
-  align-items: center;
-  color: #606060;
-  cursor: default;
 }
 
-.lr-user{
-  position: relative;
-  height: 100%;
-  display: flex; 
-  align-items: center;
-  //-padding-right: 5px;
-  &:hover>.lr-user-drop{
-    display: block;
-  }
-}
-.lr-user-drop{
-  font-size: 14px;
-  position: absolute;
-  width: 200px; 
-  right:0;
-  top: 100%; 
-  display: block;
-  padding: 5px 0;
-  background-color: #fff;
-  border:2px outset #eee;
-  color:#000;
-}
-.lr-user-p{
-  padding: 5px 10px;
-  word-wrap: break-word;
-  b{
-    margin-right:.3em;
-  }
-  a{
-    color: #4B869E;
-  }
-}
-.lr-user-name{
-  display: flex; 
-  align-items: center;
-  cursor: pointer;
-  margin: 0 3px;
-  padding: 0 3px;
 
-  &:hover, &.lr_user_hover{
-    background-color: rgba(#fff, .5);
-
-  }
-  >.lr-triangle{
-    margin: 0 3px;
-    >polygon{
-      fill:#666;
-    }
-  }
-}
-.lr-user-logout{
-  cursor: pointer;
-  color: #000; 
-  margin-left: 10px;
-}
-.lr-drop-menu-btn{
-  &.lr_drop_menu_active, &:hover{
-    background-color: rgba(#fff, .5);
-  }
-}
-@import '../cmpt/start/start.scss';
 // -------------------- task bar --------------------
 .lr-task-bar{
   height:$taskBarH;
@@ -769,7 +638,7 @@ $taskGlyphPositonX: 14px;
     
   }
 }
-
+@import '../cmpt/start/start.scss';
 @import '../cmpt/sys-app/fs/fs.scss';
 @import '../cmpt/sys-app/editor/editor.scss';
 @import '../cmpt/sys-app/task-manager/task-manager.scss';
