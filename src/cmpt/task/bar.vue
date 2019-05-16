@@ -26,10 +26,6 @@ export default {
     }
   },
   methods: {
-    minAll(){
-      this.$store.commit('task/minAll');
-      this.$refs.ctx.hidden();
-    },
     closeAll(){
       this.$store.commit('task/closeAll');
       this.$refs.ctx.hidden();

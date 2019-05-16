@@ -3,8 +3,7 @@
                     @dragenter='handleDragenter',
                     @dragover='handleDragover',
                     @mousedown='handleMousedown',
-                    @dragend='handleIconDragEnd',
-                    :class="{lr_desktop_launch: isQuickLaunch}")
+                    @dragend='handleIconDragEnd')
   Icon(v-for="(v,i) in list",
       :key="v.id",
       :index="i",
@@ -67,9 +66,6 @@ export default {
     },
     tasks(){
       return this.$store.state.task.list;
-    },
-    isQuickLaunch() {
-      return this.$store.state.isQuickLaunch
     }
   },
   watch: {

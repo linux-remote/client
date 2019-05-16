@@ -30,7 +30,7 @@ export default {
   },
   methods: {
     minAll(){
-      this.$store.commit('task/minAll');
+      this.$store.commit('task/toggleMinAll');
       this.$refs.ctx.hidden();
     },
     closeAll(){

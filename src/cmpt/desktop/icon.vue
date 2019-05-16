@@ -1,5 +1,6 @@
 <template lang="jade">
 button.lr-desktop-icon(draggable="true",
+              @click="handleClick",
               @dblclick="handleDblclick",
               @dragstart.stop='handleDragStart(item, $event)',
               :style='{left: item.x + "px", top: item.y + "px"}')
@@ -40,6 +41,9 @@ export default {
     },
     LANG(){
       return this.$store.getters['language/currLanguage'][this.item.id]
+    },
+    isQuickLaunch() {
+      return this.$store.state.isQuickLaunch
     }
   },
   methods: {
@@ -69,7 +73,19 @@ export default {
         this.$parent.save();
       })
     },
+    handleClick(e){
+      if(this.isQuickLaunch){
+        this.launch();
+        this.$store.commit('toggleQuickLaunch');
+      }
+    },
     handleDblclick(){
+      if(this.isQuickLaunch){
+        return;
+      }
+      this.launch();
+    },
+    launch(){
       this.$store.commit('task/add', this.item.id);
     },
     handleDragStart(v, e){

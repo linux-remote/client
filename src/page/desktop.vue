@@ -1,5 +1,6 @@
 <template lang="jade">
-.lr-page.lr-desktop-wrap(v-if='deskInited')
+.lr-page.lr-desktop-wrap(v-if='deskInited', 
+                        :class="{lr_desktop_launch: isQuickLaunch}")
   DeskTop(:icons='icons')
   TasksBar
   //- QuickBar
@@ -31,6 +32,9 @@ export default {
     },
     username(){
       return this.$store.state.username
+    },
+    isQuickLaunch() {
+      return this.$store.state.isQuickLaunch
     }
   },
   watch: {

@@ -103,7 +103,7 @@ const store = new window.Vuex.Store({
     set (state, data) {
       Object.assign(state, data);
     },
-    clearDesktop(state){
+    clearDesktop(){
       // state.quickBarItems = [];
       store.commit('task/closeAll');
       store.commit('users/clear');
@@ -116,6 +116,9 @@ const store = new window.Vuex.Store({
     },
     toggleQuickLaunch(state){
       state.isQuickLaunch = !state.isQuickLaunch;
+      // if(state.task.isMinAll) {
+
+      // }
     }
   }
 });

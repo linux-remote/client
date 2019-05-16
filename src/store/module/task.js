@@ -130,7 +130,7 @@ export default  {
     //   this.commit('task/add', cloneTask);
     // },
 
-    minAll(state){
+    toggleMinAll(state){
       if(state._tmpMinAll.length){
         state._tmpMinAll.forEach(function(v){
           v.isMin = false;
