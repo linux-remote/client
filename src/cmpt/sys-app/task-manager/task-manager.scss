@@ -29,7 +29,7 @@ table.lr-tm-table{
   bottom: 0;
   left: 0;
   height: 0;
-  background-color: $color1;
+  background-color: #000;
   width: 100%;
 }
 .lr-tm-cpus{
@@ -59,7 +59,7 @@ table.lr-tm-table{
   position: relative;
 }
 .lr-tm-porcess-bar{
-  background-color: $color1;
+  background-color: #000;
   height: 100%;
   width: 0;
   text-indent: 10px;

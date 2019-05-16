@@ -2,15 +2,13 @@
 .lr-start
   .lr-start-btn(@click='handleBtnClick', :class='{lr_start_focus: isShowMenu}')
   .lr-start-menu(v-show="isShowMenu")
-    
-    .lr-start-column
-      h3 Apps
+    .lr-start-username {{username}}
+    .lr-start-apps
       AppItem.lr-start-menu-item(v-for='(v, k) in sysAppMap',
                                 :item="v",
                                 v-if="!v.hidden"
                                 :id='k',
                                 :key="k")
-    .lr-start-username {{username}}
     .lr-start-bottom-menu
       button.lr-clear-btn(@click="handleSettingsClick")
         span.glyph.glyph-settings(title="Settings")
@@ -33,7 +31,7 @@ export default {
   },
   data(){
     return {
-      isShowMenu: true, // $DEV
+      isShowMenu: false,
       appList: []
     }
   },
@@ -55,11 +53,8 @@ export default {
     handleSettingsClick(){
       this.$store.commit('task/add', 'sys_app_settings');
     },
-    toggleMenu(){
-      this.isShowMenu = !this.isShowMenu;
-    },
     handleBtnClick(){
-      this.toggleMenu();
+      this.isShowMenu = !this.isShowMenu;
       if(this.isShowMenu){
         //console.log('Listener by click');
         document.addEventListener('mousedown', this.handleDocumentMousedown, {
@@ -84,29 +79,7 @@ export default {
         this.isShowMenu = false;
       }
     },
-   logout,
-   handleDocKeyDown(e){
-     
-     // https://stackoverflow.com/questions/36458625 
-     if(e.keyCode === 112){
-       this.toggleMenu();
-       
-       e.preventDefault();
-     }
-     console.log('handleDocKeyDown',  e.keyCode);
-   }
-  },
-  mounted(){
-    this.$options._handleDocKeyDown = (e) => {
-      this.handleDocKeyDown(e);
-    }
-    this.$options._handleDocKeyDownOpts = {
-      capture: true
-    }
-    document.addEventListener('keydown', this.$options._handleDocKeyDown, this.$options._handleDocKeyDownOpts);
-  },
-  destroyed(){
-    document.removeEventListener('keydown', this.$options._handleDocKeyDown, this.$options._handleDocKeyDownOpts);
+   logout
   }
 }
 </script>

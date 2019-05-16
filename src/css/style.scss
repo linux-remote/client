@@ -1,27 +1,24 @@
-// body {
-//   font-family: "Segoe UI",'Microsoft YaHei', Selawik,Tahoma,Verdana,Arial,sans-serif;
-// }
 $bg: #87CEEB;
-$bg2: rgba(#fff, .5);
-$drakColor: #6AA1B8; //4B869E
-$borderColor: #ACE7FF;
-$bottomColor: #EBBC87;
-$color1: #000;
+$drakColor: #6AA1B8;
 
-// $activeBorderColor: #cce8ff;
 $activeBorderColor: #99d1ff;
-// $activeBgColor: rgba($activeBorderColor, .5);
 $activeBgColor: #cce8ff;
 
-$taskTitleH :25px;
-$taskBarH : 40px;
-$taskBarBg: rgba(0, 0, 0, .85);//#f5f5f5;
+$taskBarH : 40px; // 底部任务栏
+$taskBarBg: rgba(0, 0, 0, .85); // 底部任务栏背景
 $taskBarFocusBg: lighten($taskBarBg, 60%);
-$quickBarW: 40px;
+
+$taskTitleH: 30px; // 任务窗口 title 栏高度
+$taskCtrlW: 45px; // 任务窗口 title 栏右侧按钮宽度
+
+
+// $quickBarW: 40px; // 快速启动栏
 
 $maxZindex : 2147483647; // https://stackoverflow.com/questions/491052/minimum-and-maximum-value-of-z-index
 $topLayerZindex : $maxZindex - 100;
-$taskTitleH: 30px;
+
+
+
 body {
   height: 100vh;
   overflow: hidden;
@@ -549,7 +546,7 @@ $topBarRight : 100px;
 }
 .lr-drop-menu-btn{
   &.lr_drop_menu_active, &:hover{
-    background-color: $bg2;
+    background-color: rgba(#fff, .5);
   }
 }
 @import '../cmpt/start/start.scss';
@@ -713,7 +710,7 @@ $topBarRight : 100px;
   align-items: center;
 }
 .lr-task-ctrl-item{
-  width: 45px;
+  width: $taskCtrlW;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -754,7 +751,7 @@ $taskGlyphPositonX: 14px;
     
   }
 }
-@import '../cmpt/quick-bar/quick-bar.scss';
+
 @import '../cmpt/sys-app/fs/fs.scss';
 @import '../cmpt/sys-app/editor/editor.scss';
 @import '../cmpt/sys-app/task-manager/task-manager.scss';
@@ -780,7 +777,7 @@ $taskGlyphPositonX: 14px;
   
 //   bottom: 10px + $taskBarH;
 //   left: 10px;
-//   background-color: $bg2;
+//   background-color: rgba(#fff, .5);
 //   display: flex;
 //   flex-direction: column;
 // }
