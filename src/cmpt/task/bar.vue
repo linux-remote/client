@@ -2,6 +2,7 @@
 <template lang="jade">
 .lr-task-bar
   Start
+  QuickLaunch
   BarBody
   Watch
 </template>
@@ -10,11 +11,13 @@
 import Start from '../start/start.vue';
 import BarBody from './bar-body.vue';
 import Watch from '../watch.vue';
+import QuickLaunch from './quick-launch.vue';
 export default {
   components: {
     Start,
     BarBody,
-    Watch
+    Watch,
+    QuickLaunch
   },
 
   computed:{

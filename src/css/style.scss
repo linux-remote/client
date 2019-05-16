@@ -429,7 +429,9 @@ button.lr-desktop-icon{
   color:#fff;
   font-size: 13px;
 }
-
+.lr_desktop_launch{ // #f20505 #730202
+  background-color: #730202;
+}
 .lr_be_selected{
   background-color: green;
 }
@@ -635,7 +637,17 @@ $topBarRight : 100px;
   align-items: center;
 }
 
-
+.lr-quick-launch{
+  width: $taskBarH;
+  height: $taskBarH;
+  background-image: url('/public/img/preferences-desktop-launch-feedback.png');
+  background-position: center;
+  background-size: 85%;
+  background-repeat: no-repeat;
+  &:hover{
+    background-color: rgba(#fff, .5);
+  }
+}
 
 
 // -------------------- task body --------------------

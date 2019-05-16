@@ -8,7 +8,8 @@ function _defState(){
     latest: {}, // last created task
     current: {}, // focused task
     id: 3,  //zIndex
-
+    
+    isMinAll: false,
     _tmpMinAll: [],
     _tmpMinAllIsCurrFocus: false
   }
@@ -83,6 +84,7 @@ export default  {
       } 
       if(state._tmpMinAll.length){
         state._tmpMinAll = [];
+        state.isMinAll = false;
       }
       if(state.current === task){
         task.isFocus = true;
@@ -134,17 +136,19 @@ export default  {
           v.isMin = false;
         });
         state.current.isFocus = state._tmpMinAllIsCurrFocus;
-        return state._tmpMinAll = [];
-      }
+        state._tmpMinAll = [];
 
-      state._tmpMinAllIsCurrFocus = state.current.isFocus;
-      state.list.forEach(v => {
-        if(!v.isMin){
-          state._tmpMinAll.push(v);
-          v.isMin = true;
-        }
-      });
-      state.current.isFocus = false;
+      } else {
+        state._tmpMinAllIsCurrFocus = state.current.isFocus;
+        state.list.forEach(v => {
+          if(!v.isMin){
+            state._tmpMinAll.push(v);
+            v.isMin = true;
+          }
+        });
+        state.current.isFocus = false;
+      }
+      state.isMinAll = state._tmpMinAll.length !== 0;
     },
     closeAll(state){
       Object.assign(state, _defState());

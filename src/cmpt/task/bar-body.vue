@@ -2,7 +2,7 @@
 <template lang="jade">
 .lr-task-bar-body
   ContextMenu(ref='ctx')
-    .lr-ctx-item(@click='minAll') Show the desktop
+    .lr-ctx-item(@click='minAll') {{isMinAll ? 'Show open windows' : 'Show the desktop'}}
     //- .lr-ctx-item(@click='closeAll')
   Item(v-for='(item, index) in tasks', 
       :key='item.id',
@@ -23,6 +23,9 @@ export default {
   computed:{
     tasks(){
       return this.$store.state.task.list;
+    },
+    isMinAll() {
+      return this.$store.state.task.isMinAll;
     }
   },
   methods: {

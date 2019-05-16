@@ -23,14 +23,13 @@ import task from './module/task';
 import flyTextarea from './module/fly-textarea';
 import sysApps from './module/sys-apps';
 import users from './module/users';
-sysApps
+
 const store = new window.Vuex.Store({
   modules: {
     language,
     upload,
     error,
     task,
-    //widget,
     users,
     flyTextarea,
     sysApps
@@ -55,12 +54,8 @@ const store = new window.Vuex.Store({
     hostname: '',
     mask: '',
 
-    quickBarItems: [],
+    // quickBarItems: [],
 
-    // lr_sys_unknown_app : {
-    //   iconUrl : '/public/img/image-missing-3.png',
-    //   title: 'lr_sys_unknown_app'
-    // },
     deskTopEvent: null,
     recycleBinEvent: null,
     fsEvent: {},
@@ -68,9 +63,11 @@ const store = new window.Vuex.Store({
 
     onDustbinRecycle: null,
     sessError: false,
-    openWidthData: null
+    openWidthData: null,
+    isQuickLaunch: false
   },
   mutations: {
+
     setDeskTopWH(state){
       var dom = document.getElementById('lr-desktop');
       if(dom){
@@ -78,6 +75,7 @@ const store = new window.Vuex.Store({
         state.deskTopH = dom.offsetHeight;
       }
     },
+
     transferDragData(state, data){
       state.dragTransferData = data;
       document.addEventListener('dragend', function(){
@@ -91,15 +89,13 @@ const store = new window.Vuex.Store({
       state.recycleBinEvent = Date.now();
       this.commit('sysApps/changeRecycleBinIcon', bool)
     },
+
     fsTrigger(state, data){
       state.fsEvent = data
     },
     deskTopTrigger(state, data){
       state.deskTopEvent = data;
-    },  
-    // onRecycle(state){
-
-    // },
+    },
 
     needRelogin(state){
       state.sessError = true;
@@ -108,16 +104,18 @@ const store = new window.Vuex.Store({
       Object.assign(state, data);
     },
     clearDesktop(state){
-      state.quickBarItems = [];
+      // state.quickBarItems = [];
       store.commit('task/closeAll');
       store.commit('users/clear');
     },
     openWith(state, data){
-      console.log('openWith')
       state.openWidthData = data;
     },
     hiddenOpenWith(state){
       state.openWidthData = null;
+    },
+    toggleQuickLaunch(state){
+      state.isQuickLaunch = !state.isQuickLaunch;
     }
   }
 });

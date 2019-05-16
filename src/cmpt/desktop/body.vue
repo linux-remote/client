@@ -3,7 +3,8 @@
                     @dragenter='handleDragenter',
                     @dragover='handleDragover',
                     @mousedown='handleMousedown',
-                    @dragend='handleIconDragEnd')
+                    @dragend='handleIconDragEnd',
+                    :class="{lr_desktop_launch: isQuickLaunch}")
   Icon(v-for="(v,i) in list",
       :key="v.id",
       :index="i",
@@ -24,14 +25,12 @@ import TaskWindow from '__ROOT__/cmpt/task/window.vue';
 
 import ContextMenu from '../global/contextmenu/index.vue';
 //import Cascade from '../global/cascade.vue';
-// import UsersChat from './chat.vue';
 const ICON_WIDTH = 80;
 const ICON_HEIGHT = 80;
 export default {
   components: {
     Icon,
     TaskWindow,
-    // UsersChat,
     ContextMenu,
     //Cascade
   },
@@ -68,6 +67,9 @@ export default {
     },
     tasks(){
       return this.$store.state.task.list;
+    },
+    isQuickLaunch() {
+      return this.$store.state.isQuickLaunch
     }
   },
   watch: {
@@ -76,6 +78,9 @@ export default {
         case 'add':
           this.list.push(e.item);
           this.save();
+          break;
+        case 'quickLaunch':
+          console.log('quickLaunch');
           break;
       }
     }
