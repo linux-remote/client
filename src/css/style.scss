@@ -112,12 +112,6 @@ body {
   margin: 0 10px; 
 }
 
-// .lr-ctx-item:last-child{
-//   border: 0;
-// }
-// .lr-ctx-item .lr-icon{
-//   width:20px; height: 20px;
-// }
 .lr-hourglass{
   position: absolute;
   top:0;
@@ -125,23 +119,12 @@ body {
   right: 0;
   bottom: 0;
   margin: auto;
-
   height: 100%;
   width: 100%; 
-  // font-size: 25px;
-  // text-align: center;
-  // line-height: 30px;
   background-color: rgba(0,0,0, .5);
   z-index: 30; 
   color:#888;
 }
-// .lr-hourglass::after{
-//   background-image: url('/public/hourglass.svg');
-//   background-size: contain;
-//   background-repeat: no-repeat;
-//   background-position: center;
-//   height: 30px;
-// }
 
 .lr_fly_textarea{
   position: absolute; 
@@ -158,7 +141,6 @@ body {
   padding:0;
   margin:0;
   text-align: inherit;
-
   word-wrap: normal;
   white-space:normal;
   word-break: break-all;

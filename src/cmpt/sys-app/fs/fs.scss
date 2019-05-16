@@ -161,13 +161,6 @@ $fsStatusBarH: 23px;
     font-size: 7px;
     margin: 1px 5px 0;
   }
-  //text-decoration: underline;
-  // &::before{
-  //   content: '/';
-  //   color: #000;
-  //   margin: 0 10px;
-  //   //text-decoration: none;
-  // }
 }
 .lr-fs-crumb-name {
   white-space: pre-wrap;
@@ -206,28 +199,10 @@ $linkFileColor: violet;
 }
 
 
-// .lr-upload-btn{
-//   position: relative;
-//   font-size: 12px;
-//   height: 24px;
-//   margin-left: 1em;
-//   background-image: url('/public/upload.svg');
-//   background-size: contain;
-//   background-position: left center;
-//   background-repeat: no-repeat;
-//   padding-left: 2em;
-//   border: 1px solid #aaa;
-//   background-color: #fff;
-//   &:hover{
-//     background-color: $bg;
-//   }
+// .lr-fs-icon-model{
 // }
-.lr-fs-icon-model{
-  background-image: url('/public/fs-icon-model.svg');
-}
-.lr-fs-list-model{
-  background-image: url('/public/fs-list-model.svg');
-}
+// .lr-fs-list-model{
+// }
 .lr-fs-error{
   font-size: 1.2em;
   font-weight: bold;
@@ -322,7 +297,7 @@ $fsRowItemH: 50px;
   background-image: url('/public/img/tango-style/inode-socket.png');
 }
 .lr_file_type_Unknown{
-background-image: url('/public/unknown.svg');
+background-image: url('/public/img/unknown.png');
 }
 .lr_file_type_CharacterDevice{
 background-image: url('/public/img/tango-style/inode-chardevice.png');
@@ -339,7 +314,7 @@ background-image: url('/public/img/tango-style/inode-chardevice.png');
 }
 .lr_file_type_Door{
   background-size: auto 80%;
-  background-image: url('/public/door.svg');
+  background-image: url('/public/img/wine-doors.png');
 }
 .lr-error-icon{
   z-index: 20;
@@ -742,24 +717,12 @@ tr.lr_file_be_selected.lr_file_former{
   flex-grow: 1;
   position: relative;
   width: 100%;
-  // display: flex;
-  // flex-direction: column;
   border-top: 1px solid #999;
   background-image: url('/public/img/favorites.png');
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
-  // ::after{
-  //   content: "";
 
-  //   opacity: 0.5;
-  //   top: 0;
-  //   left: 0;
-  //   bottom: 0;
-  //   right: 0;
-  //   position: absolute;
-  //   z-index: 1;
-  // }
 }
 .lr-fs-favorites-inner{
   height: 100%;
@@ -770,175 +733,3 @@ tr.lr_file_be_selected.lr_file_former{
 .lr-disk-link:hover{
   color: green;
 }
-// .lr-pre-create-error-btn, .lr-pre-create-ctrl{
-//   width: 30px;
-//   height: 30px;
-//   line-height:30px;
-//   text-align: center;
-// }
-// .lr-pre-create-error-btn{
-//   cursor: pointer;
-// }
-
-// .lr_file_focus .lr-fs-item-name{
-//   cursor: text;
-// }
-//----------- permission end -----------
-/*
-.lr-file{
-  width: 100%;
-  height: 80px; 
-  overflow: hidden;
-  position: relative;
-  margin: 1px;
-  cursor: pointer;
-  display: flex;
-  &:hover, &.lr_file_focus{
-    background-color: #000; 
-    word-break:break-all;
-    .lr-file-name{
-      background-color: red;
-      position: relative;
-      white-space: normal;
-    }
-  }
-}
-.lr-file-icon{
-  width: 50px; 
-  height: 50px;
-  display: flex;
-  position: relative;
-  span{
-    position: absolute;
-    left: 17px;
-    top: 8px;
-    z-index: 3;
-    text-overflow: ellipsis;
-    white-space: nowrap; 
-    width: 26px;
-    text-align: center;
-    overflow: hidden;
-    background: red; 
-    color:#fff;
-    padding: 0 1px;
-    font-size: 10px;
-  }
-}
-.lr-file-icon-front{
-  width: 100%; 
-  height: 100%;
-  position: absolute;
-  top:0; 
-  left:0;
-  z-index: 2;
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-.lr-file-link{
-  width: 40%; 
-  height: 40%;
-  position: absolute;
-  bottom:-5px; 
-  z-index: 2;
-  right:8px;
-  background-size: 100% 100%;
-  background-image: url('/public/link.svg');
-}
-
-
-
-.lr-file-name{
-   font-size: 12px;
-   text-align: center;
-   cursor: text;
-   z-index: 4;
-   white-space: pre-wrap;
-   text-overflow: ellipsis;
-   overflow: hidden;
-}
-*/
-// .lr-per-relation-wrap{
-//   width: 50px;
-//   height: 50px;
-//   top: 0;
-//   left: 0;
-//   right:0;
-//   bottom: 0;
-//   margin: auto;
-//   display: flex; 
-//   position: absolute;
-//   z-index: 1;
-// }
-// .lr-per-relation{
-//   flex-grow: 1;
-//   display: flex;
-//   flex-direction: column;
-// }
-// .lr-per-item{
-//   flex-grow: 1;
-//   display: flex; 
-//   align-items: center;
-//   justify-content: center;
-//   opacity: 0;
-// }
-// .lr_per_is>.lr_per_item_on{
-//   background-color: rgba(green, .5);
-//   opacity: 1;
-// }
-
-// .lr-per-sticky{
-//   position: absolute;
-//   background: rgba(sienna, .5);
-//   right:0; 
-//   bottom: 0; 
-//   width: 33.33%;
-//   height: 33.33%;
-// }
-
-// .lr-mask-icon, .lr-error-icon{
-//   background-size: 100% 100%;
-//   background-position: center;
-//   background-repeat: no-repeat;
-//   position: absolute;
-//   width: 100%; height: 100%; top:0; left: 0;
-// }
-
-// .lr-mask-icon{
-//   z-index: 10;
-//   background-size: 50% 50%;
-//   background-image: url('/public/mask.svg');
-// }
-
-// .lr_file_type_Directory > .lr-file-icon > .lr-file-icon-front{
-      
-//   // background-image: url('/public/blue/folder-blue.svg');
-//    //background-color: rgba(255,255,255, .5);
-// }
-// .lr_file_type_RegularFile > .lr-file-icon > .lr-file-icon-front{
-//    background-image: url('/public/blue/file.svg');
-// }
-// .lr_file_type_Socket > .lr-file-icon > .lr-file-icon-front{
-//   background-image: url('/public/socket.svg');
-// }
-// .lr_file_type_Unknown > .lr-file-icon > .lr-file-icon-front{
-//   background-image: url('/public/unknown.svg');
-// }
-// .lr_file_type_CharacterDevice > .lr-file-icon > .lr-file-icon-front{
-//   background-image: url('/public/device.svg');
-// }
-// .lr_file_type_BlockDevice > .lr-file-icon > .lr-file-icon-front{
-//   background-image: url('/public/device-block.svg');
-// }
-// .lr_file_type_NamedPipe > .lr-file-icon > .lr-file-icon-front{
-//   background-size: auto 80%;
-//   background-image: url('/public/FIFO.png');
-// }
-// .lr_file_type_Door > .lr-file-icon > .lr-file-icon-front{
-//   background-size: auto 80%;
-//   background-image: url('/public/door.png');
-// }
-// .lr-error-icon{
-//   z-index: 20;
-//   background-image: url('/public/error.svg');
-// }
