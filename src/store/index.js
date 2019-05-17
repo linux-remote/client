@@ -64,7 +64,8 @@ const store = new window.Vuex.Store({
     onDustbinRecycle: null,
     sessError: false,
     openWidthData: null,
-    isQuickLaunch: false
+    isQuickLaunch: false,
+    fsClipBoard: null
   },
   mutations: {
 

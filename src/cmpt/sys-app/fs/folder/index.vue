@@ -1,5 +1,6 @@
 <template lang="jade">
 .lr-fs-folder(@mousedown='handleFsBodyMousedown',
+              tabindex="-1",
               @keydown.a='selectAll',
               :class='bodyClass')
   .lr-hourglass(v-if='isRequest')
@@ -29,14 +30,15 @@
                 :item='item',
                 @del="handleItemDel",
                 @click='handleItemClick(item, $event)',
+                @contextmenu="handleItemContentmenu(item)"
+                :selectedLen="$options._selectedItems.size"
                 :class='{lr_file_hidden: item.isHidden, lr_file_focus: item.focus,  lr_file_be_selected: item.isBeSelected, lr_file_former: item.focus === 0}')
     .lr-fs-empty(v-if='!list.length') This folder is empty.
     div(style="height: 1px")
   Status
   CreateSysLink(v-if='createSysLinkName')
   ContextMenu
-    .lr-ctx-item
-      | new Folder
+    .lr-ctx-item(v-if="fsClipBoard") {{LANG.ctx.paste}}
 </template>
 
 <script>
@@ -95,6 +97,9 @@ export default {
     },
     groups(){
       return this.$store.state.groups
+    },
+    fsClipBoard() {
+      return this.$store.state.fsClipBoard
     },
     bodyClass(){
       var dir = this.dir;
@@ -191,7 +196,7 @@ export default {
       }
     },
     selectAll(e){
-      if(e.ctrlKey){
+      if(e.ctrlKey){ // 必须 设 tabindex 键盘事件才会生效。
         if(this.currItem) {
           this.currItem.focus = 0;
         }
@@ -396,7 +401,16 @@ export default {
     },
 
 
-
+    handleItemContentmenu(item){// win 10 list mode have bug.
+      if(!item.isBeSelected){
+        this.focusNewOneItem(item);
+      }
+    },
+    focusNewOneItem(item) {
+      this.clearSelected();
+      this.selectItem(item);
+      this.focusItem(item);
+    },
     handleItemClick(item, e) {
       if(e.shiftKey) {
         this.handleItemShiftClick(item);
@@ -406,9 +420,7 @@ export default {
         if(e.ctrlKey){ // ctrl
           this.handleItemCtrlClick(item);
         } else {
-          this.clearSelected();
-          this.selectItem(item);
-          this.focusItem(item);
+          this.focusNewOneItem(item);
         }
       }
 

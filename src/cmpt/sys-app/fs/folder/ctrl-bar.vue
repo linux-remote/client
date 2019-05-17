@@ -38,7 +38,7 @@ export default {
         type,
         size: 10
       }
-      this.$parent.itemFocus(this.$parent.preCreateItem)
+      this.$parent.focusNewOneItem(this.$parent.preCreateItem);
     },
     handleUploadBtnClick(){
       this.$store.commit('upload/start', this.$parent.address);

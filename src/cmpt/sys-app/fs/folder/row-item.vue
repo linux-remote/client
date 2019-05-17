@@ -3,22 +3,32 @@ tr(@dblclick='open',
    @mousedown.stop='',
    v-on="$listeners")
   td
-    ContextMenu(ref='ctx', :isStop="item.focus === true")
+    ContextMenu(ref='ctx')
+      .lr-ctx-item(@click="handleCut")
+        | {{LANG.cut}}
+      .lr-ctx-item(@click="handleCopy")
+        | {{LANG.copy}}
+      hr
       .lr-ctx-item(@click='handleDel')
         | {{LANG.remove}}
-      .lr-ctx-item(@click='handleRename')
-        | {{LANG.rename}}
+
       //-.lr-ctx-item(@click='open', v-if='item.type === "RegularFile"')
         .lr-icon
         | 使用打开
-      .lr-ctx-item(@click='download', v-if='item.type === "RegularFile"')
-        | {{LANG.download}}
+
       //-.lr-ctx-item(@click='copy')
         .lr-icon
         | 复制
-      hr
-      .lr-ctx-item(@click='createSymbolicLink')
-        | {{LANG.createSymbolicLink}}
+      template(v-if="selectedLen === 1")
+        .lr-ctx-item(@click='handleRename')
+          | {{LANG.rename}}
+        .lr-ctx-item(@click='createSymbolicLink')
+          | {{LANG.createSymbolicLink}}
+        hr
+        .lr-ctx-item(@click='sendToDesktop') {{LANG.sendToDesktop}}
+        hr
+        .lr-ctx-item(@click='download', v-if='item.type === "RegularFile"')
+          | {{LANG.download}}
         
     .lr-name-wrap
       .lr-icon(:class='["lr_file_type_" + item.type, {["lr_fs_open_type_" + item.openType]: item.type !== "Directory"}]', :style='iconStyle')
@@ -66,6 +76,9 @@ export default {
     },
     index: {
       type: Number
+    },
+    selectedLen: {
+      type: Number
     }
   },
   computed: {
@@ -108,6 +121,22 @@ export default {
     createSymbolicLink(){
       this.$refs.ctx.hidden();
       this.p.createSysLinkName = this.item.name;
+    },
+    handleCut(){
+      this._cutAndCopy('cut');
+    },
+    handleCopy(){
+      this._cutAndCopy('copy');
+    },
+    _cutAndCopy(type){
+      const item = this.item;
+      this.$store.commit('set', {
+        fsClipBoard: {
+        type,
+        address: this.p.getItemPath(item.name),
+        files: this.p.$options._selectedItems
+        }
+      });
     },
     handleDel(){
       this.$emit('del');
@@ -174,6 +203,9 @@ export default {
     handleRename() {
       this.$refs.name.startRename();
       console.log('handleRename');
+    },
+    sendToDesktop(){
+      this.$refs.ctx.hidden();
     }
   }
 }

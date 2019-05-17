@@ -69,10 +69,14 @@ export default  {
           sys_app_fs: {
             title: 'FS Manager',
             ctx: {
+              cut: 'cut',
+              copy: 'copy',
+              paste: 'paste',
               remove: 'delete',
               rename: 'rename',
               download: 'download',
-              createSymbolicLink: 'create symbolic link'
+              createSymbolicLink: 'create shortcut',
+              sendToDesktop: 'send to desktop (shortcut)'
             },
             th: {
               name: 'name',

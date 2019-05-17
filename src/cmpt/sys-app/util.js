@@ -50,9 +50,13 @@ export function sortByStrKey(list, key) {
     return 0;
   });
 }
-// export function pureObj(obj){
-//   const obj2 = Object.create(null);
-//   Object.keys[obj].forEach(k => {
-//     obj2[k] = obj[k]
-//   })
-// }
+export function checkMouseType(e){
+  switch(e.button){
+    case 0:
+      return 'left';
+    case 1:
+      return 'middle';
+    case 2:
+      return 'right'
+  }
+}

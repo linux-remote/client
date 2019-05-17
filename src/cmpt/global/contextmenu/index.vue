@@ -6,10 +6,10 @@ ContextMenu(v-if='isShow')
 import ContextMenu from './contextmenu.vue';
 export default {
   props: {
-    isStop: {
-      type: Boolean,
-      default: true
-    }
+    // isStop: {
+    //   type: Boolean,
+    //   default: true
+    // }
   },
   components: {
     ContextMenu
@@ -32,10 +32,10 @@ export default {
       this.isShow = true;
     },
     handleContextmenu(e){
-      if(this.isStop) {
+      // if(this.isStop) {
         this.show(e);
         e.stopPropagation();
-      }
+      // }
       e.preventDefault();
     }
   },

@@ -16,7 +16,6 @@ table.lr-tm-table{
 }
 .lr-tm-list{
   cursor: default;
-  user-select: none;
 }
 .lr-tm-cpu-process{
   height: 100px;
@@ -66,7 +65,6 @@ table.lr-tm-table{
   visibility: visible;
   white-space: nowrap;
   cursor: default;
-  user-select: none;
 }
 .lr-tm-mems-wrap{
   padding: 1px;
@@ -101,5 +99,4 @@ table.lr-tm-table{
   height: 100%;
   text-align: center;
   cursor: default;
-  user-select: none;
 }

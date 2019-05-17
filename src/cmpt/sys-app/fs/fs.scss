@@ -8,6 +8,7 @@ $fsStatusBarH: 23px;
   overflow: hidden;
   position: relative;
   padding-top: $fsNavBarH;
+  user-select: none;
 }
 .lr-fs-bottom-wrap{
   height: 100%;
@@ -183,6 +184,7 @@ $linkFileColor: violet;
   padding-right: 2px;
   position: relative;
   overflow: hidden;
+  outline: none; // tabindex 会有 outline. 不可去掉 tabindex， 不然键盘事件不生效。
 }
 .lr-fs-folder-inner{
   height: 100%;
@@ -234,7 +236,6 @@ $linkFileColor: violet;
   height: $fsStatusBarH; 
   line-height: $fsStatusBarH;
   font-size: 12px;
-  user-select: none;
   span{
     margin: 0 2px; padding: 0 2px;
   }
@@ -431,7 +432,6 @@ background-image: url('/public/img/tango-style/inode-chardevice.png');
     border-bottom: 0!important;
     border-right: 1px solid #e5e5e5!important;
     color: #4c607a;
-    
     font-weight: normal;
     &:first-letter {
       // https://zhidao.baidu.com/question/1695348555292540668.html
