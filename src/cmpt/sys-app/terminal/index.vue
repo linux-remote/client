@@ -25,7 +25,7 @@ export default {
       term.open(this.$el);
       
       // resize: 
-      term.onResize((size) => {
+      term.on('resize', (size) => {
         if (!$opt.pid) {
           return;
         }
@@ -76,10 +76,10 @@ export default {
     }
   },
   mounted(){
-    window.require(['/public/xterm-3.12.0-build/xterm.min.js', 
-    '/public/xterm-3.12.0-build/addons/attach.min.js', 
-    '/public/xterm-3.12.0-build/addons/fit.min.js',
-    '/public/xterm-3.12.0-build/addons/webLinks.min.js'], (Terminal, attach, fit, webLinks) => {
+    window.require(['/public/xterm/3.13.1/xterm.min.js', 
+    '/public/xterm/3.13.1/addons/attach/attach.min.js', 
+    '/public/xterm/3.13.1/addons/fit/fit.min.js',
+    '/public/xterm/3.13.1/addons/webLinks/webLinks.min.js'], (Terminal, attach, fit, webLinks) => {
       Terminal.applyAddon(attach);
       Terminal.applyAddon(fit);
       Terminal.applyAddon(webLinks);

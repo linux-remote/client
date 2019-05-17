@@ -4,13 +4,25 @@ const ROOT_URL = '/nodeMouduleStatic';
 
 function getDir(moduleName){
   var rPath = require.resolve(moduleName);
-  // console.log('rPath', rPath);
+  // cnpm: 
+  // C:\common\git\linux-remote\lr-public\node_modules\_xterm@3.12.2@xterm\lib\public\Terminal.js
+  // scope: C:\common\git\linux-remote\lr-public\node_modules\_@hezedu_winstrap@0.5.14@@hezedu\winstrap\index.js
+
   var splitStr = 'node_modules' + path.sep;
   var i = rPath.indexOf(splitStr)  + splitStr.length;
   // var name = rPath.substr(i);
   // name = name.substr(0, name.indexOf(path.sep));
   var dir = rPath.substr(0, i);
-  return dir + moduleName;
+
+  
+  var _subName = rPath.substr(i);
+  let subArr = _subName.split(path.sep);
+  if(moduleName.indexOf('/') !== -1){ // @hezedu/winstarp
+    _subName = subArr[0] + path.sep + subArr[1];
+  } else {
+    _subName = subArr[0];
+  }
+  return path.join(dir,  _subName);
 }
 
 function getVersion(dir){

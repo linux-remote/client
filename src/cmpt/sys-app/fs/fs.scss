@@ -312,6 +312,9 @@ background-image: url('/public/img/tango-style/inode-chardevice.png');
   background-size: auto 80%;
   background-image: url('/public/img/nuvola-style/pipe.png');
 }
+
+// door 类型只存在于 Solaris 系统. 几乎不会遇到
+// https://en.wikipedia.org/wiki/Unix_file_types#Door
 .lr_file_type_Door{
   background-size: auto 80%;
   background-image: url('/public/img/wine-doors.png');

@@ -625,7 +625,7 @@ $taskGlyphPositonX: 14px;
 @import '../cmpt/sys-app/editor/editor.scss';
 @import '../cmpt/sys-app/task-manager/task-manager.scss';
 @import '../cmpt/sys-app/recycle-bin/recycle-bin.scss';
-@import './xterm-3.12.0.css';
+@import '../cmpt/sys-app/terminal/xterm.css'; // 3.13.1
 //************* app start *************
 .lr-sys-app-icon{
   width: 30px;
