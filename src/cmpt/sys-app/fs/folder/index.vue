@@ -1,7 +1,7 @@
 <template lang="jade">
 .lr-fs-folder(@mousedown='handleFsBodyMousedown',
               tabindex="-1",
-              @keydown.a='selectAll',
+              @keydown="handleKeydown",
               :class='bodyClass')
   .lr-hourglass(v-if='isRequest')
   CtrlBar
@@ -38,7 +38,8 @@
   Status
   CreateSysLink(v-if='createSysLinkName')
   ContextMenu
-    .lr-ctx-item(v-if="fsClipBoard") {{LANG.ctx.paste}}
+    .lr-ctx-item(v-if="fsClipBoard", @click='paste') {{LANG.ctx.paste}}
+  CpOneModal(v-if="copyOneModalData", :data="copyOneModalData", @close="copyOneModalData = null", @success="this.getData")
 </template>
 
 <script>
@@ -46,6 +47,7 @@
 import CtrlBar from './ctrl-bar.vue';
 import PreCreate from './pre-create.vue';
 import RowItem from './row-item.vue';
+import CpOneModal from './copy-one-modal.vue';
 import Status from './status.vue';
 import Selectable from '__ROOT__/cmpt/unit/selectable.vue';
 import CreateSysLink from './create-sys-link.vue';
@@ -57,6 +59,7 @@ export default {
     CtrlBar,
     PreCreate,
     Status,
+    CpOneModal,
     RowItem,
     CreateSysLink,
     Selectable,
@@ -86,6 +89,7 @@ export default {
       isRequest: false,
 
       createSysLinkName: null, //创建软链名字
+      copyOneModalData: null
     }
   },
   computed: {
@@ -167,6 +171,70 @@ export default {
   },
 
   methods: {
+    handleKeydown(e){ // 必须 设 tabindex 键盘事件才会生效。
+      console.log(e.key);
+      if(e.ctrlKey){
+        const key = e.key.toLowerCase();
+        switch(key){
+          case 'a':
+            this.selectAll();
+            break;
+          case 'c':
+            this.copy();
+            break;
+          case 'x':
+            this.cut();
+            break;
+          case 'v':
+            this.paste();
+            break;
+        }
+        e.preventDefault();
+      }
+    },
+    copy() {
+      this._cutAndCopy('copy');
+    },
+    cut() {
+      this._cutAndCopy('cut');
+    },
+    paste(){
+      const {type, files, address} = this.fsClipBoard;
+      let _files = [];
+      files.forEach(v => {
+        _files.push(v.name);
+      });
+      if(address === this.address){
+        if(type === 'copy'){
+          if(files.length === 1){
+            this.showCopyOneModal(files[0]);
+          } else {
+            console.error(`Can't copy many files on same dir.`);
+          }
+        }
+      }
+      return;
+
+    },
+    showCopyOneModal(fileName){
+      this.copyOneModalData = fileName;
+    },
+    _cutAndCopy(type){
+      if(!this.$options._selectedItems.size){
+        return;
+      }
+      const files = [];
+      this.$options._selectedItems.forEach(v => {
+        files.push(v);
+      });
+      this.$store.commit('set', {
+        fsClipBoard: {
+        type,
+        address: this.address,
+        files
+        }
+      });
+    },
     handleSelected(){
       console.log('handleSelected');
       const selectedItems = this.list.filter(item => item.isBeSelected);
@@ -195,20 +263,15 @@ export default {
         _set.clear();
       }
     },
-    selectAll(e){
-      if(e.ctrlKey){ // 必须 设 tabindex 键盘事件才会生效。
-        if(this.currItem) {
-          this.currItem.focus = 0;
-        }
-        const arr = this.list;
-        arr.forEach(item => {
-          item.isBeSelected = true;
-        })
-        this.$options._selectedItems = new Set(arr);
-
-        e.preventDefault();
+    selectAll(){
+      if(this.currItem) {
+        this.currItem.focus = 0;
       }
-      //e.stopPropagation();
+      const arr = this.list;
+      arr.forEach(item => {
+        item.isBeSelected = true;
+      })
+      this.$options._selectedItems = new Set(arr);
     },
     focusItem(item) {
       item.focus = true;
@@ -491,7 +554,8 @@ export default {
     handleFsBodyMousedown(){
       this.clearSelected();
       this.unFocusCurrItem();
-    }
+    },
+
   },
   created(){
     this.$options._selectedItems = new Set;

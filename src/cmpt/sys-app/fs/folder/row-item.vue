@@ -123,20 +123,12 @@ export default {
       this.p.createSysLinkName = this.item.name;
     },
     handleCut(){
-      this._cutAndCopy('cut');
+      this.p.cut();
+      this.$refs.ctx.hidden();
     },
     handleCopy(){
-      this._cutAndCopy('copy');
-    },
-    _cutAndCopy(type){
-      const item = this.item;
-      this.$store.commit('set', {
-        fsClipBoard: {
-        type,
-        address: this.p.getItemPath(item.name),
-        files: this.p.$options._selectedItems
-        }
-      });
+      this.p.copy();
+      this.$refs.ctx.hidden();
     },
     handleDel(){
       this.$emit('del');

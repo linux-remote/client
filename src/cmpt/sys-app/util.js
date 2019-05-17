@@ -50,13 +50,13 @@ export function sortByStrKey(list, key) {
     return 0;
   });
 }
-export function checkMouseType(e){
-  switch(e.button){
-    case 0:
-      return 'left';
-    case 1:
-      return 'middle';
-    case 2:
-      return 'right'
-  }
-}
+// export function checkMouseType(e){
+//   switch(e.button){
+//     case 0:
+//       return 'left';
+//     case 1:
+//       return 'middle';
+//     case 2:
+//       return 'right'
+//   }
+// }

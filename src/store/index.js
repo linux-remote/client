@@ -104,8 +104,9 @@ const store = new window.Vuex.Store({
     set (state, data) {
       Object.assign(state, data);
     },
-    clearDesktop(){
+    clearDesktop(state){
       // state.quickBarItems = [];
+      state.fsClipBoard = null;
       store.commit('task/closeAll');
       store.commit('users/clear');
     },
