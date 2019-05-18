@@ -20,7 +20,7 @@
           ref='input',
           @blur="handleInputBlur",
           @keydown.13='go(inputAddress)')
-  .lr-fs-nav-item(v-if='address===inputAddress' @click='onChange(address)')
+  .lr-fs-nav-item(v-if='address===inputAddress' @click='$emit("change", address)')
     span.glyph.glyph-refresh
   .lr-fs-nav-item(v-else @click='go(inputAddress)')
     span.glyph.glyph-forward
@@ -28,11 +28,6 @@
 <script>
 const MAX_LEN = 50;
 export default {
-  props: {
-    onChange : {
-      type: Function
-    }
-  },
   data(){
     return {
       backStack: [],
@@ -60,7 +55,7 @@ export default {
     address(v){
       //console.log('watch', this.addressArr.length)
       this.inputAddress = v;
-      this.onChange(v);
+      this.$emit('change', v);
     }
   },
 

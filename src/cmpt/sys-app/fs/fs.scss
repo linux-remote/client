@@ -437,6 +437,9 @@ background-image: url('/public/img/tango-style/inode-chardevice.png');
       // https://zhidao.baidu.com/question/1695348555292540668.html
       text-transform:uppercase;
     }
+    &.active{
+      background-color: red;
+    }
   }
   th, td {
     padding: 0 6px;

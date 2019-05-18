@@ -1,26 +1,20 @@
 <template lang="jade">
 .lr-fs-wrap
-  //-.lr-hourglass(v-show='isRequest')
-  NavBar(ref='navBar', :onChange="handleNavChange")
+  NavBar(ref='navBar', @change="handleNavChange")
   .lr-fs-bottom-wrap
-    //-Left
     .lr-fs-index(v-if='address === ""')
       div(@click='go("/")') /
       div(@click='go(homedir)') Home
-    Folder(v-else-if='address', :address='address', :triggerContainSame='triggerContainSame')
+    Folder(v-else-if='address', :address='address',:triggerContainSame='triggerContainSame')
 </template>
 
 <script>
 import NavBar from './nav-bar.vue';
-//-import Left from './left.vue';
-//import Disk from './disk.vue';
 import Folder from './folder/index.vue';
 
 export default {
   components:{
-    //-Left,
     NavBar,
-    //-Disk,
     Folder
   },
   data(){
@@ -41,9 +35,12 @@ export default {
   methods: {
     handleNavChange(address){
       this.address = address;
+
+      // 相同的 字符串 address 变化,触发不了watch.所以用Objcet 触发.
       this.triggerContainSame = {
         address
       };
+
     }
   },
   mounted(){

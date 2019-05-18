@@ -11,13 +11,13 @@
     table.lr-fs-table(:class='"lr_file_model_" + model')
       thead
         tr
-          th {{LANG.th.name}}
-          th {{LANG.th.owner}}
-          th {{LANG.th.group}}
-          th {{LANG.th.permission}}
-          th {{LANG.th.mtime}}
-          th {{LANG.th.size}}
-            span.lr_is_device_type(v-if='isHaveDevice') /{{LANG.th.deviceType}}
+          th(v-for="key in theads", :class="{active: sortKey === key}") {{LANG.th[key]}}
+          //- th {{LANG.th.owner}}
+          //- th {{LANG.th.group}}
+          //- th {{LANG.th.permission}}
+          //- th {{LANG.th.mtime}}
+          //- th {{LANG.th.size}}
+          //-   span.lr_is_device_type(v-if='isHaveDevice') /{{LANG.th.deviceType}}
       tbody.lr-fs-tbody
         tr(v-if='preCreateItem', class='lr-fs-create-layer', @mousedown.stop='')
           td(colspan='7')
@@ -71,7 +71,7 @@ export default {
 
   data(){
     return {
-      theads: ['名称',  '所有者', '用户组' ,'权限', '修改日期',  '大小/设备类型'],
+      theads: ['name',  'owner', 'group' ,'permission', 'mtime',  'size'],
       list: [],
       error: null,
       model: 'list',
@@ -83,6 +83,7 @@ export default {
       isHaveDevice: false,
       newItemName: null,
       isRequest: false,
+      sortKey: 'name'
     }
   },
   computed: {
@@ -300,7 +301,7 @@ export default {
       this.request({
         url: '~/fs/' + encodePath(this.address),
         stateKey: 'isRequest',
-        data: {dir: true},
+        data: { dir: true },
         success(data){
           data = parse(data);
           const result = this.getFormatedListAndDir(data);
@@ -320,7 +321,7 @@ export default {
     getFormatedListAndDir(list) {
       let arr = [], dir;
       list.forEach( v => {
-        if(v.name === '..') {
+        if(v.name === '..') { // 后端已过滤
           return;
         }
 
@@ -330,37 +331,11 @@ export default {
           initRelation(v, this.username, this.groups);
           return;
         }
-        
+
         this.wrapItem(v);
         arr.push(v);
-        //this.focusNewItem(v);
-        /*
-        {
-          accessable,
-          focus,
-          permission, // raw
-          owner, // raw
-          group, // raw
-          mtime, // raw
-          name, // raw
-          size, // raw
-          suffix,
-          type,
-          writeable,
-          isFolder,
-          isHidden,
-          isMask, // isACL
-          isSticky,
-          is_group,
-          is_other,
-          is_owner,
-          openType,
-          readable,
-          rwxs,
-        }
-        */
+
       });
-      sortByStrKey(arr, 'name');
       return {
         list: arr,
         dir
@@ -383,20 +358,23 @@ export default {
       if(v.type === 'Directory'){
         v.isFolder = true;
       }else{
-        v.isFolder = false;
+        v.isFolder = false; // 非文件夹: basename, suffix
         Object.assign(v, parseName(v.name));
       }
 
-      if(v.type === 'RegularFile'){
+      if(v.type === 'RegularFile'){// 普通文件, 设置 icon.
         initIconAttr(v);
       }
       if(v.device_type && !this.isHaveDevice){
         this.isHaveDevice = true;
       }
+
       v.focus = false;
       v.isBeSelected = false;
+
     },
     sort(arr){
+      sortByStrKey(arr, this.sortKey);
       const map = {
         normal: {
           folderArr: [],
@@ -410,7 +388,7 @@ export default {
       arr.forEach(v => {
         let key = 'normal'
         if(v.isHidden){
-          key = 'hidden'
+          key = 'hidden';
         }
         if(v.isFolder){
           map[key].folderArr.push(v);
