@@ -11,13 +11,8 @@
     table.lr-fs-table(:class='"lr_file_model_" + model')
       thead
         tr
-          th(v-for="key in theads", :class="{active: sortKey === key}") {{LANG.th[key]}}
-          //- th {{LANG.th.owner}}
-          //- th {{LANG.th.group}}
-          //- th {{LANG.th.permission}}
-          //- th {{LANG.th.mtime}}
-          //- th {{LANG.th.size}}
-          //-   span.lr_is_device_type(v-if='isHaveDevice') /{{LANG.th.deviceType}}
+          th(v-for="key in theads", :key="key", :class="{active: key === sortKey, ['lr_fs_th_' + key]: true}", @mousedown="sortBy(key)") {{LANG.th[key]}}
+
       tbody.lr-fs-tbody
         tr(v-if='preCreateItem', class='lr-fs-create-layer', @mousedown.stop='')
           td(colspan='7')
@@ -51,7 +46,7 @@ import ContextMenu from '__ROOT__/cmpt/global/contextmenu/index.vue';
 import initRelation from './permission-util';
 import parse from './parse';
 import {initIconAttr, encodePath, getNewName, parseName} from './util';
-import { sortByStrKey } from '../../util';
+import { sortByStrKey , sortByNumberKey} from '../../util';
 export default {
   components:{
     CtrlBar,
@@ -154,7 +149,13 @@ export default {
             }
           break;
           case 'getList':
-          this.sort(e.list);
+          const data = parse(e.data);
+          const result = this.getFormatedListAndDir(data);
+          this.dir = result.dir;
+          this.error = null;
+
+          this.sort(result.list);
+          this.concat(result.list);
           break;
           case 'del':
             this.removeItem(e.item);
@@ -303,14 +304,10 @@ export default {
         stateKey: 'isRequest',
         data: { dir: true },
         success(data){
-          data = parse(data);
-          const result = this.getFormatedListAndDir(data);
-          this.dir = result.dir;
-          this.error = null;
           this.$store.commit('fsTrigger', {
             type: 'getList',
             address: this.address,
-            list: result.list
+            data: data
           });
         },
         error(xhr){
@@ -345,7 +342,7 @@ export default {
     wrapItem(v){
 
       v.size = Number(v.size);
-      
+      // v._mtime = (new Date(v.mtime)).getTime();
       initRelation(v, this.username, this.groups);
 
 
@@ -374,7 +371,21 @@ export default {
 
     },
     sort(arr){
-      sortByStrKey(arr, this.sortKey);
+      arr = arr || this.list;
+      const key = this.sortKey;
+      switch(key) {
+        case 'size':
+        // case 'mtime':
+          sortByNumberKey(arr, key);
+        break;
+        // case 'mtime':
+        //   sortByNumberKey(arr, '_mtime', true);
+        //   break;
+        default:
+          sortByStrKey(arr, key);
+      }
+    },
+    concat(arr){
       const map = {
         normal: {
           folderArr: [],
@@ -403,6 +414,12 @@ export default {
       var key = v.isHidden ? 'hidden' : 'normal';
       var key2 = v.isFolder ? 'folderArr' : 'fileArr';
       return this.listMap[key][key2];
+    },
+    sortBy(key){
+      console.log('sortBy', key);
+      this.sortKey = key;
+      this.sort();
+      this.concat(this.list);
     },
     reSortByItem(v, isNew){
       const arr = this.getMapArr(v);

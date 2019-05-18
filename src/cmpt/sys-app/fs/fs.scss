@@ -472,6 +472,13 @@ background-image: url('/public/img/tango-style/inode-chardevice.png');
     text-align: right;
   }
 }
+.lr_fs_th_permission{
+  background-color: #ddd;
+  pointer-events: none;
+}
+// .lr-fs-disabled-th{
+//   cursor: not-allowed;
+// }
 .lr_file_be_selected{
   td {
     border-top: 1px solid #a5d6ff;
