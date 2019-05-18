@@ -54,7 +54,7 @@ tr(@dblclick='open',
 <script>
 import ContextMenu from '__ROOT__/cmpt/global/contextmenu/index.vue';
 import ItemName from './item-name.vue';
-import {encodePath} from './util';
+import {encodePath, getNewName} from './util';
 export default {
   beSelectable : true,
   components: {
@@ -65,7 +65,7 @@ export default {
     this.item._del = () => {
       this.del();
     }
-    return this.item
+    return this.item;
   },
   props: {
     item: {
@@ -111,16 +111,38 @@ export default {
     // },
     getRealAddress(){
       let address, item = this.item;
-      if(item.isSymbolicLink){
-        address = item.linkPath;
+      if(item.symbolicLink){
+        address = item.symbolicLink;
       }else{
         address = this.p.getItemPath(item.name)
       }
       return address;
     },
     createSymbolicLink(){
+      console.log('this.p.list', this.p.list);
+      const newName = getNewName(this.p.list, {
+        basename: this.item.name + ' - SymLink',
+        suffix: ''
+      });
+      const address = this.p.getItemPath(this.item.name);
+      this.request({
+        type: 'post',
+        url: '~/fs/' + this.p.address,
+        data: {
+          type: 'createSymbolicLink',
+          srcName: this.item.name,
+          newName
+        },
+        success(data){
+          data.name = name;
+          this.$store.commit('fsTrigger', {
+            address: this.p.address,
+            type: 'add',
+            item: data
+          });
+        }
+      });
       this.$refs.ctx.hidden();
-      this.p.createSysLinkName = this.item.name;
     },
     handleCut(){
       this.p.cut();

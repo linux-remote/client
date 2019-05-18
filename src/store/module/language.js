@@ -75,8 +75,8 @@ export default  {
               remove: 'delete',
               rename: 'rename',
               download: 'download',
-              createSymbolicLink: 'create shortcut',
-              sendToDesktop: 'send to desktop (shortcut)'
+              createSymbolicLink: 'create symbolic link',
+              sendToDesktop: 'send to desktop (symbolic link)'
             },
             th: {
               name: 'name',

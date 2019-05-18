@@ -45,7 +45,6 @@ export function getOpenAppIcon(openType){
   }
 }
 export function initIconAttr(v){
-  v.suffix = getNameSuffix(v.name);
   v.openType = getOpenType(v.suffix);
   const openApp = getOpenAppIcon(v.openType);
   if(openApp){
@@ -56,4 +55,50 @@ export function initIconAttr(v){
 
 export function encodePath(path){
   return encodeURIComponent(path.substr(1));
+}
+
+export function parseName(name){
+  const i = name.lastIndexOf('.');
+  const result = {
+    basename: '',
+    suffix: ''
+  }
+  if(i > 0){
+    result.basename = name.substr(0, i);
+    result.suffix = name.substr(i + 1);
+  } else {
+    result.basename = name;
+  }
+  return result;
+}
+
+function _getParsedName(item){
+  if(item.isFolder){
+    return {
+      basename: item.name,
+      suffix: ''
+    }
+  }
+  return item;
+}
+
+export function getNewName(list, item){
+  let num = 1;
+  const {basename, suffix} = _getParsedName(item);
+  list.forEach(_v => {
+    const v = _getParsedName(_v);
+    if((v.suffix === suffix || !suffix) && v.basename.indexOf(basename) !== -1){
+      let bb = v;
+      if(suffix){
+        bb = parseName(v.basename);
+      }
+      const aiNum = Number(bb.suffix);
+      if(bb.basename === basename && aiNum){
+        if(aiNum === num){
+          num = num + 1;
+        }
+      }
+    }
+  });
+  return `${basename}.${num}${item.suffix ? '.' + item.suffix : ''}`;
 }

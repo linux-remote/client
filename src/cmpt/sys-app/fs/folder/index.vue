@@ -36,10 +36,8 @@
     .lr-fs-empty(v-if='!list.length') This folder is empty.
     div(style="height: 1px")
   Status
-  CreateSysLink(v-if='createSysLinkName')
   ContextMenu
     .lr-ctx-item(v-if="fsClipBoard", @click='paste') {{LANG.ctx.paste}}
-  CpOneModal(v-if="copyOneModalData", :data="copyOneModalData", @close="copyOneModalData = null", @success="this.getData")
 </template>
 
 <script>
@@ -47,19 +45,18 @@
 import CtrlBar from './ctrl-bar.vue';
 import PreCreate from './pre-create.vue';
 import RowItem from './row-item.vue';
-import CpOneModal from './copy-one-modal.vue';
 import Status from './status.vue';
 import Selectable from '__ROOT__/cmpt/unit/selectable.vue';
-import CreateSysLink from './create-sys-link.vue';
 import ContextMenu from '__ROOT__/cmpt/global/contextmenu/index.vue';
 import initRelation from './permission-util';
-import {initIconAttr, encodePath} from './util';
+import parse from './parse';
+import {initIconAttr, encodePath, getNewName, parseName} from './util';
+import { sortByStrKey } from '../../util';
 export default {
   components:{
     CtrlBar,
     PreCreate,
     Status,
-    CpOneModal,
     RowItem,
     CreateSysLink,
     Selectable,
@@ -87,9 +84,6 @@ export default {
       isHaveDevice: false,
       newItemName: null,
       isRequest: false,
-
-      createSysLinkName: null, //创建软链名字
-      copyOneModalData: null
     }
   },
   computed: {
@@ -172,7 +166,6 @@ export default {
 
   methods: {
     handleKeydown(e){ // 必须 设 tabindex 键盘事件才会生效。
-      console.log(e.key);
       if(e.ctrlKey){
         const key = e.key.toLowerCase();
         switch(key){
@@ -207,7 +200,21 @@ export default {
       if(address === this.address){
         if(type === 'copy'){
           if(files.length === 1){
-            this.showCopyOneModal(files[0]);
+            const newFileName = getNewName(this.list, files[0]);
+            console.log('newFileName', newFileName);
+            this.request({
+              url: '~/fs/' + encodePath(address),
+              type: 'post',
+              data: {
+                type: 'copy',
+                isCopyOneOnSameDir: true,
+                srcFile: _files[0],
+                destFile: newFileName
+              },
+              success(){
+                this.getData();
+              }
+            })
           } else {
             console.error(`Can't copy many files on same dir.`);
           }
@@ -215,9 +222,6 @@ export default {
       }
       return;
 
-    },
-    showCopyOneModal(fileName){
-      this.copyOneModalData = fileName;
     },
     _cutAndCopy(type){
       if(!this.$options._selectedItems.size){
@@ -236,7 +240,6 @@ export default {
       });
     },
     handleSelected(){
-      console.log('handleSelected');
       const selectedItems = this.list.filter(item => item.isBeSelected);
       this.$options._selectedItems = new Set(selectedItems);
     },
@@ -300,6 +303,7 @@ export default {
         stateKey: 'isRequest',
         data: {dir: true},
         success(data){
+          data = parse(data);
           const result = this.getFormatedListAndDir(data);
           this.dir = result.dir;
           this.error = null;
@@ -327,6 +331,7 @@ export default {
           initRelation(v, this.username, this.groups);
           return;
         }
+        
         this.wrapItem(v);
         arr.push(v);
         //this.focusNewItem(v);
@@ -356,42 +361,19 @@ export default {
         }
         */
       });
-      arr = this.sortByName(arr);
+      sortByStrKey(arr, 'name');
       return {
         list: arr,
         dir
       };
     },
-    sortByName(arr) {
-      // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
-      return arr.sort((a, b) => {
-          var nameA = a.name.toUpperCase(); // ignore upper and lowercase
-          var nameB = b.name.toUpperCase(); // ignore upper and lowercase
-          if (nameA < nameB) {
-            return -1;
-          }
-          if (nameA > nameB) {
-            return 1;
-          }
-          // names must be equal
-          return 0;
-      })
-    },
+
     wrapItem(v){
+
       v.size = Number(v.size);
+      
       initRelation(v, this.username, this.groups);
 
-      const _syl = v.symbolicLink;
-      if(_syl){
-        v.isSymbolicLink = true;
-        v.linkPath = _syl.linkPath;
-        v.linkTargetError = _syl.linkTargetError;
-        if(!v.linkTargetError){
-          v.permission = _syl.permission;
-          v.owner = _syl.owner;
-          v.group = _syl.group;
-        }
-      }
 
       if(v.name[0] === '.'){
         v.isHidden = true;
@@ -403,6 +385,7 @@ export default {
         v.isFolder = true;
       }else{
         v.isFolder = false;
+        Object.assign(v, parseName(v.name));
       }
 
       if(v.type === 'RegularFile'){
@@ -449,7 +432,6 @@ export default {
       if(isNew){
         arr.push(v);
       }
-      //console.log(arr);
       arr.sort((a, b) => {
         return a.name.toUpperCase() > b.name.toUpperCase()
       });
