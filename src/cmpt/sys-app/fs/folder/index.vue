@@ -58,7 +58,6 @@ export default {
     PreCreate,
     Status,
     RowItem,
-    CreateSysLink,
     Selectable,
     ContextMenu
   },
