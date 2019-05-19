@@ -10,7 +10,7 @@
 }
 </style>
 <template lang='jade'>
-div(@mousedown='mousedownListener', v-on='$listeners')
+div(@mousedown='mousedownListener')
   .lr-select-area(v-show='isSelect',:style='style')
     //- span X:{{layerX}} Y: {{layerY}} w:{{w}} h:{{h}}
   slot
@@ -69,6 +69,7 @@ export default {
         maxW: el.scrollWidth,
         maxH: el.scrollHeight
       });
+      this.$emit('start');
     },
     selecting (moveE, isLoop) {
       
@@ -209,7 +210,6 @@ export default {
       
       this.childSelect();
 
-
       if(shouldLoop){
         this.$data._timer = setTimeout(() => {
           this.selecting(moveE, true);
@@ -227,31 +227,24 @@ export default {
       this.isSelect = false;
       this.w = 0;
       this.h = 0;
-      this.$emit('selectEed');
-      // if(this.onSelected){
-      //   // const arr = this.childSelect();
-      //   const arr = [];
-      //   this.$children.forEach(item => {
-      //     if(item.$options.beSelectable && item.isBeSelected){
-      //       arr.push(item);
-      //     }
-      //   })
-      //   this.onSelected(arr);
-      // }
+      this.$emit('end');
 
     },
     mousedownListener(e){
       //e.stopPropagation();
       const self = this;
       self.selectStart(e);
+      
       window.addEventListener('mousemove', mousemoveListener);
       window.addEventListener('mouseup', mouseupListener, {
         once: true
       });
-
+      
+      
       function mousemoveListener(e){
         e.preventDefault();
         self.selecting(e);
+        // debounce.trigger(e);
       }
 
       function mouseupListener(){
@@ -286,26 +279,29 @@ export default {
       }
       return false;
     },
-    childSelect(){
-      // let selectedIndex = 0;
-      // const arr = [];
-      this.$children.forEach((item, i) => {
-        if(item.$options.beSelectable){
-          if(this.passX(item) && this.passY(item)){
-            item.isBeSelected = true;
-            // selectedIndex = selectedIndex + 1;
-            // arr.push(item);
+    childSelect(){ // 为了性能没用 forEach.
+      var i = 0, len = this.$children.length, vItem;
+      for(; i < len; i++){
+        vItem = this.$children[i];
+        if(vItem.onBeSelecting){
+          if(this.passX(vItem) && this.passY(vItem)){
+            vItem.onBeSelecting(true);
           }else{
-            item.isBeSelected = false;
+            vItem.onBeSelecting(false);
           }
         }
-      });
+      }
+      // this.$children.forEach((vItem, i) => {
+
+        
+      // });
       // return arr;
     }
   },
   // mounted(){
-  //   this.$parent.el.addEventListener('mousedown', this.mousedownListener)
-  //  //console.log(this.$el)
+  //   this.$options._debounceChildSelect = new DebounceTime(() => {
+  //     this.childSelect();
+  //   }, 1);
   // },
   // destroyed(){
   //   this.$parent.removeEventListener('mousedown', this.mousedownListener)

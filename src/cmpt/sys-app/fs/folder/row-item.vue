@@ -61,12 +61,7 @@ export default {
     ContextMenu,
     ItemName
   },
-  data(){
-    this.item._del = () => {
-      this.del();
-    }
-    return this.item;
-  },
+
   props: {
     item: {
       type: Object
@@ -94,15 +89,10 @@ export default {
     }
   },
   methods: {
-    // onSelected(){
-    //   this.isBeSelected = true;
-    // },
-    // onUnSelected(){
-    //   this.isBeSelected = false;
-    // },
-    // copy(){
+    onBeSelecting(isBeSelected){
+      this.item.isBeSelected = isBeSelected;
+    },
 
-    // },
     // send2Desktop(){
     //   this.$store.commit('deskTopTrigger', {
     //     type: 'add',
@@ -193,7 +183,7 @@ export default {
         this.p.go(address);
       }else if(item.type === 'RegularFile'){
         if(item.openType === 'image'){
-          return this.winOpen(address);
+          return this.windowOpen(address);
         }
         if(item.openApp){
           this.$store.commit('task/add', {
@@ -214,13 +204,13 @@ export default {
       }
     },
 
-    winOpen(address, queryStr = ''){
+    windowOpen(address, queryStr = ''){
       window.open(this.request.wrapUrl('~/fs/' + encodePath(address) + queryStr, this.$route.params.username));
     },
 
     download(){
       var url = this.p.getItemPath(this.item.name);
-      this.winOpen(url, '?download=true');
+      this.windowOpen(url, '?download=true');
     },
     handleRename() {
       this.$refs.name.startRename();
@@ -228,6 +218,11 @@ export default {
     },
     sendToDesktop(){
       this.$refs.ctx.hidden();
+    }
+  },
+  created(){
+    this.item._del = () => {
+      this.del();
     }
   }
 }

@@ -1,6 +1,6 @@
 import store from '__ROOT__/store/index.js';
 const DOC_TITLE = document.title;
-
+/*
 var wsOrigin,
   ws,
   isSSL = location.protocol.indexOf('https') !== -1 ||
@@ -15,7 +15,7 @@ if(window.SERVER_CONFIG.API_ROOT === '/api'){
 }else{
   wsOrigin = wsOrigin + '//' + window.SERVER_CONFIG.API_ROOT.split('/')[2]
 }
-/*
+
 var loopMax = 60, loopCount = 0;
 export function createWs(username){ // webSocket 开始
   ws = new WebSocket(`${wsOrigin}?user=${username}`);

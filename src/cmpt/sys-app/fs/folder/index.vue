@@ -5,10 +5,10 @@
               :class='bodyClass')
   .lr-hourglass(v-if='isRequest')
   CtrlBar
-  .lr-fs-folder-inner(v-if='error')
-    pre.lr-fs-error(v-text='error')
-  Selectable.lr-fs-folder-inner(@selectEed='handleSelected', v-else, ref='selectable')
-    table.lr-fs-table(:class='"lr_file_model_" + model')
+
+  Selectable.lr-fs-folder-inner(@end='handleSelectEnd', ref='selectable')
+    pre.lr-fs-error(v-text='error', v-if='error')
+    table.lr-fs-table(:class='"lr_file_model_" + model', v-else)
       thead
         tr
           th(v-for="key in theads", :key="key", :class="{active: key === sortKey, ['lr_fs_th_' + key]: true}", @mousedown="sortBy(key)") {{LANG.th[key]}}
@@ -47,6 +47,8 @@ import initRelation from './permission-util';
 import parse from './parse';
 import {initIconAttr, encodePath, getNewName, parseName} from './util';
 import { sortByStrKey , sortByNumberKey} from '../../util';
+
+let count = 0;
 export default {
   components:{
     CtrlBar,
@@ -150,13 +152,7 @@ export default {
             }
           break;
           case 'getList':
-          const data = parse(e.data);
-          const result = this.getFormatedListAndDir(data);
-          this.dir = result.dir;
-          this.error = null;
-
-          this.sort(result.list);
-          this.concat(result.list);
+            this.handleGetList(e.data);
           break;
           case 'del':
             this.removeItem(e.item);
@@ -169,6 +165,26 @@ export default {
   },
 
   methods: {
+    handleGetList(stdout) {
+      const data = parse(stdout);
+      const result = this.getFormatedListAndDir(data);
+      this.dir = result.dir;
+      this.error = null;
+      this.list = result.list;
+      
+      // this.sort(result.list);
+      // this.concat(result.list);
+    },
+    // handleSelectStart(){
+    //   count = 0;
+    // },
+    // handleItemSelecting(){
+    //   count = count + 1;
+    // },
+    handleSelectEnd(){
+      const selectedItems = this.list.filter(item => item.isBeSelected);
+      this.$options._selectedItems = new Set(selectedItems);
+    },
     handleKeydown(e){ // 必须 设 tabindex 键盘事件才会生效。
       if(e.ctrlKey){
         const key = e.key.toLowerCase();
@@ -269,10 +285,7 @@ export default {
         files
       });
     },
-    handleSelected(){
-      const selectedItems = this.list.filter(item => item.isBeSelected);
-      this.$options._selectedItems = new Set(selectedItems);
-    },
+
     getItemPath(name){
       let address = this.address;
       const a = address === '/' ? address : address + '/';
