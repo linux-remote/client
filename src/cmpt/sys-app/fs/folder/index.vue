@@ -133,6 +133,7 @@ export default {
       if(e.address === this.address){
         switch (e.type){
           case 'add':
+            let item = parse(e.item);
             if(e.item.focus === undefined){ // 根据 focus 判断有没有 parse 过
               this.wrapItem(e.item)
             }
@@ -217,7 +218,8 @@ export default {
               }
             })
           } else {
-            console.error(`Can't copy many files on same dir.`);
+            this.$store.commit('error/show', 
+              `Can't copy many files on same dir.`);
           }
         }
       }
@@ -538,5 +540,10 @@ export default {
     this.getData();
   }
 }
-
+//- th {{LANG.th.owner}}
+//- th {{LANG.th.group}}
+//- th {{LANG.th.permission}}
+//- th {{LANG.th.mtime}}
+//- th {{LANG.th.size}}
+//-   span.lr_is_device_type(v-if='isHaveDevice') /{{LANG.th.deviceType}}
 </script>

@@ -111,26 +111,34 @@ export default {
     // },
     getRealAddress(){
       let address, item = this.item;
-      if(item.symbolicLink){
-        address = item.symbolicLink;
+      const symLink = item.symbolicLink;
+      if(symLink){
+        if(symLink[0] === '/'){
+          address = item.symbolicLink;
+        } else {
+          address = this.p.getItemPath(symLink);
+        }
+        
       }else{
-        address = this.p.getItemPath(item.name)
+        address = this.p.getItemPath(item.name);
       }
       return address;
     },
     createSymbolicLink(){
-      console.log('this.p.list', this.p.list);
+      let itemName = this.item.name;
+      if(this.item.symbolicLink){
+        itemName = _basename(this.item.symbolicLink);
+      }
       const newName = getNewName(this.p.list, {
-        basename: this.item.name + ' - SymLink',
+        basename: itemName + ' - SymLink',
         suffix: ''
       });
-      const address = this.p.getItemPath(this.item.name);
       this.request({
         type: 'post',
         url: '~/fs/' + this.p.address,
         data: {
           type: 'createSymbolicLink',
-          srcName: this.item.name,
+          srcName: this.item.symbolicLink,
           newName
         },
         success(data){
@@ -222,5 +230,13 @@ export default {
       this.$refs.ctx.hidden();
     }
   }
+}
+
+function _basename(str){
+  const i = str.lastIndexOf('/');
+  if(i === -1){
+    return str;
+  }
+  return str.substr(i + 1);
 }
 </script>
