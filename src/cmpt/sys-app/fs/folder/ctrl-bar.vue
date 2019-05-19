@@ -9,6 +9,7 @@
   button.btn.btn-primary.btn-xs(@click='handleUploadBtnClick')
     span.glyph.glyph-upload
     span {{$parent.LANG.upload}}
+  button(@click="errDev") errDev
 
 </template>
 <script>
@@ -43,6 +44,10 @@ export default {
     handleUploadBtnClick(){
       this.$store.commit('upload/start', this.$parent.address);
     },
+    errDev() {
+      
+    this.$store.commit('error/show', `Error: ${Date.now()}`);
+    }
   }
 }
 </script>

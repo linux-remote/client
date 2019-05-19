@@ -17,7 +17,7 @@ $taskCtrlW: 45px; // 任务窗口 title 栏右侧按钮宽度
 $maxZindex : 2147483647; // https://stackoverflow.com/questions/491052/minimum-and-maximum-value-of-z-index
 $topLayerZindex : $maxZindex - 100;
 
-
+$color-alert: #D02E00;
 body {
   height: 100vh;
   overflow: hidden;
@@ -147,73 +147,7 @@ body {
   word-break: break-all;
 }
 
-.lr-error{
-  position: absolute; 
-  min-width: 500px; 
-  max-width: 80%;
-  margin: 0 auto; 
-  padding-top: 30px;
-  z-index: $topLayerZindex + 2;
-  left: 0;
-  right:0;
-  top: 0;
-  height: 100%;
-}
-.lr-error-close{
-  cursor: pointer;
-  margin-right: 2px;
-  color: #000;
-  &:hover{
-    color: #eee;
-  }
-}
-.lr-error-title{
-  background-color: #EEA1AF;
-  height: $taskTitleH;
-  padding: 1px;
-  display: flex;
-  align-items: center;
-  justify-content:  space-between;
-
-}
-.lr-error-content{
-  display: flex;
-  color: #000;
-  >.lr-icon{
-    height: $taskTitleH - 4;
-    width: $taskTitleH;
-    margin-right: 10px;
-  }
-}
-.lr-error-body{
-  max-height: 50%;
-  overflow: auto;
-  background-color: rgba(255, 255, 255, .7);
-  &::-webkit-scrollbar
-  {
-    width: 5px;  /* for vertical scrollbars */
-    height: 5px;
-  }
-
-  &::-webkit-scrollbar-track
-  {
-    background: rgba(red, 0.1);
-  }
-
-  &::-webkit-scrollbar-thumb
-  {
-    background: rgba(red, .4);
-  }
-}
-.lr-error-item{
-  text-align: left;
-  padding: 5px 10px;
-
-  color:red;
-  margin-top: 2px;
-  border-bottom: 1px solid #EEA1AF;
-
-}
+@import '../cmpt/global/toust/error.scss';
 
 .lr-modal{
   position: absolute;
