@@ -8,6 +8,7 @@ export default  {
       // if(state.message.length > 2){
       //   state.message.shift();
       // }
+      console.error(message);
       state.message.push(message);
       setTimeout(() => {
         state.message.shift();

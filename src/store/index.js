@@ -19,7 +19,7 @@ import language from './module/language';
 import upload from './module/upload';
 import error from './module/error';
 import task from './module/task';
-//import widget from './module/widget';
+import fsClipBoard from './module/fs-clip-board';
 import flyTextarea from './module/fly-textarea';
 import sysApps from './module/sys-apps';
 import users from './module/users';
@@ -32,7 +32,8 @@ const store = new window.Vuex.Store({
     task,
     users,
     flyTextarea,
-    sysApps
+    sysApps,
+    fsClipBoard
   },
   state: {
     dragTransferData: null,
@@ -64,8 +65,7 @@ const store = new window.Vuex.Store({
     onDustbinRecycle: null,
     sessError: false,
     openWidthData: null,
-    isQuickLaunch: false,
-    fsClipBoard: null
+    isQuickLaunch: false
   },
   mutations: {
 
@@ -104,11 +104,11 @@ const store = new window.Vuex.Store({
     set (state, data) {
       Object.assign(state, data);
     },
-    clearDesktop(state){
+    clearDesktop(){
       // state.quickBarItems = [];
-      state.fsClipBoard = null;
       store.commit('task/closeAll');
       store.commit('users/clear');
+      store.commit('fsClipBoard/clear');
     },
     openWith(state, data){
       state.openWidthData = data;

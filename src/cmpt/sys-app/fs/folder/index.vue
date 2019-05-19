@@ -27,7 +27,7 @@
                 @click='handleItemClick(item, $event)',
                 @contextmenu="handleItemContentmenu(item)"
                 :selectedLen="$options._selectedItems.size"
-                :class='{lr_file_hidden: item.isHidden, lr_file_focus: item.focus,  lr_file_be_selected: item.isBeSelected, lr_file_former: item.focus === 0}')
+                :class='{lr_file_hidden: item.isHidden, lr_file_focus: item.focus,  lr_file_be_selected: item.isBeSelected, lr_file_former: item.focus === 0, lr_file_cut: item.isCut}')
     .lr-fs-empty(v-if='!list.length') This folder is empty.
     div(style="height: 1px")
   Status
@@ -161,6 +161,8 @@ export default {
           case 'del':
             this.removeItem(e.item);
           break;
+          case 'cut':
+            this.getData();
         }
       }
     }
@@ -221,7 +223,34 @@ export default {
             this.$store.commit('error/show', 
               `Can't copy many files on same dir.`);
           }
+        } else if(type === 'cut') {
+            this.$store.commit('error/show', 
+              `Cut and paste is same file.`);
         }
+      } else {
+
+        this.request({
+          url: '~/fs/' + encodePath(this.address),
+          type: 'post',
+          data: {
+            type,
+            srcDir: address,
+            files: _files
+          },
+          success(){
+            if(type === 'cut'){
+              this.$store.commit('fsTrigger', {
+                type: 'cut',
+                address,
+                files: _files
+              });
+              this.$store.commit('fsClipBoard/clear');
+              this.getData();
+            } else {
+              this.getData();
+            }
+          }
+        });
       }
       return;
 
@@ -234,12 +263,10 @@ export default {
       this.$options._selectedItems.forEach(v => {
         files.push(v);
       });
-      this.$store.commit('set', {
-        fsClipBoard: {
+      this.$store.commit('fsClipBoard/set', {
         type,
         address: this.address,
         files
-        }
       });
     },
     handleSelected(){
@@ -368,6 +395,7 @@ export default {
         this.isHaveDevice = true;
       }
 
+      v.isCut = false;
       v.focus = false;
       v.isBeSelected = false;
 
