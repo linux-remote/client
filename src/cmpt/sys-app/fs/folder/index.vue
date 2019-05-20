@@ -132,6 +132,7 @@ export default {
       this.getData();
     },
     fsEvent(e){
+      console.log('e.address', e.address);
       if(e.address === this.address){
         switch (e.type){
           case 'add':
@@ -151,6 +152,10 @@ export default {
               Object.assign(thisItem, e.item)
             }
           break;
+          case 'restore':
+            console.log('restore');
+            this.getData();
+            break;
           case 'getList':
             this.handleFsEventGetList(e.data);
           break;

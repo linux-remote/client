@@ -50,6 +50,28 @@ export function sortByStrKey(list, key) {
     return 0;
   });
 }
+
+export function basename(str){
+  const i = str.lastIndexOf('/');
+  if(i === -1){
+    return str;
+  }
+  return str.substr(i + 1);
+}
+export function getDirAndBase(_path){
+  const i = _path.lastIndexOf('/');
+  let dir = '', base = '';
+  if(i === -1){
+    base = _path;
+  } else {
+    dir = _path.substr(0 ,i);
+    base = _path.substr(i + 1);
+  }
+  return {
+    dir,
+    base
+  }
+}
 // export function checkMouseType(e){
 //   switch(e.button){
 //     case 0:

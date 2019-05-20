@@ -4,25 +4,27 @@
   .lr-hourglass(v-show='isRequest')
   .lr-rb-ctrl-bar
     button.btn(@click='clearAll', :disabled='isEmpty') Delete All
+    //- div(style="color: red") {{(totalCount / maxLen) * 100}} %
+
     button.btn(@click='getData') Reload
   .lr-fs-folder-inner
     h2(v-text='error' style='color:red' v-if='error')
-    h2(v-else-if='data.length === 0' style='color:gray') Empty
+    h2(v-else-if='list.length === 0' style='color:gray') Empty
     .lr-fs-folder(v-else)
       table.table.lr-info-table.lr-table(style='width:100%;')
         tr
-          th name
-          th sourceDir
-          th deleteTime
+          th Name
+          th Original Location
+          th Date Deleted
+          th Size
           th
-        tr(v-for='(item,i) in data' , :key='item.id', 
-        :class='{lrRecycleBinError: item.isError}')
-          td {{item.isError ? item.id : item.source.name}}
-          td {{item.sourceDir}}
-          td {{item.delTime}}
+        tr(v-for='(item,i) in list' , :key='item.id')
+          td {{item.source.base}}
+          td {{item.source.dir}}
+          td {{item.source.delTime}}
+          td {{item.size | wellSize}}
           td(style='display:flex')
-            div(v-if='!item.isError')
-              button(@click='recycle(item)') Restore
+            button(@click='restore(item)') Restore
             button(@click='del(item)') Delete
 </template>
 
@@ -33,7 +35,9 @@ export default {
   data(){
     return {
       isRequest: false,
-      data: [],
+      list: [],
+      maxLen: 100,
+      totalCount: 0,
       error: null
     }
   },
@@ -45,14 +49,14 @@ export default {
       return this.$store.state.recycleBinEvent
     },
     isError(){
-      return !this.data && this.error
+      return !this.list && this.error
     }
   },
   watch: {
     recycleBinEvent(){
       this.getData();
     },
-    data(newVal, oldVal){
+    list(newVal, oldVal){
       var isEmpty;
       if(!newVal.length){
         isEmpty = true;
@@ -68,31 +72,31 @@ export default {
   },
 
   methods: {
-    recycle(item){
+    restore(item){
       this.request({
-        url: '~/recycleBin/recycle',
+        url: '~/recycleBin/restore',
         data: {
           id: item.id,
-          sourceDir: item.sourceDir,
-          name: item.source.name
+          sourcePath: item.source.path
         },
         type: 'post',
         success(){
 
           this.removeItem(item);
 
-          let address = item.sourceDir;
+          let address = item.source.dir;
           this.$store.commit('fsTrigger', {
-            type: 'add',
+            type: 'restore',
             address,
-            item: item.source
+            // item: item.source
           });
         }
       })
     },
     removeItem(item){
-      const i = this.data.findIndex(v => v === item);
-      this.data.splice(i, 1);
+      return this.getData();
+      const i = this.list.findIndex(v => v === item);
+      this.list.splice(i, 1);
     },
     del(item){
 
@@ -116,7 +120,7 @@ export default {
         type: 'delete',
         stateKey: 'isRequest',
         success(){
-          this.data = [];
+          this.list = [];
           this.error = null;
         },
         error(xhr){
@@ -130,31 +134,17 @@ export default {
         stateKey: 'isRequest',
         success(stdout){
           const result = lsParse(stdout);
-          this.data = this.parseData(result);
+          this.totalCount = result.length;
+
+          let parsedResult = recycleParse(result);
+          this.list = parsedResult.list;
+
           this.error = null;
         },
         error(xhr){
           this.error = xhr.responseText;
         }
       })
-    },
-    parseData(result){
-      const data = recycleParse(result);
-      const arr = [];
-      data.forEach(v => {
-        //  && v.id !== '..' // 后端已过滤
-        if(v.id !== '.'){
-          arr.push(v);
-          v.isError = false;
-          if(v.name && v.source){
-            v.source.name = v.name;
-          } else {
-            v.isError = true;
-          }
-          delete(v.name);
-        }
-      })
-      return arr;
     }
   },
 

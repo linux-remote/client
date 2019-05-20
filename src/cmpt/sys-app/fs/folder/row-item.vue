@@ -55,6 +55,7 @@ tr(@dblclick='open',
 import ContextMenu from '__ROOT__/cmpt/global/contextmenu/index.vue';
 import ItemName from './item-name.vue';
 import {encodePath, getNewName} from './util';
+import  { basename } from '../../util';
 export default {
   beSelectable : true,
   components: {
@@ -117,7 +118,7 @@ export default {
     createSymbolicLink(){
       let itemName = this.item.name;
       if(this.item.symbolicLink){
-        itemName = _basename(this.item.symbolicLink);
+        itemName = basename(this.item.symbolicLink);
       }
       const newName = getNewName(this.p.list, {
         basename: itemName + ' - SymLink',
@@ -200,11 +201,5 @@ export default {
   }
 }
 
-function _basename(str){
-  const i = str.lastIndexOf('/');
-  if(i === -1){
-    return str;
-  }
-  return str.substr(i + 1);
-}
+
 </script>

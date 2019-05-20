@@ -1,37 +1,60 @@
+import { getDirAndBase } from '../util';
 export default function(parsedLsResult) {
   const result = [];
   var map = Object.create(null);
+  let errArr = [];
+  console.log('parsedLsResult', parsedLsResult)
   parsedLsResult.forEach((v) => {
-    let key, isSource, lastIndex = v.name.lastIndexOf('.lnk');
-    if(lastIndex === -1){
-      key = v.name;
-      isSource = true;
+
+    let key, 
+        isDeledItem,
+        lastLinkIndex = v.name.lastIndexOf('.lnk');
+
+    if(lastLinkIndex === -1){
+      key = v.name; // Source
+      isDeledItem = true;
+      
     }else{
-      key = v.name.substr(0, lastIndex);
-      let linkTarget = v.symbolicLink;
-      // let pathObj = path.parse(linkTarget.linkPath);
-      v = {
-        delTime: v.mtime,
-        // sourceDir: pathObj.dir,
-        // name: pathObj.base,
-        // isCover: !linkTarget.linkTargetError
-      }
+      key = v.name.substr(0, lastLinkIndex);
     }
+
+    v.id = key;
 
     if(!map[key]){
       map[key] = {
         id: key
       };
-      result.push(map[key]);
     }
-    if(isSource){
-      delete(v.name);
-      map[key].source = v;
+
+    let mergeItem = map[key];
+
+    if(isDeledItem){
+      mergeItem._isDeledItem = true;
+      Object.assign(mergeItem, v);
+
     }else {
-      Object.assign(map[key], v);
+
+      let source = getDirAndBase(v.symbolicLink);
+      source.delTime = v.mtime;
+      source.path = v.symbolicLink;
+      mergeItem.source = source;
+      
     }
     //map[key][subKey] = v;
   });
-  map = null;
-  return result;
+
+  for(let i in map){
+    let v = map[i];
+    if(v._isDeledItem && v.source){
+      delete(v._isDeledItem);
+      v.size = Number(v.size);
+      result.push(v);
+    } else {
+      errArr.push(v);
+    }
+  }
+  return {
+          list: result, 
+          error: errArr
+        };
 }
