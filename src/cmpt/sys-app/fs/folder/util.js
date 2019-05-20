@@ -83,8 +83,10 @@ function _getParsedName(item){
 }
 
 export function getNewName(list, item){
-  let num = 1;
+  let num = 1, indexMap = Object.create(null), maxIndex = 1;
   const {basename, suffix} = _getParsedName(item);
+  
+  
   list.forEach(_v => {
     const v = _getParsedName(_v);
     if((v.suffix === suffix || !suffix) && v.basename.indexOf(basename) !== -1){
@@ -94,11 +96,22 @@ export function getNewName(list, item){
       }
       const aiNum = Number(bb.suffix);
       if(bb.basename === basename && aiNum){
-        if(aiNum === num){
-          num = num + 1;
+        console.log('aiNum', aiNum);
+        indexMap[aiNum] = true;
+        if(aiNum > maxIndex) {
+          maxIndex = aiNum;
         }
       }
     }
   });
+  maxIndex = maxIndex + 1;
+  for(; num < maxIndex; num++)  {
+    if(!indexMap[num]){
+      break;
+    }
+  }
+  // console.log('basename', basename);
+  // console.log('suffix', suffix);
+  // console.log('num', num);
   return `${basename}.${num}${item.suffix ? '.' + item.suffix : ''}`;
 }

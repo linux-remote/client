@@ -11,7 +11,7 @@ export default {
   state: defState(),
   mutations: {
     set (state, data) {
-      _controlCutStatus(state.files, data.files);
+      _controlCutStatus(state, data);
 
       Object.assign(state, data);
     },
@@ -21,10 +21,14 @@ export default {
   }
 }
 
-function _controlCutStatus(files, newFiles){
-  
+function _controlCutStatus(state, data){
+  const files = state.files;
+  const newFiles = data.files;
+  const type = data.type;
   if(files.length && files[0].isCut){
     files.forEach(v => v.isCut = false);
   }
-  newFiles.forEach(v => v.isCut = true);
+  if(type === 'cut') {
+    newFiles.forEach(v => v.isCut = true);
+  }
 }

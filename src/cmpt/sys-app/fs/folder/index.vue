@@ -44,7 +44,7 @@ import Status from './status.vue';
 import Selectable from '__ROOT__/cmpt/unit/selectable.vue';
 import ContextMenu from '__ROOT__/cmpt/global/contextmenu/index.vue';
 import initRelation from './permission-util';
-import parse from './parse';
+import lsParse from '../../lib/ls-parse';
 import {initIconAttr, encodePath, getNewName, parseName} from './util';
 import { sortByStrKey , sortByNumberKey} from '../../util';
 
@@ -135,7 +135,7 @@ export default {
       if(e.address === this.address){
         switch (e.type){
           case 'add':
-            let item = parse(e.item);
+            let item = lsParse(e.item);
             if(e.item.focus === undefined){ // 根据 focus 判断有没有 parse 过
               this.wrapItem(e.item)
             }
@@ -152,10 +152,12 @@ export default {
             }
           break;
           case 'getList':
-            this.handleGetList(e.data);
+            this.handleFsEventGetList(e.data);
           break;
           case 'del':
-            this.removeItem(e.item);
+          this.handleFsEventDel(e);
+            // this.removeItem(e.item);
+            this.getData();
           break;
           case 'cut':
             this.getData();
@@ -165,12 +167,16 @@ export default {
   },
 
   methods: {
-    handleGetList(stdout) {
-      const data = parse(stdout);
+    handleFsEventDel(e){
+
+    },
+    handleFsEventGetList(stdout) {
+      const data = lsParse(stdout);
       const result = this.getFormatedListAndDir(data);
       this.dir = result.dir;
       this.error = null;
       this.list = result.list;
+
       
       // this.sort(result.list);
       // this.concat(result.list);
@@ -221,7 +227,6 @@ export default {
         if(type === 'copy'){
           if(files.length === 1){
             const newFileName = getNewName(this.list, files[0]);
-            console.log('newFileName', newFileName);
             this.request({
               url: '~/fs/' + encodePath(address),
               type: 'post',
@@ -326,19 +331,35 @@ export default {
         this.currItem = item;
       }
     },
-    removeItem(item){
-      const arr = this.getMapArr(item);
-      arr.splice(arr.findIndex(v => v === item), 1);
-      this.concatList();
-    },
+    // removeItem(item){
+    //   const arr = this.getMapArr(item);
+    //   arr.splice(arr.findIndex(v => v === item), 1);
+    //   this.concatList();
+    // },
     handleItemDel() {
       const _set = this.$options._selectedItems;
-      if(_set.size){
-        _set.forEach(item => {
-          item._del();
-        });
-        _set.clear();
-      }
+      let files = [];
+      _set.forEach(v => {
+        files.push(v.name);
+      });
+      this.request({
+        type: 'post',
+        stateKey: 'isRequest',
+        url: '~/fs/' + encodePath(this.address),
+        data: {
+          type: 'del',
+          files
+        },
+        success(){
+          this.$store.commit('recycleBinTrigger');
+          this.$store.commit('fsTrigger', {
+            type: 'del',
+            files,
+            address: this.address
+          });
+          _set.clear();
+        }
+      });
     },
     getData(){
       this.request({
@@ -360,9 +381,9 @@ export default {
     getFormatedListAndDir(list) {
       let arr = [], dir;
       list.forEach( v => {
-        if(v.name === '..') { // 后端已过滤
-          return;
-        }
+        // if(v.name === '..') { // 后端已过滤
+        //   return;
+        // }
 
         if(v.name === '.'){
           dir = v;
@@ -408,10 +429,20 @@ export default {
         this.isHaveDevice = true;
       }
 
+      
       v.isCut = false;
       v.focus = false;
       v.isBeSelected = false;
 
+      
+      if (this.currItem.focus && v.name === this.currItem.name) {
+        this.reFocusItem(v);
+      }
+
+    },
+    reFocusItem(v){
+      v.focus = true;
+      this.currItem = v;
     },
     sort(arr){
       arr = arr || this.list;

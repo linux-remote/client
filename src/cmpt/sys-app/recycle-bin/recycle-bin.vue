@@ -16,18 +16,19 @@
           th deleteTime
           th
         tr(v-for='(item,i) in data' , :key='item.id', 
-        :class='{lrRecycleBinCovered: item.isCover, lrRecycleBinError: item.isError}')
+        :class='{lrRecycleBinError: item.isError}')
           td {{item.isError ? item.id : item.source.name}}
           td {{item.sourceDir}}
           td {{item.delTime}}
           td(style='display:flex')
             div(v-if='!item.isError')
-              span(v-if='item.isCover') Covered
-              button(@click='recycle(item)', v-else) Restore
+              button(@click='recycle(item)') Restore
             button(@click='del(item)') Delete
 </template>
 
 <script>
+import lsParse from '../lib/ls-parse';
+import recycleParse from './parse';
 export default {
   data(){
     return {
@@ -80,11 +81,7 @@ export default {
 
           this.removeItem(item);
 
-          let address = item.sourceDir
-          // delete(item.delTime);
-          // delete(item.isCover);
-          // delete(item.sourceDir);
-          // item.source.name = item.name;
+          let address = item.sourceDir;
           this.$store.commit('fsTrigger', {
             type: 'add',
             address,
@@ -99,7 +96,7 @@ export default {
     },
     del(item){
 
-      if(!item.isError && !confirm('Are you sure to delete "' + item.source.name + '" ?')){
+      if(!confirm('Are you sure to delete "' + item.source.name + '" thoroughly?')){
         return;
       }
       this.request({
@@ -131,8 +128,9 @@ export default {
       this.request({
         url: '~/recycleBin',
         stateKey: 'isRequest',
-        success(data){
-          this.data = this.parseData(data);
+        success(stdout){
+          const result = lsParse(stdout);
+          this.data = this.parseData(result);
           this.error = null;
         },
         error(xhr){
@@ -140,10 +138,12 @@ export default {
         }
       })
     },
-    parseData(data){
+    parseData(result){
+      const data = recycleParse(result);
       const arr = [];
       data.forEach(v => {
-        if(v.id !== '.' && v.id !== '..'){
+        //  && v.id !== '..' // 后端已过滤
+        if(v.id !== '.'){
           arr.push(v);
           v.isError = false;
           if(v.name && v.source){

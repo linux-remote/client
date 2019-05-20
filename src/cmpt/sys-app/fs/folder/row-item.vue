@@ -152,28 +152,6 @@ export default {
     },
     handleDel(){
       this.$emit('del');
-      // if(this.p.$data._selectedItems.size){
-      //   this.p.$data._selectedItems.forEach(item => {
-      //     item.del();
-      //   })
-      // }else{
-      //   this.del();
-      // }
-    },
-    del(){
-
-      this.request({
-        type: 'delete',
-        url: '~/fs/' + encodePath(this.p.getItemPath(this.item.name)),
-        success(){
-          this.$store.commit('recycleBinTrigger');
-          this.$store.commit('fsTrigger', {
-            address: this.p.address,
-            type: 'del',
-            item: this.item
-          });
-        }
-      })
     },
     open(){
       const item = this.item;
@@ -218,11 +196,6 @@ export default {
     },
     sendToDesktop(){
       this.$refs.ctx.hidden();
-    }
-  },
-  created(){
-    this.item._del = () => {
-      this.del();
     }
   }
 }
