@@ -66,17 +66,19 @@ export default {
     },
     rename(newName){
       const item = this.item;
+      let oldName = item.name;
       this.request({
         url: '~/fs/' + encodePath(this.p.address),
         type: 'post',
-        data: {type: 'rename', oldName: item.name, newName},
+        data: {type: 'rename', oldName, newName},
         success(){
-          item.name = newName;
-          if(!item.isFolder){
-            initIconAttr(item);
-          }
-          this.p.reSortByItem(item);
-          //console.log('rename success');
+          
+          this.$store.commit('fsPublicEmit', {
+            type: 'rename',
+            address: this.p.address,
+            oldName,
+            newName
+          });
         }
       })
     }

@@ -85,7 +85,7 @@ export default {
           this.removeItem(item);
 
           let address = item.source.dir;
-          this.$store.commit('fsTrigger', {
+          this.$store.commit('fsPublicEmit', {
             type: 'restore',
             address,
             // item: item.source

@@ -16,7 +16,7 @@
       tbody.lr-fs-tbody
         tr(v-if='preCreateItem', class='lr-fs-create-layer', @mousedown.stop='')
           td(colspan='7')
-            PreCreate(:p='self')
+            PreCreate(:p='self', @success="handleCreateSuccess")
 
         RowItem(v-for='(item, i) in list',
                 :p='self',
@@ -78,9 +78,11 @@ export default {
       currItem: {},
       dir: null,
       isHaveDevice: false,
-      newItemName: null,
       isRequest: false,
-      sortKey: 'name'
+      sortKey: 'name',
+
+      shouldFocusItemName: null,
+      shouldSelectItemNames: null
     }
   },
   computed: {
@@ -119,73 +121,93 @@ export default {
     go(){
       return this.$parent.$refs.navBar.go
     },
-    fsEvent(){
-      return this.$store.state.fsEvent
+    publicEvent(){
+      return this.$store.state.fsPublicEvent
     }
   },
   watch: {
     triggerContainSame(newVal, oldVal){
       if(newVal.address !== oldVal.address){
-        this.newItemName = null; //bug fixed: fs-item focus 跳转后仍存在.
+        this.shouldFocusItemName = null; //bug fixed: fs-item focus 跳转后仍存在.
+        this.shouldSelectItemNames = null;
         this.currItem = {};
       }
       this.getData();
     },
-    fsEvent(e){
-      console.log('e.address', e.address);
+    publicEvent(e){
       if(e.address === this.address){
-        switch (e.type){
-          case 'add':
-            let item = lsParse(e.item);
-            if(e.item.focus === undefined){ // 根据 focus 判断有没有 parse 过
-              this.wrapItem(e.item)
-            }
-            this.reSortByItem(e.item, true);
-            
-          break;
-          case 'update':
-            if(e.item.focus === undefined){
-              this.wrapItem(e.item)
-            }
-            var thisItem = this.list.find((v) => v.name === e.item.name);
-            if(thisItem){
-              Object.assign(thisItem, e.item)
-            }
-          break;
-          case 'restore':
-            console.log('restore');
-            this.getData();
-            break;
-          case 'getList':
-            this.handleFsEventGetList(e.data);
-          break;
-          case 'del':
-          this.handleFsEventDel(e);
-            // this.removeItem(e.item);
-            this.getData();
-          break;
-          case 'cut':
-            this.getData();
+        let methodKey = 'on_public_' + e.type;
+        if(this[methodKey]){
+          this[methodKey](e);
+        } else {
+          console.warn('un handle fs event: ' + methodKey);
         }
       }
     }
   },
 
   methods: {
-    handleFsEventDel(e){
+    // $options ?
+    on_public_add(e){
 
+      // if(e.item){
+      //   let item = lsParse(e.item);
+      //   this.wrapItem(e.item);
+      //   this.reSortByItem(e.item, true);
+      // } else {
+      //   this.getData();
+      // }
+      this.getData();
     },
-    handleFsEventGetList(stdout) {
-      const data = lsParse(stdout);
+    on_public_rename({newName, oldName}){
+      // type, address, oldName, newName
+      let item = this.list.find(v => v.name === oldName);
+      if(item){
+        item.name = newName;
+        if(!item.isFolder){
+          initIconAttr(item);
+        }
+        // this.reSortByItem(item);
+      }
+    },
+    on_public_update(e){
+      if(e.item.focus === undefined){
+        this.wrapItem(e.item);
+      }
+      var thisItem = this.list.find((v) => v.name === e.item.name);
+      if(thisItem){
+        Object.assign(thisItem, e.item)
+      }
+    },
+    on_public_del(e){
+      this.getData();
+    },
+    on_public_cut_in(e){
+      this.getData();
+    },
+    on_public_cut_out(){
+      this.getData();
+    },
+    on_public_copy_in(e){
+      this.getData();
+    },
+    on_public_copy_out(){
+      this.getData();
+    },
+    on_public_restore(){
+      this.getData();
+    },
+    on_public_getList(e) {
+      const data = lsParse(e.data);
       const result = this.getFormatedListAndDir(data);
       this.dir = result.dir;
       this.error = null;
       this.list = result.list;
-
-      
       // this.sort(result.list);
       // this.concat(result.list);
     },
+
+    // ******************* select handler start *******************
     // handleSelectStart(){
     //   count = 0;
     // },
@@ -196,6 +218,10 @@ export default {
       const selectedItems = this.list.filter(item => item.isBeSelected);
       this.$options._selectedItems = new Set(selectedItems);
     },
+
+    // ******************* select handler end *******************
+
+    
     handleKeydown(e){ // 必须 设 tabindex 键盘事件才会生效。
       if(e.ctrlKey){
         const key = e.key.toLowerCase();
@@ -241,14 +267,20 @@ export default {
                 srcFile: _files[0],
                 destFile: newFileName
               },
-              success(){
-                this.getData();
+              success(stdout){
+                this.shouldFocusItemName = newFileName;
+                this.$store.commit('fsPublicEmit', {
+                  type: 'add',
+                  address: this.address,
+                  item: null
+                });
               }
             })
           } else {
             this.$store.commit('error/show', 
               `Can't copy many files on same dir.`);
           }
+
         } else if(type === 'cut') {
             this.$store.commit('error/show', 
               `Cut and paste is same file.`);
@@ -264,16 +296,19 @@ export default {
             files: _files
           },
           success(){
+            this.$store.commit('fsPublicEmit', {
+              type: type + '_in',
+              address,
+              files: _files
+            });
+            this.$store.commit('fsPublicEmit', {
+              type: type + '_out',
+              address: this.address,
+              files: _files
+            });
+
             if(type === 'cut'){
-              this.$store.commit('fsTrigger', {
-                type: 'cut',
-                address,
-                files: _files
-              });
               this.$store.commit('fsClipBoard/clear');
-              this.getData();
-            } else {
-              this.getData();
             }
           }
         });
@@ -281,6 +316,7 @@ export default {
       return;
 
     },
+
     _cutAndCopy(type){
       if(!this.$options._selectedItems.size){
         return;
@@ -295,7 +331,6 @@ export default {
         files
       });
     },
-
     getItemPath(name){
       let address = this.address;
       const a = address === '/' ? address : address + '/';
@@ -357,7 +392,7 @@ export default {
         },
         success(){
           this.$store.commit('recycleBinTrigger');
-          this.$store.commit('fsTrigger', {
+          this.$store.commit('fsPublicEmit', {
             type: 'del',
             files,
             address: this.address
@@ -372,7 +407,7 @@ export default {
         stateKey: 'isRequest',
         data: { dir: true },
         success(data){
-          this.$store.commit('fsTrigger', {
+          this.$store.commit('fsPublicEmit', {
             type: 'getList',
             address: this.address,
             data: data
@@ -440,14 +475,13 @@ export default {
       v.isBeSelected = false;
 
       
-      if (this.currItem.focus && v.name === this.currItem.name) {
-        this.reFocusItem(v);
+      if(this.shouldFocusItemName && v.name === this.shouldFocusItemName){
+        this.focusItem(v);
+        this.shouldFocusItemName = null;
+      } else if (this.currItem.focus && v.name === this.currItem.name) {
+        // reload 后:
+        this.focusItem(v);
       }
-
-    },
-    reFocusItem(v){
-      v.focus = true;
-      this.currItem = v;
     },
     sort(arr){
       arr = arr || this.list;
@@ -610,6 +644,16 @@ export default {
       this.clearSelected();
       this.unFocusCurrItem();
     },
+
+    handleCreateSuccess(name, stdout){
+      // data.name = name;
+      this.shouldFocusItemName = name;
+      this.$store.commit('fsPublicEmit', {
+        type: 'add',
+        address: this.address,
+        item: stdout
+      });
+    }
 
   },
   created(){

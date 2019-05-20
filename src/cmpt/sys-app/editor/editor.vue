@@ -78,7 +78,7 @@ export default {
         data: {text: this.data},
         success(data){
           data.name = this.task.title;
-          this.$store.commit('fsTrigger', {
+          this.$store.commit('fsPublicEmit', {
             address: this.task.dir,
             type: isAdd ? 'add' : 'update',
             item: data

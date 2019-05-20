@@ -46,12 +46,7 @@ export default {
           type: 'create' + type
         },
         success(data){
-          data.name = name;
-          this.$store.commit('fsTrigger', {
-            address: this.p.address,
-            type: 'add',
-            item: data
-          })
+          this.$emit('success', name, data);
         },
         complete(){
           this.p.preCreateItem = null;

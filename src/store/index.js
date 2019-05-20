@@ -59,7 +59,7 @@ const store = new window.Vuex.Store({
 
     deskTopEvent: null,
     recycleBinEvent: null,
-    fsEvent: {},
+    fsPublicEvent: {},
 
 
     onDustbinRecycle: null,
@@ -91,8 +91,8 @@ const store = new window.Vuex.Store({
       this.commit('sysApps/changeRecycleBinIcon', bool)
     },
 
-    fsTrigger(state, data){
-      state.fsEvent = data
+    fsPublicEmit(state, data){
+      state.fsPublicEvent = data;
     },
     deskTopTrigger(state, data){
       state.deskTopEvent = data;

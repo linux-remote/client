@@ -53,7 +53,7 @@ export default {
 
           data.name = item.rawFile.name;
           this.$store.commit('upload/removeItem', this.index);
-          this.$store.commit('fsTrigger', {
+          this.$store.commit('fsPublicEmit', {
             address: item.address,
             type: item._isCover ? 'update' : 'add',
             item: data
