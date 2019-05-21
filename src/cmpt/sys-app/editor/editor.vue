@@ -13,24 +13,30 @@
         .lr-modal-body
           .lr-modal-item
             | {{LANG.folder}}:
-            input(required='required', v-model='folderPath')
+            input(required='required', v-model='dir')
           .lr-modal-item
             | {{LANG.fileName}}:
-            input(required='required', v-model='flieName')
+            input(required='required', v-model='fliename')
         .lr-modal-footer
           button.lr-btn-primary(type="submit") {{LANG.ok}}
           button(@click='hiddenModal') {{LANG.cancel}}
 </template>
 
 <script>
-import {encodePath, pathJoin} from '__ROOT__/cmpt/sys-app/util';
+import {encodePath, pathJoin, getDirAndBase} from '__ROOT__/cmpt/sys-app/util';
 export default {
   inject: ['taskWindow'],
   data(){
+
+
+    
     return {
-      folderPath: '',
-      flieName: '',
       isRequest: false,
+
+      fliename: '',
+      dir: '',
+
+
       oldData: '',
       data: [],
       isShowModal: false
@@ -46,57 +52,79 @@ export default {
         e.preventDefault();
       }
     },
+    init(){
+      const filePath = this.taskWindow.filePath;
+
+      const dirAndBase = getDirAndBase(filePath);
+      this.fliename = dirAndBase.base;
+      this.dir = dirAndBase.dir;
+
+      this.taskWindow.title = this.fliename;
+    },
     submit(){
 
-      // console.log('folderPath', this.folderPath, 'flieName',this.flieName )
-      // console.log('pathJoin', pathJoin(this.folderPath , this.flieName) )
+      // console.log('folderPath', this.folderPath, 'fliename',this.fliename )
+      // console.log('pathJoin', pathJoin(this.folderPath , this.fliename) )
       // return;
-      const address2 = this.taskWindow.address;
-      this.taskWindow.dir = this.folderPath;
-      const address = pathJoin(this.folderPath , this.flieName);
-      this.taskWindow.address = '~/fs/' + encodePath(address)
-      this.taskWindow.title = this.flieName;
+
+
+      
+
+
+      // this.taskWindow.dir = this.folderPath;
+      // const address = pathJoin(this.folderPath , this.fliename);
+      // this.taskWindow.address = '~/fs/' + encodePath(address)
+      
 
       this.save(() => {
         this.hiddenModal();
       });
       
     },
-    save(cb){
+    save(addCallback){
       if(this.isSaveDisabled){
         return;
       }
-      let url = this.taskWindow.address;
-      if(!url){
+      let filePath = this.taskWindow.filePath;
+      if(!filePath){
         this.isShowModal = true;
-        console.log('new one')
         return;
       }
-      var isAdd = typeof cb === 'function';
+      var isAdd = typeof addCallback === 'function';
+
       this.request({
-        url: this.taskWindow.address,
+        url: `~/fs/` + encodePath(this.taskWindow.filePath),
         stateKey: 'isRequest',
         type: 'put',
-        data: {text: this.data},
-        success(data){
-          data.name = this.taskWindow.title;
-          this.$store.commit('fsPublicEmit', {
-            address: this.taskWindow.dir,
-            type: isAdd ? 'add' : 'update',
-            item: data
-          });
+        data: {
+          text: this.data
+        },
+        success(resData){
+          console.log('resData', resData);
+
+          // resData.name = this.taskWindow.title;
+
+          // this.$store.commit('fsPublicEmit', {
+          //   address: this.taskWindow.dir,
+          //   type: isAdd ? 'add' : 'update',
+          //   item: resData
+          // });
+
           this.oldData = this.data;
-          isAdd && cb();
+          
+          isAdd && addCallback();
         }
-      })
+      });
     },
     getData(){
 
       this.request({
-        url: this.taskWindow.address,
+        url:  `~/fs/` + encodePath(this.taskWindow.filePath),
         stateKey: 'isRequest',
         dataType: 'text',
-        data: {file: true},
+        data: {
+          file: true
+        },
         success(data){
           this.oldData = data;
           this.data = data;
@@ -109,7 +137,7 @@ export default {
   },
   computed: {
     isSaveDisabled(){
-      return this.oldData === this.data
+      return this.oldData === this.data;
     },
     LANG(){
       return this.$store.getters['language/currLanguage'].global
@@ -123,10 +151,11 @@ export default {
     }
   },
   created(){
-    if(!this.taskWindow.address){
-      return;
+    if(this.taskWindow.filePath){
+      this.init();
+      this.getData();
     }
-    this.getData();
+    
   }
 }
 </script>
