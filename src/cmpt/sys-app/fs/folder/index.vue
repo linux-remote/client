@@ -170,19 +170,20 @@ export default {
         // this.reSortByItem(item);
       }
     },
-    on_public_update(e){
-      if(e.item.focus === undefined){
-        this.wrapItem(e.item);
-      }
-      var thisItem = this.list.find((v) => v.name === e.item.name);
-      if(thisItem){
-        Object.assign(thisItem, e.item)
-      }
-    },
-    on_public_del(e){
+    // on_public_update(e){
+    //   if(e.item.focus === undefined){
+    //     this.wrapItem(e.item);
+    //   }
+    //   var thisItem = this.list.find((v) => v.name === e.item.name);
+    //   if(thisItem){
+    //     Object.assign(thisItem, e.item)
+    //   }
+    // },
+    on_public_del(){
       this.getData();
     },
-    on_public_cut_in(e){
+    on_public_cut_in(){
+      console.log('cut_in');
       this.getData();
     },
     on_public_cut_out(){
@@ -191,9 +192,9 @@ export default {
     on_public_copy_in(e){
       this.getData();
     },
-    on_public_copy_out(){
-      this.getData();
-    },
+    // on_public_copy_out(){
+    //   this.getData();
+    // },
     on_public_restore(){
       this.getData();
     },
@@ -205,6 +206,9 @@ export default {
       this.list = result.list;
       // this.sort(result.list);
       // this.concat(result.list);
+      if(this.shouldSelectItemNames){
+        this.shouldSelectItemNames = null;
+      }
     },
 
     // ******************* select handler start *******************
@@ -248,6 +252,13 @@ export default {
     cut() {
       this._cutAndCopy('cut');
     },
+    shouldActiveNewItems(filenames){
+      if(filenames.length === 1){
+        this.shouldFocusItemName = filenames[0];
+      } else {
+        this.shouldSelectItemNames = filenames;
+      }
+    },
     paste(){
       const {type, files, address} = this.fsClipBoard;
       let _files = [];
@@ -270,9 +281,9 @@ export default {
               success(stdout){
                 this.shouldFocusItemName = newFileName;
                 this.$store.commit('fsPublicEmit', {
-                  type: 'add',
+                  type: 'copy_in',
                   address: this.address,
-                  item: null
+                  files: [newFileName]
                 });
               }
             })
@@ -296,19 +307,25 @@ export default {
             files: _files
           },
           success(){
+            this.shouldActiveNewItems(_files);
             this.$store.commit('fsPublicEmit', {
               type: type + '_in',
-              address,
-              files: _files
-            });
-            this.$store.commit('fsPublicEmit', {
-              type: type + '_out',
               address: this.address,
               files: _files
             });
 
+
             if(type === 'cut'){
+              this.$nextTick(() => {
+                this.$store.commit('fsPublicEmit', {
+                  type: type + '_out',
+                  address,
+                  files: _files
+                });
+              });
+
               this.$store.commit('fsClipBoard/clear');
+
             }
           }
         });
@@ -481,6 +498,11 @@ export default {
       } else if (this.currItem.focus && v.name === this.currItem.name) {
         // reload 后:
         this.focusItem(v);
+      }
+      if(this.shouldSelectItemNames){
+        if(this.shouldSelectItemNames.indexOf(v.name) !== -1){
+          v.isBeSelected = true;
+        }
       }
     },
     sort(arr){

@@ -207,9 +207,9 @@ export default {
   },
   mounted(){
     this.$store.commit('setDeskTopWH');
-    this.$store.commit('task/add', {appId: 'sys_app_recycle_bin'});
-    // this.$store.commit('task/add', {appId: 'sys_app_fs', address: '/home/dw/fs'});
-    // this.$store.commit('task/add', {appId: 'sys_app_fs', address: '/home/dw/fs2'});
+    // this.$store.commit('task/add', {appId: 'sys_app_recycle_bin'});
+    this.$store.commit('task/add', {appId: 'sys_app_fs', address: '/home/dw/fs'});
+    this.$store.commit('task/add', {appId: 'sys_app_fs', address: '/home/dw/fs2'});
     // this.$store.commit('task/add', {appId: 'sys_app_settings'});
   }
 }
