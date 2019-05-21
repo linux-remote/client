@@ -9,11 +9,6 @@ export const getNameSuffix = (name) => {
     return name.substr(index + 1).toLowerCase();
   }
 }
-export const pathJoin = (dir, name) => {
-  var a = dir === '/' ? dir : dir + '/';
-  console.log('a', a)
-  return a + name;
-}
 var _map = {
   'image': ['jpg', 'png', 'jpeg', 'webp', 'svg', 'gif','bmp', 'ico'],
   'text': ['js', 'txt', 'sh', 'vue', 'css', 'html', 'ejs', 'json', 'scss', 'conf']
@@ -51,10 +46,6 @@ export function initIconAttr(v){
     v.openApp = openApp.app;
     v.openAppId = openApp.id;
   }
-}
-
-export function encodePath(path){
-  return encodeURIComponent(path.substr(1));
 }
 
 export function parseName(name){

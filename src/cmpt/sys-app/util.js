@@ -72,6 +72,14 @@ export function getDirAndBase(_path){
     base
   }
 }
+export function encodePath(path){
+  return encodeURIComponent(path.substr(1));
+}
+export function pathJoin(dir, name){
+  var a = dir === '/' ? dir : dir + '/';
+  return a + name;
+}
+
 // export function checkMouseType(e){
 //   switch(e.button){
 //     case 0:

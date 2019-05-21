@@ -54,8 +54,9 @@ tr(@dblclick='open',
 <script>
 import ContextMenu from '__ROOT__/cmpt/global/contextmenu/index.vue';
 import ItemName from './item-name.vue';
-import {encodePath, getNewName} from './util';
-import  { basename } from '../../util';
+import { getNewName } from './util';
+import {encodePath, basename} from '__ROOT__/cmpt/sys-app/util';
+
 export default {
   beSelectable : true,
   components: {

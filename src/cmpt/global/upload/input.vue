@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import {encodePath} from '__ROOT__/cmpt/sys-app/fs/folder/util';
+import {encodePath} from '__ROOT__/cmpt/sys-app/util';
 export default {
   data(){
     return {

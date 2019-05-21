@@ -23,9 +23,9 @@
 </template>
 
 <script>
-import {encodePath, pathJoin} from '../fs/folder/util';
+import {encodePath, pathJoin} from '__ROOT__/cmpt/sys-app/util';
 export default {
-  props: ['task'],
+  inject: ['taskWindow'],
   data(){
     return {
       folderPath: '',
@@ -51,10 +51,12 @@ export default {
       // console.log('folderPath', this.folderPath, 'flieName',this.flieName )
       // console.log('pathJoin', pathJoin(this.folderPath , this.flieName) )
       // return;
-      this.task.dir = this.folderPath;
+      const address2 = this.taskWindow.address;
+      this.taskWindow.dir = this.folderPath;
       const address = pathJoin(this.folderPath , this.flieName);
-      this.task.address = '~/fs/' + encodePath(address)
-      this.task.title = this.flieName
+      this.taskWindow.address = '~/fs/' + encodePath(address)
+      this.taskWindow.title = this.flieName;
+
       this.save(() => {
         this.hiddenModal();
       });
@@ -64,7 +66,7 @@ export default {
       if(this.isSaveDisabled){
         return;
       }
-      let url = this.task.address;
+      let url = this.taskWindow.address;
       if(!url){
         this.isShowModal = true;
         console.log('new one')
@@ -72,14 +74,14 @@ export default {
       }
       var isAdd = typeof cb === 'function';
       this.request({
-        url: this.task.address,
+        url: this.taskWindow.address,
         stateKey: 'isRequest',
         type: 'put',
         data: {text: this.data},
         success(data){
-          data.name = this.task.title;
+          data.name = this.taskWindow.title;
           this.$store.commit('fsPublicEmit', {
-            address: this.task.dir,
+            address: this.taskWindow.dir,
             type: isAdd ? 'add' : 'update',
             item: data
           });
@@ -91,7 +93,7 @@ export default {
     getData(){
 
       this.request({
-        url: this.task.address,
+        url: this.taskWindow.address,
         stateKey: 'isRequest',
         dataType: 'text',
         data: {file: true},
@@ -121,7 +123,7 @@ export default {
     }
   },
   created(){
-    if(!this.task.address){
+    if(!this.taskWindow.address){
       return;
     }
     this.getData();

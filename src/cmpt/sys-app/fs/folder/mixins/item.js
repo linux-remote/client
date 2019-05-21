@@ -1,4 +1,4 @@
-import { encodePath } from '../util';
+import {encodePath} from '__ROOT__/cmpt/sys-app/util';
 
 export default  {
   data(){

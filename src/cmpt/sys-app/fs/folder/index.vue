@@ -43,8 +43,10 @@ import Selectable from '__ROOT__/cmpt/unit/selectable.vue';
 import ContextMenu from '__ROOT__/cmpt/global/contextmenu/index.vue';
 import initRelation from './permission-util';
 import lsParse from '../../lib/ls-parse';
-import {initIconAttr, encodePath, getNewName, parseName} from './util';
-import { sortByStrKey , sortByNumberKey} from '../../util';
+import {initIconAttr, getNewName, parseName} from './util';
+
+import {encodePath, sortByStrKey , sortByNumberKey} from '__ROOT__/cmpt/sys-app/util';
+
 import SafeBind from '../../../../lib/extend/safe-bind';
 import mixins from './mixins/index';
 let count = 0;
