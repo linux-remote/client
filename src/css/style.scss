@@ -456,6 +456,7 @@ $topBarRight : 100px;
   background-color:#fff;
   box-shadow: rgba(#000, .22) 3px 3px 15px 0;
   padding-top: $taskTitleH;
+  outline: none; // tabindex 会有 outline. 不可去掉 tabindex， 不然键盘事件不生效。
 }
 
 .lr_task_max { // 最大化窗口

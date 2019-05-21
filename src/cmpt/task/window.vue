@@ -1,5 +1,6 @@
 <template lang="jade">
 .lr-task-window(v-show='!isMin',
+                tabindex="-1",
                 @mousedown.capture='taskFocus',
                 @contextmenu.stop='',
                 :style='{width:width + "px", height: height  + "px", zIndex: zIndex, top:     positionTop + "px", left: positionLeft  + "px"}' ,
@@ -41,6 +42,11 @@ import Movable from '../unit/movable.vue';
 
 export default {
   props: ['index'],
+  provide() {
+    return {
+      taskWindow: this
+    }
+  },
   components: {
     sys_app_disk,
     sys_app_recycle_bin,

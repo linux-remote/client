@@ -1,7 +1,5 @@
 <template lang="jade">
 .lr-fs-folder(@mousedown='handleFsBodyMousedown',
-              tabindex="-1",
-              @keydown="handleKeydown",
               :class='bodyClass')
   .lr-hourglass(v-if='isRequest')
   CtrlBar
@@ -47,9 +45,11 @@ import initRelation from './permission-util';
 import lsParse from '../../lib/ls-parse';
 import {initIconAttr, encodePath, getNewName, parseName} from './util';
 import { sortByStrKey , sortByNumberKey} from '../../util';
-
+import SafeBind from '../../../../lib/extend/safe-bind';
 let count = 0;
 export default {
+  extends: SafeBind,
+  inject: ['taskWindow'],
   components:{
     CtrlBar,
     PreCreate,
@@ -199,6 +199,9 @@ export default {
       this.getData();
     },
     on_public_getList(e) {
+      if(this.shouldSelectItemNames){
+        this.clearSelected();
+      }
       const data = lsParse(e.data);
       const result = this.getFormatedListAndDir(data);
       this.dir = result.dir;
@@ -261,6 +264,9 @@ export default {
     },
     paste(){
       const {type, files, address} = this.fsClipBoard;
+      if(!files.length || !address){
+        return;
+      }
       let _files = [];
       files.forEach(v => {
         _files.push(v.name);
@@ -419,6 +425,10 @@ export default {
       });
     },
     getData(){
+      if(!this.shouldFocusItemName && this.currItem.focus){
+        this.shouldFocusItemName = this.currItem.name;
+        this.currItem = {};
+      }
       this.request({
         url: '~/fs/' + encodePath(this.address),
         stateKey: 'isRequest',
@@ -493,15 +503,14 @@ export default {
 
       
       if(this.shouldFocusItemName && v.name === this.shouldFocusItemName){
-        this.focusItem(v);
+        this.focusNewItem(v);
         this.shouldFocusItemName = null;
-      } else if (this.currItem.focus && v.name === this.currItem.name) {
-        // reload 后:
-        this.focusItem(v);
       }
       if(this.shouldSelectItemNames){
-        if(this.shouldSelectItemNames.indexOf(v.name) !== -1){
-          v.isBeSelected = true;
+        let shouldSelectIndex = this.shouldSelectItemNames.indexOf(v.name);
+        if( shouldSelectIndex !== -1){
+          this.selectItem(v);
+          this.shouldSelectItemNames.splice(shouldSelectIndex, 1);
         }
       }
     },
@@ -577,10 +586,10 @@ export default {
 
     handleItemContentmenu(item){// win 10 list mode have bug.
       if(!item.isBeSelected){
-        this.focusNewOneItem(item);
+        this.focusNewItem(item);
       }
     },
-    focusNewOneItem(item) {
+    focusNewItem(item) {
       this.clearSelected();
       this.selectItem(item);
       this.focusItem(item);
@@ -594,7 +603,7 @@ export default {
         if(e.ctrlKey){ // ctrl
           this.handleItemCtrlClick(item);
         } else {
-          this.focusNewOneItem(item);
+          this.focusNewItem(item);
         }
       }
 
@@ -681,6 +690,11 @@ export default {
   created(){
     this.$options._selectedItems = new Set;
     this.getData();
+  },
+  mounted(){
+    this.safeBind(this.taskWindow.$el, 'keydown', (e) => {
+      this.handleKeydown(e);
+    });
   }
 }
 //- th {{LANG.th.owner}}
