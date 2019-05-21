@@ -184,7 +184,6 @@ $linkFileColor: violet;
   padding-right: 2px;
   position: relative;
   overflow: hidden;
-  outline: none; // tabindex 会有 outline. 不可去掉 tabindex， 不然键盘事件不生效。
 }
 .lr-fs-folder-inner{
   height: 100%;
