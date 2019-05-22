@@ -18,6 +18,7 @@ div(style="position: relative; width: 100%; height: 100%; overflow: auto; ")
 </template>
 
 <script>
+import LimitOnceInTime from './limit-once-in-time';
 export default {
   // props: ['selectEed'],
   data(){
@@ -208,8 +209,7 @@ export default {
       // **************************** H end ******************************
 
       
-      
-      this.childSelect();
+      this.$options._limitOnceInTime.trigger();
 
       if(shouldLoop){
         this.$data._timer = setTimeout(() => {
@@ -304,13 +304,13 @@ export default {
       // return arr;
     }
   },
-  // mounted(){
-  //   this.$options._debounceChildSelect = new DebounceTime(() => {
-  //     this.childSelect();
-  //   }, 1);
-  // },
-  // destroyed(){
-  //   this.$parent.removeEventListener('mousedown', this.mousedownListener)
-  // }
+  mounted(){
+   this.$options._limitOnceInTime = new LimitOnceInTime((e) => {
+        this.childSelect();
+    }, 40);
+    // this.$options._debounceChildSelect = new DebounceTime(() => {
+    //   this.childSelect();
+    // }, 1);
+  }
 }
 </script>
