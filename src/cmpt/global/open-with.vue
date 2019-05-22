@@ -1,6 +1,6 @@
 
 <template lang="jade">
-.lr-modal(v-if='data', @click='hidden')
+.lr-modal(v-if='openWidthData', @click='hidden')
   .lr-modal-box(@click.stop='')
     .lr-modal-title {{LANG.global.openWith}}
     .lr-modal-body
@@ -16,14 +16,14 @@
 export default {
 
   computed: {
-    data(){
-      return this.$store.state.openWidthData
+    openWidthData(){
+      return this.$store.state.openWidthData;
     },
     LANG(){
       return this.$store.getters['language/currLanguage']
     },
     editorTitle(){
-      return this.LANG.sys_app_editor.title
+      return this.LANG.sys_app_editor.title;
     },
     sysEditor(){
       return this.$store.getters['sysApps/getById']('sys_app_editor')
@@ -31,16 +31,13 @@ export default {
   },
   methods: {
     hidden(){
-      this.$store.commit('hiddenOpenWith')
+      this.$store.commit('hiddenOpenWith');
     },
     open(){
-      const data = this.data;
+      const data = this.openWidthData;
       this.$store.commit('task/add', {
         appId: 'sys_app_editor',
-        title: data.item.name,
-        width: 500,
-        height:500,
-        address: data.address
+        filePath: data.filePath
       });
       this.hidden();
     }

@@ -9,6 +9,7 @@ export default  {
     }
   },
   methods: {
+
     shouldActiveNewItems(filenames){
       if(filenames.length === 1){
         this.shouldFocusItemName = filenames[0];
@@ -27,10 +28,12 @@ export default  {
       item.isBeSelected = true;
       this.$options._selectedItems.add(item);
     },
+
     unSelectItem(item) {
       item.isBeSelected = false;
       this.$options._selectedItems.delete(item);
     },
+
     focusItem(item) {
       item.focus = true;
       if(this.currItem !== item){
@@ -38,6 +41,7 @@ export default  {
         this.currItem = item;
       }
     },
+
     // removeItem(item){
     //   const arr = this.getMapArr(item);
     //   arr.splice(arr.findIndex(v => v === item), 1);
@@ -68,16 +72,19 @@ export default  {
         }
       });
     },
+
     handleItemContentmenu(item){// win 10 list mode have bug.
       if(!item.isBeSelected){
         this.focusNewItem(item);
       }
     },
+
     focusNewItem(item) {
       this.clearSelected();
       this.selectItem(item);
       this.focusItem(item);
     },
+
     handleItemClick(item, e) {
       if(e.shiftKey) {
         this.handleItemShiftClick(item);
@@ -90,7 +97,6 @@ export default  {
           this.focusNewItem(item);
         }
       }
-
     },
 
     handleItemCtrlClick(item) {
@@ -114,8 +120,6 @@ export default  {
     //   }
     // },
     handleItemShiftClick(item){
-      
-
       const arr = this.list;
       let currIndex = arr.findIndex(v => v === item);
       let firstSelectIndex;
@@ -150,7 +154,6 @@ export default  {
       this.focusItem(item);
       this.unFocusCurrItem();
     },
-
 
     unFocusCurrItem() {
       this.currItem.focus = 0;

@@ -16,7 +16,7 @@
             input(required='required', v-model='dir')
           .lr-modal-item
             | {{LANG.fileName}}:
-            input(required='required', v-model='fliename')
+            input(required='required', v-model='filename')
         .lr-modal-footer
           button.lr-btn-primary(type="submit") {{LANG.ok}}
           button(@click='hiddenModal') {{LANG.cancel}}
@@ -33,7 +33,7 @@ export default {
     return {
       isRequest: false,
 
-      fliename: '',
+      filename: '',
       dir: '',
 
 
@@ -44,7 +44,9 @@ export default {
   },
   methods: {
     hiddenModal(){
-      this.isShowModal = false;
+      this.$nextTick(() => { // bug: 在第二个输入框输入后, 点关闭不消失.
+        this.isShowModal = false;
+      });
     },
     handleKeyDown(e){
       if(e.ctrlKey && e.which === 83){
@@ -56,51 +58,67 @@ export default {
       const filePath = this.taskWindow.filePath;
 
       const dirAndBase = getDirAndBase(filePath);
-      this.fliename = dirAndBase.base;
+      this.filename = dirAndBase.base;
       this.dir = dirAndBase.dir;
 
-      this.taskWindow.title = this.fliename;
+      this.taskWindow.title = this.filename;
     },
     submit(){
 
-      // console.log('folderPath', this.folderPath, 'fliename',this.fliename )
-      // console.log('pathJoin', pathJoin(this.folderPath , this.fliename) )
+      // console.log('folderPath', this.folderPath, 'filename',this.filename )
+      // console.log('pathJoin', pathJoin(this.folderPath , this.filename) )
       // return;
 
-
-      
-
-
       // this.taskWindow.dir = this.folderPath;
-      // const address = pathJoin(this.folderPath , this.fliename);
+      // const address = pathJoin(this.folderPath , this.filename);
       // this.taskWindow.address = '~/fs/' + encodePath(address)
-      
-
-      this.save(() => {
-        this.hiddenModal();
-      });
+   
+      this.create();
       
     },
-    save(addCallback){
+    create(){
+      this.request({
+        stateKey: 'isRequest',
+        type: 'post',
+        url: `~/fs/` + encodePath(this.dir),
+        data: {
+          type: 'createFile',
+          name: this.filename,
+          content: this.data
+        },
+        success() {
+          this.taskWindow.filePath = pathJoin(this.dir, this.filename);
+          this.taskWindow.title = this.filename;
+          this.oldData = this.data;
+          this.hiddenModal();
+        }
+      })
+    },
+    save(){
       if(this.isSaveDisabled){
         return;
       }
       let filePath = this.taskWindow.filePath;
-      if(!filePath){
+      if(!filePath) {
         this.isShowModal = true;
+        this.$nextTick(() => {
+          let dom = this.$refs.modalFolderInput;
+          if(dom){
+            dom.focus();
+          }
+        });
         return;
       }
-      var isAdd = typeof addCallback === 'function';
 
       this.request({
-        url: `~/fs/` + encodePath(this.taskWindow.filePath),
+        url: `~/fs/` + encodePath(filePath),
         stateKey: 'isRequest',
         type: 'put',
         data: {
           text: this.data
         },
         success(resData){
-          console.log('resData', resData);
+          // console.log('resData', resData);
 
           // resData.name = this.taskWindow.title;
 
@@ -111,8 +129,6 @@ export default {
           // });
 
           this.oldData = this.data;
-          
-          isAdd && addCallback();
         }
       });
     },
@@ -137,6 +153,7 @@ export default {
   },
   computed: {
     isSaveDisabled(){
+      // $优化: this.oldData.length === this.data.length  性能测试: 看浏览器有没有优化.
       return this.oldData === this.data;
     },
     LANG(){
@@ -154,6 +171,8 @@ export default {
     if(this.taskWindow.filePath){
       this.init();
       this.getData();
+    } else {
+      this.dir = this.$store.state.homedir;
     }
     
   }

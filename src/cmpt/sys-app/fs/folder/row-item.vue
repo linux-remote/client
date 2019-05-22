@@ -84,7 +84,7 @@ export default {
     },
 
     iconStyle(){
-      const app = this.item.openApp
+      const app = this.item.openApp;
       return app ? 
       'background-image: url(' + app.iconUrl + ')'
       : undefined
@@ -168,16 +168,11 @@ export default {
         if(item.openApp){
           this.$store.commit('task/add', {
             appId: item.openAppId,
-            title: item.name,
-            width: 500,
-            height:500,
-            dir: this.p.address,
-            address: '~/fs/' + encodePath(address)
+            filePath: address
           });
         }else{
           this.$store.commit('openWith', {
-            item,
-            address: '~/fs/' + encodePath(address)
+            filePath: address
           });
         }
 

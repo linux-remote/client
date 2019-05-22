@@ -1,6 +1,6 @@
 .lr-editor-body{
   display: flex; 
-  flex-grow: 1; 
+  height: 100%;
   flex-direction: column;
 }
 .lr-editor-bar{
@@ -20,4 +20,5 @@
   resize: none;
   color: #000;
   font-family: Consolas, "Courier New", monospace, "Microsoft YaHei";
+  overflow-y: scroll;
 }
