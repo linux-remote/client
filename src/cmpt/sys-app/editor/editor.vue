@@ -1,7 +1,7 @@
 <template lang="jade">
 .lr-window-body
   .lr-hourglass(v-show='isRequest')
-  h2(v-text='data[0]' style='color:red' v-if='error')
+  h2(v-text='error' style='color:red' v-if='error')
   .lr-editor-body(v-else @keydown='handleKeyDown')
     .lr-editor-bar
       button.btn.btn-sm.btn-default(style='padding: 2px' @click='save', :disabled='isSaveDisabled') save
@@ -50,9 +50,20 @@ export default {
 
 
       oldData: '',
-      data: [],
+      data: '',
+      error: '',
       isShowModal: false,
       isShowBeforeCloseModal: false
+    }
+  },
+
+  computed: {
+    isSaveDisabled(){
+      // $优化: this.oldData.length === this.data.length  性能测试: 看浏览器有没有优化.
+      return this.oldData === this.data ;
+    },
+    LANG(){
+      return this.$store.getters['language/currLanguage'].global
     }
   },
   methods: {
@@ -155,7 +166,9 @@ export default {
       });
     },
     getData(){
-
+      if(this.error) {
+        this.error = '';
+      }
       this.request({
         url:  `~/fs/` + encodePath(this.taskWindow.filePath),
         stateKey: 'isRequest',
@@ -168,12 +181,23 @@ export default {
           this.data = data;
         },
         error(xhr){
-          this.data = [`${xhr.responseText}`]
+          this.error = xhr.responseText;
         }
       })
     },
-    
+    _isFirstCreateEmpty(){
+       if(this.taskWindow.filePath){
+         return false;
+       }
+       if(!this.data && !this.oldData){
+         return true;
+       }
+       return false;
+    },
     handleTaskWindowClose(e){
+      if(this._isFirstCreateEmpty()){
+        return;
+      }
       if(!this.isSaveDisabled && !this.$options._isDonotSaveAndClose){
         this.isShowBeforeCloseModal = true;
         e.preventDefault();
@@ -200,22 +224,6 @@ export default {
         this.$options._isSaveAndClose = false;
       }
       this.isShowBeforeCloseModal = false;
-    }
-  },
-  computed: {
-    isSaveDisabled(){
-      // $优化: this.oldData.length === this.data.length  性能测试: 看浏览器有没有优化.
-      return this.oldData === this.data;
-    },
-    LANG(){
-      return this.$store.getters['language/currLanguage'].global
-    },
-    error(){
-      if(Array.isArray(this.data) && this.data.length){
-        return true;
-      }else{
-        return false;
-      }
     }
   },
   created(){
