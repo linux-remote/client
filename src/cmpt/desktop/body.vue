@@ -21,7 +21,7 @@
 <script>
 
 import Icon from './icon.vue';
-import TaskWindow from '__ROOT__/cmpt/task/window.vue';
+import TaskWindow from '__ROOT__/cmpt/task/window/window.vue';
 
 import ContextMenu from '../global/contextmenu/index.vue';
 //import Cascade from '../global/cascade.vue';

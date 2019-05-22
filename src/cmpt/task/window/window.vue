@@ -18,7 +18,7 @@
                     :class='isMax ? "lr_task_control_shrink" : "lr-task-control-max"')
         span.glyph.glyph-stop
         span.glyph.glyph-stop.lr-task-glyph-stop-2
-      .lr-task-ctrl-item.lr-task-ctrl-colse(@click.stop='removeTask')
+      .lr-task-ctrl-item.lr-task-ctrl-colse(@click.stop='close', @dblclick.stop)
         span.glyph.glyph-cancel
 
 
@@ -28,18 +28,18 @@
 </template>
 
 <script>
-import sys_app_fs from '../sys-app/fs/index.vue';
-import sys_app_recycle_bin from '../sys-app/recycle-bin/recycle-bin.vue';
-import sys_app_disk from '../sys-app/disk.vue';
-import sys_app_computer from '../sys-app/computer-info.vue';
-import sys_app_editor from '../sys-app/editor/editor.vue';
-import sys_app_terminal from '../sys-app/terminal/index.vue';
-import sys_app_task_manager from '../sys-app/task-manager/task-manager.vue';
-import sys_app_settings from '../sys-app/settings/settings.vue';
-//import ThirdPartyApp from '../third-party-app/index.vue';
-import Resizable from '../unit/resizable.vue';
-import Movable from '../unit/movable.vue';
-
+import sys_app_fs from '../../sys-app/fs/index.vue';
+import sys_app_recycle_bin from '../../sys-app/recycle-bin/recycle-bin.vue';
+import sys_app_disk from '../../sys-app/disk.vue';
+import sys_app_computer from '../../sys-app/computer-info.vue';
+import sys_app_editor from '../../sys-app/editor/editor.vue';
+import sys_app_terminal from '../../sys-app/terminal/index.vue';
+import sys_app_task_manager from '../../sys-app/task-manager/task-manager.vue';
+import sys_app_settings from '../../sys-app/settings/settings.vue';
+//import ThirdPartyApp from '../../third-party-app/index.vue';
+import Resizable from '../../unit/resizable.vue';
+import Movable from '../../unit/movable.vue';
+import SimpleEvent from './simple-event';
 export default {
   props: ['index'],
   provide() {
@@ -157,7 +157,12 @@ export default {
     hiddenTask(){
       this.$store.commit('task/hidden', this.$data);
     },
-    removeTask(){
+    close(){
+      const e = new SimpleEvent;
+      this.$emit('close', e);
+      if(e._isPreventDefault){
+        return;
+      }
       this.$store.commit('task/remove', this.index);
     },
     taskFocus(e){

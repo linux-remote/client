@@ -4,7 +4,7 @@
   h2(v-text='data[0]' style='color:red' v-if='error')
   .lr-editor-body(v-else @keydown='handleKeyDown')
     .lr-editor-bar
-      button.btn.btn-sm.btn-default(style='padding: 2px' @click='save' , :disabled='isSaveDisabled') save
+      button.btn.btn-sm.btn-default(style='padding: 2px' @click='save', :disabled='isSaveDisabled') save
     textarea.lr_editor_textarea(v-model='data')
   .lr-modal(v-if='isShowModal')
     form(@submit.prevent="submit")
@@ -24,8 +24,10 @@
 
 <script>
 import {encodePath, pathJoin, getDirAndBase} from '__ROOT__/cmpt/sys-app/util';
+import safeBind from '../../../lib/mixins/safe-bind';
 export default {
   inject: ['taskWindow'],
+  mixins: [safeBind],
   data(){
 
 
@@ -149,6 +151,10 @@ export default {
           this.data = [`${xhr.responseText}`]
         }
       })
+    },
+    
+    handleTaskWindowClose(e){
+      e.preventDefault();
     }
   },
   computed: {
@@ -175,6 +181,11 @@ export default {
       this.dir = this.$store.state.homedir;
     }
     
+  },
+  mounted(){
+    this.safeBind(this.taskWindow, 'close', (e) => {
+      this.handleTaskWindowClose(e);
+    })
   }
 }
 </script>

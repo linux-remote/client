@@ -47,11 +47,11 @@ import {initIconAttr, getNewName, parseName} from './util';
 
 import {encodePath, sortByStrKey , sortByNumberKey} from '__ROOT__/cmpt/sys-app/util';
 
-import SafeBind from '../../../../lib/extend/safe-bind';
+import safeBind from '../../../../lib/mixins/safe-bind';
 import mixins from './mixins/index';
-let count = 0;
+mixins.push(safeBind);
+
 export default {
-  extends: SafeBind,
   inject: ['taskWindow'],
   mixins: mixins,
   components:{
@@ -260,9 +260,11 @@ export default {
     this.getData();
   },
   mounted(){
+    
     this.safeBind(this.taskWindow.$el, 'keydown', (e) => {
       this.handleKeydown(e);
     });
+    // console.log('folder', this.$options._safeBindedList);
   }
 }
 //- th {{LANG.th.owner}}
