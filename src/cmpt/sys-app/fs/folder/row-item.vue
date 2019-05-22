@@ -56,7 +56,7 @@ import ContextMenu from '__ROOT__/cmpt/global/contextmenu/index.vue';
 import ItemName from './item-name.vue';
 import { getNewName } from './util';
 import {encodePath, basename} from '__ROOT__/cmpt/sys-app/util';
-let count = 0;
+
 export default {
   beSelectable : true,
   components: {
@@ -92,8 +92,6 @@ export default {
   },
   methods: {
     onBeSelecting(isBeSelected){
-      count = count + 1;
-      console.log(count);
       if(this.item.isBeSelected !== isBeSelected){ // Vue 会判定 NaN.
         this.item.isBeSelected = isBeSelected;
       }
