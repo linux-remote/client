@@ -40,7 +40,9 @@ export default {
       return this.$store.getters['sysApps/getById'](this.item.id)
     },
     LANG(){
-      return this.$store.getters['language/currLanguage'][this.item.id]
+      return this.$store.getters['language/currLanguage'][this.item.id] || {
+        title: 'Unknown'
+      }
     },
     isQuickLaunch() {
       return this.$store.state.isQuickLaunch

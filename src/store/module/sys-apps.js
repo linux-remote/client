@@ -76,7 +76,7 @@ export default   {
       }
     },
     thirdPartyMap: null,
-    _unknownApp: {
+    unknownApp: {
       iconUrl: '/public/img/image-missing-3.png',
       IS_UNKNOWN_APP: true
     }
@@ -95,7 +95,7 @@ export default   {
           
           return app;
         }
-        return  state._unknownApp
+        return  state.unknownApp;
       }
     }
   },
@@ -110,7 +110,7 @@ export default   {
     }
   },
   actions: {
-    sys_app_recycle_bin_empty({ commit, state }){
+    sys_app_recycle_bin_empty({ state }){
       const self = this;
       request({
         context: state.sysMap.sys_app_recycle_bin,
