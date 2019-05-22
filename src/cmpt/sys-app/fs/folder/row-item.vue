@@ -31,7 +31,7 @@ tr(@dblclick='open',
           | {{LANG.download}}
         
     .lr-name-wrap
-      .lr-icon(:class='["lr_file_type_" + item.type, {["lr_fs_open_type_" + item.openType]: item.type !== "Directory"}]', :style='iconStyle')
+      .lr-icon(:class='["lr_file_type_" + item.type, {["lr_fs_open_type_" + item.openType]: item.type === "RegularFile"}]', :style='iconStyle')
         .lr-icon.lr-error-icon(v-if='item.linkTargetError')
       ItemName(:item='item', :p='p', ref="name")
   td

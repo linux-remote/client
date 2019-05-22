@@ -45,6 +45,9 @@ export function initIconAttr(v){
   if(openApp){
     v.openApp = openApp.app;
     v.openAppId = openApp.id;
+  } else {
+    v.openApp = null;
+    v.openAppId = null;
   }
 }
 

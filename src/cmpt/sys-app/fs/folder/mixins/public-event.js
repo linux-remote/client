@@ -1,5 +1,5 @@
 import lsParse from '../../../lib/ls-parse';
-import {initIconAttr} from '../util';
+import {initIconAttr, parseName} from '../util';
 
 export default  {
   computed: {
@@ -36,7 +36,8 @@ export default  {
       let item = this.list.find(v => v.name === oldName);
       if(item){
         item.name = newName;
-        if(!item.isFolder){
+        Object.assign(item, parseName(newName));
+        if(item.type === 'RegularFile'){
           initIconAttr(item);
         }
         // this.reSortByItem(item);
