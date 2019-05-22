@@ -21,14 +21,6 @@ export default  {
   },
   methods: {
     on_public_add(){
-
-      // if(e.item){
-      //   let item = lsParse(e.item);
-      //   this.wrapItem(e.item);
-      //   this.reSortByItem(e.item, true);
-      // } else {
-      //   this.getData();
-      // }
       this.getData();
     },
     on_public_rename({newName, oldName}){
@@ -40,17 +32,18 @@ export default  {
         if(item.type === 'RegularFile'){
           initIconAttr(item);
         }
-        // this.reSortByItem(item);
+        this.reHiddenBottomSortByItem(item);
       }
     },
     on_public_update(e){
-      console.log('on_public_update', e);
       const myItem = this.list.find(v => v.name === e.filename);
       if(myItem){
         let newItem = lsParse(e.data, true);
         
         this.wrapItem(newItem);
         Object.assign(myItem, newItem);
+
+        this.reHiddenBottomSortByItem(myItem);
       }
     },
     on_public_del(){
@@ -65,26 +58,16 @@ export default  {
     on_public_copy_in(){
       this.getData();
     },
-    // on_public_copy_out(){
-    //   this.getData();
-    // },
     on_public_restore(){
       this.getData();
     },
     on_public_getList(e) {
-      if(this.shouldSelectItemNames){
-        this.clearSelected();
-      }
       const data = lsParse(e.data);
       const result = this.getFormatedListAndDir(data);
       this.dir = result.dir;
       this.error = null;
       this.list = result.list;
-      // this.sort(result.list);
-      // this.concat(result.list);
-      if(this.shouldSelectItemNames){
-        this.shouldSelectItemNames = null;
-      }
+      this.sort();
     }
   }
 

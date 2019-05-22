@@ -24,8 +24,8 @@ tr(@dblclick='open',
           | {{LANG.rename}}
         .lr-ctx-item(@click='createSymbolicLink')
           | {{LANG.createSymbolicLink}}
-        hr
-        .lr-ctx-item(@click='sendToDesktop') {{LANG.sendToDesktop}}
+        //- hr
+        //- .lr-ctx-item(@click='sendToDesktop') {{LANG.sendToDesktop}}
         hr
         .lr-ctx-item(@click='download', v-if='item.type === "RegularFile"')
           | {{LANG.download}}
@@ -156,7 +156,8 @@ export default {
       this.p.copy();
       this.$refs.ctx.hidden();
     },
-    handleDel(){
+    handleDel(e){
+      console.log('handleDel', e);
       this.$emit('del');
     },
     open(){

@@ -9,7 +9,8 @@
     table.lr-fs-table(:class='"lr_file_model_" + model', v-else)
       thead
         tr
-          th(v-for="key in theads", :key="key", :class="{active: key === sortKey, ['lr_fs_th_' + key]: true}", @mousedown="sortBy(key)") {{LANG.th[key]}}
+          //- th(v-for="key in theads", :key="key", :class="{active: key === sortKey, ['lr_fs_th_' + key]: true}", @mousedown="sortBy(key)") {{LANG.th[key]}}
+          th(v-for="key in theads", :key="key") {{LANG.th[key]}}
 
       tbody.lr-fs-tbody
         tr(v-if='preCreateItem', class='lr-fs-create-layer', @mousedown.stop='')
@@ -200,6 +201,9 @@ export default {
         this.shouldFocusItemName = this.currItem.name;
         this.currItem = {};
       }
+      if(this.shouldSelectItemNames){
+        this.clearSelected();
+      }
       this.request({
         url: '~/fs/' + encodePath(this.address),
         stateKey: 'isRequest',
@@ -210,6 +214,11 @@ export default {
             address: this.address,
             data: data
           });
+
+          if(this.shouldSelectItemNames){
+            this.shouldSelectItemNames = null;
+          }
+          
         },
         error(xhr){
           this.error = `${xhr.responseText}`

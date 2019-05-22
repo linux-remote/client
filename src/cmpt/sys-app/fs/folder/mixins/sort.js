@@ -6,18 +6,31 @@ export default  {
       arr = arr || this.list;
       const key = this.sortKey;
       switch(key) {
+        case 'name':
+            this.hiddenBottomSort();
+          break;
         case 'size':
-        // case 'mtime':
           sortByNumberKey(arr, key);
-        break;
-        // case 'mtime':
-        //   sortByNumberKey(arr, '_mtime', true);
-        //   break;
+          break;
         default:
           sortByStrKey(arr, key);
       }
     },
-    concat(arr){
+
+    getMapArr(v){
+      const map = this.$options._listMap;
+      var key = v.isHidden ? 'hidden' : 'normal';
+      var key2 = v.isFolder ? 'folderArr' : 'fileArr';
+      return map[key][key2];
+    },
+
+    sortBy(key){
+      this.sortKey = key;
+      this.sort();
+    },
+
+
+    initHiddenBottomListMap(){
       const map = {
         normal: {
           folderArr: [],
@@ -28,7 +41,7 @@ export default  {
           fileArr: []
         }
       }
-      arr.forEach(v => {
+      this.list.forEach(v => {
         let key = 'normal'
         if(v.isHidden){
           key = 'hidden';
@@ -40,36 +53,27 @@ export default  {
         }
       });
       this.$options._listMap = map;
-      this.concatList();
     },
-    getMapArr(v){
+    concatHiddenBottomList() {
       const map = this.$options._listMap;
-      var key = v.isHidden ? 'hidden' : 'normal';
-      var key2 = v.isFolder ? 'folderArr' : 'fileArr';
-      return map[key][key2];
-    },
-    sortBy(key){
-      this.sortKey = key;
-      this.sort();
-      this.concat(this.list);
-    },
-
-    // reSortByItem(v, isNew){
-    //   const arr = this.getMapArr(v);
-    //   if(isNew){
-    //     arr.push(v);
-    //   }
-    //   this.concatList();
-    // },
-    concatList(){
-      const map = this.$options._listMap;
-
       this.list = [].concat(map.normal.folderArr)
       .concat(map.normal.fileArr)
       .concat(map.hidden.folderArr)
       .concat(map.hidden.fileArr);
-
-    }
+    },
+    hiddenBottomSort(){
+      sortByStrKey(this.list, 'name');
+      this.initHiddenBottomListMap();
+      this.concatHiddenBottomList();
+    },
+    reHiddenBottomSortByItem(v, isNew){ // 可减少整体排序, 只排 4 处中的 1 处.
+      const arr = this.getMapArr(v);
+      if(isNew){
+        arr.push(v);
+      }
+      sortByStrKey(arr, 'name');
+      this.concatHiddenBottomList();
+    },
   }
 
 }

@@ -45,7 +45,6 @@ export default  {
     // removeItem(item){
     //   const arr = this.getMapArr(item);
     //   arr.splice(arr.findIndex(v => v === item), 1);
-    //   this.concatList();
     // },
     handleItemDel() {
       const _set = this.$options._selectedItems;
