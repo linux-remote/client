@@ -10,10 +10,11 @@
 }
 </style>
 <template lang='jade'>
-div(@mousedown='mousedownListener')
-  .lr-select-area(v-show='isSelect',:style='style')
+div(style="position: relative; width: 100%; height: 100%; overflow: auto; ")
+  div(@mousedown='mousedownListener')
+    .lr-select-area(v-show='isSelect',:style='style')
     //- span X:{{layerX}} Y: {{layerY}} w:{{w}} h:{{h}}
-  slot
+    slot
 </template>
 
 <script>
@@ -231,6 +232,11 @@ export default {
 
     },
     mousedownListener(e){
+      if(e.button === 1 || e.button === 2) { 
+        // 禁掉 middle, right. 
+        // win 10 right 也起作用,不过会弹出右键菜单.
+        return;
+      }
       //e.stopPropagation();
       const self = this;
       self.selectStart(e);
