@@ -20,6 +20,16 @@
         .lr-modal-footer
           button.lr-btn-primary(type="submit") {{LANG.ok}}
           button(@click='hiddenModal') {{LANG.cancel}}
+  .lr-modal(v-if='isShowBeforeCloseModal')
+    .lr-modal-box
+      .lr-modal-title {{taskWindow.appTitle}}
+      .lr-modal-body
+        div Do you want to save changes to
+        div {{taskWindow.filePath || 'Untitled'}}?
+      .lr-modal-footer
+        button(@click="saveAndClose") Save
+        button(@click="donotSaveAndClose") Don't Save
+        button(@click="cannelBeforeCloseModal") {{LANG.cancel}}
 </template>
 
 <script>
@@ -41,7 +51,8 @@ export default {
 
       oldData: '',
       data: [],
-      isShowModal: false
+      isShowModal: false,
+      isShowBeforeCloseModal: false
     }
   },
   methods: {
@@ -75,10 +86,12 @@ export default {
       // const address = pathJoin(this.folderPath , this.filename);
       // this.taskWindow.address = '~/fs/' + encodePath(address)
    
-      this.create();
+      this.create(() => {
+          this.hiddenModal();
+      });
       
     },
-    create(){
+    create(cb){
       this.request({
         stateKey: 'isRequest',
         type: 'post',
@@ -92,7 +105,10 @@ export default {
           this.taskWindow.filePath = pathJoin(this.dir, this.filename);
           this.taskWindow.title = this.filename;
           this.oldData = this.data;
-          this.hiddenModal();
+          cb && cb();
+          if(this.$options._isSaveAndClose) {
+             this.closeTaskWindow();
+          }
         }
       })
     },
@@ -129,8 +145,12 @@ export default {
           //   type: isAdd ? 'add' : 'update',
           //   item: resData
           // });
-
+          
           this.oldData = this.data;
+
+          if(this.$options._isSaveAndClose) {
+             this.closeTaskWindow();
+          }
         }
       });
     },
@@ -154,7 +174,32 @@ export default {
     },
     
     handleTaskWindowClose(e){
-      e.preventDefault();
+      if(!this.isSaveDisabled && !this.$options._isDonotSaveAndClose){
+        this.isShowBeforeCloseModal = true;
+        e.preventDefault();
+      }
+    },
+    donotSaveAndClose(){
+      this.$options._isDonotSaveAndClose = true;
+      this.closeTaskWindow();
+    },
+    closeTaskWindow(){
+      this.$nextTick(() => {
+        this.taskWindow.close();
+      });
+    },
+    saveAndClose(){
+      this.$options._isSaveAndClose = true;
+      if(!this.taskWindow.filePath){
+        this.isShowBeforeCloseModal = false;
+      }
+      this.save();
+    },
+    cannelBeforeCloseModal(){
+      if(this.$options._isSaveAndClose) { // 无法保存的情况.
+        this.$options._isSaveAndClose = false;
+      }
+      this.isShowBeforeCloseModal = false;
     }
   },
   computed: {

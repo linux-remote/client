@@ -66,8 +66,11 @@ export default {
   },
   computed:{
     currTitle(){
-      return this.title || this.$store.getters['language/currLanguage'][this.appId].title
+      return this.title || this.appTitle;
     },
+    appTitle() {
+      return this.$store.getters['language/currLanguage'][this.appId].title;
+    }, 
     deskTopW(){
       return this.$store.state.deskTopW
     },
