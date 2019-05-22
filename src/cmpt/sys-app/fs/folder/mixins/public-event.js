@@ -42,15 +42,16 @@ export default  {
         // this.reSortByItem(item);
       }
     },
-    // on_public_update(e){
-    //   if(e.item.focus === undefined){
-    //     this.wrapItem(e.item);
-    //   }
-    //   var thisItem = this.list.find((v) => v.name === e.item.name);
-    //   if(thisItem){
-    //     Object.assign(thisItem, e.item)
-    //   }
-    // },
+    on_public_update(e){
+      console.log('on_public_update', e);
+      const myItem = this.list.find(v => v.name === e.filename);
+      if(myItem){
+        let newItem = lsParse(e.data, true);
+        
+        this.wrapItem(newItem);
+        Object.assign(myItem, newItem);
+      }
+    },
     on_public_del(){
       this.getData();
     },

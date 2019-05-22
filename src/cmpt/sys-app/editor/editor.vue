@@ -33,8 +33,9 @@
 </template>
 
 <script>
-import {encodePath, pathJoin, getDirAndBase} from '__ROOT__/cmpt/sys-app/util';
+import {encodePath, pathJoin, getDirAndBase} from '../util';
 import safeBind from '../../../lib/mixins/safe-bind';
+import lsParse from '../lib/ls-parse';
 export default {
   inject: ['taskWindow'],
   mixins: [safeBind],
@@ -112,7 +113,7 @@ export default {
           name: this.filename,
           content: this.data
         },
-        success() {
+        success(stdout) {
           this.taskWindow.filePath = pathJoin(this.dir, this.filename);
           this.taskWindow.title = this.filename;
           this.oldData = this.data;
@@ -120,6 +121,13 @@ export default {
           if(this.$options._isSaveAndClose) {
              this.closeTaskWindow();
           }
+          // console.log('create', stdout);
+          this.$store.commit('fsPublicEmit', {
+            type: 'add',
+            address: this.dir,
+            filename: this.filename,
+            data: stdout
+          });
         }
       })
     },
@@ -146,7 +154,14 @@ export default {
         data: {
           text: this.data
         },
-        success(resData){
+        success(stdout){
+
+          this.$store.commit('fsPublicEmit', {
+            type: 'update',
+            address: this.dir,
+            filename: this.filename,
+            data: stdout
+          });
           // console.log('resData', resData);
 
           // resData.name = this.taskWindow.title;
