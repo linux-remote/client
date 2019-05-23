@@ -11,7 +11,7 @@
 </style>
 <template lang='jade'>
 div(style="position: relative; width: 100%; height: 100%; overflow: auto; ")
-  div(@mousedown='mousedownListener')
+  div(@mousedown='mousedownListener', style="min-width: 100%; min-height: 100%")
     .lr-select-area(v-show='isSelect',:style='style')
     //- span X:{{layerX}} Y: {{layerY}} w:{{w}} h:{{h}}
     slot
@@ -210,7 +210,7 @@ export default {
 
       
       this.$options._limitOnceInTime.trigger();
-
+        
       if(shouldLoop){
         this.$data._timer = setTimeout(() => {
           this.selecting(moveE, true);
@@ -286,6 +286,7 @@ export default {
       return false;
     },
     childSelect(){ // 为了性能没用 forEach.
+    console.log('childSelect')
       var i = 0, len = this.$children.length, vItem;
       for(; i < len; i++){
         vItem = this.$children[i];
