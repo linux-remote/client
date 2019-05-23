@@ -51,15 +51,3 @@ this.timer = setInterval(() => {
 
 export default OnlyOnceInTime;
 
-// console.log('haha')
-// let now = Date.now();
-// var test = new OnlyOnceInTime(function(){
-// let _now = Date.now()
-// console.log(_now - now);
-// now = _now;
-// }, 1000)
-
-// setInterval(() => {
-// test.trigger();
-// console.log('loop');
-// }, 1500)
