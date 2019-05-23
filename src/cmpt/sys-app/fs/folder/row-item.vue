@@ -54,7 +54,7 @@ tr(@dblclick='open',
 <script>
 import ContextMenu from '__ROOT__/cmpt/global/contextmenu/index.vue';
 import ItemName from './item-name.vue';
-import { getNewName } from './util';
+import { getNewUnSuffixName } from './util';
 import {encodePath, basename} from '__ROOT__/cmpt/sys-app/util';
 
 export default {
@@ -123,24 +123,21 @@ export default {
       if(this.item.symbolicLink){
         itemName = basename(this.item.symbolicLink);
       }
-      const newName = getNewName(this.p.list, {
-        basename: itemName + ' - SymLink',
-        suffix: ''
-      });
+      const newName = getNewUnSuffixName(this.p.list, itemName + '-SymLink');
       this.request({
         type: 'post',
         url: '~/fs/' + this.p.address,
         data: {
           type: 'createSymbolicLink',
-          srcName: this.item.symbolicLink,
+          srcName: itemName,
           newName
         },
-        success(data){
-          data.name = name;
+        success(stdout){
+          this.p.$options._shouldFocusItemName = newName;
           this.$store.commit('fsPublicEmit', {
             address: this.p.address,
             type: 'add',
-            item: data
+            data: stdout
           });
         }
       });

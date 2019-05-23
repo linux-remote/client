@@ -40,10 +40,12 @@ export default  {
     reAcitveItemBefore(){
       
 
+      console.log('reAcitveItemBefore', this.$options._shouldFocusItemName);
       if(!this.$options._shouldFocusItemName && this.currItem.focus){
         this.$options._shouldFocusItemName = this.currItem.name;
         this.currItem = {};
-      } else if(!this.$options._shouldSelectItemNames){
+      }
+      if(!this.$options._shouldFocusItemName && !this.$options._shouldSelectItemNames){
         let oldSelecteds = this.$options._selectedItems;
         if(oldSelecteds.size) {
           let arr = [];
@@ -72,6 +74,7 @@ export default  {
     },
 
     reAcitveItemAfter() {
+      console.log('reAcitveItemAfter', this.$options._shouldFocusItemName);
       this.$options._shouldFocusItemName = null;
       this.$options._shouldSelectItemNames = null;
     }

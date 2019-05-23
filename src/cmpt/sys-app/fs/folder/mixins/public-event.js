@@ -21,6 +21,7 @@ export default  {
   },
   methods: {
     on_public_add(){
+      console.log('on_public_add', this.$options._shouldFocusItemName);
       this.getData();
     },
     on_public_rename({newName, oldName}){
@@ -62,7 +63,6 @@ export default  {
       this.getData();
     },
     on_public_getList(e) {
-
       this.reAcitveItemBefore();
 
       const data = lsParse(e.data);

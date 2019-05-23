@@ -90,7 +90,6 @@ export function getNewName(list, item){
       }
       const aiNum = Number(bb.suffix);
       if(bb.basename === basename && aiNum){
-        console.log('aiNum', aiNum);
         indexMap[aiNum] = true;
         if(aiNum > maxIndex) {
           maxIndex = aiNum;
@@ -98,8 +97,8 @@ export function getNewName(list, item){
       }
     }
   });
-  maxIndex = maxIndex + 1;
-  for(; num < maxIndex; num++)  {
+  // maxIndex = maxIndex + 1;
+  for(; num <= maxIndex; num++)  {
     if(!indexMap[num]){
       break;
     }
@@ -108,4 +107,36 @@ export function getNewName(list, item){
   // console.log('suffix', suffix);
   // console.log('num', num);
   return `${basename}.${num}${item.suffix ? '.' + item.suffix : ''}`;
+}
+
+export function getNewUnSuffixName(list, tailedName){
+  const connector = '_';
+  let num = 1, indexMap = Object.create(null), maxIndex = 1;
+  list.forEach(v => {
+    let index = v.name.indexOf(tailedName);
+    if(index !== -1) {
+      let tailNum = v.name.substr(index + tailedName.length);
+      console.log('tailNum', tailNum);
+      if(tailNum[0] === connector) {
+        tailNum = tailNum.substr(1);
+      }
+      if(tailNum === ''){
+        tailNum = 1;
+      } else {
+        tailNum = Number(tailNum);
+      }
+      if(tailNum){
+        indexMap[tailNum] = true;
+        if(tailNum > maxIndex) {
+          maxIndex = tailNum;
+        }
+      }
+    }
+  })
+  for(; num <= maxIndex; num++)  {
+    if(!indexMap[num]){
+      break;
+    }
+  }
+  return num === 1 ? tailedName : tailedName + connector + num;
 }
