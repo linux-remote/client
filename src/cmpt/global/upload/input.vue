@@ -75,13 +75,13 @@ export default {
       this.next();
     },
     setCoverByName(name){
-      this.tmp_selectedFile.find(v => v.rawFile.name === name)._isCover = true;
+      this.tmp_selectedFile.find(v => v.rawFile.name === name)._isUploadCover = true;
     },
     removeItemByName(name){
       var index = this.tmp_selectedFile.findIndex((v) => v.rawFile.name === name)
       this.tmp_selectedFile.splice(index, 1);
     },
-    skip(name ,i ){
+    skip(name ,i){
       this.removeItemByName(name);
       this.coveredList.splice(i, 1);
       this.next();
@@ -103,6 +103,15 @@ export default {
       const selectedFile = [];
       const fileNameList = [];
       Object.keys(e.target.files).forEach(k => {
+        const rawFile = files[k];
+        // lastModified: 1557469470259
+        // lastModifiedDate: Fri May 10 2019 14:24:30 GMT+0800 (China Standard Time)
+        // __proto__: Object
+        // name: "AdobeStock_50410339_Preview.jpeg"
+        // size: 328749
+        // type: "image/jpeg"
+        // webkitRelativePath: ""
+
         selectedFile.push({
           rawFile: files[k]
         });

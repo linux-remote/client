@@ -3,7 +3,6 @@ export default function(parsedLsResult) {
   const result = [];
   var map = Object.create(null);
   let errArr = [];
-  console.log('parsedLsResult', parsedLsResult)
   parsedLsResult.forEach((v) => {
 
     let key, 

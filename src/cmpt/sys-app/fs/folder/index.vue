@@ -241,7 +241,8 @@ export default {
       this.$store.commit('fsPublicEmit', {
         type: 'add',
         address: this.address,
-        item: stdout
+        filename: name,
+        data: stdout
       });
     },
 
@@ -251,7 +252,10 @@ export default {
     },
 
   },
+  _map: Object.create(null),
   created(){
+    this.$options._map = Object.create(null);
+
     this.$options._selectedItems = new Set;
     this.getData();
   },

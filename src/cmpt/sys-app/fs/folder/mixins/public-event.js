@@ -20,10 +20,14 @@ export default  {
     }
   },
   methods: {
-    on_public_add(){
+    on_public_add(e){
       // type, address, filename, data
-      
-      this.getData();
+
+      let newItem = lsParse(e.data, true);
+      this.wrapItem(newItem);
+      this.reHiddenBottomSortByItem(newItem, true);
+
+      // this.getData();
     },
     on_public_rename({newName, oldName}){
       // type, address, oldName, newName
@@ -38,6 +42,8 @@ export default  {
       }
     },
     on_public_update(e){
+      // type, address, filename, data
+
       const myItem = this.list.find(v => v.name === e.filename);
       if(myItem){
         let newItem = lsParse(e.data, true);
@@ -74,10 +80,50 @@ export default  {
       this.sort();
 
       this.reAcitveItemAfter();
+    },
+
+
+    on_public_uploadStart(e){
+      const rawFile = e.rawFile;
+      const destItem = {
+        name: rawFile.name,
+        size: 0,
+        totalSize: rawFile.size,
+        permission: '----------',
+        group: '',
+        owner: this.$store.state.username,
+        mtime: rawFile.lastModified,
+        isUploading: true
+      }
+      this.wrapItem(destItem);
+      this.reHiddenBottomSortByItem(destItem, true);
+      this.$options[_genUploadOptKey(destItem.name)] = destItem;
+    },
+    on_public_uploadProgress(e){
+      let key = _genUploadOptKey(e.filename);
+      let item = this.$options[key];
+      if(!item){
+        item = this.list.find(v => v.name === e.destItem.name);
+        item.isUploading = true;
+        item.totalSize = e.total;
+        this.$options[key] = item;
+      }
+      item.size = e.loaded;
+    },
+    on_public_uploadLoadend(e){
+      const key = _genUploadOptKey(e.filename);
+      if(this.$options[key]){
+        this.$options[key] = null;
+        delete(this.$options[key]);
+      }
     }
 
   }
 
+}
+
+function _genUploadOptKey(name) {
+  return '_upload_item_' + name;
 }
 // Focus 逻辑:
 // 选中多个时,不 Focus.

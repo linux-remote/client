@@ -29,10 +29,12 @@ export default {
   },
   methods: {
     upload(){
-      var self = this;
-      var item = self.item;
-      var formData = new FormData();
+      const self = this;
+      const item = self.item;
+
+      const formData = new FormData();
       formData.append('file', item.rawFile);
+
       this.$options.xhr = this.request({
         type: 'put',
         url: '~/upload/' + encodePath(item.address),
@@ -41,24 +43,50 @@ export default {
         contentType: false,
         processData: false,
         xhr(){
+          
           var xhr = new window.XMLHttpRequest();
+
+          xhr.upload.onloadstart = function(e){
+            console.log(' xhr.upload.onloadstart');
+            self.$store.commit('fsPublicEmit', {
+              address: item.address,
+              type: 'uploadStart',
+              rawFile: item.rawFile
+            });
+          }
           xhr.upload.addEventListener("progress", function(e){
             self.percentage = (e.loaded / e.total) * 100;
+
+            self.$store.commit('fsPublicEmit', {
+              address: item.address,
+              type: 'uploadProgress',
+              filename: item.rawFile.name,
+              total: e.total,
+              loaded: e.loaded
+            });
+
           });
+          xhr.upload.onloadend = function(){
+            self.$store.commit('fsPublicEmit', {
+              address: item.address,
+              type: 'uploadLoadend',
+              filename: item.rawFile.name,
+              total: e.total,
+              loaded: e.loaded
+            });
+          }
           return xhr;
         },
-        success(data){
+        success(stdout){
           const item = this.item;
-          console.log('item._isCover', item._isCover);
-
-          data.name = item.rawFile.name;
           this.$store.commit('upload/removeItem', this.index);
           this.$store.commit('fsPublicEmit', {
             address: item.address,
-            type: item._isCover ? 'update' : 'add',
-            item: data
-          })
-          //console.log('data', data)
+            type: 'update',
+            filename: item.rawFile.name,
+            data: stdout
+          });
+
         }
       })
     },

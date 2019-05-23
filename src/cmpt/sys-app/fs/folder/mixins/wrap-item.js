@@ -1,10 +1,16 @@
 import initRelation from '../permission-util';
 import {initIconAttr, parseName} from '../util';
+import { dateFormat } from '../../../util';
 export default  {
   methods: {    
     wrapItem(v){
-
-      v.size = Number(v.size);
+      if(v.isUploading) {
+        v.mtime = dateFormat(v.mtime);
+      } else {
+        v.isUploading = false;
+        v.size = Number(v.size);
+      }
+      
       // v._mtime = (new Date(v.mtime)).getTime();
       initRelation(v, this.username, this.groups);
 
