@@ -7,10 +7,10 @@
 
 <script>
 import {ONE_MIN} from '__ROOT__/lib/util';
-function forMatTimeOffset(hours){
-  const i = hours.length - 2
-  return hours.substr(0, i) + ':' + hours.substr(i)
-}
+// function forMatTimeOffset(hours){
+//   const i = hours.length - 2
+//   return hours.substr(0, i) + ':' + hours.substr(i)
+// }
 export default {
   data(){
     return {

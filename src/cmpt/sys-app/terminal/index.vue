@@ -71,7 +71,7 @@ export default {
       const term = this.$options.term;
       term.attach(this.$options.socket);
     },
-    termOnError(e) {
+    termOnError() {
       this.$options.term.writeln('WebSocket connection error');
     }
   },

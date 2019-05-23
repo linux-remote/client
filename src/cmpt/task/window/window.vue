@@ -120,7 +120,7 @@ export default {
       
     },
     handleResized(e) {
-      this.$refs.body.$emit('resized');
+      this.$refs.body.$emit('resized', e);
     },
     maxToggle(){
       if(this.bakBeforeMax){

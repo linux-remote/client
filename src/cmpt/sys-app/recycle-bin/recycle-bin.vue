@@ -93,10 +93,10 @@ export default {
         }
       })
     },
-    removeItem(item){
+    removeItem(){
       return this.getData();
-      const i = this.list.findIndex(v => v === item);
-      this.list.splice(i, 1);
+      // const i = this.list.findIndex(v => v === item);
+      // this.list.splice(i, 1);
     },
     del(item){
 

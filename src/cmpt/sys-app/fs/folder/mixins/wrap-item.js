@@ -38,9 +38,6 @@ export default  {
       this.reAcitveItem(v);
     },
     reAcitveItemBefore(){
-      
-
-      console.log('reAcitveItemBefore', this.$options._shouldFocusItemName);
       if(!this.$options._shouldFocusItemName && this.currItem.focus){
         this.$options._shouldFocusItemName = this.currItem.name;
         this.currItem = {};
@@ -74,7 +71,6 @@ export default  {
     },
 
     reAcitveItemAfter() {
-      console.log('reAcitveItemAfter', this.$options._shouldFocusItemName);
       this.$options._shouldFocusItemName = null;
       this.$options._shouldSelectItemNames = null;
     }

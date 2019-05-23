@@ -3,8 +3,6 @@
 </template>
 
 <script>
-// const DELAY = 500;
-import {initIconAttr } from './util';
 import {encodePath} from '__ROOT__/cmpt/sys-app/util';
 export default {
   props: ['item', 'p'],

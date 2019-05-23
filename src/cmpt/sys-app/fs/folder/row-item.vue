@@ -137,6 +137,7 @@ export default {
           this.$store.commit('fsPublicEmit', {
             address: this.p.address,
             type: 'add',
+            filename: newName,
             data: stdout
           });
         }
@@ -151,8 +152,7 @@ export default {
       this.p.copy();
       this.$refs.ctx.hidden();
     },
-    handleDel(e){
-      console.log('handleDel', e);
+    handleDel(){
       this.$emit('del');
     },
     open(){

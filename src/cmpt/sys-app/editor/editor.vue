@@ -35,14 +35,11 @@
 <script>
 import {encodePath, pathJoin, getDirAndBase} from '../util';
 import safeBind from '../../../lib/mixins/safe-bind';
-import lsParse from '../lib/ls-parse';
 export default {
   inject: ['taskWindow'],
   mixins: [safeBind],
   data(){
 
-
-    
     return {
       isRequest: false,
 

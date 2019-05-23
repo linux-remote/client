@@ -75,7 +75,7 @@ export default {
         this.$parent.save();
       })
     },
-    handleClick(e){
+    handleClick(){
       if(this.isQuickLaunch){
         this.launch();
         this.$store.commit('toggleQuickLaunch');

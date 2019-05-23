@@ -11,7 +11,7 @@ import TasksBar from '__ROOT__/cmpt/task/bar.vue';
 // import QuickBar from '__ROOT__/cmpt/quick-bar/quick-bar.vue';
 import { logout } from '__ROOT__/lib/login';
 const EVENT_CAPTURE = {capture: true};
-const API_ROOT = window.SERVER_CONFIG.API_ROOT;
+// const API_ROOT = window.SERVER_CONFIG.API_ROOT;
 export default {
   components: {
     TasksBar,

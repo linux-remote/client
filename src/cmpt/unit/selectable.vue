@@ -222,7 +222,7 @@ export default {
       }
 
     },
-    selectEnd (e) {
+    selectEnd () {
       if(this.$options._scrollLoopTimer){
         clearTimeout(this.$options._scrollLoopTimer);
       }
@@ -307,7 +307,7 @@ export default {
     }
   },
   mounted(){
-   this.$options._limitOnceInTime = new LimitOnceInTime((e) => {
+   this.$options._limitOnceInTime = new LimitOnceInTime(() => {
         this.childSelect();
     }, 100);
     // this.$options._debounceChildSelect = new DebounceTime(() => {

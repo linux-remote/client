@@ -21,7 +21,8 @@ export default  {
   },
   methods: {
     on_public_add(){
-      console.log('on_public_add', this.$options._shouldFocusItemName);
+      // type, address, filename, data
+      
       this.getData();
     },
     on_public_rename({newName, oldName}){
