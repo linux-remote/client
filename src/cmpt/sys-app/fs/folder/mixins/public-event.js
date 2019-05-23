@@ -62,13 +62,27 @@ export default  {
       this.getData();
     },
     on_public_getList(e) {
+
+      this.reAcitveItemBefore();
+
       const data = lsParse(e.data);
       const result = this.getFormatedListAndDir(data);
       this.dir = result.dir;
       this.error = null;
       this.list = result.list;
       this.sort();
+
+      this.reAcitveItemAfter();
     }
+
   }
 
 }
+// Focus 逻辑:
+// 选中多个时,不 Focus.
+// Focus 一率回显.
+
+// 选中逻辑:
+// 添加时: 回显
+// 删除时: 清除 // win 10 是清除. 本项目不清除
+// 更新时: 回显

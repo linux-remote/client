@@ -3,18 +3,16 @@ import {encodePath} from '__ROOT__/cmpt/sys-app/util';
 export default  {
   data(){
     return {
-      currItem: {},
-      shouldFocusItemName: null,
-      shouldSelectItemNames: null
+      currItem: {}
     }
   },
   methods: {
 
     shouldActiveNewItems(filenames){
       if(filenames.length === 1){
-        this.shouldFocusItemName = filenames[0];
+        this.$options._shouldFocusItemName = filenames[0];
       } else {
-        this.shouldSelectItemNames = filenames;
+        this.$options._shouldSelectItemNames = filenames;
       }
     },
 
@@ -74,11 +72,12 @@ export default  {
 
     handleItemContentmenu(item){// win 10 list mode have bug.
       if(!item.isBeSelected){
-        this.focusNewItem(item);
+        this.selectAndFocusItem(item);
       }
     },
 
-    focusNewItem(item) {
+
+    selectAndFocusItem(item){
       this.clearSelected();
       this.selectItem(item);
       this.focusItem(item);
@@ -93,7 +92,7 @@ export default  {
         if(e.ctrlKey){ // ctrl
           this.handleItemCtrlClick(item);
         } else {
-          this.focusNewItem(item);
+          this.selectAndFocusItem(item);
         }
       }
     },

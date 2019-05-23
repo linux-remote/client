@@ -32,7 +32,7 @@ export default  {
                 destFile: newFileName
               },
               success(){
-                this.shouldFocusItemName = newFileName;
+                this.$options._shouldFocusItemName = newFileName;
                 this.$store.commit('fsPublicEmit', {
                   type: 'copy_in',
                   address: this.address,

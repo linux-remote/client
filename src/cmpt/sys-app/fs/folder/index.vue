@@ -128,8 +128,8 @@ export default {
   watch: {
     triggerContainSame(newVal, oldVal){
       if(newVal.address !== oldVal.address){
-        this.shouldFocusItemName = null; //bug fixed: fs-item focus 跳转后仍存在.
-        this.shouldSelectItemNames = null;
+        this.$options._shouldFocusItemName = null; //bug fixed: fs-item focus 跳转后仍存在.
+        this.$options._shouldSelectItemNames = null;
         this.currItem = {};
       }
       this.getData();
@@ -197,13 +197,6 @@ export default {
     },
 
     getData(){
-      if(!this.shouldFocusItemName && this.currItem.focus){
-        this.shouldFocusItemName = this.currItem.name;
-        this.currItem = {};
-      }
-      if(this.shouldSelectItemNames){
-        this.clearSelected();
-      }
       this.request({
         url: '~/fs/' + encodePath(this.address),
         stateKey: 'isRequest',
@@ -214,10 +207,6 @@ export default {
             address: this.address,
             data: data
           });
-
-          if(this.shouldSelectItemNames){
-            this.shouldSelectItemNames = null;
-          }
           
         },
         error(xhr){
@@ -250,7 +239,7 @@ export default {
     },
     handleCreateSuccess(name, stdout){
       // data.name = name;
-      this.shouldFocusItemName = name;
+      this.$options._shouldFocusItemName = name;
       this.$store.commit('fsPublicEmit', {
         type: 'add',
         address: this.address,

@@ -249,7 +249,6 @@ export default {
       
       
       function mousemoveListener(e){
-        console.log('mousemove')
         e.preventDefault();
         self.selecting(e);
       }
@@ -259,7 +258,6 @@ export default {
         self.selecting(e);
         window.removeEventListener('mousemove', mousemoveListener);
         self.selectEnd();
-        console.log('mouseup')
       }
     },
     passX(item){

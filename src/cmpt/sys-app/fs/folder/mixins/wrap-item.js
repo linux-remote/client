@@ -35,17 +35,45 @@ export default  {
       v.isBeSelected = false;
 
       
-      if(this.shouldFocusItemName && v.name === this.shouldFocusItemName){
-        this.focusNewItem(v);
-        this.shouldFocusItemName = null;
-      }
-      if(this.shouldSelectItemNames){
-        let shouldSelectIndex = this.shouldSelectItemNames.indexOf(v.name);
-        if( shouldSelectIndex !== -1){
-          this.selectItem(v);
-          this.shouldSelectItemNames.splice(shouldSelectIndex, 1);
+      this.reAcitveItem(v);
+    },
+    reAcitveItemBefore(){
+      
+
+      if(!this.$options._shouldFocusItemName && this.currItem.focus){
+        this.$options._shouldFocusItemName = this.currItem.name;
+        this.currItem = {};
+      } else if(!this.$options._shouldSelectItemNames){
+        let oldSelecteds = this.$options._selectedItems;
+        if(oldSelecteds.size) {
+          let arr = [];
+          oldSelecteds.forEach(v => {
+            arr.push(v.name);
+          });
+          this.$options._shouldSelectItemNames = arr;
         }
       }
+
+      this.clearSelected();
+    },
+    reAcitveItem(v){
+      if(this.$options._shouldFocusItemName && v.name === this.$options._shouldFocusItemName){
+        this.selectAndFocusItem(v);
+        this.$options._shouldFocusItemName = null;
+
+      } else if(this.$options._shouldSelectItemNames){
+        let newNames = this.$options._shouldSelectItemNames;
+        let index = newNames.indexOf(v.name);
+        if( index !== -1){
+          this.selectItem(v);
+          newNames.splice(index, 1);
+        }
+      }
+    },
+
+    reAcitveItemAfter() {
+      this.$options._shouldFocusItemName = null;
+      this.$options._shouldSelectItemNames = null;
     }
   }
 
