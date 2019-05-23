@@ -31,8 +31,7 @@ export default {
       layerX : 0,
       layerY : 0,
       w: 0,
-      h: 0,
-      _timer: null
+      h: 0
     }
   },
   computed: {
@@ -71,13 +70,15 @@ export default {
         maxW: el.scrollWidth,
         maxH: el.scrollHeight
       });
+     
       this.$emit('start');
+       this.$options._limitOnceInTime.limit();
     },
     selecting (moveE, isLoop) {
       
-      if(!isLoop && this.$data._timer){
-        clearTimeout(this.$data._timer);
-        this.$data._timer = null;
+      if(!isLoop && this.$options._scrollLoopTimer){
+        clearTimeout(this.$options._scrollLoopTimer);
+        this.$options._scrollLoopTimer = null;
       }
 
       var shouldLoop = false;
@@ -212,18 +213,18 @@ export default {
       this.$options._limitOnceInTime.trigger();
         
       if(shouldLoop){
-        this.$data._timer = setTimeout(() => {
+        this.$options._scrollLoopTimer = setTimeout(() => {
           this.selecting(moveE, true);
         }, 100);
 
       }else{
-        this.$data._timer = null;
+        this.$options._scrollLoopTimer = null;
       }
 
     },
-    selectEnd () {
-      if(this.$data._timer){
-        clearTimeout(this.$data._timer);
+    selectEnd (e) {
+      if(this.$options._scrollLoopTimer){
+        clearTimeout(this.$options._scrollLoopTimer);
       }
       this.isSelect = false;
       this.w = 0;
@@ -248,14 +249,17 @@ export default {
       
       
       function mousemoveListener(e){
+        console.log('mousemove')
         e.preventDefault();
         self.selecting(e);
-        // debounce.trigger(e);
       }
 
-      function mouseupListener(){
-        self.selectEnd();
+      function mouseupListener(e){
+        self.$options._limitOnceInTime.unLimit();
+        self.selecting(e);
         window.removeEventListener('mousemove', mousemoveListener);
+        self.selectEnd();
+        console.log('mouseup')
       }
     },
     passX(item){
@@ -286,7 +290,6 @@ export default {
       return false;
     },
     childSelect(){ // 为了性能没用 forEach.
-    console.log('childSelect')
       var i = 0, len = this.$children.length, vItem;
       for(; i < len; i++){
         vItem = this.$children[i];
@@ -308,7 +311,7 @@ export default {
   mounted(){
    this.$options._limitOnceInTime = new LimitOnceInTime((e) => {
         this.childSelect();
-    }, 40);
+    }, 100);
     // this.$options._debounceChildSelect = new DebounceTime(() => {
     //   this.childSelect();
     // }, 1);
