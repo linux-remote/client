@@ -1,5 +1,5 @@
 <template lang="jade">
-#lr-app
+#lr-app(@dragover.prevent, @drop.prevent)
   #lr-main
     router-view
   .lr-global
