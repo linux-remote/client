@@ -25,11 +25,12 @@ export function trimEnd0(str) { //去掉未尾多余的0.
   var lastIndex = str.length - 1;
   return str[lastIndex] !== '.' ? str : str.substr(0, lastIndex);
 }
-const SIZE_TYPE = ['', 'K', 'M', 'G', 'T', 'P'];
+const SIZE_TYPE = ['', 'K', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y'];
+const MEASURE = 1024;
 export const wellSize = (size, startUnit, fix) => {
   
-  if(size === 0){
-    return '0 B';
+  if(size < MEASURE){
+    return size + ' B';
   }
   var  index = startUnit ? SIZE_TYPE.indexOf(startUnit) : 0;
 
@@ -37,8 +38,8 @@ export const wellSize = (size, startUnit, fix) => {
   fix = fix || 2;
 
   function loop(){
-    if(size > 1024 && index < len){
-      size = (size / 1024);
+    if(size >= MEASURE && index < len){
+      size = (size / MEASURE);
       index = index + 1;
       loop();
     }
@@ -48,7 +49,7 @@ export const wellSize = (size, startUnit, fix) => {
   
   size = size.toFixed(fix);
 
-  return trimEnd0(size) + ' ' + SIZE_TYPE[index] + 'B';
+  return trimEnd0(size) + ' ' + SIZE_TYPE[index] + 'iB';
 }
 
 export const TypeOf = function(v){
