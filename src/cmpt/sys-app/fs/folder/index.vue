@@ -45,8 +45,9 @@ import ContextMenu from '__ROOT__/cmpt/global/contextmenu/index.vue';
 import initRelation from './permission-util';
 
 import {encodePath} from '__ROOT__/cmpt/sys-app/util';
-
+import lsParse from '../../lib/ls-parse';
 import safeBind from '../../../../lib/mixins/safe-bind';
+import Sync from '../../../../lib/sync';
 import mixins from './mixins/index';
 mixins.push(safeBind);
 
@@ -199,11 +200,15 @@ export default {
         url: '~/fs/' + encodePath(this.address),
         stateKey: 'isRequest',
         data: { dir: true },
-        success(data){
+        success(stdout){
+          
+          let data = lsParse(stdout);
+          data = this.getDirAndWrapBaseList(data);
+
           this.$store.commit('fsPublicEmit', {
             type: 'getList',
             address: this.address,
-            data: data
+            data
           });
           
         },
@@ -212,7 +217,7 @@ export default {
         }
       })
     },
-    getFormatedListAndDir(list) {
+    getDirAndWrapBaseList(list) {
       let arr = [], dir;
       list.forEach( v => {
         // if(v.name === '..') { // 后端已过滤
@@ -226,9 +231,8 @@ export default {
           return;
         }
 
-        this.wrapItem(v);
+        this.wrapBaseItem(v);
         arr.push(v);
-
       });
       return {
         list: arr,
@@ -252,10 +256,16 @@ export default {
     },
 
   },
-  _map: Object.create(null),
   created(){
-    this.$options._map = Object.create(null);
-
+    this.$options._sync = new Sync({
+      key: 'name',
+      onAdd: (v) => {
+        this.initItemStatus(v);
+      },
+      // onGetList: (list) => {
+      //   this.list = list;
+      // }
+    });
     this.$options._selectedItems = new Set;
     this.getData();
   },

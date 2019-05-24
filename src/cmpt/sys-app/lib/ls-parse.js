@@ -36,7 +36,7 @@ function parse(result, isSelf) {
     // }
 
     const _pre = v[0].split(/\s+/);
-    // name, permission, owner, group, size, mtime, ?device_type, ?symbolicLink
+    
     const data = {
       name,
       permission: _pre[0],
@@ -65,6 +65,7 @@ function parse(result, isSelf) {
     if(!isSelf && linkString){
       data.symbolicLink = linkString;
     }
+    // name, permission, owner, group, size, mtime, ?device_type, ?symbolicLink
     return data;
   });
   return isSelf ? result[0] : result;

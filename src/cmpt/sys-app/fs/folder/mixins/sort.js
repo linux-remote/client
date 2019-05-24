@@ -66,11 +66,8 @@ export default  {
       this.initHiddenBottomListMap();
       this.concatHiddenBottomList();
     },
-    reHiddenBottomSortByItem(v, isNew){ // 可减少整体排序, 只排 4 处中的 1 处.
+    reHiddenBottomSortByItem(v){ // 可减少整体排序, 只排 4 处中的 1 处.
       const arr = this.getMapArr(v);
-      if(isNew){
-        arr.push(v);
-      }
       sortByStrKey(arr, 'name');
       this.concatHiddenBottomList();
     },

@@ -1,16 +1,25 @@
 import initRelation from '../permission-util';
 import {initIconAttr, parseName} from '../util';
 import { dateFormat } from '../../../util';
+// status key: isUploading, isCut, focus, isBeSelected
 export default  {
-  methods: {    
-    wrapItem(v){
+  methods: {
+    initItemStatus(v){
+      v.isUploading = v.isUploading || false;
+      v.isCut = false;
+      v.focus = false;
+      v.isBeSelected = false;
+    },
+    // wrapItem(v){
+    //   this.initItemStatus(v);
+    //   this.wrapBaseItem(v);
+    // },
+    wrapBaseItem(v){
       if(v.isUploading) {
         v.mtime = dateFormat(v.mtime);
       } else {
-        v.isUploading = false;
         v.size = Number(v.size);
       }
-      
       // v._mtime = (new Date(v.mtime)).getTime();
       initRelation(v, this.username, this.groups);
 
@@ -35,13 +44,7 @@ export default  {
         this.isHaveDevice = true;
       }
 
-      
-      v.isCut = false;
-      v.focus = false;
-      v.isBeSelected = false;
-
-      
-      this.reAcitveItem(v);
+      // this.reAcitveItem(v);
     },
     reAcitveItemBefore(){
       if(!this.$options._shouldFocusItemName && this.currItem.focus){
