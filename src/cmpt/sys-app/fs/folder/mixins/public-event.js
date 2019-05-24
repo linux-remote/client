@@ -38,11 +38,12 @@ export default  {
     },
 
     on_public_add(e){
-      // type, address, filename, data
-      let newItem = lsParse(e.data, true);
-      this.wrapBaseItem(newItem);
-      const item = this.$options._sync.add(newItem);
-      this.reHiddenBottomSortByItem(item);
+      // type, address, data
+      const item = this.$options._sync.add(e.data);
+      if(e.after){
+        e.after(item);
+      }
+      this.reHiddenBottomSortByItem(item, true);
     },
 
     on_public_rename({newName, oldName}){
@@ -89,7 +90,7 @@ export default  {
         isUploading: true
       }
       this.wrapBaseItem(destItem);
-      this.reHiddenBottomSortByItem(destItem);
+      this.reHiddenBottomSortByItem(destItem, true);
       this.$options[_genUploadOptKey(destItem.name)] = destItem;
     },
     on_public_uploadProgress(e){

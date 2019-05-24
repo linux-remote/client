@@ -18,7 +18,7 @@ div(style="position: relative; width: 100%; height: 100%; overflow: auto; ")
 </template>
 
 <script>
-import LimitOnceInTime from './limit-once-in-time';
+import LimitOnceInTime from '../../lib/limit-once-in-time';
 export default {
   // props: ['selectEed'],
   data(){

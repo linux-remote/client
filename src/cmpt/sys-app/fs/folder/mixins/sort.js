@@ -1,9 +1,20 @@
 import { sortByStrKey , sortByNumberKey} from '../../../util';
-
+import DebounceTime from '../../../../../lib/debounce-time';
 export default  {
-  methods: {    
-    sort(arr){
-      arr = arr || this.list;
+  methods: {
+    sort(){
+      this._sort();
+    },
+    _sort(){
+      console.log('_sort');
+      if(this.$options._reHiddenBottomSortPartArr){
+        sortByStrKey(this.$options._reHiddenBottomSortPartArr, 'name');
+        this.concatHiddenBottomList();
+        this.$options._reHiddenBottomSortPartArr = null;
+        return;
+      }
+
+      const arr = this.list;
       const key = this.sortKey;
       switch(key) {
         case 'name':
@@ -66,11 +77,20 @@ export default  {
       this.initHiddenBottomListMap();
       this.concatHiddenBottomList();
     },
-    reHiddenBottomSortByItem(v){ // 可减少整体排序, 只排 4 处中的 1 处.
+    reHiddenBottomSortByItem(v, isNew){ // 可减少整体排序, 只排 4 处中的 1 处.
+      console.log('reHiddenBottomSortByItem');
       const arr = this.getMapArr(v);
-      sortByStrKey(arr, 'name');
-      this.concatHiddenBottomList();
-    },
+      if(isNew){
+        arr.push(v);
+      }
+      this.$options._reHiddenBottomSortPartArr = arr;
+      this.$options._sortDebounce.trigger();
+    }
+  },
+  created(){
+    this.$options._sortDebounce = new DebounceTime(() => {
+      this._sort();
+    }, 100);
   }
 
 }

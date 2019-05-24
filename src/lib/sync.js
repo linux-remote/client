@@ -4,19 +4,24 @@ export default class Sync {
     this.onAdd = opts.onAdd;
     this.key = opts.key;
     this.map = new Map;
-    this.list = [];
   }
   _tmpMap = null;
-  _tmpList = null;
   add(newItem){
+    const key = newItem[this.key];
+    // if(this.map.has(key)){
+    //   return this.map.get(key);
+    // }
+    return this._add(key, newItem);
+  }
+  get(mapKey){
+    return this.map.get(mapKey);
+  }
+  _add(key, newItem){
     const item = Object.create(null);
     Object.assign(item, newItem);
     this.onAdd(item);
-    const key = item[this.key];
     const map = this._tmpMap || this.map;
-    const list = this._tmpList || this.list;
     map.set(key, item);
-    list.push(item);
     return item;
   }
   changeKey(oldKey, newKey){
@@ -34,23 +39,21 @@ export default class Sync {
   }
   reload(newList){
     const map = this._tmpMap = new Map;
-    const list = this._tmpList = [];
+    const list = [];
     newList.forEach((v) => {
       const key = v[this.key];
+      let item;
       if(this.map.has(key)){
-        const item = this.update(v);
-        map.set(key, item);
-        list.push(item);
+        item = this.update(v);
       } else {
-        this.add(v);
+        item = this._add(key, v);
       }
+      map.set(key, item);
+      list.push(item);
     });
-    
     this.map = map;
-    this.list = list;
     this._tmpMap = null;
-    this._tmpList = null;
-    return this.list;
+    return list;
   }
 }
 

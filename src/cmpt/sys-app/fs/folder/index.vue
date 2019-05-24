@@ -127,8 +127,6 @@ export default {
   watch: {
     triggerContainSame(newVal, oldVal){
       if(newVal.address !== oldVal.address){
-        this.$options._shouldFocusItemName = null; //bug fixed: fs-item focus 跳转后仍存在.
-        this.$options._shouldSelectItemNames = null;
         this.currItem = {};
       }
       this.getData();
@@ -241,12 +239,18 @@ export default {
     },
     handleCreateSuccess(name, stdout){
       // data.name = name;
-      this.$options._shouldFocusItemName = name;
-      this.$store.commit('fsPublicEmit', {
+      let baseItem = lsParse(stdout, true);
+      this.wrapBaseItem(baseItem);
+      
+      // $TODO: clear filename
+      const result = this.$store.commit('fsPublicEmit', {
         type: 'add',
         address: this.address,
         filename: name,
-        data: stdout
+        data: baseItem,
+        after: (item) => {
+          this.selectAndFocusItem(item);
+        }
       });
     },
 
