@@ -15,6 +15,7 @@ $taskCtrlW: 45px; // 任务窗口 title 栏右侧按钮宽度
 // $quickBarW: 40px; // 快速启动栏
 
 $maxZindex : 2147483647; // https://stackoverflow.com/questions/491052/minimum-and-maximum-value-of-z-index
+$uploadModalZindex: $maxZindex - 2;
 $topLayerZindex : $maxZindex - 100;
 
 $color-alert: #D02E00;
@@ -36,7 +37,6 @@ body {
 .lr-page {
   height: 100vh;
 }
-
 @import './login.scss';
 
 
@@ -565,6 +565,7 @@ $taskGlyphPositonX: 14px;
 @import '../cmpt/sys-app/task-manager/task-manager.scss';
 @import '../cmpt/sys-app/recycle-bin/recycle-bin.scss';
 @import '../cmpt/sys-app/terminal/xterm.css'; // 3.13.1
+@import '../cmpt/global/upload/upload.scss'; // 3.13.1
 //************* app start *************
 .lr-sys-app-icon{
   width: 30px;

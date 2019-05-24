@@ -154,6 +154,7 @@ export default {
     },
     handleDel(){
       this.$emit('del');
+      this.$refs.ctx.hidden();
     },
     open(){
       const item = this.item;

@@ -86,39 +86,44 @@ export default  {
         permission: '----------',
         group: '',
         owner: this.$store.state.username,
-        mtime: rawFile.lastModified,
-        isUploading: true
+        mtime: rawFile.lastModified
       }
       this.wrapBaseItem(destItem);
-      this.reHiddenBottomSortByItem(destItem, true);
-      this.$options[_genUploadOptKey(destItem.name)] = destItem;
+      const item = this.$options._sync.add(destItem);
+      item.isUploading = true;
+      this.reHiddenBottomSortByItem(item, true);
     },
     on_public_uploadProgress(e){
-      let key = _genUploadOptKey(e.filename);
-      let item = this.$options[key];
-      if(!item){
-        item = this.list.find(v => v.name === e.destItem.name);
-        item.isUploading = true;
-        item.totalSize = e.total;
-        this.$options[key] = item;
-      }
-      item.size = e.loaded;
+      this.$options._sync.update({
+        name: e.name,
+        isUploading: true,
+        size: e.loaded,
+        totalSize: e.total
+      });
+      // let item = this.$options[key];
+      // if(!item){
+      //   item = this.list.find(v => v.name === e.destItem.name);
+      //   item.isUploading = true;
+      //   item.totalSize = e.total;
+      //   this.$options[key] = item;
+      // }
+      // item.size = e.loaded;
     },
-    on_public_uploadLoadend(e){
-      const key = _genUploadOptKey(e.filename);
-      if(this.$options[key]){
-        this.$options[key] = null;
-        delete(this.$options[key]);
-      }
+    on_public_uploadSuccess(e){
+      // stdout
+      let baseItem = lsParse(e.stdout, true);
+      this.wrapBaseItem(baseItem);
+      this.initItemStatus(baseItem);
+      this.$options._sync.update(baseItem);
     }
+    // on_public_uploadLoadend(e){
+
+    // }
 
   }
 
 }
 
-function _genUploadOptKey(name) {
-  return '_upload_item_' + name;
-}
 // Focus 逻辑:
 // 选中多个时,不 Focus.
 // Focus 一率回显.

@@ -60,31 +60,31 @@ export default {
             self.$store.commit('fsPublicEmit', {
               address: item.address,
               type: 'uploadProgress',
-              filename: item.rawFile.name,
+              name: item.rawFile.name,
               total: e.total,
               loaded: e.loaded
             });
 
           });
-          xhr.upload.onloadend = function(){
-            self.$store.commit('fsPublicEmit', {
-              address: item.address,
-              type: 'uploadLoadend',
-              filename: item.rawFile.name,
-              total: e.total,
-              loaded: e.loaded
-            });
-          }
+          // xhr.upload.onloadend = function(){
+          //   self.$store.commit('fsPublicEmit', {
+          //     address: item.address,
+          //     type: 'uploadLoadend',
+          //     filename: item.rawFile.name,
+          //     total: e.total,
+          //     loaded: e.loaded
+          //   });
+          // }
           return xhr;
         },
         success(stdout){
           const item = this.item;
           this.$store.commit('upload/removeItem', this.index);
+
           this.$store.commit('fsPublicEmit', {
             address: item.address,
-            type: 'update',
-            filename: item.rawFile.name,
-            data: stdout
+            type: 'uploadSuccess',
+            stdout
           });
 
         }

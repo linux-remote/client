@@ -1,23 +1,3 @@
-<style>
-.lr-upload-input-wrap{
-  width:0;
-  height:0;
-  position: absolute; 
-  z-index: 2;
-}
-.lr-upload-modal{
-  position: fixed;
-  top: 0; 
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 20000;
-  background-color: rgba(255, 255, 255, .5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-</style>
 <template lang='jade'>
 .lr-upload-input-wrap
   input(type='file' multiple="true" ref='uploadBtn' id='lr-upload-input' style="display:none" @change='handleChange')

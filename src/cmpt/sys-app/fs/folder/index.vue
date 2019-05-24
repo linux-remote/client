@@ -17,7 +17,8 @@
           td(colspan='7')
             PreCreate(:p='self', @success="handleCreateSuccess")
 
-        RowItem(v-for='(item, i) in list',
+        component(v-for='(item, i) in list',
+                :is='item.isUploading ? "UploadingItem" : "RowItem"',
                 :p='self',
                 :key='item.name',
                 :index='i',
@@ -39,6 +40,7 @@
 import CtrlBar from './ctrl-bar.vue';
 import PreCreate from './pre-create.vue';
 import RowItem from './row-item.vue';
+import UploadingItem from './uploading-item.vue';
 import Status from './status.vue';
 import Selectable from '__ROOT__/cmpt/unit/selectable.vue';
 import ContextMenu from '__ROOT__/cmpt/global/contextmenu/index.vue';
@@ -59,6 +61,7 @@ export default {
     PreCreate,
     Status,
     RowItem,
+    UploadingItem,
     Selectable,
     ContextMenu
   },
