@@ -159,7 +159,7 @@ $fsStatusBarH: 23px;
   align-items: center;
   >.glyph{
     color: #808080;
-    font-size: 7px;
+    // font-size: 7px;
     margin: 1px 5px 0;
   }
 }
@@ -197,6 +197,7 @@ $linkFileColor: violet;
   height: 100%;
   background-color: rgba(0,0,0, .6);
   z-index: 2;
+  display: flex;
 }
 
 
@@ -404,7 +405,11 @@ background-image: url('/public/img/tango-style/inode-chardevice.png');
     margin-right: 5px;
   }
 }
-
+.lr-fs-home-mark{
+  position: absolute;
+  right: 0;
+  top: 0;
+}
 .lr-fs-new-folder{
   background-image: url('/public/img/tango-style/folder-new-5.png');
 

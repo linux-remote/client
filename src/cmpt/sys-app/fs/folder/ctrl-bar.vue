@@ -10,7 +10,7 @@
     span.glyph.glyph-upload
     span {{$parent.LANG.upload}}
   //- button(@click="errDev") errDev
-
+  button.btn.btn-primary.btn-xs.lr-fs-home-mark(@click="$parent.go(homedir)") Home
 </template>
 <script>
   // div(style='flex-grow: 1')
@@ -24,6 +24,11 @@ export default {
     disabled: {
       type: Boolean,
       default: false
+    }
+  },
+  computed: {
+    homedir(){
+      return this.$store.state.homedir
     }
   },
   methods: {

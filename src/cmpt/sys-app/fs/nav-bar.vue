@@ -9,12 +9,15 @@
 
   .lr-fs-address
     .lr-fs-address-inner(v-if="!isInputFocus")
+      .lr-fs-crumb(@click='goToRoot', v-if='addressArr.length')
+        //- span.lr-fs-crumb-name /
+        span.glyph /
       .lr-fs-crumb(v-for='(v, i) in addressArr',
                   :key='i',
                   @click='handleCrumbClick(i)',
                   v-if='v')
         span.lr-fs-crumb-name {{v}}
-        span.glyph.glyph-chevron-right-2
+        span.glyph / 
     input(v-model='inputAddress', 
           @focus="handleInputFocus",
           ref='input',
@@ -41,7 +44,7 @@ export default {
     address(){
       
       var len = this.addressArr.length;
-      if(!len){  //''.split('/')  [""]
+      if(!len){
         return '';
       }
       
@@ -67,6 +70,9 @@ export default {
           this.$refs.input.blur();
         });
       }
+    },
+    goToRoot(){
+      this.go('/');
     },
     handleCrumbClick(index){
       const arr = [];
