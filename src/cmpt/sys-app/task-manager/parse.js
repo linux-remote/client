@@ -85,9 +85,17 @@ function parseList(str) {
       pid: Number(line[0]),
       user: line[1],
       cpu: Number(line[8]),
+      // status: line[7],
       mem: Number(line[9]),
       time: line[10],
       command: line[11]
     }
   })
 }
+// man Top:
+// D = uninterruptible sleep
+// R = running
+// S = sleeping
+// T = stopped by job control signal
+// t = stopped by debugger during trace
+// Z = zombie

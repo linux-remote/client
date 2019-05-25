@@ -1,71 +1,77 @@
 <template lang="jade">
-.lr-window-body
+.lr-window-body.lr-tm-wrap
   .lr-hourglass(v-if='isRequest')
   table.lr-tm-table(v-if="total")
     tbody
       tr
         td(style="width: 33%")
-          span up: 
+          span.lr-tm-span up: 
           | {{total.up}}
         td(style="width: 34%")
-          span loadAverage: 
+          span.lr-tm-span loadAverage: 
           | {{total.loadAverage}}
         td(style="width: 33%") 
-          span users: 
+          span.lr-tm-span users: 
           | {{total.users}}
       tr
         td
           .lr-tm-cpus
             label 
-              span cpus:
+              span.lr-tm-span cpus:
               br
-              | {{cpusPer.toFixed(1) + '%'}}
+              | {{cpusPer.toFixed(1)}}%
             .lr-tm-cpu-process
-              .lr-tm-cpu-process-bar(:style="{height: cpusPer + '%'}")  
+              .lr-tm-cpu-process-bar(:style="{height: cpusPer + '%'}")
+
         td(colspan='2')
           .lr-tm-mems-wrap
             .lr-tm-mems(v-if="total.mem_avail")
-              span avail:
-              .lr-tm-porcess.lr-tm-avail-porcess
+              span.lr-tm-span Avail:
+              .lr-tm-porcess-sm.lr-tm-avail-porcess
                 .lr-tm-porcess-bar(:style="{width: availPer + '%'}")
-                .lr-tm-porcess-info {{total.mem_avail | wellSize}}
+                .lr-tm-porcess-info(style="text-align: right") {{total.mem_avail | wellSize}}
             .lr-tm-mems
-              span mem:
+              span.lr-tm-mem-title Mem: {{memBCPer.toFixed(1)}}%
               .lr-tm-porcess
-                .lr-tm-porcess-bar(:style="{width: memsPer + '%'}", title="used") {{memsPer.toFixed(0)}}%
-                .lr-tm-porcess-bar.lr-tm-mem-bc-bg(:style="{width: memBCPer + '%'}", title="buff/cache") {{memBCPer.toFixed(0)}}%
+                .lr-tm-porcess-bar(:style="{width: memsPer + '%'}", title="used") 
+                .lr-tm-porcess-bar.lr-tm-mem-bc-bg(:style="{width: memBCPer + '%'}", title="buff/cache")
+                .lr-tm-porcess-info2 {{total.mem.used | wellSize}}/{{total.mem.total | wellSize}}
             .lr-tm-mems
-              span swap:
-              .lr-tm-porcess
+              span.lr-tm-span Swap:
+              .lr-tm-porcess-sm.lr-tm-swap-porcess
                 .lr-tm-porcess-bar(:style="{width: swapPer + '%'}")
-                .lr-tm-porcess-info {{total.swap.used | wellSize}}/{{total.swap.total | wellSize}}
+                .lr-tm-porcess-info
+                  span {{total.swap.used | wellSize}}
+                  span /{{total.swap.total | wellSize}}
       tr
         td(colspan='3')
           .lr-tm-tasks
             div 
-              span tasks: 
+              b Tasks 
+              span.lr-tm-span total: 
               | {{total.tasks.total}} 
             div 
-              span running: 
+              span.lr-tm-span running: 
               | {{total.tasks.running}} 
             div 
-              span sleeping: 
+              span.lr-tm-span sleeping: 
               | {{total.tasks.sleeping}} 
             div 
-              span stopped: 
+              span.lr-tm-span stopped: 
               | {{total.tasks.stopped}}  
             div 
-              span zombie: 
+              span.lr-tm-span zombie: 
               | {{total.tasks.zombie}}
 
   //- div {{JSON.stringify(total, null, '\t')}}
   //- pre.lr-tm-pre {{list}}
-  table.table.table-hover.lr-tm-list
-    thead
-      tr
-        th(v-for="v in keys", :key="v", :class="{active: v === sortKey}", @click="sortBy(v)") {{v}}
-    tbody
-      Item(v-for="v in list", :key="v.pid", :v="v", @click="handleItemClick(v)", :class="{active: v.pid === selectedPid}", @kill="handleItemKill")
+  .lr-tm-list
+    table.table.table-hover
+      thead
+        tr
+          th(v-for="v in keys", :key="v", :class="{active: v === sortKey}", @click="sortBy(v)") {{v}}
+      tbody
+        Item(v-for="v in list", :key="v.pid", :v="v", @click="handleItemClick(v)", :class="{active: v.pid === selectedPid}", @kill="handleItemKill")
 </template>
 
 <script>
