@@ -1,6 +1,6 @@
 <template lang="jade">
 .lr-window-body
-  .lr-hourglass(v-show='isRequest')
+  .lr-hourglass(v-show='isRequest || isSaveing || isCreating')
   h2(v-text='error' style='color:red' v-if='error')
   .lr-editor-body(v-else @keydown='handleKeyDown')
     .lr-editor-bar
@@ -42,6 +42,8 @@ export default {
 
     return {
       isRequest: false,
+      isCreating: false,
+      isSaveing: false,
 
       filename: '',
       dir: '',
@@ -102,7 +104,7 @@ export default {
     },
     create(cb){
       this.request({
-        stateKey: 'isRequest',
+        stateKey: 'isCreating',
         type: 'post',
         url: `~/fs/` + encodePath(this.dir),
         data: {
@@ -145,7 +147,7 @@ export default {
 
       this.request({
         url: `~/fs/` + encodePath(filePath),
-        stateKey: 'isRequest',
+        stateKey: 'isSaveing',
         type: 'put',
         data: {
           text: this.data

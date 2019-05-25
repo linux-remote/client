@@ -1,7 +1,7 @@
 <template lang="jade">
 .lr-window-body
   
-  .lr-hourglass(v-show='isRequest')
+  .lr-hourglass(v-show='isRequest || isDeling')
   .lr-rb-ctrl-bar
     button.btn(@click='clearAll', :disabled='isEmpty') Delete All
     //- div(style="color: red") {{(totalCount / maxLen) * 100}} %
@@ -35,6 +35,7 @@ export default {
   data(){
     return {
       isRequest: false,
+      isDeling: false,
       list: [],
       maxLen: 100,
       totalCount: 0,
@@ -118,7 +119,7 @@ export default {
       this.request({
         url: '~/recycleBin',
         type: 'delete',
-        stateKey: 'isRequest',
+        stateKey: 'isDeling',
         success(){
           this.list = [];
           this.error = null;

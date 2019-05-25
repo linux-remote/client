@@ -1,6 +1,6 @@
 <template lang="jade">
 .lr-window-body.lr-tm-wrap
-  .lr-hourglass(v-if='isRequest')
+  .lr-hourglass(v-if='isDeling')
   table.lr-tm-table(v-if="total")
     tbody
       tr
@@ -86,7 +86,6 @@ export default {
     return {
       keys: ['PID', 'User', 'CPU', 'Memory', 'Time', 'Command'],
       sortKey: 'CPU',
-      isRequest: false,
       total: null,
       list: [],
       interval: 1000,
@@ -97,7 +96,7 @@ export default {
       availPer: 0,
       memBCPer: 0,
       selectedPid : null,
-      isRequest: false
+      isDeling: false
     }
   },
 
@@ -106,7 +105,7 @@ export default {
       this.request({
         url: '~/ps/kill/' + pid,
         type: 'delete',
-        stateKey: 'isRequest',
+        stateKey: 'isDeling',
         success() {
           if(this.selectedPid === pid){
             this.selectedPid = null;
