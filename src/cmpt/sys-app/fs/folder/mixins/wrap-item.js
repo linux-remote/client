@@ -1,6 +1,7 @@
 import initRelation from '../permission-util';
 import {initIconAttr, parseName} from '../util';
 import { dateFormat } from '../../../util';
+import lsParse from '../../../lib/ls-parse';
 // status key: isUploading, isCut, focus, isBeSelected
 export default  {
   methods: {
@@ -43,46 +44,55 @@ export default  {
       if(v.device_type && !this.isHaveDevice){
         this.isHaveDevice = true;
       }
-
-      // this.reAcitveItem(v);
     },
-    reAcitveItemBefore(){
-      if(!this.$options._shouldFocusItemName && this.currItem.focus){
-        this.$options._shouldFocusItemName = this.currItem.name;
-        this.currItem = {};
-      }
-      if(!this.$options._shouldFocusItemName && !this.$options._shouldSelectItemNames){
-        let oldSelecteds = this.$options._selectedItems;
-        if(oldSelecteds.size) {
-          let arr = [];
-          oldSelecteds.forEach(v => {
-            arr.push(v.name);
-          });
-          this.$options._shouldSelectItemNames = arr;
-        }
-      }
-
-      this.clearSelected();
+    createBaseItem(stdout){
+      const data = lsParse(stdout, true);
+      this.wrapBaseItem(data);
+      return data;
     },
-    reAcitveItem(v){
-      if(this.$options._shouldFocusItemName && v.name === this.$options._shouldFocusItemName){
-        this.selectAndFocusItem(v);
-        this.$options._shouldFocusItemName = null;
-
-      } else if(this.$options._shouldSelectItemNames){
-        let newNames = this.$options._shouldSelectItemNames;
-        let index = newNames.indexOf(v.name);
-        if( index !== -1){
-          this.selectItem(v);
-          newNames.splice(index, 1);
-        }
+    getBaseItem(stdout){
+      if(typeof stdout === 'string'){
+       return this.createBaseItem(stdout);
       }
-    },
-
-    reAcitveItemAfter() {
-      this.$options._shouldFocusItemName = null;
-      this.$options._shouldSelectItemNames = null;
+      return stdout;
     }
+    // reAcitveItemBefore(){
+    //   if(!this.$options._shouldFocusItemName && this.currItem.focus){
+    //     this.$options._shouldFocusItemName = this.currItem.name;
+    //     this.currItem = {};
+    //   }
+    //   if(!this.$options._shouldFocusItemName && !this.$options._shouldSelectItemNames){
+    //     let oldSelecteds = this.$options._selectedItems;
+    //     if(oldSelecteds.size) {
+    //       let arr = [];
+    //       oldSelecteds.forEach(v => {
+    //         arr.push(v.name);
+    //       });
+    //       this.$options._shouldSelectItemNames = arr;
+    //     }
+    //   }
+
+    //   this.clearSelected();
+    // },
+    // reAcitveItem(v){
+    //   if(this.$options._shouldFocusItemName && v.name === this.$options._shouldFocusItemName){
+    //     this.selectAndFocusItem(v);
+    //     this.$options._shouldFocusItemName = null;
+
+    //   } else if(this.$options._shouldSelectItemNames){
+    //     let newNames = this.$options._shouldSelectItemNames;
+    //     let index = newNames.indexOf(v.name);
+    //     if( index !== -1){
+    //       this.selectItem(v);
+    //       newNames.splice(index, 1);
+    //     }
+    //   }
+    // },
+
+    // reAcitveItemAfter() {
+    //   this.$options._shouldFocusItemName = null;
+    //   this.$options._shouldSelectItemNames = null;
+    // }
   }
 
 }

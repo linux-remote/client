@@ -241,20 +241,22 @@ export default {
       };
     },
     handleCreateSuccess(name, stdout){
-      // data.name = name;
-      let baseItem = lsParse(stdout, true);
-      this.wrapBaseItem(baseItem);
-      
+
       // $TODO: clear filename
       const result = this.$store.commit('fsPublicEmit', {
         type: 'add',
         address: this.address,
-        filename: name,
-        data: baseItem,
+        data: this.createBaseItem(stdout),
         after: (item) => {
+          console.log('after')
           this.selectAndFocusItem(item);
         }
       });
+      this.$nextTick(() => {
+        const item = this.$options._sync.get(name);
+        this.selectAndFocusItem(item);
+      })
+      
     },
 
     handleFsBodyMousedown(){

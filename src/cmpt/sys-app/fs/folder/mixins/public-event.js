@@ -39,10 +39,8 @@ export default  {
 
     on_public_add(e){
       // type, address, data
-      const item = this.$options._sync.add(e.data);
-      if(e.after){
-        e.after(item);
-      }
+      let baseItem = this.getBaseItem(e.data);
+      const item = this.$options._sync.add(baseItem);
       this.reHiddenBottomSortByItem(item, true);
     },
 

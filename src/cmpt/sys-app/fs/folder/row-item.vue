@@ -137,7 +137,7 @@ export default {
           this.$store.commit('fsPublicEmit', {
             address: this.p.address,
             type: 'add',
-            filename: newName,
+            focus: true,
             data: stdout
           });
         }
