@@ -122,7 +122,6 @@ export default {
           this.$store.commit('fsPublicEmit', {
             type: 'add',
             address: this.dir,
-            filename: this.filename,
             data: stdout
           });
         }
@@ -156,19 +155,9 @@ export default {
           this.$store.commit('fsPublicEmit', {
             type: 'update',
             address: this.dir,
-            filename: this.filename,
             data: stdout
           });
-          // console.log('resData', resData);
 
-          // resData.name = this.taskWindow.title;
-
-          // this.$store.commit('fsPublicEmit', {
-          //   address: this.taskWindow.dir,
-          //   type: isAdd ? 'add' : 'update',
-          //   item: resData
-          // });
-          
           this.oldData = this.data;
 
           if(this.$options._isSaveAndClose) {

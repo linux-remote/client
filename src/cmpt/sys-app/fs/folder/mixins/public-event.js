@@ -51,7 +51,7 @@ export default  {
     },
 
     on_public_update(e){
-      // type, address, filename, data
+      // type, address,  data
       let newItem = lsParse(e.data, true);
       this.wrapBaseItem(newItem);
       const item = this.$options._sync.update(newItem);

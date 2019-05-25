@@ -70,7 +70,7 @@ export default {
           //   self.$store.commit('fsPublicEmit', {
           //     address: item.address,
           //     type: 'uploadLoadend',
-          //     filename: item.rawFile.name,
+          //     name: item.rawFile.name,
           //     total: e.total,
           //     loaded: e.loaded
           //   });

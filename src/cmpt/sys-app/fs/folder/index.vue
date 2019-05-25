@@ -242,16 +242,12 @@ export default {
     },
     handleCreateSuccess(name, stdout){
 
-      // $TODO: clear filename
       const result = this.$store.commit('fsPublicEmit', {
         type: 'add',
         address: this.address,
-        data: this.createBaseItem(stdout),
-        after: (item) => {
-          console.log('after')
-          this.selectAndFocusItem(item);
-        }
+        data: this.createBaseItem(stdout)
       });
+      
       this.$nextTick(() => {
         const item = this.$options._sync.get(name);
         this.selectAndFocusItem(item);
