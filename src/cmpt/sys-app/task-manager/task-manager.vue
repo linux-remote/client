@@ -1,5 +1,6 @@
 <template lang="jade">
 .lr-window-body
+  .lr-hourglass(v-if='isRequest')
   table.lr-tm-table(v-if="total")
     tbody
       tr
@@ -64,7 +65,7 @@
       tr
         th(v-for="v in keys", :key="v", :class="{active: v === sortKey}", @click="sortBy(v)") {{v}}
     tbody
-      Item(v-for="v in list", :key="v.pid", :v="v", @click="handleItemClick(v)", :class="{active: v.pid === selectedPid}", :killSuccess="handleItemKillSuccess")
+      Item(v-for="v in list", :key="v.pid", :v="v", @click="handleItemClick(v)", :class="{active: v.pid === selectedPid}", @kill="handleItemKill")
 </template>
 
 <script>
@@ -89,11 +90,28 @@ export default {
       swapPer: 0,
       availPer: 0,
       memBCPer: 0,
-      selectedPid : null
+      selectedPid : null,
+      isRequest: false
     }
   },
 
   methods: {
+    handleItemKill(pid){
+      this.request({
+        url: '~/ps/kill/' + pid,
+        type: 'delete',
+        stateKey: 'isRequest',
+        success() {
+          if(this.selectedPid === pid){
+            this.selectedPid = null;
+          }
+          const index = this.list.findIndex((v) => v.pid === pid);
+          if(index !== -1){
+            this.list.splice(index, 1);
+          }
+        }
+      });
+    },
     handleItemClick(v){
       this.selectedPid = v.pid;
     },
@@ -101,15 +119,6 @@ export default {
 
       this.sortKey = key;
       this.sort();
-    },
-    handleItemKillSuccess(pid){
-      if(this.selectedPid === pid){
-        this.selectedPid = null;
-      }
-      const index = this.list.findIndex((v) => v.pid === pid);
-      if(index !== -1){
-        this.list.splice(index, 1);
-      }
     },
     sort(){
       let key = this.sortKey;

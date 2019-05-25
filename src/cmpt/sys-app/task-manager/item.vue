@@ -16,28 +16,17 @@ export default {
     components: {
     ContextMenu
   },
-  props: ['v', 'killSuccess'],
+  props: ['v'],
   data(){
     return {
+      isRequest: false
     }
   },
 
   methods: {
     handlekill(pid){
-      this.request({
-        url: '~/cmd',
-        type: 'post',
-        data: {
-          cmd: 'kill -9 ' + pid
-        },
-        success() {
-          this.killSuccess(pid);
-        },
-        complete() {
-          this.$refs.ctx.hidden();
-        }
-      })
-      console.log('handlekill', pid);
+      this.$emit('kill', pid);
+      this.$refs.ctx.hidden();
     }
   }
 }

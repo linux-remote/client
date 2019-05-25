@@ -19,7 +19,7 @@
           @focus="handleInputFocus",
           ref='input',
           @blur="handleInputBlur",
-          @keydown.13='go(inputAddress)')
+          @keydown.stop='handleInputKeydown')
   .lr-fs-nav-item(v-if='address===inputAddress' @click='$emit("change", address)')
     span.glyph.glyph-refresh
   .lr-fs-nav-item(v-else @click='go(inputAddress)')
@@ -60,6 +60,14 @@ export default {
   },
 
   methods: {
+    handleInputKeydown(e){
+      if(e.key === 'Enter'){
+        this.go(this.inputAddress);
+        this.$nextTick(() => {
+          this.$refs.input.blur();
+        });
+      }
+    },
     handleCrumbClick(index){
       const arr = [];
       for(let i = 0; i <= index; i++){
