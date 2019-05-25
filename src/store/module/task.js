@@ -64,8 +64,13 @@ export default  {
         data.height = isMax ? data.height : preSameTask.height;
         
       }
-      
-
+      const rootState = this._modules.root.state;
+      if(data.width > rootState.deskTopW){
+        data.width = rootState.deskTopW;
+      }
+      if(data.height > rootState.deskTopH){
+        data.height = rootState.deskTopH;
+      }
       data.draggable = false;
       data.isMin = false;
       data.isMax = false;

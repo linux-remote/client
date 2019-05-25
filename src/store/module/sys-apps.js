@@ -58,6 +58,7 @@ export default   {
       sys_app_task_manager: {
         iconUrl: '/public/img/utilities-system-monitor-6.png',
         unique: true,
+        
         height: 800
         // title: null,
         // name: {
