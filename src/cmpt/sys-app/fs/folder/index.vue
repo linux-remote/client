@@ -211,10 +211,15 @@ export default {
             address: this.address,
             data
           });
-          
+          this.$nextTick(() => {
+             this.reActiveNewItems();
+          });
         },
         error(xhr){
-          this.error = `${xhr.responseText}`
+          this.error = `${xhr.responseText}`;
+          if(this.$options._shouldActiveNewItemNames){
+            this.$options._shouldActiveNewItemNames = null;
+          }
         }
       })
     },

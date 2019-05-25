@@ -9,13 +9,28 @@ export default  {
   methods: {
 
     shouldActiveNewItems(filenames){
-      if(filenames.length === 1){
-        this.$options._shouldFocusItemName = filenames[0];
-      } else {
-        this.$options._shouldSelectItemNames = filenames;
-      }
+      this.$options._shouldActiveNewItemNames = filenames;
     },
-
+    reActiveNewItems(){
+      const $opts = this.$options;
+      const filenames = $opts._shouldActiveNewItemNames;
+      if(filenames && filenames.length){
+        if(filenames.length === 0){
+          const item = $opts._sync.get(filenames);
+          this.selectAndFocusItem(item);
+        } else {
+          const items = [];
+          filenames.forEach(name => {
+            const item = $opts._sync.get(name);
+            if(item){
+              items.push(item);
+            }
+          })
+          this.selectItems(items);
+        }
+      }
+      this.$options._shouldActiveNewItemNames = null;
+    },
     getItemPath(name){
       let address = this.address;
       const a = address === '/' ? address : address + '/';
@@ -26,7 +41,12 @@ export default  {
       item.isBeSelected = true;
       this.$options._selectedItems.add(item);
     },
-
+    selectItems(items){
+      this.clearSelected();
+      items.forEach(item => {
+        this.selectItem(item);
+      })
+    },
     unSelectItem(item) {
       item.isBeSelected = false;
       this.$options._selectedItems.delete(item);

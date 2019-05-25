@@ -31,14 +31,13 @@ export function trimEnd0(str) { //去掉未尾多余的0.
 const SIZE_TYPE = ['B', 'K', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y'];
 const UNIT = 1024;
 export const wellSize = (size, startUnit, fix) => {
-  
   if(size < UNIT){
     return size + ' ' + SIZE_TYPE[0];
   }
   var  index = startUnit ? SIZE_TYPE.indexOf(startUnit) : 0;
 
   var len = SIZE_TYPE.length;
-  fix = fix || 2;
+  fix = fix || 1;
 
   function loop(){
     if(size >= UNIT && index < len){

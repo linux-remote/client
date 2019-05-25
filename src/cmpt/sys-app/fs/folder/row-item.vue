@@ -47,8 +47,8 @@ tr(@dblclick='open',
         .lr-per-sticky(v-if='item.isSticky')
       .lr-per-ACL(v-if='item.isMask') ACL
   td {{item.mtime}}
-  td(v-if='item.size') {{item.size | wellSize}}
-  td(v-else) 
+  td(v-if='!item.device_type') {{item.size | wellSize}}
+  td(v-else)
     span.lr_is_device_type {{item.device_type}}
 </template>
 <script>

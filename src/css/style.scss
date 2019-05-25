@@ -319,10 +319,13 @@ button.lr-desktop-icon{
   .lr-desktop-icons{
     z-index: $maxZindex;
     background: #730202;
+    // background-image: url('/public/img/preferences-desktop-launch-feedback.png');
+    // background-position: center;
+    // background-repeat: no-repeat;
   }
-  // .lr-quick-launch{
-  //   background: #730202;
-  // }
+  .lr-quick-launch{
+    background-color: #730202;
+  }
 }
 .lr_be_selected{
   background-color: green;

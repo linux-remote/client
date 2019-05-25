@@ -79,13 +79,13 @@ export default {
     }
   },
   methods:{
-    handleMove2(x, y){
-      if(y < 0){
-        y = 0;
-      }
-      this.positionTop = y;
-      this.positionLeft =  x;
-    },
+    // handleMove2(x, y){
+    //   if(y < 0){
+    //     y = 0;
+    //   }
+    //   this.positionTop = y;
+    //   this.positionLeft =  x;
+    // },
     handleMove(e){
       var data = e._movableData;
       if(this.isMax){

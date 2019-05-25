@@ -6,7 +6,7 @@ export default  {
       this._sort();
     },
     _sort(){
-      console.log('_sort');
+      // console.log('_sort');
       if(this.$options._reHiddenBottomSortPartArr){
         sortByStrKey(this.$options._reHiddenBottomSortPartArr, 'name');
         this.concatHiddenBottomList();
@@ -78,7 +78,7 @@ export default  {
       this.concatHiddenBottomList();
     },
     reHiddenBottomSortByItem(v, isNew){ // 可减少整体排序, 只排 4 处中的 1 处.
-      console.log('reHiddenBottomSortByItem');
+      // console.log('reHiddenBottomSortByItem');
       const arr = this.getMapArr(v);
       if(isNew){
         arr.push(v);
