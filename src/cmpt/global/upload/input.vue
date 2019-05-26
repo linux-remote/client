@@ -93,9 +93,9 @@ export default {
         // webkitRelativePath: ""
 
         selectedFile.push({
-          rawFile: files[k]
+          rawFile
         });
-        fileNameList.push(files[k].name);
+        fileNameList.push(rawFile.name);
       });
       
       this.request({

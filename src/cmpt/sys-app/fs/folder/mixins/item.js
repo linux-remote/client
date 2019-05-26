@@ -78,17 +78,21 @@ export default  {
     //     files: filenames
     //   })
     // },
-    delItems(filenames){
+    delItems(filenames, thorough){
       this.request({
         type: 'post',
         stateKey: 'isRequest',
         url: '~/fs/' + encodePath(this.address),
         data: {
           type: 'del',
-          files: filenames
+          files: filenames,
+          thorough
         },
         success(){
-          this.$store.commit('recycleBinTrigger');
+          if(!thorough){
+            this.$store.commit('recycleBinTrigger');
+          }
+          
           this.publicEmit({
             type: 'del',
             files: filenames,

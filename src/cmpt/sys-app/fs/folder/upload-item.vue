@@ -35,8 +35,7 @@ tr.lr-fs-upload-tr(@mousedown.stop='', v-on="$listeners")
 </template>
 <script>
 import ContextMenu from '__ROOT__/cmpt/global/contextmenu/index.vue';
-import { getNewUnSuffixName } from './util';
-import {encodePath, basename} from '__ROOT__/cmpt/sys-app/util';
+
 
 export default {
   components: {

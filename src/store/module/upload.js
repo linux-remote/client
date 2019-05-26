@@ -1,5 +1,3 @@
-import item from "../../cmpt/sys-app/fs/folder/mixins/item";
-
 export default  {
   namespaced: true,
   state: {

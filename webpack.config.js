@@ -24,7 +24,7 @@ if(confName === 'dev' && !isPro){ //使用 命令weblack
   publicPath = conf.baseUrl + '/dist/dev/build/';
   cssRule = {
     test: /(\.scss$)|(\.css$)/,
-    use: ['style-loader', 'css-loader', 'sass-loader'],
+    use: ['style-loader', 'css-loader',  'sass-loader'],
     include: path.join(__dirname, './src')
   }
 
@@ -39,7 +39,7 @@ if(confName === 'dev' && !isPro){ //使用 命令weblack
         loader: MiniCssExtractPlugin.loader
       },
       
-      "css-loader",  "sass-loader"
+      "css-loader",  'postcss-loader', "sass-loader"
     ]
   }
 

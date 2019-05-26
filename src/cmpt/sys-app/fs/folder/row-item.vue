@@ -190,7 +190,7 @@ export default {
     },
     handleRename() {
       this.$refs.name.startRename();
-      console.log('handleRename');
+      this.$refs.ctx.hidden();
     },
     sendToDesktop(){
       this.$refs.ctx.hidden();

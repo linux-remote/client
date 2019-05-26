@@ -46,7 +46,7 @@ export default {
           
           var xhr = new window.XMLHttpRequest();
 
-          xhr.upload.onloadstart = function(e){
+          xhr.upload.onloadstart = function(){
             console.log(' xhr.upload.onloadstart');
             self.$store.commit('fs/publicEmit', {
               address: item.address,
@@ -77,7 +77,7 @@ export default {
               loaded: e.loaded
             });
           }
-          xhr.upload.onabort = function(e){
+          xhr.upload.onabort = function(){
             // console.log('onabort', e);
             self.$store.commit('fs/publicEmit', {
               address: item.address,

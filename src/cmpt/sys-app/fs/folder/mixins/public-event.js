@@ -157,7 +157,7 @@ export default  {
         status: 'UploadAbort'
       });
       this.execOnce(e, () => {
-        this.delItems([e.name]);
+        this.delItems([e.name], true);
       });
     },
     on_public_uploadError(e){
