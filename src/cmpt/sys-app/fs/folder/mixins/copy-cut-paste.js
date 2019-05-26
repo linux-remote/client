@@ -33,7 +33,7 @@ export default  {
               },
               success(){
                 this.$options._shouldFocusItemName = newFileName;
-                this.$store.commit('fsPublicEmit', {
+                this.publicEmit({
                   type: 'copy_in',
                   address: this.address,
                   files: [newFileName]
@@ -61,7 +61,7 @@ export default  {
           },
           success(){
             this.shouldActiveNewItems(_files);
-            this.$store.commit('fsPublicEmit', {
+            this.publicEmit({
               type: type + '_in',
               address: this.address,
               files: _files
@@ -70,7 +70,7 @@ export default  {
 
             if(type === 'cut'){
               this.$nextTick(() => {
-                this.$store.commit('fsPublicEmit', {
+                this.publicEmit({
                   type: type + '_out',
                   address,
                   files: _files

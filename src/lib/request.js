@@ -6,7 +6,7 @@ import router from '../router';
 const $ = window.$;
 
 const API_ROOT = window.SERVER_CONFIG.API_ROOT;
-const JSON_CONTENT_TYPE = 'application/json; charset=utf-8';
+export const JSON_CONTENT_TYPE = 'application/json; charset=utf-8';
 //const POOL = {};
 //跨站ajax请求初始化.
 if(API_ROOT.indexOf('http') === 0){
@@ -22,7 +22,7 @@ const POOL = {};
 var poolIndex = 0;
 
 // 默认的http处理程序
-function httpErrorHandler(xhr){
+export function httpErrorHandler(xhr){
   store.commit('error/show', `#${xhr.status}: ${xhr.responseText}`);
 }
 
@@ -42,14 +42,14 @@ const globalConfig = {
   rootUrl: API_ROOT
 }
 
-function getUserUrl(url, username){
+function getUserUrl(url){
   if(url[0] === '~'){
-    url = '/user/' + username + url.substr(1);
+    url = '/user/' + router.currentRoute.params.username + url.substr(1);
   }
   return url;
 }
-export function wrapUrl(url, username){
-  return globalConfig.rootUrl + getUserUrl(url, username);
+export function wrapUrl(url){
+  return globalConfig.rootUrl + getUserUrl(url);
 }
 
 function request(opts){
@@ -85,7 +85,7 @@ function request(opts){
   }
 
 
-  opts.url =  rootUrl + getUserUrl(url, router.currentRoute.params.username);
+  opts.url =  rootUrl + getUserUrl(url);
   // if(isOmitEmptyData){
   //   if(TypeOf(opts.data) === 'Object'){
   //     opts.data = omitEmpty(opts.data);

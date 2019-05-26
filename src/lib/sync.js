@@ -16,6 +16,9 @@ export default class Sync {
   get(mapKey){
     return this.map.get(mapKey);
   }
+  has(mapKey){
+    return this.map.has(mapKey);
+  }
   _add(key, newItem){
     const item = Object.create(null);
     Object.assign(item, newItem);

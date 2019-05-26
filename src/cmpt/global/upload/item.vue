@@ -48,7 +48,7 @@ export default {
 
           xhr.upload.onloadstart = function(e){
             console.log(' xhr.upload.onloadstart');
-            self.$store.commit('fsPublicEmit', {
+            self.$store.commit('fs/publicEmit', {
               address: item.address,
               type: 'uploadStart',
               rawFile: item.rawFile
@@ -57,7 +57,7 @@ export default {
           xhr.upload.addEventListener("progress", function(e){
             self.percentage = (e.loaded / e.total) * 100;
 
-            self.$store.commit('fsPublicEmit', {
+            self.$store.commit('fs/publicEmit', {
               address: item.address,
               type: 'uploadProgress',
               name: item.rawFile.name,
@@ -66,22 +66,46 @@ export default {
             });
 
           });
-          // xhr.upload.onloadend = function(){
-          //   self.$store.commit('fsPublicEmit', {
-          //     address: item.address,
-          //     type: 'uploadLoadend',
-          //     name: item.rawFile.name,
-          //     total: e.total,
-          //     loaded: e.loaded
-          //   });
-          // }
+
+          xhr.upload.onerror = function(e){
+            // console.log('uploadError', e);
+            self.$store.commit('fs/publicEmit', {
+              address: item.address,
+              type: 'uploadError',
+              name: item.rawFile.name,
+              total: e.total,
+              loaded: e.loaded
+            });
+          }
+          xhr.upload.onabort = function(e){
+            // console.log('onabort', e);
+            self.$store.commit('fs/publicEmit', {
+              address: item.address,
+              type: 'uploadAbort',
+              name: item.rawFile.name
+            });
+
+            // self.$store.dispatch('fs/thoroughDelItemsDev', {
+            //   address: item.address,
+            //   files: [item.rawFile.name]
+            // });
+          }
+          xhr.upload.ontimeout = function(){
+            // console.log('ontimeout', e);
+            self.$store.commit('fs/publicEmit', {
+              address: item.address,
+              type: 'uploadTimeout',
+              name: item.rawFile.name,
+              srcTaskId: item.srcTaskId
+            });
+          }
           return xhr;
         },
         success(stdout){
           const item = this.item;
-          this.$store.commit('upload/removeItem', this.index);
+          self.close();
 
-          this.$store.commit('fsPublicEmit', {
+          self.$store.commit('fs/publicEmit', {
             address: item.address,
             type: 'uploadSuccess',
             stdout
@@ -91,7 +115,7 @@ export default {
       })
     },
     close(){
-      this.$parent.selectedFiles.splice(this.index, 1);
+      this.$store.commit('upload/removeItem', this.index);
     }
   },
   beforeDestroy(){

@@ -55,7 +55,7 @@ function parse(result, isSelf) {
       nextIndex = 6;
       
     }else {
-      data.size = size;
+      data.size = Number(size);
     }
 
     data.mtime =  _pre[nextIndex] + " " + _pre[nextIndex + 1];

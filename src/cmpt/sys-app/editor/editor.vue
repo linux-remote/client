@@ -121,7 +121,7 @@ export default {
              this.closeTaskWindow();
           }
           // console.log('create', stdout);
-          this.$store.commit('fsPublicEmit', {
+          this.$store.commit('fs/publicEmit', {
             type: 'add',
             address: this.dir,
             data: stdout
@@ -154,7 +154,7 @@ export default {
         },
         success(stdout){
 
-          this.$store.commit('fsPublicEmit', {
+          this.$store.commit('fs/publicEmit', {
             type: 'update',
             address: this.dir,
             data: stdout

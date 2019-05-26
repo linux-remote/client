@@ -1,6 +1,5 @@
 import initRelation from '../permission-util';
 import {initIconAttr, parseName} from '../util';
-import { dateFormat } from '../../../util';
 import lsParse from '../../../lib/ls-parse';
 // status key: isUploading, isCut, focus, isBeSelected
 export default  {
@@ -16,11 +15,8 @@ export default  {
     //   this.wrapBaseItem(v);
     // },
     wrapBaseItem(v){
-      if(v.isUploading) {
-        v.mtime = dateFormat(v.mtime);
-      } else {
-        v.size = Number(v.size);
-      }
+      v.isUploading = v.isUploading || false;
+      v.status = v.status || null;
       // v._mtime = (new Date(v.mtime)).getTime();
       initRelation(v, this.username, this.groups);
 

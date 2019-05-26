@@ -1,13 +1,13 @@
 import lsParse from '../../../lib/ls-parse';
-
 export default  {
   computed: {
     publicEvent(){
-      return this.$store.state.fsPublicEvent
+      return this.$store.state.fs.publicEvent
     }
   },
   watch: {
     publicEvent(e){
+
       if(e.address === this.address){
         let methodKey = 'on_public_' + e.type;
         if(this[methodKey]){
@@ -19,6 +19,22 @@ export default  {
     }
   },
   methods: {
+    publicEmit(e){
+      e.srcTaskId = this.taskWindow.id;
+      this.$store.commit('fs/publicEmit', e);
+    },
+    execOnce(e, fn){
+      if(e.srcTaskId){
+        if(e.srcTaskId === this.taskWindow.id){
+          fn();
+        }
+      } else {
+        if(!e.is_exec_once){
+          e.is_exec_once = true;
+          fn();
+        }
+      } 
+    },
     on_public_getList(e) {
       const data = e.data;
       this.dir = data.dir;
@@ -57,47 +73,67 @@ export default  {
       const item = this.$options._sync.update(newItem);
       this.reHiddenBottomSortByItem(item);
     },
-    on_public_del(){
-      this.getData();
+    on_public_del(e){
+      this.clearSelected();
+      this.currItem.focus = false;
+
+      this.execOnce(e, () => {
+        this.getData();
+      });
+      
     },
-    on_public_cut_in(){
-      this.getData();
+    on_public_cut_in(e){
+      this.execOnce(e, () => {
+        this.getData();
+      });
     },
-    on_public_cut_out(){
-      this.getData();
+    on_public_cut_out(e){
+      this.execOnce(e, () => {
+        this.getData();
+      });
     },
-    on_public_copy_in(){
-      this.getData();
+    on_public_copy_in(e){
+      this.execOnce(e, () => {
+        this.getData();
+      });
     },
-    on_public_restore(){
-      this.getData();
+    on_public_restore(e){
+      this.execOnce(e, () => {
+        this.getData();
+      });
     },
 
 
 
     on_public_uploadStart(e){
       const rawFile = e.rawFile;
-      const destItem = {
+      const uploadItem = {
+        isUploading: true,
+        status: 'uploadStart',
         name: rawFile.name,
         size: 0,
         totalSize: rawFile.size,
         permission: '----------',
-        group: '',
         owner: this.$store.state.username,
+        group: '--',
         mtime: rawFile.lastModified
       }
-      this.wrapBaseItem(destItem);
-      const item = this.$options._sync.add(destItem);
+      this.wrapBaseItem(uploadItem);
+      const item = this.$options._sync.add(uploadItem);
       item.isUploading = true;
       this.reHiddenBottomSortByItem(item, true);
     },
     on_public_uploadProgress(e){
-      this.$options._sync.update({
-        name: e.name,
-        isUploading: true,
-        size: e.loaded,
-        totalSize: e.total
-      });
+      if(this.$options._sync.has(e.name)){
+        this.$options._sync.update({
+          name: e.name,
+          isUploading: true,
+          status: 'Uploading',
+          size: e.loaded,
+          totalSize: e.total
+        });
+      }
+
       // let item = this.$options[key];
       // if(!item){
       //   item = this.list.find(v => v.name === e.destItem.name);
@@ -113,6 +149,27 @@ export default  {
       this.wrapBaseItem(baseItem);
       this.initItemStatus(baseItem);
       this.$options._sync.update(baseItem);
+    },
+    on_public_uploadAbort(e){
+      this.$options._sync.update({
+        name: e.name,
+        status: 'UploadAbort'
+      });
+      this.execOnce(e, () => {
+        this.delItems([e.name]);
+      });
+    },
+    on_public_uploadError(e){
+      this.$options._sync.update({
+        name: e.name,
+        status: 'UploadError'
+      });
+    },
+    on_public_uploadTimeout(e){
+      this.$options._sync.update({
+        name: e.name,
+        status: 'UploadTimeout'
+      });
     }
     // on_public_uploadLoadend(e){
 
@@ -129,5 +186,5 @@ export default  {
 // 选中逻辑:
 // reload: 清除 // win 10 是清除. 本项目不清除
 // 添加时: 回显
-// 删除时: 清除 // win 10 是清除. 本项目不清除
+// 删除时: 清除
 // 更新时: 回显

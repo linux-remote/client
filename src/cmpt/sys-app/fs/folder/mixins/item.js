@@ -70,26 +70,33 @@ export default  {
       _set.forEach(v => {
         files.push(v.name);
       });
+      this.delItems(files);
+    },
+    // thoroughDelItemsDev(filenames){
+    //   this.$store.dispatch('fs/thoroughDelItemsDev', {
+    //     address: this.address,
+    //     files: filenames
+    //   })
+    // },
+    delItems(filenames){
       this.request({
         type: 'post',
         stateKey: 'isRequest',
         url: '~/fs/' + encodePath(this.address),
         data: {
           type: 'del',
-          files
+          files: filenames
         },
         success(){
           this.$store.commit('recycleBinTrigger');
-          this.$store.commit('fsPublicEmit', {
+          this.publicEmit({
             type: 'del',
-            files,
-            address: this.address
+            files: filenames,
+            address: this.address,
           });
-          _set.clear();
         }
       });
     },
-
     handleItemContentmenu(item){// win 10 list mode have bug.
       if(!item.isBeSelected){
         this.selectAndFocusItem(item);

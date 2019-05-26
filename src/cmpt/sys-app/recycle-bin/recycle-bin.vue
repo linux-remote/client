@@ -86,7 +86,7 @@ export default {
           this.removeItem(item);
 
           let address = item.source.dir;
-          this.$store.commit('fsPublicEmit', {
+          this.$store.commit('fs/publicEmit', {
             type: 'restore',
             address,
             // item: item.source

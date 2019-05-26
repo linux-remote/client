@@ -1,3 +1,5 @@
+import item from "../../cmpt/sys-app/fs/folder/mixins/item";
+
 export default  {
   namespaced: true,
   state: {
@@ -9,6 +11,14 @@ export default  {
       //console.log(address);
       state.address = address;
       document.getElementById('lr-upload-input').click();
+    },
+    removeItemByPath(state, {srcTaskId, path}){
+      const index = state.selectedFiles.findIndex(v => v.fullPath === path);
+      if(index !== -1){
+        const item = state.selectedFiles[index];
+        item.srcTaskId = srcTaskId;
+        state.selectedFiles.splice(index, 1);
+      }
     },
     removeItem(state, index){
       state.selectedFiles.splice(index, 1);

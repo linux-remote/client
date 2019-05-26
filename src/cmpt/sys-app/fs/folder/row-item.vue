@@ -134,7 +134,7 @@ export default {
         },
         success(stdout){
           this.p.$options._shouldFocusItemName = newName;
-          this.$store.commit('fsPublicEmit', {
+          this.publicEmit({
             address: this.p.address,
             type: 'add',
             focus: true,
@@ -181,7 +181,7 @@ export default {
     },
 
     windowOpen(address, queryStr = ''){
-      window.open(this.request.wrapUrl('~/fs/' + encodePath(address) + queryStr, this.$route.params.username));
+      window.open(this.request.wrapUrl('~/fs/' + encodePath(address) + queryStr));
     },
 
     download(){

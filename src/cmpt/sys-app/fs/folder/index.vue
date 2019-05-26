@@ -205,12 +205,11 @@ export default {
           
           let data = lsParse(stdout);
           data = this.getDirAndWrapBaseList(data);
-
-          this.$store.commit('fsPublicEmit', {
+          this.publicEmit({
             type: 'getList',
             address: this.address,
             data
-          });
+          })
           this.$nextTick(() => {
              this.reActiveNewItems();
           });
@@ -247,7 +246,7 @@ export default {
     },
     handleCreateSuccess(name, stdout){
 
-      const result = this.$store.commit('fsPublicEmit', {
+      this.publicEmit({
         type: 'add',
         address: this.address,
         data: this.createBaseItem(stdout)

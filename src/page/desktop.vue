@@ -68,9 +68,7 @@ export default {
             username,
             groups: data.groups,
             homedir: data.homedir,
-            hostname: data.hostname,
-            mask: data.mask,
-            // quickBarItems: data.quickBar ? JSON.parse(data.quickBar) : [{id: 'sys_app_fs'}]
+            hostname: data.hostname
           });
           this.$store.commit('sysApps/changeRecycleBinIcon', data.recycebinIsEmpty);
           this.icons = data.icons;

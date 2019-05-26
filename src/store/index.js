@@ -23,7 +23,7 @@ import fsClipBoard from './module/fs-clip-board';
 import flyTextarea from './module/fly-textarea';
 import sysApps from './module/sys-apps';
 import users from './module/users';
-
+import fs from './module/fs';
 const store = new window.Vuex.Store({
   modules: {
     language,
@@ -33,7 +33,8 @@ const store = new window.Vuex.Store({
     users,
     flyTextarea,
     sysApps,
-    fsClipBoard
+    fsClipBoard,
+    fs
   },
   state: {
     dragTransferData: null,
@@ -53,13 +54,11 @@ const store = new window.Vuex.Store({
     groups: [],
     homedir: '',
     hostname: '',
-    mask: '',
 
     // quickBarItems: [],
 
     deskTopEvent: null,
     recycleBinEvent: null,
-    fsPublicEvent: {},
 
 
     onDustbinRecycle: null,
@@ -90,10 +89,7 @@ const store = new window.Vuex.Store({
       state.recycleBinEvent = Date.now();
       this.commit('sysApps/changeRecycleBinIcon', bool)
     },
-
-    fsPublicEmit(state, data){
-      state.fsPublicEvent = data;
-    },
+    
     deskTopTrigger(state, data){
       state.deskTopEvent = data;
     },
