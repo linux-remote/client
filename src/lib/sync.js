@@ -6,6 +6,14 @@ export default class Sync {
     this.map = new Map;
   }
   _tmpMap = null;
+  set(newItem){
+    const key = newItem[this.key];
+    if(this.map.has(key)){
+      return this._update(key, newItem);
+    } else {
+      return this._add(key, newItem);
+    }
+  }
   add(newItem){
     const key = newItem[this.key];
     // if(this.map.has(key)){
@@ -36,6 +44,9 @@ export default class Sync {
   }
   update(newItem){
     const key = newItem[this.key];
+    return this._update(key, newItem);
+  }
+  _update(key, newItem){
     const item = this.map.get(key);
     Object.assign(item, newItem);
     return item;
@@ -47,7 +58,7 @@ export default class Sync {
       const key = v[this.key];
       let item;
       if(this.map.has(key)){
-        item = this.update(v);
+        item = this._update(key, v);
       } else {
         item = this._add(key, v);
       }

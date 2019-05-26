@@ -539,7 +539,7 @@ tr.lr_file_be_selected.lr_file_former{
   }
 }
 
-.lr_task_un_focus tr.lr_file_be_selected {
+.lr_task_un_focus tr.lr_file_be_selected, .lr_task_un_focus tr.lr_file_focus {
   td {
     background-color: #d9d9d9!important;
     border-color: transparent!important;
@@ -755,25 +755,47 @@ tr.lr_file_be_selected.lr_file_former{
   color: red
 }
 
-.lr-fs-uploading-tr{
-  .lr-fs-item-name{
-    color: #666;
-  }
-  // td {
-  //   // pointer-events: none;
-  // }
-}
+// .lr-fs-upload-tr{
 
-.lr-fs-uploading-processbar, .lr-fs-uploading-info{
+//   // background-color: #eee;
+//   // &:hover, &:focus{
+//   //   td {
+//   //     background-color: $activeBgColor!important;
+//   //   }
+//   //   &:focus{
+//   //     outline: none;
+//   //   }
+    
+//   // }
+//   // .lr-fs-item-name{
+//   //   color: #666;
+//   // }
+//   // td {
+//   //   // pointer-events: none;
+//   // }
+// }
+.lr-fs-upload-process{
+  background-color: #ddd;
+  position: relative;
+  margin: 0 5px;
+  height: 14px;
+  line-height: 14px;
+}
+.lr-fs-upload-processbar, .lr-fs-upload-info{
   position: absolute;
   top: 0;
+  left: 0;
   height: 100%;
 }
-.lr-fs-uploading-processbar{
-  background-color: rgba(#0078D7, 0.4);
-  left: 0;
+.lr-fs-upload-processbar{
+  background-color: #0078D7;
+  width: 0;
 }
-.lr-fs-uploading-info{
+.lr-fs-upload-info{
   z-index: 2;
   right: 0;
+  font-size: 12px;
+  line-height: 1em;
+  color: #333;
+  text-align: center;
 }

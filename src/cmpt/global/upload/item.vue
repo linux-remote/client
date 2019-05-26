@@ -1,12 +1,12 @@
 
 <template lang='jade'>
 .lr-upload-item(:title='item.fullPath')
-  .lr-upload-content
-    .lr-upload-name {{item.rawFile.name}}
-    div {{item.rawFile.size | wellSize}}
-    .lr-upload-ctrl
-      button(@click='close') X
-  .lr-upload-process(:style='{width: percentage + "%"}')
+  //- .lr-upload-content
+  //-   .lr-upload-name {{item.rawFile.name}}
+  //-   div {{item.rawFile.size | wellSize}}
+  //-   .lr-upload-ctrl
+  //-     button(@click='close') X
+  //- .lr-upload-process(:style='{width: percentage + "%"}')
 </template>
 
 <script>

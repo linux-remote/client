@@ -119,9 +119,10 @@ export default  {
         mtime: rawFile.lastModified
       }
       this.wrapBaseItem(uploadItem);
-      const item = this.$options._sync.add(uploadItem);
-      item.isUploading = true;
-      this.reHiddenBottomSortByItem(item, true);
+      let isNew = !this.$options._sync.has(uploadItem.name);
+      const item = this.$options._sync.set(uploadItem);
+      console.log('isNew', isNew);
+      this.reHiddenBottomSortByItem(item, isNew);
     },
     on_public_uploadProgress(e){
       if(this.$options._sync.has(e.name)){

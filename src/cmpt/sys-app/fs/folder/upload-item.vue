@@ -1,5 +1,5 @@
 <template lang="jade">
-tr.lr-fs-uploading-tr(@mousedown.stop='')
+tr.lr-fs-upload-tr(@mousedown.stop='', v-on="$listeners")
   td
     ContextMenu(ref='ctx')
       .lr-ctx-item(@click='handleAbort')
@@ -21,14 +21,17 @@ tr.lr-fs-uploading-tr(@mousedown.stop='')
   //-       .lr-per-sticky(v-if='item.isSticky')
   //-     .lr-per-ACL(v-if='item.isMask') ACL
   //- td {{item.mtime}}
-  td(colspan="2", style="text-align: center") {{item.status}}
+  td(colspan="2")
+    .lr-fs-upload-process
+      .lr-fs-upload-processbar(:style="{width: per}")
+      .lr-fs-upload-info {{item.status}}
   td(colspan="2") {{item.size | wellSize}}/{{item.totalSize | wellSize}}
 
   //- td
   //-   span(:class='{lr_per_is_on: item.is_owner}') {{item.owner}}
   //- td(colspan="4", style="position: relative;background-color:#eee")
-  //-   .lr-fs-uploading-processbar(:style="{width: ((item.size / item.totalSize) * 100) + '%'}")
-  //-   .lr-fs-uploading-info {{item.size | wellSize}}
+  //-   .lr-fs-upload-processbar(:style="{width: ((item.size / item.totalSize) * 100) + '%'}")
+  //-   .lr-fs-upload-info {{item.size | wellSize}}
 </template>
 <script>
 import ContextMenu from '__ROOT__/cmpt/global/contextmenu/index.vue';
@@ -54,6 +57,9 @@ export default {
   computed: {
     LANG(){
       return this.p.LANG.ctx
+    },
+    per(){
+      return ((this.item.size / this.item.totalSize) * 100) + '%';
     },
     iconStyle(){
       const app = this.item.openApp;
