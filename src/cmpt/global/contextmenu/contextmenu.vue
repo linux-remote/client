@@ -19,9 +19,7 @@ export default {
     const data = window.APP.contextMenuTransferData;
     if(data){
 
-      // var _tmpDom = document.createElement('div');
-      // this.$el.replaceWith(_tmpDom);
-      //this.$options._prevNode = window.$(this.$el).prev();
+
       document.getElementById('lr-app').appendChild(this.$el);
       
 

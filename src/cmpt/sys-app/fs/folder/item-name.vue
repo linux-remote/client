@@ -72,7 +72,7 @@ export default {
         data: {type: 'rename', oldName, newName},
         success(){
           
-          this.publicEmit({
+          this.p.publicEmit({
             type: 'rename',
             address: this.p.address,
             oldName,

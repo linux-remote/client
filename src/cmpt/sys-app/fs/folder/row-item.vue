@@ -134,7 +134,7 @@ export default {
         },
         success(stdout){
           this.p.$options._shouldFocusItemName = newName;
-          this.publicEmit({
+          this.p.publicEmit({
             address: this.p.address,
             type: 'add',
             focus: true,

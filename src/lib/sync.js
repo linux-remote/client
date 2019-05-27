@@ -36,7 +36,7 @@ export default class Sync {
     return item;
   }
   changeKey(oldKey, newKey){
-    const item = this.map[oldKey];
+    const item = this.map.get(oldKey);
     item[this.key] = newKey;
     this.map.set(newKey, item);
     this.map.delete(oldKey);
