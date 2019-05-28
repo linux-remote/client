@@ -8,14 +8,8 @@
     <title>Linux Remote</title>
   </head>
   <body>
-  <div id="lr-app"><span>Loading...</span></div>
-  <script>
-    if(navigator.userAgent.indexOf('Chrome') === -1 || 
-      navigator.vendor.indexOf('Google Inc')=== -1){ //stackoverflow #4565112
-        document.body.innerHTML = '<h1>Sorry! This project only support Chrome now.</h1>';
-        throw new Error('This project only support Chrome.');
-    }
-  </script>
+  <div id="lr-app">Loading...</div>
+  
   <% statics.jsArr.forEach(function(v){%>
   <script src="<%=v%>"></script><% }) %>
   <script src="/public/js/require-2.3.6.min.js"></script>

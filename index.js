@@ -6,13 +6,16 @@ if(process.env.NODE_ENV !== 'production') {
   publicPath = path.join(__dirname, '../lr-public/public');
   map['local_winstrap'] = getUrlAndDir('local_winstrap', path.join(__dirname, '../../winstrap'));
   map['local_winstrap'].files = ['css/winstrap-optional.min.css'];
-} else {
   
+} else {
+
+  map['@hezedu/winstrap'] = getUrlAndDir('@hezedu/winstrap');
+  map['@hezedu/winstrap'].files = ['css/winstrap-optional.min.css'];
 }
+
 map['jquery'] = getUrlAndDir('jquery');
 
-map['@hezedu/winstrap'] = getUrlAndDir('@hezedu/winstrap');
-map['@hezedu/winstrap'].files = ['css/winstrap.min.css'];
+
 
 map['vue.runtime'] = getUrlAndDir('vue');
 map['vuex'] = getUrlAndDir('vuex');
