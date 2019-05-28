@@ -84,9 +84,7 @@ $fsStatusBarH: 23px;
 //   background-color: $bg;
 //   color: #000;
 // }
-// .lr_bookmark_active{
-//   background-color: $bg;
-// }
+
 
 // *************** Left End ***************
 .lr-fs-nav-bar{
@@ -198,6 +196,7 @@ $linkFileColor: violet;
   background-color: rgba(0,0,0, .6);
   z-index: 2;
   display: flex;
+  
 }
 
 
@@ -396,6 +395,7 @@ background-image: url('/public/img/tango-style/inode-chardevice.png');
   align-items: center;
   top: 0;
   left: 0;
+  background-color: #eee;
   .btn {
     margin-top: 0;
   }
@@ -407,8 +407,22 @@ background-image: url('/public/img/tango-style/inode-chardevice.png');
 }
 .lr-fs-home-mark{
   position: absolute;
-  right: 0;
+  right: 30px;
   top: 0;
+  bottom: 0;
+  margin:auto;
+  background-image: url('/public/img/tango-style/user-home.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-color: rgba(#fff, 0);
+  border: 0;
+  height: 26px;
+  width: 26px;
+  cursor: pointer;
+  &:hover{
+    background-color: #ddd;
+  }
 }
 .lr-fs-new-folder{
   background-image: url('/public/img/tango-style/folder-new-5.png');
@@ -798,4 +812,20 @@ tr.lr_file_be_selected.lr_file_former{
   line-height: 1em;
   color: #333;
   text-align: center;
+}
+.lr-fs-upload-btn{
+  background-color: $color-accent;
+  color: #fff;
+  border: 0;
+  padding: 0 10px;
+  &:hover{
+    background-color: darken($color: $color-accent, $amount: 5);
+  }
+  &:focus{
+    outline: none;
+  }
+}
+.lr_bookmark_active{
+  opacity: .1;
+  pointer-events: none;
 }

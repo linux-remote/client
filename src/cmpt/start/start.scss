@@ -92,4 +92,9 @@
 .lr-start-logout-btn{
   min-width: auto;
   margin: 0;
+  background-color: rgba($color-alert, .6);
+  border: 1px solid #fff;
+  &:hover{
+    background-color: rgba($color-alert, .8);
+  }
 }

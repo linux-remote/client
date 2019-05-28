@@ -36,8 +36,8 @@ function wrapUrl(name, version) {
 }
 exports.wrapUrl = wrapUrl;
 
-exports.getUrlAndDir = function(name){
-  var dir = getDir(name);
+exports.getUrlAndDir = function(name, localPath){
+  var dir = localPath ? localPath : getDir(name);
   var v = getVersion(dir);
   return {
     url: wrapUrl(name, v),

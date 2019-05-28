@@ -6,11 +6,11 @@
   .lr-icon.lr-fs-new-folder(@click='addItem("Directory")')
   .lr-icon.lr-fs-new-file(@click='addItem("RegularFile")')
    
-  button.btn.btn-primary.btn-xs(@click='handleUploadBtnClick')
+  button.lr-btn-sm.lr-fs-upload-btn(@click='handleUploadBtnClick')
     span.glyph.glyph-upload
     span {{$parent.LANG.upload}}
   //- button(@click="errDev") errDev
-  button.btn.btn-primary.btn-xs.lr-fs-home-mark(@click="$parent.go(homedir)") Home
+  .lr-fs-home-mark(@click="$parent.go(homedir)", :class="{lr_bookmark_active: address === homedir}")
 </template>
 <script>
   // div(style='flex-grow: 1')
@@ -29,6 +29,9 @@ export default {
   computed: {
     homedir(){
       return this.$store.state.homedir
+    },
+    address(){
+      return this.$parent.address
     }
   },
   methods: {

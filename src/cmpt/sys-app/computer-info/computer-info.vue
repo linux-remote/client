@@ -1,8 +1,8 @@
 <template lang="jade">
-.lr-window-body(style='user-select:text')
+.lr-window-body
   .lr-hourglass(v-show='isRequest')
 
-  table.lr-info-table.lr-computer-table(v-if='platform')
+  table.lr-computer-table(v-if='platform')
     tr
       td(style='color:gray') platform:
       td {{platform}}
@@ -21,13 +21,7 @@
     tr
       td(style='color:gray') totalmem:
       td {{wellTotalMem}}
-    tr
-      td(style='color:gray') uptime:
-      td {{uptime}} 
-        small seconds
-    tr
-      td(style='color:gray') loadavg:
-      td {{loadavg.join(' , ')}}
+
     tr
       td(style='color:gray') endianness:
       td {{endianness}}
@@ -41,12 +35,12 @@
           |{{v.speed}}MHz
     tr
       td(style='color:gray') networkInterfaces:
-      td
-        table.leftHead.lr-info-table
+      td.lr-computer-td-wrap
+        table.leftHead
           tr(v-for="(v, k) in networkInterfaces")
             td {{k}}:
-            td
-              table.lr-small-table.lr-info-table
+            td.lr-computer-td-wrap
+              table.lr-small-table
                 tr
                  th(v-for='n in netThKeys') {{n}}
                 tr(v-for='v2 in v')

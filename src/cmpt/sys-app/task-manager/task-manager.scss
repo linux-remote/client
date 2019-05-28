@@ -32,7 +32,33 @@ table.lr-tm-table{
   cursor: default;
   flex-grow: 1;
   overflow: auto;
+  table{
+    width: 100%;
+    th, td {
+      padding: 1px 5px;
+    }
+    th{
+      color: #4c607a;
+      font-weight: normal;
+      text-align: left;
+      font-size: 12px;
+      padding: 8px 5px;
+      &.active{
+        background-color: rgba($color-accent, .4);
+      }
+    }
+    tbody tr:hover{
+      background-color: rgba($color-accent, .2);
+    }
+    tr.active{
+      td{
+        background-color: $color-accent;
+        color: #fff;
+      }
+    }
+  }
 }
+
 .lr-tm-cpu-process{
   height: 70px;
   width: 26px;

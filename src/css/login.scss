@@ -1,17 +1,33 @@
+.lr-login-wrap{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-top: 1px;
+  background-color: $color-accent;
+  h2 {
+    color: #fff;
+  }
+  label{
+    padding-top: 3px;
+    padding-bottom: 5px;
+    color: #fff;
+    display: block;
+  }
+  .lr-input{
+    display: block;
+    max-width: 296px;
+    border: 1px solid #fff;
+  }
+}
+
 .lr-login-box-wrap{
   display: flex;
   align-items: center;
   flex-direction: column;
+  
 }
 
-.lr-login-wrap{
-  display: flex;
-  justify-content: center;
-  padding-top: 1px;
-  h2 {
-    color: #fff;
-  }
-}
+
 .lr-logined-wrap{
 
   margin-right: 40px;
@@ -21,16 +37,36 @@
   align-items: center;
   border-right: 1px solid rgba(#fff, .6);
 
-  .entity-list-item{
-    display: block;
-    color: #000;
-    width: 200px;
-    background-color: rgba(#fff, .8);
-    &:hover{
-      text-decoration: none;
-      background-color: rgba(#fff, 1);
-    }
+
+}
+.lr-logined-item{
+  display: block;
+  color: #000;
+  width: 200px;
+  background-color: rgba(#fff, .8);
+  display: flex;
+  align-items: center;
+  height: 50px;
+  text-decoration: none;
+  &:hover{
+    text-decoration: none;
+    background-color: rgba(#fff, 1);
   }
+}
+.lr-logined-item-icon{
+  background-color: $color-accent;
+  color:#fff;
+  width: 40px;
+  height: 40px;
+  margin-left: 10px;
+  text-align: center;
+  line-height: 40px;
+  font-size: 25px;
+}
+.lr-logined-item-text{
+  margin-left: 13px;
+  font-size: 18px;
+  color: #222;
 }
 .lr-login-logo{
   width: 160px;
@@ -45,5 +81,9 @@
   }
 }
 .lr-login-box{
-  width: 296px;
+  width: 100%;
+  max-width: 296px;
+  .lr-btn{
+    margin-top: 20px;
+  }
 }

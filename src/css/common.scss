@@ -1,0 +1,32 @@
+.lr-input{
+  width: 100%;
+  max-width: 296px;
+  height: 36px;
+  padding: 4px 8px;
+  border: 1px solid #eee;
+}
+.lr-btn, .lr-btn-sm{
+  display: flex;
+  padding: 0 5px;
+  justify-content: center;
+  align-items: center;
+  line-height: 1;
+}
+.lr-btn{
+  height: 36px;
+}
+.lr-btn-sm{
+  height: 25px;
+  font-size: 12px;
+}
+.lr-btn-hollow{
+  background: none;
+  border: 1px solid #eee;
+  color: #fff;
+  &:hover{
+    background-color: rgba(#fff, .1);
+  }
+  &:disabled{
+    background-color: rgba(#fff, .6);
+  }
+}

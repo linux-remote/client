@@ -1,7 +1,7 @@
 
 
 <template lang="jade">
-button.btn.loading-btn(:disabled='isLoading')
+button.loading-btn(:disabled='isLoading')
   span {{text}}
   .progress-ring(v-if="isLoading")
     .progress-circle

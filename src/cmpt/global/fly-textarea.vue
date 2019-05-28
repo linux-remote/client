@@ -3,8 +3,6 @@ textarea.lr_fly_textarea(v-show='open' , :style='{top:top + "px", left: left  + 
 </template>
 
 <script>
-
-const $ = window.$;
 export default {
   data(){
     return this.$store.state.flyTextarea
@@ -16,14 +14,14 @@ export default {
         vmDom.style.fontSize = this.fontSize;
         this.getWidth(this.value);
         setTimeout(() => {
-          $(this.$el).focus();
+          this.$el.focus();
         })
       }
     }
   },
   methods:{
     handleKeyDown(){
-      $(this.$el).blur();
+      this.$el.blur();
     },
     handleInput(e){
       this.getWidth(e.target.value);
@@ -40,7 +38,7 @@ export default {
       return false;
     },
     select(){
-      $(this.$el).select();
+      this.$el.select();
     }
   },
   mounted(){

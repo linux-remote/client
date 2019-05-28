@@ -2,31 +2,23 @@
 <template lang="jade">
 .lr-page.lr-login-wrap.theme-dark.color-fill-accent-vivid-high
   .lr-logined-wrap(v-if="loginedList.length")
-    .entity-list.entity-list-expandable
-      router-link.entity-list-item(v-for="username in loginedList", :key="username", :to="'/user/' + username")
-        .item-icon
+    div
+      router-link.lr-logined-item(v-for="username in loginedList", :key="username", :to="'/user/' + username")
+        .lr-logined-item-icon
           span.glyph.glyph-contact
-        .item-content-primary
-          .content-text-primary {{username}}
+        .lr-logined-item-text {{username}}
   .lr-login-box-wrap(:class="{lr_login_have_logined: loginedList.length}")
     img.lr-login-logo(src="/public/img/windows-linux-logo-c.png")
     h2 Linux Remote
     .lr-login-box
-      
-      //- fieldset
-      //-   legend.lr-login-legend {{LANG.langTitle}}
-      //-   select(v-model='currLangIndex', @change="handleChange")
-      //-     option(v-for='(v, i) in language.list',
-      //-           :value='i',
-      //-           :key='v.id') {{v.name}}
-      form.theme-dark(@submit.prevent="login")
-        .form-group
+      form(@submit.prevent="login", style="display:")
+        div
           label {{LANG.username}}
-          input.form-control( v-model='username' required="required")
-        .form-group
+          input.lr-input( v-model='username' required="required")
+        div
           label {{LANG.password}}
-          input.form-control(type='password' v-model='password' required="required")
-        LoadingBtn.btn-default.btn-block.theme-dark.no-outline(type="submit", :text="LANG.submitBtn", :isLoading="isRequest")
+          input.lr-input(type='password' v-model='password' required="required")
+        LoadingBtn.lr-btn.lr-w100.lr-btn-hollow(type="submit", :text="LANG.submitBtn", :isLoading="isRequest")
   //-.lr-login-bottom
     a(href='https://github.com/linux-remote/linux-remote/blob/master/LICENSE', target='_blank') Licenses
     a(href='https://github.com/linux-remote', target='_blank') Source code

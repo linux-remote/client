@@ -4,17 +4,18 @@
   <head>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
     
-    <link href="/nodeMouduleStatic/@hezedu/winstrap0.5.14/css/winstrap.min.css" rel="stylesheet">
+    <link href="/nodeMouduleStatic/local_winstrap0.5.15/css/winstrap-optional.min.css" rel="stylesheet">
+    <!-- <link href="/nodeMouduleStatic/@hezedu/winstrap0.5.14/css/winstrap.min.css" rel="stylesheet"> -->
     <title>Linux Remote</title>
   </head>
   <body>
   <div id="lr-app"><span>Loading...</span></div>
   <script>
-    // if(navigator.userAgent.indexOf('Chrome') === -1 || 
-    //   navigator.vendor.indexOf('Google Inc')=== -1){ //stackoverflow #4565112
-    //     document.body.innerHTML = '<h1>Sorry! This project only support Chrome now.</h1>';
-    //     throw new Error('This project only support Chrome.');
-    // }
+    if(navigator.userAgent.indexOf('Chrome') === -1 || 
+      navigator.vendor.indexOf('Google Inc')=== -1){ //stackoverflow #4565112
+        document.body.innerHTML = '<h1>Sorry! This project only support Chrome now.</h1>';
+        throw new Error('This project only support Chrome.');
+    }
   </script>
   
   <script src="/nodeMouduleStatic/jquery3.3.1/jquery.js"></script>

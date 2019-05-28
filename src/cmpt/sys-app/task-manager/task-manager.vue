@@ -66,7 +66,7 @@
   //- div {{JSON.stringify(total, null, '\t')}}
   //- pre.lr-tm-pre {{list}}
   .lr-tm-list
-    table.table.table-hover
+    table
       thead
         tr
           th(v-for="v in keys", :key="v", :class="{active: v === sortKey}", @click="sortBy(v)") {{v}}

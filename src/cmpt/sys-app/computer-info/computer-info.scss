@@ -1,0 +1,17 @@
+
+.lr-computer-table{
+  width: 100%;
+  border: 1px solid #ddd;
+  height: 100%;
+  user-select:text;
+  td{
+    border: 1px solid #ddd;
+    padding: 2px;
+  }
+}
+.lr-small-table{
+  width: 100%;
+}
+td.lr-computer-td-wrap{
+  padding: 0;
+}
