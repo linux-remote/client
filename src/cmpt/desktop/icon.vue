@@ -91,16 +91,13 @@ export default {
       this.$store.commit('task/add', this.item.id);
     },
     handleDragStart(v, e){
-      console.log('handleDragStart');
+      // console.log('Desktop icon handleDragStart');
       const value = JSON.stringify({
         id: this.item.id,
-        type: this.item.type,
         from: 'desktop',
         startClient : {
           x: e.clientX,
-          y: e.clientY,
-          itemX: this.item.x,
-          itemY: this.item.y
+          y: e.clientY
         }
       });
       e.dataTransfer.setData("text", value);

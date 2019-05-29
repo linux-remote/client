@@ -38,8 +38,7 @@ export default {
 
     return {
       list: this.getIconsFromProp(),
-      _isInDesk: false,
-      _isCanDrop: true
+      _isInDesk: false
     }
 
   },
@@ -96,28 +95,10 @@ export default {
       return arr;
     },
     handleDragenter(e){
-      
-      var data = this.$store.state.dragTransferData;
-      if(!data){
-        return;
-      }
-      if(data.from === 'desktop'){
-        return;
-      }
-      var id = data.id;
-      //console.log('id', id)
-      const isHave = this.list.find(function(v){
-        return v.id === id;
-      })
-      this.$data._isCanDrop = isHave === undefined;
-      console.log('handleDragenter', this.$data._isCanDrop);
       e.preventDefault();
     },
     handleDragover(e){
-      console.log('handleDragover');
-      if(this.$data._isCanDrop){
-        e.preventDefault();
-      }
+      e.preventDefault();
     },
     handleMousedown(e){
       if(!e._isHandle){
@@ -155,7 +136,7 @@ export default {
             y: v.y
           }
         });
-        console.log('save', arr);
+        // console.log('save', arr);
 
         
         this.request({
@@ -172,48 +153,72 @@ export default {
 
     },
     handleDeskDrop(e){
-      console.log('handleDeskDrop');
+      // console.log('handleDeskDrop');
       e.preventDefault();
       const data = this._getDragData(e);
-
-      console.log('data', data, data.isFromStart);
-      console.log('clientY', e.clientY, e.clientX);
+      if(!data){
+        return;
+      }
       const item = this.list.find(v => v.id === data.id);
-      if(data && item){
+      if(item){
         if(data.from === 'desktop'){
           this.setDropedItemXY(data, item, e);
+        } else {
+          this.$store.commit('error/show', 'The icon already exists on the desktop.');
         }
         
         this.save();
+      } else {
+        if(data.from === 'startMenu'){
+          let newItem = {
+            id: data.id,
+            x: e.clientX,
+            y: e.clientY
+          }
+          this.wrapItem(newItem);
+          const xy = this.keepIconIn(e.clientX, e.clientY);
+          newItem.x = xy.x;
+          newItem.y = xy.y;
+          this.list.push(newItem);
+          this.save();
+        }
       }
       
     },
     setDropedItemXY(data, item, e){
       const startClient = data.startClient;
+      const positionLeft =  item.x + (e.clientX - startClient.x);
+      const positionTop = item.y  + (e.clientY - startClient.y);
+      
 
-      let positionTop = item.y  + (e.clientY - startClient.y);
-      if(positionTop < 0) {
-        positionTop = 0;
-      }else{
-        let deskH = this.$el.offsetHeight;
-        let elH = ICON_HEIGHT;
-        if(positionTop + elH > deskH){
-          positionTop = deskH - elH;
+      const result = this.keepIconIn(positionLeft, positionTop);
+
+      item.x = result.x;
+      item.y = result.y;
+    },
+    keepIconIn(x, y){
+      if(x < 0){
+        x = 0;
+      } else {
+        const deskW = this.$el.offsetWidth;
+        const elW = ICON_WIDTH;
+        if(x + elW > deskW){
+          x = deskW - elW;
         }
       }
-      let positionLeft =  item.x + (e.clientX - startClient.x);
-      if(positionLeft < 0) {
-        positionLeft = 0;
-      }else{
-        let deskW = this.$el.offsetWidth;
-        let elW = ICON_WIDTH;
-
-        if(positionLeft + elW > deskW){
-          positionLeft = deskW - elW;
+      if(y < 0){
+        y = 0;
+      } else {
+        const deskH = this.$el.offsetHeight;
+        const elH = ICON_HEIGHT;
+        if(y + elH > deskH){
+          y = deskH - elH;
         }
       }
-      item.x = positionLeft;
-      item.y = positionTop;
+      return {
+        x,
+        y
+      }
     },
     getData(){
       this.request({
@@ -227,6 +232,10 @@ export default {
         }
       })
     }
+  },
+  created(){
+
+      this.$options._isCanDrop = true;
   },
   mounted(){
     this.$store.commit('setDeskTopWH');

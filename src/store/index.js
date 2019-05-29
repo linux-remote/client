@@ -76,14 +76,7 @@ const store = new window.Vuex.Store({
       }
     },
 
-    transferDragData(state, data){
-      state.dragTransferData = data;
-      document.addEventListener('dragend', function(){
-        state.dragTransferData = null;
-      }, {
-        once: true
-      })
-    },
+
 
     recycleBinTrigger(state, bool){
       state.recycleBinEvent = Date.now();

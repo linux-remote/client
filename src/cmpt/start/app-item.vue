@@ -33,13 +33,18 @@ export default {
       this.$parent.handleBtnClick();
     },
 
-    handleDragStart(){
+    handleDragStart(e){
       const item = this.item;
-      this.$store.commit('transferDragData', {
-        isFromStart: true,
+      const value = JSON.stringify({
         id: this.id,
-        title: item.title
+        from: 'startMenu',
+        startClient : {
+          x: e.clientX,
+          y: e.clientY
+        }
       });
+      e.dataTransfer.setData("text", value);
+      e.dataTransfer.dropEffect = 'move';
     }
   }
 }
