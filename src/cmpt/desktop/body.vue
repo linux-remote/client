@@ -1,9 +1,8 @@
 <template lang="jade">
-#lr-desktop.lr-desktop(@drop='handleDeskDrop',
-                    @dragenter='handleDragenter',
-                    @dragover='handleDragover',
-                    @mousedown='handleMousedown',
-                    @dragend='handleIconDragEnd')
+#lr-desktop.lr-desktop(@drop.stop='handleDeskDrop',
+                    @dragenter.stop='handleDragenter',
+                    @dragover.stop='handleDragover',
+                    @mousedown='handleMousedown')
   .lr-desktop-icons
     Icon(v-for="(v,i) in list",
         :key="v.id",
@@ -36,27 +35,13 @@ export default {
   },
   props: ['icons'],
   data(){
-    var icons = this.icons;
-    if(!icons){ // 回收站可以被移除
-      
-      icons = [{
-        id: 'sys_app_recycle_bin',
-        x:0,
-        y:0
-      }]
-    }else{
-      icons = JSON.parse(icons);
-    }
-    
-    icons.forEach(v => {
-      const app = this.$store.getters['sysApps/getById'](v.id);
-      Object.assign(v, app);
-    })
+
     return {
-      list: icons,
+      list: this.getIconsFromProp(),
       _isInDesk: false,
       _isCanDrop: true
     }
+
   },
   computed:{
     deskTopEvent(){
@@ -83,12 +68,40 @@ export default {
     }
   },
   methods: {
-    handleDragenter(){
+    getIconsFromProp(){
+      var icons = this.icons;
+
+      if(!icons){ // 回收站可以被移除
+        icons = [{
+          id: 'sys_app_recycle_bin',
+          x:0,
+          y:0
+        }]
+
+      }else{
+        icons = JSON.parse(icons);
+      }
+      
+      icons = this.forMatList(icons);
+      return icons;
+    },
+    wrapItem(v){
+      const app = this.$store.getters['sysApps/getById'](v.id);
+      Object.assign(v, app);
+    },
+    forMatList(arr){
+      arr.forEach(v => {
+        this.wrapItem(v);
+      });
+      return arr;
+    },
+    handleDragenter(e){
+      
       var data = this.$store.state.dragTransferData;
       if(!data){
         return;
       }
-      if(data._isFromDeskTop){
+      if(data.from === 'desktop'){
         return;
       }
       var id = data.id;
@@ -97,8 +110,11 @@ export default {
         return v.id === id;
       })
       this.$data._isCanDrop = isHave === undefined;
+      console.log('handleDragenter', this.$data._isCanDrop);
+      e.preventDefault();
     },
     handleDragover(e){
+      console.log('handleDragover');
       if(this.$data._isCanDrop){
         e.preventDefault();
       }
@@ -126,22 +142,56 @@ export default {
       this.getData();
       this.$refs.ctx.hidden();
     },
-    handleIconDragEnd(e){
-      if(!this.$data._isInDesk){
-        return;
+    _getDragData(e){
+      const data = e.dataTransfer.getData('text');
+      return JSON.parse(data);
+    },
+    save(){
+      this.$nextTick(() => {
+        const arr = this.list.map(v => {
+          return {
+            id: v.id,
+            x: v.x,
+            y: v.y
+          }
+        });
+        console.log('save', arr);
+
+        
+        this.request({
+          url: '~/desktop/icons',
+          type: 'post',
+          data: {
+            content: JSON.stringify(arr)
+          },
+          success(){
+            console.log('desktop save ok');
+          }
+        })
+      })
+
+    },
+    handleDeskDrop(e){
+      console.log('handleDeskDrop');
+      e.preventDefault();
+      const data = this._getDragData(e);
+
+      console.log('data', data, data.isFromStart);
+      console.log('clientY', e.clientY, e.clientX);
+      const item = this.list.find(v => v.id === data.id);
+      if(data && item){
+        if(data.from === 'desktop'){
+          this.setDropedItemXY(data, item, e);
+        }
+        
+        this.save();
       }
-      this.$data._isInDesk = false;
-      const dragTransferData = this.$store.state.dragTransferData;
-      if(!dragTransferData){
+      
+    },
+    setDropedItemXY(data, item, e){
+      const startClient = data.startClient;
 
-        return;
-      }
-
-      const startClient = dragTransferData._startClient;
-      //console.log('body dragend');
-
-      const vueEl = startClient._vueEl;
-      let positionTop = vueEl.item.y  + (e.clientY - startClient.y);
+      let positionTop = item.y  + (e.clientY - startClient.y);
       if(positionTop < 0) {
         positionTop = 0;
       }else{
@@ -151,7 +201,7 @@ export default {
           positionTop = deskH - elH;
         }
       }
-      let positionLeft =  vueEl.item.x + (e.clientX - startClient.x);
+      let positionLeft =  item.x + (e.clientX - startClient.x);
       if(positionLeft < 0) {
         positionLeft = 0;
       }else{
@@ -162,36 +212,8 @@ export default {
           positionLeft = deskW - elW;
         }
       }
-
-      vueEl.item.x = positionLeft;
-      vueEl.item.y = positionTop;
-      
-      this.save();
-    },
-    save(){
-      this.request({
-        url: '~/desktop/icons',
-        type: 'post',
-        data: {
-          data: JSON.stringify(this.list)
-        },
-        success(){
-          console.log('desktop save ok');
-        }
-      })
-    },
-    handleDeskDrop(e){
-      const dragTransferData = this.$store.state.dragTransferData;
-      if(dragTransferData && dragTransferData.isFromStart){
-        this.list.push({
-          id: dragTransferData.id,
-          x: e.clientX,
-          y: e.clientY
-        })
-        this.save();
-        return;
-      }
-      this.$data._isInDesk = true;
+      item.x = positionLeft;
+      item.y = positionTop;
     },
     getData(){
       this.request({
@@ -200,7 +222,8 @@ export default {
           if(!result){
             return;
           }
-          this.list = JSON.parse(result);
+          result = JSON.parse(result);
+          this.list = this.forMatList(result);
         }
       })
     }
@@ -208,7 +231,7 @@ export default {
   mounted(){
     this.$store.commit('setDeskTopWH');
     // this.$store.commit('task/add', {appId: 'sys_app_recycle_bin'});
-    this.$store.commit('task/add', {appId: 'sys_app_fs', address: '/home/dw/fs'});
+    // this.$store.commit('task/add', {appId: 'sys_app_fs', address: '/home/dw/fs'});
     // this.$store.commit('task/add', {appId: 'sys_app_fs', address: '/home/dw/fs2'});
     // this.$store.commit('task/add', {appId: 'sys_app_settings'});
   }

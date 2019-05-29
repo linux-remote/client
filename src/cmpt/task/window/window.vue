@@ -163,7 +163,7 @@ export default {
     close(){
       const e = new SimpleEvent;
       this.$emit('close', e);
-      if(e._isPreventDefault){
+      if(e.preventDefaulted){
         return;
       }
       this.$store.commit('task/remove', this.index);

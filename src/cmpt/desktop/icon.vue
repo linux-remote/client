@@ -91,16 +91,22 @@ export default {
       this.$store.commit('task/add', this.item.id);
     },
     handleDragStart(v, e){
-      this.$store.commit('transferDragData', {
+      console.log('handleDragStart');
+      const value = JSON.stringify({
         id: this.item.id,
         type: this.item.type,
-        _isFromDeskTop: true,
-        _startClient : {
+        from: 'desktop',
+        startClient : {
           x: e.clientX,
           y: e.clientY,
-          _vueEl: this
+          itemX: this.item.x,
+          itemY: this.item.y
         }
       });
+      e.dataTransfer.setData("text", value);
+      e.dataTransfer.dropEffect = 'move';
+
+      return;
     }
   }
 }

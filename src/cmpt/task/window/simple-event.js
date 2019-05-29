@@ -1,14 +1,14 @@
 // function SimpleEvent(){
-//   this._isPreventDefault = false;
+//   this.preventDefaulted = false;
 // }
 
 // // https://github.com/eslint/eslint/issues/11752
 // SimpleEvent.prototype.preventDef = function(){
-//   this._isPreventDefault = false;
+//   this.preventDefaulted = false;
 // }
 export default class SimpleEvent{
-  _isPreventDefault = false;
+  preventDefaulted = false;
   preventDefault(){
-    this._isPreventDefault = true;
+    this.preventDefaulted = true;
   }
 }
