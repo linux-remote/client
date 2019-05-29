@@ -3,7 +3,7 @@ tr.lr-fs-upload-tr(@mousedown.stop='', v-on="$listeners")
   td
     ContextMenu(ref='ctx')
       .lr-ctx-item(@click='handleAbort')
-        | Abort
+        | Cancel
     .lr-name-wrap
       .lr-icon(:class='["lr_file_type_" + item.type, {["lr_fs_open_type_" + item.openType]: item.type === "RegularFile"}]', :style='iconStyle')
         .lr-icon.lr-error-icon(v-if='item.linkTargetError')

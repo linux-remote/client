@@ -32,13 +32,11 @@ export default {
       const self = this;
       const item = self.item;
 
-      const formData = new FormData();
-      formData.append('file', item.rawFile);
-
       this.$options.xhr = this.request({
         type: 'put',
-        url: '~/upload/' + encodePath(item.address),
-        data: formData,
+        // rootUrl: 'http://192.168.56.101:3001', 
+        url: '~/upload/' + encodePath(item.address + '/' + item.rawFile.name),
+        data: item.rawFile,
         stateKey: 'isRequest',
         contentType: false,
         processData: false,

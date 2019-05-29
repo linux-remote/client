@@ -145,18 +145,21 @@ export default  {
       // item.size = e.loaded;
     },
     on_public_uploadSuccess(e){
+      this.execOnce(e, () => {
+        this.getData();
+      });
       // stdout
-      let baseItem = lsParse(e.stdout, true);
-      this.wrapBaseItem(baseItem);
-      this.initItemStatus(baseItem);
-      this.$options._sync.update(baseItem);
+      // let baseItem = lsParse(e.stdout, true);
+      // this.wrapBaseItem(baseItem);
+      // this.initItemStatus(baseItem);
+      // this.$options._sync.update(baseItem);
     },
     on_public_uploadAbort(e){
       this.$options._sync.update({
         name: e.name,
         status: 'UploadAbort'
       });
-      this.execOnce(e, () => {
+      this.execOnce(e, () => { // $TODO: 代理 服务器重启状态.
         this.delItems([e.name], true);
       });
     },
