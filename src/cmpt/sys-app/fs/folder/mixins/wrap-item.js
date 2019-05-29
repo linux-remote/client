@@ -6,6 +6,7 @@ export default  {
   methods: {
     initItemStatus(v){
       v.isUploading = v.isUploading || false;
+      v.status = v.status || null;
       v.isCut = false;
       v.focus = false;
       v.isBeSelected = false;
@@ -15,8 +16,6 @@ export default  {
     //   this.wrapBaseItem(v);
     // },
     wrapBaseItem(v){
-      v.isUploading = v.isUploading || false;
-      v.status = v.status || null;
       // v._mtime = (new Date(v.mtime)).getTime();
       initRelation(v, this.username, this.groups);
 

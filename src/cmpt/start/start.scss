@@ -11,17 +11,16 @@
   background-position: center;
   background-repeat: no-repeat;
   background-image: url('/public/img/tango-style/start-here.png');
-  border: 2px outset darken($taskBarBg, 5%);
+  // border: 2px outset darken($taskBarBg, 5%);
   display: flex;
   align-items: center;
   justify-content: center;
-  &:hover{
+  &:not(.lr_start_focus):hover{
     background-color: lighten($taskBarBg, 15%);
   }
 }
 .lr_start_focus{
-  background-color: $taskBarFocusBg;
-  border-style: inset;
+  background-color: lighten($taskBarBg, 30%);
 }
 .lr-start-menu{
   background-color: #131a21;

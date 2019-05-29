@@ -1,4 +1,5 @@
 import lsParse from '../../../lib/ls-parse';
+import {timeFormat} from '__ROOT__/lib/util';
 export default  {
   computed: {
     publicEvent(){
@@ -115,13 +116,12 @@ export default  {
         totalSize: rawFile.size,
         permission: '----------',
         owner: this.$store.state.username,
-        group: '--',
-        mtime: rawFile.lastModified
+        group: this.$store.state.username,
+        mtime: timeFormat(rawFile.lastModified)
       }
       this.wrapBaseItem(uploadItem);
       let isNew = !this.$options._sync.has(uploadItem.name);
       const item = this.$options._sync.set(uploadItem);
-      console.log('isNew', isNew);
       this.reHiddenBottomSortByItem(item, isNew);
     },
     on_public_uploadProgress(e){
@@ -129,7 +129,7 @@ export default  {
         this.$options._sync.update({
           name: e.name,
           isUploading: true,
-          status: 'Uploading',
+          status: 'uploading',
           size: e.loaded,
           totalSize: e.total
         });
@@ -145,19 +145,28 @@ export default  {
       // item.size = e.loaded;
     },
     on_public_uploadSuccess(e){
-      this.execOnce(e, () => {
-        this.getData();
-      });
+
+      // this.$options._sync.update({
+      //   name: e.name,
+      //   isUploading: false,
+      //   status: ''
+      // });
+      // this.execOnce(e, () => {
+      //   this.getData();
+      // });
       // stdout
-      // let baseItem = lsParse(e.stdout, true);
-      // this.wrapBaseItem(baseItem);
-      // this.initItemStatus(baseItem);
-      // this.$options._sync.update(baseItem);
+      let baseItem = lsParse(e.stdout, true);
+      // console.log('baseItem', baseItem);
+      this.wrapBaseItem(baseItem);
+      this.initItemStatus(baseItem);
+      baseItem.isUploading = false;
+      baseItem.status = '';
+      this.$options._sync.update(baseItem);
     },
     on_public_uploadAbort(e){
       this.$options._sync.update({
         name: e.name,
-        status: 'UploadAbort'
+        status: 'uploadAbort'
       });
       this.execOnce(e, () => { // $TODO: 代理 服务器重启状态.
         this.delItems([e.name], true);
@@ -166,13 +175,13 @@ export default  {
     on_public_uploadError(e){
       this.$options._sync.update({
         name: e.name,
-        status: 'UploadError'
+        status: 'uploadError'
       });
     },
     on_public_uploadTimeout(e){
       this.$options._sync.update({
         name: e.name,
-        status: 'UploadTimeout'
+        status: 'uploadTimeout'
       });
     }
     // on_public_uploadLoadend(e){

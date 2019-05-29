@@ -128,7 +128,6 @@ export default {
       return JSON.parse(data);
     },
     save(){
-      this.$nextTick(() => {
         const arr = this.list.map(v => {
           return {
             id: v.id,
@@ -149,7 +148,6 @@ export default {
             console.log('desktop save ok');
           }
         })
-      })
 
     },
     handleDeskDrop(e){

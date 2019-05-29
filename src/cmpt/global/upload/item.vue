@@ -106,6 +106,7 @@ export default {
           self.$store.commit('fs/publicEmit', {
             address: item.address,
             type: 'uploadSuccess',
+            name: item.rawFile.name,
             stdout
           });
 
