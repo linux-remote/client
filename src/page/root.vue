@@ -28,25 +28,12 @@ export default {
       isRequest: false
     }
   },
-  methods:{
-    getData(){
-      this.request({
-        url: '/touch',
-        stateKey: 'isRequest',
-        success(data){
-          // {loginedList: []}
-          this.$store.commit('set', data);
-        }
-      });
-    }
-  },
   mounted(){
     window.APP.$elMain = document.getElementById('lr-main');
   },
   created(){
     const language = localStorage.language || navigator.language;
     this.$store.commit('language/set', language);
-    this.getData();
   }
 }
 </script>

@@ -6,6 +6,7 @@
   //- QuickBar
 </template>
 <script>
+import safeBind from '../lib/mixins/safe-bind';
 import DeskTop from '__ROOT__/cmpt/desktop/body.vue';
 import TasksBar from '__ROOT__/cmpt/task/bar.vue';
 // import QuickBar from '__ROOT__/cmpt/quick-bar/quick-bar.vue';
@@ -13,6 +14,7 @@ import { logout } from '__ROOT__/lib/login';
 const EVENT_CAPTURE = {capture: true};
 // const API_ROOT = window.SERVER_CONFIG.API_ROOT;
 export default {
+  mixins: [safeBind],
   components: {
     TasksBar,
     DeskTop,
@@ -86,13 +88,13 @@ export default {
   },
 
   mounted(){
-    this.$options._handleDocKeyDown = (e) => {
+    
+    this.safeBind('keydown', (e) => {
       this.handleDocKeyDown(e);
-    }
-    document.addEventListener('keydown', this.$options._handleDocKeyDown, EVENT_CAPTURE);
+    });
+
   },
   destroyed(){
-    document.removeEventListener('keydown', this.$options._handleDocKeyDown, EVENT_CAPTURE);
   },
 
   created(){
@@ -101,5 +103,4 @@ export default {
     }
   }
 }
-
 </script>

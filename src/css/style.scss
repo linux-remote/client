@@ -35,6 +35,22 @@ body {
 .lr-w100{
   width: 100%;
 }
+
+.lr-pre-load{
+  background-color: $color-accent;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 50px;
+  .progress-circle::after{
+    color: #fff;
+  }
+  span{
+    color: #D02E00;
+  }
+}
+
 @import './common.scss';
 // Fixed: https://github.com/winjs/winstrap/issues/181
 // .btn-group-sm>.btn, .btn-group-xs>.btn, .btn-sm, .btn-xs {

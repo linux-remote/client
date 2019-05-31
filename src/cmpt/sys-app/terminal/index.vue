@@ -3,6 +3,7 @@
 </template>
 <script>
 // 742 440
+let _Terminal_cache;
 import { composeUserWsUrl } from '../util';
 export default {
   props: ['task'],
@@ -73,21 +74,29 @@ export default {
     },
     termOnError() {
       this.$options.term.writeln('WebSocket connection error');
+    },
+    getTerminal(cb){
+      if(_Terminal_cache){
+        return cb(_Terminal_cache);
+      }
+      window.require(['/public/xterm/3.13.1/xterm.min.js', 
+      '/public/xterm/3.13.1/addons/attach/attach.min.js', 
+      '/public/xterm/3.13.1/addons/fit/fit.min.js',
+      '/public/xterm/3.13.1/addons/webLinks/webLinks.min.js'], (Terminal, attach, fit, webLinks) => {
+        Terminal.applyAddon(attach);
+        Terminal.applyAddon(fit);
+        Terminal.applyAddon(webLinks);
+        // Uncaught TypeError: Cannot read property 'Browser' of undefined
+        // Terminal.applyAddon(zmodem);
+        _Terminal_cache = Terminal;
+        cb(Terminal);
+        });
     }
   },
   mounted(){
-    window.require(['/public/xterm/3.13.1/xterm.min.js', 
-    '/public/xterm/3.13.1/addons/attach/attach.min.js', 
-    '/public/xterm/3.13.1/addons/fit/fit.min.js',
-    '/public/xterm/3.13.1/addons/webLinks/webLinks.min.js'], (Terminal, attach, fit, webLinks) => {
-      Terminal.applyAddon(attach);
-      Terminal.applyAddon(fit);
-      Terminal.applyAddon(webLinks);
-      // Uncaught TypeError: Cannot read property 'Browser' of undefined
-      // Terminal.applyAddon(zmodem);
-
+    this.getTerminal((Terminal) => {
       this.create(Terminal);
-    })
+    });
   },
   destroyed() {
     this.$options.socket.close();
