@@ -18,7 +18,7 @@ export function getWsOrigin() {
 export const wsOrigin = getWsOrigin();
 
 export function composeUserWsUrl(username, subPath) {
-  return `${wsOrigin}/user/${username}/${subPath}`;
+  return `${wsOrigin}/api/user/${username}/${subPath}`;
 }
 
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort

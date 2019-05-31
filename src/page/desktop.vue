@@ -89,7 +89,7 @@ export default {
 
   mounted(){
     
-    this.safeBind('keydown', (e) => {
+    this.safeBind(document, 'keydown', (e) => {
       this.handleDocKeyDown(e);
     });
 
