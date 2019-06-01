@@ -1,8 +1,23 @@
+.lr-rb-wrap{
+  padding-top: 35px;
+}
 .lr-rb-ctrl-bar{
-  height: 50px;
-  background-color: #ccc;
+  height: 35px;
+  background-color: #eee;
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.lr-rb-body{
+  height: 100%;
+  overflow: auto;
+}
+.lr-rb-table{
+  tr:hover{
+    background-color: #eee;
+  }
 }

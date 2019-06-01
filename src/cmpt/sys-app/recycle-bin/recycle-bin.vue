@@ -1,5 +1,5 @@
 <template lang="jade">
-.lr-window-body
+.lr-window-body.lr-rb-wrap
   
   .lr-hourglass(v-show='isRequest || isDeling')
   .lr-rb-ctrl-bar
@@ -7,31 +7,28 @@
     //- div(style="color: red") {{(totalCount / maxLen) * 100}} %
 
     button.btn(@click='getData') Reload
-  .lr-fs-folder-inner
-    h2(v-text='error' style='color:red' v-if='error')
-    h2(v-else-if='list.length === 0' style='color:gray') Empty
-    .lr-fs-folder(v-else)
-      table.table.lr-info-table.lr-table(style='width:100%;')
-        tr
-          th Name
-          th Original Location
-          th Date Deleted
-          th Size
-          th
-        tr(v-for='(item,i) in list' , :key='item.id')
-          td {{item.source.base}}
-          td {{item.source.dir}}
-          td {{item.source.delTime}}
-          td {{item.size | wellSize}}
-          td(style='display:flex')
-            button(@click='restore(item)') Restore
-            button(@click='del(item)') Delete
+  
+  h2(v-text='error' style='color:red' v-if='error')
+  h2(v-else-if='list.length === 0' style='color:gray') Empty
+  .lr-fs-folder-inner(v-else)
+    table.lr-fs-table.lr_file_model_list
+      tr
+        th Name
+        th Original Location
+        th Date Deleted
+        th Size
+      RowItem(v-for='(item,i) in list' , :item='item', :key='item.id')
+    div(style="height: 10px")  
 </template>
 
 <script>
 import lsParse from '../lib/ls-parse';
 import recycleParse from './parse';
+import RowItem from './row-item.vue';
 export default {
+  components: {
+    RowItem
+  },
   data(){
     return {
       isRequest: false,
@@ -101,7 +98,7 @@ export default {
     },
     del(item){
 
-      if(!confirm('Are you sure to delete "' + item.source.name + '" thoroughly?')){
+      if(!confirm('Are you sure you want to permanently delete "' + item.source.name + '" ?')){
         return;
       }
       this.request({

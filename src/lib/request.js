@@ -151,13 +151,13 @@ function request(opts){
         // || xhr.responseText === 'LINUX_REMOTE_USER_SERVER_ERROR'
         console.log('转向登录页');
         request.abortAll();
-        // User logged out or session expired
-        if(confirm(xhr.responseText + ', Please login again.')){
+        // xhr.responseText
+        if(confirm('User logged out or session expired, Please login again.')){
           return store.commit('needRelogin');
         }
+      } else {
+        error.call(self,  xhr);
       }
-      
-      error.call(self,  xhr);
     }else{
       success.call(self, xhr.responseJSON || xhr.responseText);
     }

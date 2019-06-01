@@ -24,8 +24,9 @@
 
 <script>
 import AppItem from './app-item.vue';
-import { logout } from '__ROOT__/lib/login';
+import logout from '__ROOT__/lib/mixins/logout';
 export default {
+  mixins: [ logout ],
   components: {
     AppItem
   },
@@ -78,8 +79,7 @@ export default {
           true); // true is capture! must set.
         this.isShowMenu = false;
       }
-    },
-   logout
+    }
   }
 }
 </script>

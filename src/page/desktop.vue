@@ -10,11 +10,11 @@ import safeBind from '../lib/mixins/safe-bind';
 import DeskTop from '__ROOT__/cmpt/desktop/body.vue';
 import TasksBar from '__ROOT__/cmpt/task/bar.vue';
 // import QuickBar from '__ROOT__/cmpt/quick-bar/quick-bar.vue';
-import { logout } from '__ROOT__/lib/login';
+import logout from '__ROOT__/lib/mixins/logout';
 const EVENT_CAPTURE = {capture: true};
 // const API_ROOT = window.SERVER_CONFIG.API_ROOT;
 export default {
-  mixins: [safeBind],
+  mixins: [safeBind, logout],
   components: {
     TasksBar,
     DeskTop,
@@ -47,18 +47,13 @@ export default {
     },
     sessError(val){
       if(val){
-        console.log('后端403, 前端再退出一下.');
-        this.logout();
+        this.afterLogout();
       }
     }
   },
   methods: {
-
-
-    logout,
     init(){
       const username = this.$route.params.username;
-
       this.request({
         url: '~/desktop/bundle',
         success(data){

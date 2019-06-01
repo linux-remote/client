@@ -36,13 +36,10 @@ export default {
       isRequest: false,
       username: this.$route.query.user || '',
       password: '',
-      error: ''
+      loginedList: []
     }
   },
   computed: {
-    loginedList() {
-      return this.$store.state.loginedList
-    },
     language(){
       return this.$store.state.language;
     },
@@ -51,6 +48,14 @@ export default {
     }
   },
   methods: {
+    getData(){
+      this.request({
+        url: '/loginedList',
+        success(data){
+          this.loginedList = data;
+        }
+      })
+    },
     handleChange(){
       this.$store.commit('language/set', this.currLangIndex);
     },
@@ -65,19 +70,19 @@ export default {
           password
         },
         success(data){
-          // {loginedList: []}
-          data.username = username;
-          this.$store.commit('set', data);
+          this.$store.commit('set', {
+            username
+          });
           this.routeTo(username);
-        },
-        // error(xhr){
-        //   this.error = `http #${xhr.status}: ${xhr.responseText}`;
-        // }
+        }
       })
     },
     routeTo(username){
       this.$router.push('user/' + username);
     }
+  },
+  created(){
+    this.getData();
   }
 }
 </script>
