@@ -1,8 +1,10 @@
 <template lang="jade">
-.lr-page.lr-desktop-wrap(v-if='deskInited',
+.lr-page.lr-desktop-wrap(v-if='!isRequest',
                         :class="{lr_desktop_launch: isQuickLaunch}")
-  DeskTop(:icons='icons')
-  TasksBar
+  h2.lr-err-color(v-if="error") {{error}}
+  template(v-else)
+    DeskTop(:icons='icons')
+    TasksBar
   //- QuickBar
 </template>
 <script>
@@ -22,15 +24,14 @@ export default {
   },
   data(){
     return {
-      icons: null
+      icons: null,
+      isRequest: false,
+      error: null
     }
   },
   computed:{
     sessError(){
       return this.$store.state.sessError
-    },
-    deskInited(){
-      return this.$store.state.deskInited
     },
     username(){
       return this.$store.state.username
@@ -54,14 +55,15 @@ export default {
   methods: {
     init(){
       const username = this.$route.params.username;
+      this.error = null;
       this.request({
         url: '~/desktop/bundle',
+        stateKey: 'isRequest',
         success(data){
           document.title = username + '@' + data.hostname;
 
           this.$store.commit('set', {
             isLogin: true,
-            deskInited: true,
             username,
             groups: data.groups,
             homedir: data.homedir,
@@ -69,6 +71,9 @@ export default {
           });
           this.$store.commit('sysApps/changeRecycleBinIcon', data.recycebinIsEmpty);
           this.icons = data.icons;
+        },
+        error(xhr){
+          this.error = this.request.defWrapErr(xhr);
         }
       });
 
@@ -87,15 +92,19 @@ export default {
     this.safeBind(document, 'keydown', (e) => {
       this.handleDocKeyDown(e);
     });
+    this.$options._keep_alive = setInterval(() => {
+      this.request({
+        url: '~/alive'
+      });
+    }, 60 * 1000);
 
   },
   destroyed(){
+    clearInterval(this.$options._keep_alive);
   },
 
   created(){
-    if(!this.deskInited){
-      this.init();
-    }
+    this.init();
   }
 }
 </script>

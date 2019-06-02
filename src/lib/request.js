@@ -21,9 +21,12 @@ if(API_ROOT.indexOf('http') === 0){
 const POOL = {};
 var poolIndex = 0;
 
+export function defWrapErr(xhr){
+  return `#${xhr.status}: ${xhr.responseText}`;
+}
 // 默认的http处理程序
 export function httpErrorHandler(xhr){
-  store.commit('error/show', `#${xhr.status}: ${xhr.responseText}`);
+  store.commit('error/show', defWrapErr(xhr));
 }
 
 

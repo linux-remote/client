@@ -47,7 +47,6 @@ const store = new window.Vuex.Store({
     deskTopW: 0,
     deskTopH: 0,
     isLogin: false,
-    deskInited: false,
     
     username:'',
     groups: [],

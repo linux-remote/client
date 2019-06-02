@@ -18,7 +18,6 @@ export default {
       
       let route = '/';
       const storeData = {
-        deskInited: false,
         isLogin: false,
         tasks: []
       };

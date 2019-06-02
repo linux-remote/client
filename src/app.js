@@ -32,7 +32,7 @@ router.onReady(() => {
       app.$mount(dom);
     },
     error(xhr){
-      preLoad.innerHTML = `<span>Error# ${xhr.status}: ${xhr.responseText}</span>`;
+      preLoad.innerHTML = `<span class=".lr-err-color">Error# ${xhr.status}: ${xhr.responseText}</span>`;
     }
   })
   
