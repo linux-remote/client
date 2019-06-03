@@ -4,21 +4,38 @@
   flex-direction: column;
 }
 .lr-editor-bar{
-  height: 30px; 
-  background-color: #eee; 
-  line-height: 30px;
-  padding: 0 10px;
+  height: 20px; 
+  line-height: 20px;
+  display: flex;
+  align-items: center;
+}
+.lr-editor-btn{
+  height: 18px;
+  padding: 0 5px;
+  line-height: 18px;
+  font-size: 12px;
+  border: 0;
+  margin-left: 10px;
+  background-color: $color-accent;
+  color: #fff;
+  &:disabled{
+    background-color: #ddd;
+  }
 }
 .lr_editor_textarea{
+  padding: 0 4px;
   height: 100%; 
   width: 100%; 
   display: block;
   flex-grow: 1;
   outline: none;
   font-weight: normal;
-  font-size: 20px;
+  font-size: 16px;
+  line-height: 1.2;
   resize: none;
   color: #000;
-  font-family: Consolas, "Courier New", monospace, "Microsoft YaHei";
+  font-family: Consolas, "Courier New", monospace;
   overflow-y: scroll;
+  border: 0;
+  border-top: 2px solid #f0f0f0;
 }

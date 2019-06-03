@@ -299,6 +299,7 @@ button.lr-desktop-icon{
   position: absolute;
   width: 80px;
   height: 80px;
+  padding: 0;
   user-select: none;
   display:flex;
   flex-direction: column;
@@ -338,7 +339,6 @@ button.lr-desktop-icon{
 }
 .lr-desktop-icon-text{
   line-height: 15px;
-  word-break: break-all;
   height: 30px;
   width: 100%;
   text-align: center;
@@ -346,7 +346,7 @@ button.lr-desktop-icon{
   text-overflow: ellipsis;
   text-shadow: 1px 2px #000;
   color:#fff;
-  font-size: 13px;
+  font-size: 12px;
 }
 .lr_desktop_launch{ // #f20505 #730202
   

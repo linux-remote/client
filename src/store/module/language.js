@@ -55,7 +55,7 @@ export default  {
             title: 'System Info'
           },
           sys_app_editor: {
-            title: 'Notebook'
+            title: 'Notepad'
           },
           sys_app_terminal: {
             title: 'Terminal'

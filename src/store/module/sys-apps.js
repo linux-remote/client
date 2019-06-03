@@ -42,7 +42,7 @@ export default   {
         // title: null,
         // name: {
         //   'zh-CN': '笔记本',
-        //   'en-US': 'Notebook'
+        //   'en-US': 'Notepad'
         // }
       },
       sys_app_terminal: {
@@ -52,7 +52,7 @@ export default   {
         // title: null,
         // name: {
         //   'zh-CN': '笔记本',
-        //   'en-US': 'Notebook'
+        //   'en-US': 'Notepad'
         // }
       },
       sys_app_task_manager: {
@@ -63,7 +63,7 @@ export default   {
         // title: null,
         // name: {
         //   'zh-CN': '笔记本',
-        //   'en-US': 'Notebook'
+        //   'en-US': 'Notepad'
         // }
       },
       sys_app_settings: {
@@ -73,7 +73,7 @@ export default   {
         // title: null,
         // name: {
         //   'zh-CN': '笔记本',
-        //   'en-US': 'Notebook'
+        //   'en-US': 'Notepad'
         // }
       }
     },
