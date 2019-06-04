@@ -1,108 +1,75 @@
 $bg: #87CEEB;
-$bg2: rgba(#fff, .5);
-$drakColor: #6AA1B8; //4B869E
-$borderColor: #ACE7FF;
-$bottomColor: #EBBC87;
+$drakColor: #6AA1B8;
 
-$taskTitleH :25px;
-$taskBarH : 36px;
-$taskBarBg: $bottomColor;//#f5f5f5;
+$activeBorderColor: #99d1ff;
+$activeBgColor: #cce8ff;
+
+$taskBarH : 40px; // 底部任务栏
+$taskBarBg: rgba(0, 0, 0, .85); // 底部任务栏背景
 $taskBarFocusBg: lighten($taskBarBg, 60%);
 
+$taskTitleH: 30px; // 任务窗口 title 栏高度
+$taskCtrlW: 45px; // 任务窗口 title 栏右侧按钮宽度
+
+
+// $quickBarW: 40px; // 快速启动栏
+
 $maxZindex : 2147483647; // https://stackoverflow.com/questions/491052/minimum-and-maximum-value-of-z-index
+$uploadModalZindex: $maxZindex - 2;
 $topLayerZindex : $maxZindex - 100;
 
-// ======================= ForMat =======================
-*{
+$color-accent:#0078D7;
+$color-alert: #D02E00;
+
+
+*, *:before,
+*:after {
   box-sizing: border-box;
 }
-html, body{
-  height: 100%;
+
+body {
   padding: 0;
-  margin:0;
-}
-body{
+  margin: 0;
+  height: 100vh;
   overflow: hidden;
-  background-color: $bg;
-  font-family: arial,sans-serif;
+  font-family: 'Microsoft YaHei',"Segoe UI", Selawik,  Tahoma,Verdana,Arial,sans-serif;
 }
-
-button, select{
-  padding: 0 8px;
-  min-width: 3em;
+.lr-w100{
+  width: 100%;
 }
-button{
-  height: 28px;
-  position: relative;
-  cursor: pointer;
-  font-size: 14px;
-  outline: none;
+.lr-err-color{
+  color: #D02E00;
 }
-button:disabled{
-  cursor: not-allowed;
-  color:gray;
-  opacity: .5;
-}
-
-button.disable{
-  background: #999;
-  border-color:#999/1.1;
-  color:#fff
-}
-
-.lr_loading{
-  cursor: auto;
-  position: relative;
-}
-.lr_loading::before, .lr-hourglass::before{
-  content: '';
-}
-.lr_loading::before , .lr-hourglass::before{
-  padding:0;
-  margin:0;
-  position: absolute;
-  top:0;
-  bottom:0;
-  right:0;
-  left:0;
-  margin:auto;
-  height: 12px;
-  width: 12px;
-  animation: rotate 0.8s infinite linear;
-  border: 3px solid $drakColor;
-  border-right-color: #fff;
-  border-radius: 50%;
-  z-index: 2;
-}
-.lr-hourglass::before{
-  height: 25px;
-  width: 25px;
-}
-@keyframes rotate { //lr_loading 动画
-  0%    { transform: rotate(0deg); }
-  100%  { transform: rotate(360deg); }
-}
-
-// ======================= global =======================
-.iconfont{
-  color: #fff;
-}
-.lr-h100, 
-.lr-page{
-  height: 100%; 
-}
-.lr-page{
+.lr-pre-load{
+  background-color: $color-accent;
+  height: 100vh;
   display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 50px;
+  .progress-circle::after{
+    color: #fff;
+  }
 }
-.lr-main{
-  position: relative;
-  z-index: 1;
+
+@import './common.scss';
+// Fixed: https://github.com/winjs/winstrap/issues/181
+// .btn-group-sm>.btn, .btn-group-xs>.btn, .btn-sm, .btn-xs {
+//   font-size: 12px;
+//   line-height: 1.5625;
+//   border-radius: 0;
+//   padding: 1px 5px;
+//   min-width: 100px;
+// }
+
+.lr-page {
+  height: 100vh;
 }
-.lr-global{
-  width: 0;
-  height: 0;
-  z-index: 2;
-}
+
+@import './login.scss';
+
+
+
 .lr-icon{
   background-repeat: no-repeat;
   background-size: contain;
@@ -110,197 +77,80 @@ button.disable{
   width:20px; 
   height: 20px;
 }
-@import './login.scss';
-@import './top-bar.scss';
-@import './task.scss';
-@import './start.scss';
-@import './sys-app/fs.scss';
-@import './sys-app/editor.scss';
-// ======================= desk =======================
-.lr-desk-wrap{
-  flex-direction: column;
-  height: 100%;
+.lr-clear-btn{
+  border: 0;
+  margin: 0;
+  padding: 0;
+  background: none;
+  height: auto;
 }
-.lr-desk{
-  flex-grow: 1;
+
+.loading-btn{
   position: relative;
-  overflow: hidden;
-}
-
-.lr-desk-icon{
-  position: absolute;
-  width: 80px;
-  height: 80px;
-  user-select: none;
-  display:flex;
-  flex-direction: column;
+  display: flex;
   align-items: center;
-    z-index:1;
-}
-
-.lr-desk-icon-img{
-  /* height: 60px; */
-  height: 50px;
-  width: 100%;
-  background-position: center;
-  background-size: contain;
-  background-repeat: no-repeat;
-}
-.lr-desk-icon-text{
-  font-size: 12px;
-  line-height: 15px;
-  word-break: break-all;
-  height: 30px;
-  width: 100%;
-  text-align: center;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.lr-desk-icon:hover{
-  background-color: rgba(255, 255, 255, 0.25);
-}
-.lr_be_selected{
-  background-color: green;
-}
-
-// ======================= task bar =======================
-
-
-
-// ************* bar *************
-
-
-
-// .lr-dustbin-wrap{
-//   display: flex;height: 100%; flex-direction: column;
-//   flex-grow: 1;
-//     button{
-//     padding: 0 2px;height: 24px;margin:2px;
-//   }
-// }
-.lr-computer-table{
-  margin-top: 1em;
-  width: 100%;
-}
-.lr-cpu-info{
-  padding: 5px 0;
-  small{ color: gray;margin: 0 2px;}
-}
-table.lr-info-table{
-  border-collapse:collapse;
-  &,td , th{
-    border:1px solid #ccc;
+  justify-content: center;
+  &:disabled>span{
+    visibility: hidden;
   }
 }
-table.leftHead >tr>td:first-child{
-  color:#666;
+.loading-btn .progress-ring{
+  position: absolute;
+  height: 0;
+  left: 0;
+  right: 0;
+  top:6px;
+  bottom: 0;
+  margin: 0 auto;
 }
-.lr-small-table{
-  width: 100%;
-  font-size: 13px;
-  td{
-    padding: 2px 5px;
-  }
-}
-.lr-table{
-  border-spacing: 0;
-  border-collapse: collapse;
-  th{
-    text-align: left;
-    font-weight: normal;
-    border-right: 1px solid #ddd;
-    // height: 2em;
-    // line-height: 2em;
-  }
-  // th:last-child{
-  //   border: 0;
-  // }
-  td, th{
-    padding: 0 10px;
-  }
-  tr{
-    border-style: solid;
-    border-color: transparent;
-    border-width: 1px;
-    border-bottom-width: 0px;
-    padding-bottom: 1px;
-  }
-  tr:not(:first-child):hover, th:hover{
-    background-color: rgba($bg, .3); 
-    cursor: default;
-  }
-
-}
-tr.lrRecycleBinCovered{
-  background-color: red; 
-  color:#fff;
-}
-.lrRecycleBinError{
-  background-color: black!important; 
-  color:#fff;
-}
-
-//************* app start *************
-.lr-sys-app-icon{
-  width: 30px;
-  height: 30px;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-}
-.lr-sys-app-title{
-  padding-left: 10px;
-}
-
-//************* app end *************
 
 
 .lr-contextmenu{
   position: absolute; 
   z-index:$topLayerZindex; 
-  border: 2px outset $bg2;
-  background: #eee; 
-  top:0; 
+  border: 1px solid #a0a0a0;
+  background: #f2f2f2; 
+  top:0;
   left:0;
   font-size: 14px;
-  width: 255px;
-  padding: 2px 0;
-  .lr-2-item{
-    padding: 5px 10px; 
-    border-bottom: 1px solid #999; 
-    cursor: pointer;
+  width: 248px;
+  padding: 4px 2px;
+  box-shadow: rgba(#000, .75) 5px 5px 5px -5px;
+  user-select: none;
+  // box-shadow: rgba(#000, .7) 6px 6px 4px -4px;
 
-    &:hover{
-      background-color: green; 
-      color:#fff;
-    }
+  hr {
+    margin: 3px 10px;
+    border-color: #919191;
+    border-bottom: 0;
+  }
+}
+.lr-ctx-item, button{
+  &:first-letter {
+    // https://zhidao.baidu.com/question/1695348555292540668.html
+    text-transform:uppercase;
   }
 }
 .lr-ctx-item{
-  padding: 5px 20px; 
-  line-height: 1;
+  height: 28px;
+  line-height: 28px;
+  font-size: 12px;
   //-border-bottom: 1px solid #fff; 
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  a{
-    color:#4169E1;
-  }
+  color: #000;
+  cursor: default;
+  padding: 0 10px 0 34px;
+
   &:hover{
-    background-color:$drakColor;
-    color: #fff;
-    >a {
-      color: #fff;
-    }
+    background-color: #d9d9d9; 
   }
+
 }
-.lr-ctx-item:last-child{
-  border: 0;
+.lr-ctx-hr{
+  height: 1px;
+  background-color: #919191;
+  margin: 0 10px; 
 }
-.lr-ctx-item .lr-icon{
-  width:20px; height: 20px;
-}
+
 .lr-hourglass{
   position: absolute;
   top:0;
@@ -308,29 +158,19 @@ tr.lrRecycleBinCovered{
   right: 0;
   bottom: 0;
   margin: auto;
-
   height: 100%;
   width: 100%; 
-  // font-size: 25px;
-  // text-align: center;
-  // line-height: 30px;
-  background-color: rgba(0,0,0, .5);
+  background-color: rgba(0,0,0, .2);
   z-index: 30; 
   color:#888;
+  cursor: wait;
 }
-// .lr-hourglass::after{
-//   background-image: url('/public/hourglass.svg');
-//   background-size: contain;
-//   background-repeat: no-repeat;
-//   background-position: center;
-//   height: 30px;
-// }
 
 .lr_fly_textarea{
   position: absolute; 
   z-index: $topLayerZindex; 
   resize: none; 
-  font-family: 'Courier New', Courier, monospace;
+  // font-family: 'Courier New', Courier, monospace;
   display: block;
   overflow: hidden; 
   font-size: inherit;
@@ -341,85 +181,18 @@ tr.lrRecycleBinCovered{
   padding:0;
   margin:0;
   text-align: inherit;
-
   word-wrap: normal;
   white-space:normal;
   word-break: break-all;
 }
 
-.lr-error{
-  position: absolute; 
-  min-width: 500px; 
-  max-width: 80%;
-  margin: 0 auto; 
-  padding-top: 30px;
-  z-index: $topLayerZindex + 2;
-  left: 0;
-  right:0;
-  top: 0;
-  height: 100%;
-}
-.lr-error-close{
-  cursor: pointer;
-  margin-right: 2px;
-  color: #000;
-  &:hover{
-    color: #eee;
-  }
-}
-.lr-error-title{
-  background-color: #EEA1AF;
-  height: $taskTitleH;
-  padding: 1px;
-  display: flex;
-  align-items: center;
-  justify-content:  space-between;
-
-}
-.lr-error-content{
-  display: flex;
-  color: #000;
-  >.lr-icon{
-    height: $taskTitleH - 4;
-    width: $taskTitleH;
-    margin-right: 10px;
-  }
-}
-.lr-error-body{
-  max-height: 50%;
-  overflow: auto;
-  background-color: rgba(255, 255, 255, .7);
-  &::-webkit-scrollbar
-  {
-    width: 5px;  /* for vertical scrollbars */
-    height: 5px;
-  }
-
-  &::-webkit-scrollbar-track
-  {
-    background: rgba(red, 0.1);
-  }
-
-  &::-webkit-scrollbar-thumb
-  {
-    background: rgba(red, .4);
-  }
-}
-.lr-error-item{
-  text-align: left;
-  padding: 5px 10px;
-
-  color:red;
-  margin-top: 2px;
-  border-bottom: 1px solid #EEA1AF;
-
-}
+@import '../cmpt/global/toust/error.scss';
 
 .lr-modal{
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 2;
+  z-index: $topLayerZindex;
   width: 100%;
   height: 100%;
   display: flex;
@@ -457,11 +230,11 @@ tr.lrRecycleBinCovered{
   justify-content: space-between;
   margin-top: 10px;
 }
-.lr-btn-primary{
-  background-color: $drakColor;
-  color: #fff;
-  border-color: $bg;
-}
+// .lr-btn-primary{
+//   background-color: $drakColor;
+//   color: #fff;
+//   border-color: $bg;
+// }
 
 
 .lr-upload-item{
@@ -493,12 +266,7 @@ tr.lrRecycleBinCovered{
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.lr-empty{
-  width: 100%;
-  text-align: center;
-  color: #606060;
-  margin-top: 20px;
-}
+
 .lr-open-with-item{
   display: flex;
   padding: 10px 10px;
@@ -506,17 +274,7 @@ tr.lrRecycleBinCovered{
   background: $drakColor;
   color: #fff;
 }
-.lr-drop-menu-wrap{
-  position: relative;
-}
-.lr-drop-menu{
-  position: absolute; 
-  top: 120%;
-  right: -5px;
-  width: 255px;
-  background-color: #fff;
-  border: 2px outset #eee;
-}
+
 .lr_lang_item::before{
   content: '';
   width: 10px;
@@ -527,128 +285,472 @@ tr.lrRecycleBinCovered{
 .lr_lang_active::before{
   visibility:visible;
 }
-.lr-chat{
-  position: fixed;
-  z-index: 2;
-  width: 350px;
-  
-  bottom: 10px + $taskBarH;
-  left: 10px;
-  background-color: $bg2;
-  display: flex;
-  flex-direction: column;
+
+
+.lr-desktop-wrap {
+  position: relative;
+  padding-bottom: $taskBarH;
+  background-image: url('/public/img/bg-blaze-100.jpg');
+  background-color: #0063b1;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
 }
-.lr-chat-title{
-  height: 40px;
-  border-bottom: 1px solid $drakColor;
-  line-height: 40px;
-  padding-left:10px;
-  flex-shrink: 0;
-  color:#333;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  .lr-chart-ctrl{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    width: 21px;
-    height: 21px;
-    line-height: 21px;
-    flex-shrink: 0;
-    background-color: $drakColor;
-    margin-right: 2px;
-    border: 1px outset #999;
-    text-align: center;
-    color: #fff;
-  }
+.lr-desktop, .lr-desktop-icons{
+  height: 100%;
+  position: relative;
+  overflow: hidden;
 }
-.lr-chat-bottom{
-  flex-grow: 1;
-  display: flex;
-  height: 260px;
-}
-.lr-chat-left{
+button.lr-desktop-icon{
+  position: absolute;
   width: 80px;
-  border-right: 1px solid #666;
-  flex-shrink: 0;
-  div{
-    border-bottom: 1px solid #ccc;
-  }
-}
-.lr-chat-right{
-  display: flex;
-  flex-grow: 1;
+  min-height: 80px;
+  padding: 0;
+  user-select: none;
+  display:flex;
   flex-direction: column;
+  align-items: center;
+  z-index:1;
+  text-decoration: none;
+  background: none;
+  border: 0;
+  cursor: default;
+  &:focus, &:hover{
+    background-color: rgba(255, 255, 255, 0.25);
+    &::after{
+      content: '';
+      display: block;
+      position: absolute;
+      top: 1px;
+      left: 1px;
+      right: 1px;
+      bottom: 1px;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      z-index: -1;
+    }
+  }
+  &:focus {
+    outline: none;
+  }
 }
-.lr-chat-body{
-  overflow: auto;
+
+
+.lr-desktop-icon-img{
+  /* height: 60px; */
+  height: 50px;
+  width: 100%;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.lr-desktop-icon-text{
+  line-height: 15px;
+  // height: 30px;
+  width: 100%;
+  text-align: center;
+  // overflow: hidden;
+  text-overflow: ellipsis;
+  text-shadow: 1px 2px #000;
+  color:#fff;
+  font-size: 12px;
+}
+.lr_desktop_launch{ // #f20505 #730202
+  
+  .lr-desktop-icons{
+    z-index: $maxZindex;
+    background: rgba(#730202, .95);
+    // background-image: url('/public/img/preferences-desktop-launch-feedback.png');
+    // background-position: center;
+    // background-repeat: no-repeat;
+  }
+  .lr-quick-launch{
+    background-color: rgba(#730202, .95);
+  }
+}
+.lr_be_selected{
+  background-color: green;
+}
+
+$topBarRight : 100px;
+
+
+.lr-watch{
+  user-select: none;
+  display: flex;
+  text-align: center; 
+  align-items: center;
+  flex-direction: column;
+  color: #fff;
+  font-size: 12px;
+  line-height: 20px;
+  padding: 0 10px;
+}
+
+
+// -------------------- task bar --------------------
+.lr-task-bar{
+  height:$taskBarH;
+  position: absolute;
+  width: 100%;
+  left: 0;
+  bottom: 0;
+  display:flex;
+  background-color: $taskBarBg;
+  user-select: none;
+}
+
+.lr-task-bar-body{
   flex-grow: 1;
-  background-color: rgba(255, 255, 255, .7);
-  &::-webkit-scrollbar
-  {
-    width: 5px;  /* for vertical scrollbars */
-    height: 5px;
+  display:flex;
+  overflow: hidden;
+  padding-left: 1px;
+}
+// .lr-task-bar-place{
+//   flex-grow: 1;
+//   background-color: $taskBarBg;
+// }
+.lr-task-bar-item {
+  background-color: $taskBarBg;
+  color:#fff;
+  position: relative;
+  flex-grow: 1;
+  max-width: 200px;
+  min-width: 50px;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+  cursor: default;
+  font-size: 14px;
+  border-right: 1px solid $taskBarBg;
+  .lr-icon{
+    margin-right: 4px;
   }
 
-  &::-webkit-scrollbar-track
-  {
-    background: rgba(#888, 0.1);
+  &::before, &::after{
+    background-color: $taskBarBg;
+    content: '';
+    display: block;
+    width: 4px;
+    transition: width .1s;
+    height: 100%;
+    top: 0;
+    position: absolute;
   }
-
-  &::-webkit-scrollbar-thumb
-  {
-    background: rgba(#888, .4);
+  &::before{
+    left: 0;
+  }
+  &::after{
+    right: 0;
+    transition: width .2s;
+  }
+  &:hover, &.lr_task_bar_item_focus{
+    // background: none;
+    &::before, &::after {
+      width: 0;
+    }
+  }
+  &:hover {
+    .lr-task-bar-item-inner{
+      background-color: rgba(255, 255, 255, .1);
+    }
+  }
+  &.lr_task_bar_item_focus{
+    .lr-task-bar-item-inner{
+      background-color: rgba(255, 255, 255, .2);
+    }
+    &:hover{
+      .lr-task-bar-item-inner{
+        background-color: rgba(255, 255, 255, 0.225);
+      }
+    }
   }
 }
 
-.lr-chat-input-wrap{
-  flex-shrink: 0;
-  height: 30px;
+.lr-task-bar-item-inner {
+  height: 100%;
+  border-bottom: 2px solid #83c0ef;
   display: flex;
   align-items: center;
-  padding: 0 10px;
-  input{
-    flex-grow: 1;
-  }
-  button{
-    flex-shrink: 0;
-    height: 25px;
-    margin-left: 10px;
+  padding-left: 5px;
+  padding-right: 5px;
+  .lr-icon{
+    width: 23px;
+    height: 23px;
   }
 }
-.lr-chat-msg-item{
-  border-bottom: 1px solid #ddd;
+
+.lr-quick-launch{
+  width: $taskBarH;
+  height: $taskBarH;
+  background-image: url('/public/img/preferences-desktop-launch-feedback.png');
+  background-position: center;
+  background-size: 85%;
+  background-repeat: no-repeat;
+  &:hover{
+    background-color: rgba(#fff, .5);
+  }
+}
+
+
+// -------------------- task body --------------------
+
+.lr-task-window{
+  position: absolute;
+  z-index: 2; 
+  top:0;
+  border: 1px solid #1883d7;
+  bottom: 0;
+  left: 0; 
+  right: 0;
+  background-color:#fff;
+  box-shadow: rgba(#000, .22) 3px 3px 15px 0;
+  padding-top: $taskTitleH;
+  outline: none; // tabindex 会有 outline. 不可去掉 tabindex， 不然键盘事件不生效。
+}
+
+.lr_task_max { // 最大化窗口
+  box-shadow: none; 
+  width: 100%;
+  height: 100%;
+  border:0;
+}
+
+
+.lr-task-title {
+  user-select: none;
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
   display: flex;
-  .lr-chat-name{
-    background-color: $drakColor;
-    color: #fff;
-    margin-right: 5px;
-  }
+  flex-shrink: 0;
+  background: #fff; 
+  color: #000;
+  height: $taskTitleH; 
+  line-height: $taskTitleH;
+  font-size: 13px;
+  // font-family: 'Microsoft YaHei', Arial;
 }
-.lr-chat-msg-item.lr_chat_my_msg{
-  justify-content: flex-end;
-  .lr-chat-name{
-
-    margin-right: 2px;
-    margin-left: 5px;
-  }
-
-}
-.lr-chat-name {
-  max-width: 80px;
+.lr-task-title-content {
+  flex-grow:1;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: $drakColor;
+  display: flex;
+}
+.lr-task-title-content .lr-icon{
+  width: $taskTitleH - 2px;
+  height: $taskTitleH - 2px;
+  margin-right: 8px;
+}
+
+.lr_task_un_focus{
+  border-color: rgba(#333, .3);
+  >.lr-task-title{
+    color: #999;
+  }
+}
+
+.lr-window-body{
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+}
+
+// ------- right control -------
+
+.lr-task-control{
+  display: flex;
   flex-shrink: 0;
-  padding: 2px;
+  justify-content: space-between;
+  align-items: center;
 }
-.lr_chat_name_is_me{
-  background: $drakColor;
-  color:#fff;
+.lr-task-ctrl-item{
+  width: $taskCtrlW;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 29px;
+  color: #000;
+  background-color: #fff;
+  &:hover{
+    background-color: #e5e5e5;
+  }
 }
-.lr-chat-name small{
-  font-size: 10px;
+.lr-task-ctrl-colse{
+  transition: all .15s;
+  &:hover{
+    background-color: #e81123;
+    color: #fff;
+  }
 }
+.lr-task-glyph-stop-2 {
+  display: none;
+}
+$taskGlyphPositon: 10px;
+$taskGlyphPositonX: 14px;
+.lr_task_control_shrink {
+  position: relative;
+  .glyph {
+    position: absolute;
+    background-color: inherit;
+  }
+  .glyph:first-child{
+    bottom: $taskGlyphPositon;
+    right: $taskGlyphPositonX;
+  } 
+  .lr-task-glyph-stop-2 {
+    display: block;
+    top: $taskGlyphPositon;
+    left: $taskGlyphPositonX;
+    z-index: 2;
+    
+  }
+}
+@import '../cmpt/start/start.scss';
+@import '../cmpt/sys-app/fs/fs.scss';
+@import '../cmpt/sys-app/editor/editor.scss';
+@import '../cmpt/sys-app/task-manager/task-manager.scss';
+@import '../cmpt/sys-app/recycle-bin/recycle-bin.scss';
+@import '../cmpt/sys-app/terminal/xterm.css'; // 3.13.1
+@import '../cmpt/global/upload/upload.scss';
+@import '../cmpt/sys-app/computer-info/computer-info.scss';
+//************* app start *************
+.lr-sys-app-icon{
+  width: 30px;
+  height: 30px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+.lr-sys-app-title{
+  padding-left: 10px;
+}
+
+//************* app end *************
+// .lr-chat{
+//   position: fixed;
+//   z-index: 2;
+//   width: 350px;
+  
+//   bottom: 10px + $taskBarH;
+//   left: 10px;
+//   background-color: rgba(#fff, .5);
+//   display: flex;
+//   flex-direction: column;
+// }
+// .lr-chat-title{
+//   height: 40px;
+//   border-bottom: 1px solid $drakColor;
+//   line-height: 40px;
+//   padding-left:10px;
+//   flex-shrink: 0;
+//   color:#333;
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+//   .lr-chart-ctrl{
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     position: relative;
+//     width: 21px;
+//     height: 21px;
+//     line-height: 21px;
+//     flex-shrink: 0;
+//     background-color: $drakColor;
+//     margin-right: 2px;
+//     border: 1px outset #999;
+//     text-align: center;
+//     color: #fff;
+//   }
+// }
+// .lr-chat-bottom{
+//   flex-grow: 1;
+//   display: flex;
+//   height: 260px;
+// }
+// .lr-chat-left{
+//   width: 80px;
+//   border-right: 1px solid #666;
+//   flex-shrink: 0;
+//   div{
+//     border-bottom: 1px solid #ccc;
+//   }
+// }
+// .lr-chat-right{
+//   display: flex;
+//   flex-grow: 1;
+//   flex-direction: column;
+// }
+// .lr-chat-body{
+//   overflow: auto;
+//   flex-grow: 1;
+//   background-color: rgba(255, 255, 255, .7);
+//   &::-webkit-scrollbar
+//   {
+//     width: 5px;  /* for vertical scrollbars */
+//     height: 5px;
+//   }
+
+//   &::-webkit-scrollbar-track
+//   {
+//     background: rgba(#888, 0.1);
+//   }
+
+//   &::-webkit-scrollbar-thumb
+//   {
+//     background: rgba(#888, .4);
+//   }
+// }
+
+// .lr-chat-input-wrap{
+//   flex-shrink: 0;
+//   height: 30px;
+//   display: flex;
+//   align-items: center;
+//   padding: 0 10px;
+//   input{
+//     flex-grow: 1;
+//   }
+//   button{
+//     flex-shrink: 0;
+//     height: 25px;
+//     margin-left: 10px;
+//   }
+// }
+// .lr-chat-msg-item{
+//   border-bottom: 1px solid #ddd;
+//   display: flex;
+//   .lr-chat-name{
+//     background-color: $drakColor;
+//     color: #fff;
+//     margin-right: 5px;
+//   }
+// }
+// .lr-chat-msg-item.lr_chat_my_msg{
+//   justify-content: flex-end;
+//   .lr-chat-name{
+
+//     margin-right: 2px;
+//     margin-left: 5px;
+//   }
+
+// }
+// .lr-chat-name {
+//   max-width: 80px;
+//   overflow: hidden;
+//   text-overflow: ellipsis;
+//   white-space: nowrap;
+//   color: $drakColor;
+//   flex-shrink: 0;
+//   padding: 2px;
+// }
+// .lr_chat_name_is_me{
+//   background: $drakColor;
+//   color:#fff;
+// }
+// .lr-chat-name small{
+//   font-size: 10px;
+// }

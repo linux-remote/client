@@ -9,11 +9,6 @@ export const getNameSuffix = (name) => {
     return name.substr(index + 1).toLowerCase();
   }
 }
-export const pathJoin = (dir, name) => {
-  var a = dir === '/' ? dir : dir + '/';
-  console.log('a', a)
-  return a + name;
-}
 var _map = {
   'image': ['jpg', 'png', 'jpeg', 'webp', 'svg', 'gif','bmp', 'ico'],
   'text': ['js', 'txt', 'sh', 'vue', 'css', 'html', 'ejs', 'json', 'scss', 'conf']
@@ -40,20 +35,108 @@ export function getOpenAppIcon(openType){
   if(relationAppMap[openType]){
     return {
       id: appId,
-      app: store.getters['app/getById'](appId)
+      app: store.getters['sysApps/getById'](appId)
     }
   }
 }
 export function initIconAttr(v){
-  v.suffix = getNameSuffix(v.name);
   v.openType = getOpenType(v.suffix);
   const openApp = getOpenAppIcon(v.openType);
   if(openApp){
     v.openApp = openApp.app;
     v.openAppId = openApp.id;
+  } else {
+    v.openApp = null;
+    v.openAppId = null;
   }
 }
 
-export function encodePath(path){
-  return encodeURIComponent(path.substr(1));
+export function parseName(name){
+  const i = name.lastIndexOf('.');
+  const result = {
+    basename: '',
+    suffix: ''
+  }
+  if(i > 0){
+    result.basename = name.substr(0, i);
+    result.suffix = name.substr(i + 1);
+  } else {
+    result.basename = name;
+  }
+  return result;
+}
+
+function _getParsedName(item){
+  if(item.isFolder){
+    return {
+      basename: item.name,
+      suffix: ''
+    }
+  }
+  return item;
+}
+
+export function getNewName(list, item){
+  let num = 1, indexMap = Object.create(null), maxIndex = 1;
+  const {basename, suffix} = _getParsedName(item);
+  
+  
+  list.forEach(_v => {
+    const v = _getParsedName(_v);
+    if((v.suffix === suffix || !suffix) && v.basename.indexOf(basename) !== -1){
+      let bb = v;
+      if(suffix){
+        bb = parseName(v.basename);
+      }
+      const aiNum = Number(bb.suffix);
+      if(bb.basename === basename && aiNum){
+        indexMap[aiNum] = true;
+        if(aiNum > maxIndex) {
+          maxIndex = aiNum;
+        }
+      }
+    }
+  });
+  // maxIndex = maxIndex + 1;
+  for(; num <= maxIndex; num++)  {
+    if(!indexMap[num]){
+      break;
+    }
+  }
+  // console.log('basename', basename);
+  // console.log('suffix', suffix);
+  // console.log('num', num);
+  return `${basename}.${num}${item.suffix ? '.' + item.suffix : ''}`;
+}
+
+export function getNewUnSuffixName(list, tailedName){
+  const connector = '_';
+  let num = 1, indexMap = Object.create(null), maxIndex = 1;
+  list.forEach(v => {
+    let index = v.name.indexOf(tailedName);
+    if(index !== -1) {
+      let tailNum = v.name.substr(index + tailedName.length);
+      console.log('tailNum', tailNum);
+      if(tailNum[0] === connector) {
+        tailNum = tailNum.substr(1);
+      }
+      if(tailNum === ''){
+        tailNum = 1;
+      } else {
+        tailNum = Number(tailNum);
+      }
+      if(tailNum){
+        indexMap[tailNum] = true;
+        if(tailNum > maxIndex) {
+          maxIndex = tailNum;
+        }
+      }
+    }
+  })
+  for(; num <= maxIndex; num++)  {
+    if(!indexMap[num]){
+      break;
+    }
+  }
+  return num === 1 ? tailedName : tailedName + connector + num;
 }

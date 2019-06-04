@@ -13,31 +13,28 @@ export default {
     lineHeight: 0,
     open: false,
     value: '',
-    fontSize: '',
-    $el: null
+    fontSize: ''
   },
   mutations: {
     open (state, data) {
-      console.log('flyTextarea/open')
-      const $el = $(data.target);
-      const offset = $el.offset();
-      const lineHeight = $el.css('lineHeight');
-      const fontSize = $el.css('fontSize');
+      const $dom = $(data.target);
+      const offset = $dom.offset();
+      const lineHeight = $dom.css('lineHeight');
+      const fontSize = $dom.css('fontSize');
       const data2 = {
         top: offset.top,
         left: offset.left,
-        width: $el.width(),
-        height: $el.height(),
+        width: $dom.width(),
+        height: $dom.height(),
         lineHeight,
         fontSize,
-        value: $el.text(),
+        value: $dom.text(),
         open: true,
         handleBlur : data.handleBlur
       }
       Object.assign(state, data2);
     },
     close(state){
-      console.log('blur');
       state.open = false;
       state.handleBlur(state.value);
       state.handleBlur = noop;

@@ -1,74 +1,89 @@
-.lr-login-warp{
-  justify-content:center;
-  flex-direction: column;
-  align-items: center;
-  fieldset{
-    border-color: $borderColor;
-    border-width: 2px;
-    border-style: groove;
-    background-color: rgba(255,255,255, .5);
+.lr-login-wrap{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-top: 1px;
+  background-color: $color-accent;
+  h2 {
+    color: #fff;
+  }
+  label{
+    padding-top: 3px;
+    padding-bottom: 5px;
+    color: #fff;
+    display: block;
+  }
+  .lr-input{
+    display: block;
+    max-width: 296px;
+    border: 1px solid #fff;
   }
 }
 
-.lr-login-h1{
-  text-align: center;
-  margin-top: 0;
-  margin-bottom: 10px;
-  color: #fff;
-  width: 280px;
-}
-
-.lr-login-warp fieldset{
-  min-width: 280px;
+.lr-login-box-wrap{
   display: flex;
-  flex-direction: column;
-  position: relative;
-}
-
-.lr-login-warp select{
-  min-width: 50%;
-}
-
-.lr-login-input{
-  height: 30px; 
-}
-
-.lr-login-row{
-  display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-top: 10px;
-}
-.lr-login-label{
-  font-size: .82em;
-  line-height: 1;
-  margin-right: 10px;
+  flex-direction: column;
+  
 }
 
-.lr-login-footer{
-  text-align: right;
-  padding-top: 10px;
-  position: relative;
+
+.lr-logined-wrap{
+
+  margin-right: 40px;
+  padding-right: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-right: 1px solid rgba(#fff, .6);
+
+
 }
-.lr-login-error{
-  position: absolute;
-  left: 0;
-  top: 100%;
-  color:red;
-  font-size: 14px;
+.lr-logined-item{
+  display: block;
+  color: #000;
+  width: 200px;
+  background-color: rgba(#fff, .8);
+  display: flex;
+  align-items: center;
+  height: 50px;
+  text-decoration: none;
+  &:hover{
+    text-decoration: none;
+    background-color: rgba(#fff, 1);
+  }
+}
+.lr-logined-item-icon{
+  background-color: $color-accent;
+  color:#fff;
+  width: 40px;
+  height: 40px;
+  margin-left: 10px;
+  text-align: center;
+  line-height: 40px;
+  font-size: 25px;
+}
+.lr-logined-item-text{
+  margin-left: 13px;
+  font-size: 18px;
+  color: #222;
+}
+.lr-login-logo{
+  width: 160px;
+  height: 160px;
+  display: block;
+  margin-top: 140px;
+}
+.lr_login_have_logined{
+  justify-content: center;
+  .lr-login-logo{
+    margin-top: 0;
+  }
+}
+.lr-login-box{
   width: 100%;
-}
-.lr-login-bottom{
-  position: absolute;
-  bottom: 1px;
-  width: 980px;
-  margin: 0 auto;
-  text-align: right;
-  color: #fff;
-  font-size: 15px;
-
-  a{
-    color: #fff;
-    margin: 0 5px;
+  max-width: 296px;
+  .lr-btn{
+    margin-top: 20px;
   }
 }

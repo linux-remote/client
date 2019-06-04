@@ -8,7 +8,8 @@ function _defState(){
     latest: {}, // last created task
     current: {}, // focused task
     id: 3,  //zIndex
-
+    
+    isMinAll: false,
     _tmpMinAll: [],
     _tmpMinAllIsCurrFocus: false
   }
@@ -26,10 +27,10 @@ export default  {
          // opts 是一个对象.
         appId = opts.appId;
       }
-      const APP = this.getters['app/getById'](appId);
+      const APP = this.getters['sysApps/getById'](appId);
 
       if(APP.IS_UNKNOWN_APP){
-        return alert('Unknown App!');
+        return this.commit('error/show', 'Unknown App!');
       }
 
       const data = {
@@ -38,28 +39,38 @@ export default  {
       }
       data.title = data.title || null;
       data.unique = APP.unique || false;
+      data.width = APP.width || TASK_WIDTH;
+      data.height = APP.height || TASK_HEIGHT;
 
       if(data.unique){
         if(uniqueMap[appId]){
           return this.commit('task/show', uniqueMap[appId]);
         }else{
+
           uniqueMap[appId] = data;
         }
-      }
-      
-      var preSameTask = {zIndex: -1};
-      state.list.forEach(v => {
-        if(v.appId === appId){
-          if(preSameTask.zIndex < v.zIndex){
-            preSameTask = v;
+      } else {
+        let preSameTask = {zIndex: -1, width: data.width, height: data.height};
+        state.list.forEach(v => {
+          if(v.appId === appId){
+            if(preSameTask.zIndex < v.zIndex){
+              preSameTask = v;
+            }
           }
-        }
-      })
-
-      const isMax = preSameTask.isMax;
-
-      data.width = (isMax ? APP.width : preSameTask.width) || TASK_WIDTH;
-      data.height = (isMax ? APP.height : preSameTask.height) || TASK_HEIGHT;
+        });
+  
+        const isMax = preSameTask.isMax;
+        data.width = isMax ? data.width : preSameTask.width;
+        data.height = isMax ? data.height : preSameTask.height;
+        
+      }
+      const rootState = this._modules.root.state;
+      if(data.width > rootState.deskTopW){
+        data.width = rootState.deskTopW;
+      }
+      if(data.height > rootState.deskTopH){
+        data.height = rootState.deskTopH;
+      }
       data.draggable = false;
       data.isMin = false;
       data.isMax = false;
@@ -78,6 +89,7 @@ export default  {
       } 
       if(state._tmpMinAll.length){
         state._tmpMinAll = [];
+        state.isMinAll = false;
       }
       if(state.current === task){
         task.isFocus = true;
@@ -123,23 +135,25 @@ export default  {
     //   this.commit('task/add', cloneTask);
     // },
 
-    minAll(state){
+    toggleMinAll(state){
       if(state._tmpMinAll.length){
         state._tmpMinAll.forEach(function(v){
           v.isMin = false;
         });
         state.current.isFocus = state._tmpMinAllIsCurrFocus;
-        return state._tmpMinAll = [];
-      }
+        state._tmpMinAll = [];
 
-      state._tmpMinAllIsCurrFocus = state.current.isFocus;
-      state.list.forEach(v => {
-        if(!v.isMin){
-          state._tmpMinAll.push(v);
-          v.isMin = true;
-        }
-      });
-      state.current.isFocus = false;
+      } else {
+        state._tmpMinAllIsCurrFocus = state.current.isFocus;
+        state.list.forEach(v => {
+          if(!v.isMin){
+            state._tmpMinAll.push(v);
+            v.isMin = true;
+          }
+        });
+        state.current.isFocus = false;
+      }
+      state.isMinAll = state._tmpMinAll.length !== 0;
     },
     closeAll(state){
       Object.assign(state, _defState());

@@ -2,19 +2,22 @@
 <template lang="jade">
 .lr-task-bar
   Start
-  QuickBar
+  QuickLaunch
   BarBody
+  Watch
 </template>
 
 <script>
-import Start from '../start/index.vue';
-import QuickBar from '../quick-bar/index.vue';
+import Start from '../start/start.vue';
 import BarBody from './bar-body.vue';
+import Watch from '../watch.vue';
+import QuickLaunch from './quick-launch.vue';
 export default {
   components: {
     Start,
-    QuickBar,
-    BarBody
+    BarBody,
+    Watch,
+    QuickLaunch
   },
 
   computed:{
@@ -23,10 +26,6 @@ export default {
     }
   },
   methods: {
-    minAll(){
-      this.$store.commit('task/minAll');
-      this.$refs.ctx.hidden();
-    },
     closeAll(){
       this.$store.commit('task/closeAll');
       this.$refs.ctx.hidden();

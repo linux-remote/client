@@ -1,23 +1,3 @@
-<style>
-.lr-upload-input-wrap{
-  width:0;
-  height:0;
-  position: absolute; 
-  z-index: 2;
-}
-.lr-upload-modal{
-  position: fixed;
-  top: 0; 
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 20000;
-  background-color: rgba(255, 255, 255, .5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-</style>
 <template lang='jade'>
 .lr-upload-input-wrap
   input(type='file' multiple="true" ref='uploadBtn' id='lr-upload-input' style="display:none" @change='handleChange')
@@ -38,7 +18,7 @@
 </template>
 
 <script>
-import {encodePath} from '__ROOT__/cmpt/sys-app/fs/folder/util';
+import {encodePath} from '__ROOT__/cmpt/sys-app/util';
 export default {
   data(){
     return {
@@ -75,13 +55,13 @@ export default {
       this.next();
     },
     setCoverByName(name){
-      this.tmp_selectedFile.find(v => v.rawFile.name === name)._isCover = true;
+      this.tmp_selectedFile.find(v => v.rawFile.name === name)._isUploadCover = true;
     },
     removeItemByName(name){
       var index = this.tmp_selectedFile.findIndex((v) => v.rawFile.name === name)
       this.tmp_selectedFile.splice(index, 1);
     },
-    skip(name ,i ){
+    skip(name ,i){
       this.removeItemByName(name);
       this.coveredList.splice(i, 1);
       this.next();
@@ -103,10 +83,19 @@ export default {
       const selectedFile = [];
       const fileNameList = [];
       Object.keys(e.target.files).forEach(k => {
+        const rawFile = files[k];
+        // lastModified: 1557469470259
+        // lastModifiedDate: Fri May 10 2019 14:24:30 GMT+0800 (China Standard Time)
+        // __proto__: Object
+        // name: "AdobeStock_50410339_Preview.jpeg"
+        // size: 328749
+        // type: "image/jpeg"
+        // webkitRelativePath: ""
+
         selectedFile.push({
-          rawFile: files[k]
+          rawFile
         });
-        fileNameList.push(files[k].name);
+        fileNameList.push(rawFile.name);
       });
       
       this.request({

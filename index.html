@@ -3,25 +3,21 @@
 
   <head>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    
+    <link href="/nodeMouduleStatic/local_winstrap0.5.15/css/winstrap-optional.min.css" rel="stylesheet">
     <title>Linux Remote</title>
   </head>
   <body>
-  <div id="lr-app"><span>Loading...</span></div>
-  <script>
-    if(navigator.userAgent.indexOf('Chrome') === -1 || 
-      navigator.vendor.indexOf('Google Inc')=== -1){ //stackoverflow #4565112
-        document.body.innerHTML = '<h1>Sorry! This project only support Chrome now.</h1>';
-        throw new Error('This project only support Chrome.');
-    }
-  </script>
+  <div id="lr-app">Loading...</div>
   
-  <script src="/nodeMouduleStatic/jquery3.3.1/jquery.js"></script>
+  
+  <script src="/nodeMouduleStatic/jquery3.4.1/jquery.js"></script>
   <script src="/nodeMouduleStatic/vue2.5.16/vue.runtime.js"></script>
   <script src="/nodeMouduleStatic/vuex3.0.1/vuex.js"></script>
   <script src="/nodeMouduleStatic/vue-router3.0.1/vue-router.js"></script>
-  
+  <script src="/public/js/require-2.3.6.min.js"></script>
   <script>
-    var SERVER_CONFIG = {"API_ROOT":"http://192.168.56.101:3000/api","BASE_URL":"","VERSION":"1.2.5"}
+    var SERVER_CONFIG = {"API_ROOT":"http://192.168.56.101:3000/api","BASE_URL":"","VERSION":"1.2.6"}
   </script>
 <script type="text/javascript" src="/dist/dev/build/z_app_bundle.js"></script></body>
 </html>

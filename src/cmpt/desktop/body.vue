@@ -1,13 +1,13 @@
 <template lang="jade">
-#lr-desktop.lr-desk(@drop='handleDeskDrop',
-                    @dragenter='handleDragenter',
-                    @dragover='handleDragover',
-                    @mousedown='handleMousedown',
-                    @dragend='handleIconDragEnd')
-  Icon(v-for="(v,i) in list",
-      :key="v.id",
-      :index="i",
-      :item="v")
+#lr-desktop.lr-desktop(@drop.stop='handleDeskDrop',
+                    @dragenter.stop='handleDragenter',
+                    @dragover.stop='handleDragover',
+                    @mousedown='handleMousedown')
+  .lr-desktop-icons
+    Icon(v-for="(v,i) in list",
+        :key="v.id",
+        :index="i",
+        :item="v")
 
   ContextMenu(ref='ctx')
     .lr-ctx-item(@click="sortIcon")
@@ -20,41 +20,27 @@
 <script>
 
 import Icon from './icon.vue';
-import TaskWindow from '__ROOT__/cmpt/task/window.vue';
+import TaskWindow from '__ROOT__/cmpt/task/window/window.vue';
 
 import ContextMenu from '../global/contextmenu/index.vue';
 //import Cascade from '../global/cascade.vue';
-// import UsersChat from './chat.vue';
 const ICON_WIDTH = 80;
 const ICON_HEIGHT = 80;
 export default {
   components: {
     Icon,
     TaskWindow,
-    // UsersChat,
     ContextMenu,
     //Cascade
   },
   props: ['icons'],
   data(){
-    var icons = this.icons;
-    if(!icons){ // 回收站可以被移除
-      const app = this.$store.getters['app/getById']('sys_app_recycle_bin');
-      icons = [{
-        id: 'sys_app_recycle_bin',
-        title: app.title,
-        x:0,
-        y:0
-      }]
-    }else{
-      icons = JSON.parse(icons);
-    }
 
     return {
-      list: icons,
-      _isInDesk: false,
-      _isCanDrop: true
+      list: this.getIconsFromProp(),
+      _isInDesk: false
     }
+
   },
   computed:{
     deskTopEvent(){
@@ -74,29 +60,45 @@ export default {
           this.list.push(e.item);
           this.save();
           break;
+        case 'quickLaunch':
+          console.log('quickLaunch');
+          break;
       }
     }
   },
   methods: {
-    handleDragenter(){
-      var data = this.$store.state.dragTransferData;
-      if(!data){
-        return;
+    getIconsFromProp(){
+      var icons = this.icons;
+
+      if(!icons){ // 回收站可以被移除
+        icons = [{
+          id: 'sys_app_recycle_bin',
+          x:0,
+          y:0
+        }]
+
+      }else{
+        icons = JSON.parse(icons);
       }
-      if(data._isFromDeskTop){
-        return;
-      }
-      var id = data.id;
-      //console.log('id', id)
-      const isHave = this.list.find(function(v){
-        return v.id === id;
-      })
-      this.$data._isCanDrop = isHave === undefined;
+      
+      icons = this.forMatList(icons);
+      return icons;
+    },
+    wrapItem(v){
+      const app = this.$store.getters['sysApps/getById'](v.id);
+      Object.assign(v, app);
+    },
+    forMatList(arr){
+      arr.forEach(v => {
+        this.wrapItem(v);
+      });
+      return arr;
+    },
+    handleDragenter(e){
+      e.preventDefault();
     },
     handleDragover(e){
-      if(this.$data._isCanDrop){
-        e.preventDefault();
-      }
+      e.preventDefault();
     },
     handleMousedown(e){
       if(!e._isHandle){
@@ -121,72 +123,100 @@ export default {
       this.getData();
       this.$refs.ctx.hidden();
     },
-    handleIconDragEnd(e){
-      if(!this.$data._isInDesk){
-        return;
-      }
-      this.$data._isInDesk = false;
-      const dragTransferData = this.$store.state.dragTransferData;
-      if(!dragTransferData){
-
-        return;
-      }
-
-      const startClient = dragTransferData._startClient;
-      //console.log('body dragend');
-
-      const vueEl = startClient._vueEl;
-      let positionTop = vueEl.item.y  + (e.clientY - startClient.y);
-      if(positionTop < 0) {
-        positionTop = 0;
-      }else{
-        let deskH = this.$el.offsetHeight;
-        let elH = ICON_HEIGHT;
-        if(positionTop + elH > deskH){
-          positionTop = deskH - elH;
-        }
-      }
-      let positionLeft =  vueEl.item.x + (e.clientX - startClient.x);
-      if(positionLeft < 0) {
-        positionLeft = 0;
-      }else{
-        let deskW = this.$el.offsetWidth;
-        let elW = ICON_WIDTH;
-
-        if(positionLeft + elW > deskW){
-          positionLeft = deskW - elW;
-        }
-      }
-
-      vueEl.item.x = positionLeft;
-      vueEl.item.y = positionTop;
-      
-      this.save();
+    _getDragData(e){
+      const data = e.dataTransfer.getData('text');
+      return JSON.parse(data);
     },
     save(){
-      this.request({
-        url: '~/desktop/icons',
-        type: 'post',
-        data: {
-          data: JSON.stringify(this.list)
-        },
-        success(){
-          console.log('desktop save ok');
-        }
-      })
+        const arr = this.list.map(v => {
+          return {
+            id: v.id,
+            x: v.x,
+            y: v.y
+          }
+        });
+        // console.log('save', arr);
+
+        
+        this.request({
+          url: '~/desktop/icons',
+          type: 'post',
+          data: {
+            content: JSON.stringify(arr)
+          },
+          success(){
+            console.log('desktop save ok');
+          }
+        })
+
     },
     handleDeskDrop(e){
-      const dragTransferData = this.$store.state.dragTransferData;
-      if(dragTransferData && dragTransferData.isFromStart){
-        this.list.push({
-          id: dragTransferData.id,
-          x: e.clientX,
-          y: e.clientY
-        })
-        this.save();
+      // console.log('handleDeskDrop');
+      e.preventDefault();
+      const data = this._getDragData(e);
+      if(!data){
         return;
       }
-      this.$data._isInDesk = true;
+      const item = this.list.find(v => v.id === data.id);
+      if(item){
+        if(data.from === 'desktop'){
+          this.setDropedItemXY(data, item, e);
+        } else {
+          this.$store.commit('error/show', 'The icon already exists on the desktop.');
+        }
+        
+        this.save();
+      } else {
+        if(data.from === 'startMenu'){
+          let newItem = {
+            id: data.id,
+            x: e.clientX,
+            y: e.clientY
+          }
+          this.wrapItem(newItem);
+          const xy = this.keepIconIn(e.clientX, e.clientY);
+          newItem.x = xy.x;
+          newItem.y = xy.y;
+          this.list.push(newItem);
+          this.save();
+        }
+      }
+      
+    },
+    setDropedItemXY(data, item, e){
+      const startClient = data.startClient;
+      const positionLeft =  item.x + (e.clientX - startClient.x);
+      const positionTop = item.y  + (e.clientY - startClient.y);
+      
+
+      const result = this.keepIconIn(positionLeft, positionTop);
+
+      item.x = result.x;
+      item.y = result.y;
+    },
+    keepIconIn(x, y){
+      if(x < 0){
+        x = 0;
+      } else {
+        const deskW = this.$el.offsetWidth;
+        const elW = ICON_WIDTH;
+        if(x + elW > deskW){
+          x = deskW - elW;
+        }
+      }
+      if(y < 0){
+        y = 0;
+      } else {
+        const deskH = this.$el.offsetHeight;
+        const elH = ICON_HEIGHT;
+        if(y + elH > deskH){
+          y = deskH - elH;
+        }
+      }
+      return {
+        x,
+        y
+      }
     },
     getData(){
       this.request({
@@ -195,14 +225,22 @@ export default {
           if(!result){
             return;
           }
-          this.list = JSON.parse(result);
+          result = JSON.parse(result);
+          this.list = this.forMatList(result);
         }
       })
     }
   },
+  created(){
+
+      this.$options._isCanDrop = true;
+  },
   mounted(){
     this.$store.commit('setDeskTopWH');
-    //-this.$store.commit('task/add', {appId: 'sys_app_file', address: '/home/dw/upload'});
+    // this.$store.commit('task/add', {appId: 'sys_app_recycle_bin'});
+    // this.$store.commit('task/add', {appId: 'sys_app_fs', address: '/home/dw/fs'});
+    // this.$store.commit('task/add', {appId: 'sys_app_fs', address: '/home/dw/fs2'});
+    // this.$store.commit('task/add', {appId: 'sys_app_settings'});
   }
 }
     // Cascade.lr-ctx-item

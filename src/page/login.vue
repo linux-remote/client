@@ -1,39 +1,42 @@
 
 <template lang="jade">
-.lr-page.lr-login-warp
-  h1.lr-login-h1 Linux Remote
-  fieldset
-    legend.lr-login-legend {{LANG.langTitle}}
-    select(v-model='currLangIndex', @change="handleChange")
-      option(v-for='(v, i) in language.list',
-            :value='i',
-            :key='v.id') {{v.name}}
-  form(@submit.prevent="login")
-    fieldset.lr-login-fieldset(@keydown.13='login')
-      legend.lr-login-legend {{LANG.title}}
-      .lr-login-row
-        label.lr-login-label {{LANG.username}}:
-        input.lr-login-input( v-model='username' required="required")
-      .lr-login-row
-        label.lr-login-label {{LANG.password}}:
-        input.lr-login-input(type='password' v-model='password' required="required")
-      .lr-login-footer
-        button(type="submit", :class='{lr_loading:isRequest}') {{LANG.submitBtn}}
-      .lr-login-error(v-show="error") {{error}}
-  .lr-login-bottom
+.lr-page.lr-login-wrap.theme-dark.color-fill-accent-vivid-high
+  .lr-logined-wrap(v-if="loginedList.length")
+    div
+      router-link.lr-logined-item(v-for="username in loginedList", :key="username", :to="'/user/' + username")
+        .lr-logined-item-icon
+          span.glyph.glyph-contact
+        .lr-logined-item-text {{username}}
+  .lr-login-box-wrap(:class="{lr_login_have_logined: loginedList.length}")
+    img.lr-login-logo(src="/public/img/windows-linux-logo-c.png")
+    h2 Linux Remote
+    .lr-login-box
+      form(@submit.prevent="login")
+        div
+          label {{LANG.username}}
+          input.lr-input( v-model='username' required="required")
+        div
+          label {{LANG.password}}
+          input.lr-input(type='password', v-model='password', required="required")
+        LoadingBtn.lr-btn.lr-w100.lr-btn-hollow(type="submit", :text="LANG.submitBtn", :isLoading="isRequest")
+  //-.lr-login-bottom
     a(href='https://github.com/linux-remote/linux-remote/blob/master/LICENSE', target='_blank') Licenses
     a(href='https://github.com/linux-remote', target='_blank') Source code
 </template>
 
 <script>
+import LoadingBtn from '../cmpt/loading-btn.vue';
 export default {
+  components: {
+    LoadingBtn
+  },
   data(){
     return {
       currLangIndex: this.$store.state.language.currIndex,
       isRequest: false,
       username: this.$route.query.user || '',
       password: '',
-      error: ''
+      loginedList: []
     }
   },
   computed: {
@@ -45,6 +48,14 @@ export default {
     }
   },
   methods: {
+    getData(){
+      this.request({
+        url: '/loginedList',
+        success(data){
+          this.loginedList = data;
+        }
+      })
+    },
     handleChange(){
       this.$store.commit('language/set', this.currLangIndex);
     },
@@ -58,17 +69,20 @@ export default {
           username,
           password
         },
-        success(){
+        success(data){
+          this.$store.commit('set', {
+            username
+          });
           this.routeTo(username);
-        },
-        // error(xhr){
-        //   this.error = `http #${xhr.status}: ${xhr.responseText}`;
-        // }
+        }
       })
     },
     routeTo(username){
       this.$router.push('user/' + username);
     }
+  },
+  created(){
+    this.getData();
   }
 }
 </script>

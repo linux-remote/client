@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import {encodePath} from './util'
+import {encodePath} from '__ROOT__/cmpt/sys-app/util';
 export default {
   props: ['p'],
   data(){
@@ -46,12 +46,7 @@ export default {
           type: 'create' + type
         },
         success(data){
-          data.name = name;
-          this.$store.commit('fsTrigger', {
-            address: this.p.address,
-            type: 'add',
-            item: data
-          })
+          this.$emit('success', name, data);
         },
         complete(){
           this.p.preCreateItem = null;

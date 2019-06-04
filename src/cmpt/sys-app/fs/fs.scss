@@ -1,0 +1,832 @@
+
+//************* 文件管理器 *************
+$fsNavBarH: 31px;
+$fsCtrlBarH: 35px;
+$fsStatusBarH: 23px;
+.lr-fs-wrap{
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  padding-top: $fsNavBarH;
+  user-select: none;
+}
+.lr-fs-bottom-wrap{
+  height: 100%;
+  overflow: hidden;
+}
+
+.lr-fs-right{
+  flex-grow: 1;
+  flex-direction: column;
+  position: relative;
+  overflow: auto;
+}
+
+.lr-fs-index{
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-size: 2em;
+  >div{
+    text-align: center;
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer;
+    margin: 10px;
+    padding: 0 5px;
+    &:hover{
+      background-color: $bg;
+    }
+  }
+}
+
+.lr-fs-empty{
+  width: 100%;
+  text-align: center;
+  color: #6d6d6d;
+  font-size: 12px;
+  margin-top: 18px;
+  line-height: 1;
+}
+// *************** Left ***************
+// .lr-fs-left{
+//   overflow: auto;
+//   width: 150px;
+//   flex-shrink: 0;
+//   background-color: #fff;
+//   border-right: 1px solid #999;
+//   display: flex;
+//   flex-direction: column;
+// }
+// .lr-fs-bookmark{
+//   height: 30px;
+//   line-height: 30px;
+//   overflow: hidden;
+//   white-space: nowrap;
+//   text-overflow: ellipsis;
+//   cursor: pointer;
+//   display: flex;
+//   align-items: center;
+//   .lr-icon{
+//     height: 25px;
+//     width: 25px;
+//     margin-right: 5px;
+//     text-align: center;
+//     line-height: 25px;
+//     color: #f5f5f5;
+//     font-size: 13px;
+//   }
+// }
+
+// .lr-fs-bookmark:hover{
+//   background-color: $bg;
+//   color: #000;
+// }
+
+
+// *************** Left End ***************
+.lr-fs-nav-bar{
+  padding-top: 5px;
+  padding-left: 5px;
+  border-top: 1px solid #dadbdc;
+  display: flex;
+  align-items: center;
+  height: $fsNavBarH;
+  line-height: 30px;
+  flex-shrink: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+.lr-fs-nav-item{
+  width: 24px;
+  height: 23px;
+  font-size: 14px;
+  color: #808080;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 3px;
+
+  &.lr_fs_nav_disabled{
+    color: #dfdfdf;
+    pointer-events: none;
+  }
+}
+// .lr-fs-nav-up:hover {
+//   background-color: #e5f3ff;
+//   border: 1px solid #cce8ff;
+//   color: #808080;
+// }
+
+
+.lr-fs-address{
+  flex-grow:1; 
+  display: flex;
+  background-color: #fff;
+  height: 20px;
+  position: relative;
+  margin-top: 1px;
+  font-size: 12px;
+  >input{
+    flex-grow: 1;
+    border: 1px solid #d9d9d9;
+  }
+}
+.lr-fs-address-inner{
+  position: absolute;
+  max-width: 90%;
+  display: flex;
+  background-color: #fff;
+  
+  height: 18px;
+  line-height: 15px;
+  margin: 1px;
+}
+.lr-fs-crumb{
+  color: #000;
+  transition: all .15s;
+  cursor: pointer;
+  border: 1px solid transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  >.glyph{
+    color: #808080;
+    // font-size: 7px;
+    margin: -1px 5px 0;
+    text-align: center;
+  }
+}
+.lr-fs-crumb-name {
+  white-space: pre-wrap;
+  padding-left: 3px;
+  padding-right: 3px;
+}
+.lr-fs-nav-item:hover,  .lr-fs-crumb:hover{
+  background-color: #e5f3ff;
+  border: 1px solid #cce8ff;
+}
+
+$linkFileColor: violet;
+
+
+.lr-fs-folder{ // 多层 flex 嵌套会导致 overflow-y: auto; 不起作用. 2018/6/8
+  height: 100%;
+  padding-top: $fsCtrlBarH;
+  padding-bottom: $fsStatusBarH;
+  padding-left: 2px;
+  padding-right: 2px;
+  position: relative;
+  overflow: hidden;
+}
+.lr-fs-folder-inner{
+  height: 100%;
+  position: relative;
+  overflow: auto;
+}
+
+.lr-fs-ctrl-bar-mask{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0, .6);
+  z-index: 2;
+  display: flex;
+  
+}
+
+
+// .lr-fs-icon-model{
+// }
+// .lr-fs-list-model{
+// }
+.lr-fs-error{
+  font-size: 1.2em;
+  font-weight: bold;
+
+  color: red;
+}
+.lr-upload-input{
+  display: none;
+}
+.lr-fs-dir-sticky{
+  background-color: burlywood
+}
+.lr-fs-dir-unwriteable{
+  background-color: gray;
+  color:#fff;
+}
+.lr-fs-dir-unreadable{
+  background-color: black;
+  color:#fff;
+}
+.lr-fs-dir-mask{
+  background-color: rgba(#FF00FF, .3);
+}
+.lr-fs-status-wrap{
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width:100%;
+  height: $fsStatusBarH; 
+  line-height: $fsStatusBarH;
+  font-size: 12px;
+  span{
+    margin: 0 2px; padding: 0 2px;
+  }
+  b{
+    margin-left: 2px;
+  }
+}
+.lr-fs-status{
+  width: 100%;
+  height: 100%;
+}
+.lr-fs-status-link{
+  color: $linkFileColor;
+}
+
+
+// ================== item ==================
+$fsRowItemH: 50px;
+
+.lr-fs-folder .lr-icon{
+  width: 16px;
+  height: 16px;
+  margin-bottom: 2px;
+  margin-top: 2px;
+  margin-right: 4px;
+  margin-left: -2px;
+  position: relative;
+  
+  &:hover{
+    background-color: $bg;
+  }
+  //-background-color: rgba(#fff, .5);
+}
+
+.lr_file_hidden{
+  .lr-icon {
+    opacity: .6;
+  }
+
+}
+.lr_per_is_on{
+  background-color: rgba(green, .5);
+  color: #fff;
+  line-height: 1;
+  height: 1em;
+  display: inline-block;
+  padding: 0 3px;
+}
+.lr-name-wrap{
+  display: flex;
+  align-items: center;
+}
+.lr_file_type_Directory{
+  background-image: url('/public/img/tango-style/folder.png');
+}
+.lr_file_type_RegularFile {
+  background-image: url('/public/img/tango-style/text-x-generic.png');
+}
+.lr_file_type_Socket{
+  background-image: url('/public/img/tango-style/inode-socket.png');
+}
+.lr_file_type_Unknown{
+background-image: url('/public/img/unknown.png');
+}
+.lr_file_type_CharacterDevice{
+background-image: url('/public/img/tango-style/inode-chardevice.png');
+}
+.lr_file_type_BlockDevice{
+  background-image: url('/public/img/tango-style/inode-blockdevice.png');
+}
+.lr_file_type_SymbolicLink{
+  background-image: url('/public/img/emblem-symbolic-link.png');
+}
+.lr_file_type_NamedPipe{
+  background-size: auto 80%;
+  background-image: url('/public/img/nuvola-style/pipe.png');
+}
+
+// door 类型只存在于 Solaris 系统. 几乎不会遇到
+// https://en.wikipedia.org/wiki/Unix_file_types#Door
+.lr_file_type_Door{
+  background-size: auto 80%;
+  background-image: url('/public/img/wine-doors.png');
+}
+.lr-error-icon{
+  z-index: 20;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  background-image: url('/public/img/nuvola-style/lockoverlay.png');
+}
+
+// ================== item end ==================
+
+
+
+
+
+//----------- permission -----------
+.lr-per-relation-wrap{
+  display: flex;
+  position: relative;
+}
+.lr-per-relation{
+  display: flex;
+  // margin-right: 1px;
+  
+  
+}
+.lr-per-item{
+  color:#ddd;
+  //background-color: #eee;
+  //opacity: .5;
+  text-align: center;
+
+}
+.lr-per-item, .lr-per-sticky{
+  height: 1em;
+  line-height: 1em;
+  width: 1em;
+}
+.lr_is_device_type{
+  color: blue;
+}
+.lr_per_item_on{
+  background-color: rgba(green, .25);
+  opacity:1;
+  color:#fff;
+}
+.lr_per_is>.lr_per_item_on{
+  background-color: rgba(green, .6);
+  color:#fff;
+}
+.lr-per-sticky{
+  position: absolute;
+  background: rgba(sienna, .5);
+  right:0;
+  bottom: 0; 
+  z-index: 2;
+}
+.lr-per-wrap{
+  display: flex;
+}
+.lr-per-ACL{
+  background-color: #FF00FF;
+  color: #fff;
+}
+
+.lr-fs-ctrl-bar{
+  position: absolute;
+  width: 100%; 
+  height: $fsCtrlBarH;
+  line-height: $fsCtrlBarH;
+  color:#000;
+  display: flex;
+  align-items: center;
+  top: 0;
+  left: 0;
+  background-color: #eee;
+  .btn {
+    margin-top: 0;
+  }
+  .lr-icon{
+    width: 28px;
+    height: 28px;
+    margin-right: 5px;
+  }
+}
+.lr-fs-home-mark{
+  position: absolute;
+  right: 30px;
+  top: 0;
+  bottom: 0;
+  margin:auto;
+  background-image: url('/public/img/tango-style/user-home.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-color: rgba(#fff, 0);
+  border: 0;
+  height: 26px;
+  width: 26px;
+  cursor: pointer;
+  &:hover{
+    background-color: #ddd;
+  }
+}
+.lr-fs-new-folder{
+  background-image: url('/public/img/tango-style/folder-new-5.png');
+
+}
+.lr-fs-new-file{
+  background-image: url('/public/img/tango-style/document-new-4.png');
+}
+.lr-fs-create-layer{
+    background-color: $bg;
+  &:hover{
+    background-color: $bg!important;
+  }
+}
+
+.lr_fs_open_type_image{
+  background-image: url('/public/img/tango-style/image-x-generic.png');
+}
+.lr-fs-table {
+  border-collapse: separate;
+  font-size: 12px;
+  margin-left: 15px;
+  display: block;
+  th {
+    border-bottom: 0!important;
+    border-right: 1px solid #e5e5e5!important;
+    color: #4c607a;
+    font-weight: normal;
+    &:first-letter {
+      // https://zhidao.baidu.com/question/1695348555292540668.html
+      text-transform:uppercase;
+    }
+    &.active{
+      background-color: red;
+    }
+  }
+  th, td {
+    padding: 0 6px;
+
+  }
+  th {
+    height: 25px;
+    border-bottom: 6px solid transparent!important;
+  }
+  tr:hover {
+    td {
+      background-color: $activeBgColor;
+    }
+    
+  }
+
+  td {
+    color: #6d6d6d;
+    border-top: 1px solid transparent;
+    border-bottom: 1px solid transparent;
+
+  }
+
+  td:first-child{
+    border-left: 1px solid transparent!important;
+    color: #000;
+  }
+  td:last-child{
+    border-right: 1px solid transparent!important;
+    text-align: right;
+  }
+}
+.lr_fs_th_permission{
+  background-color: #ddd;
+  pointer-events: none;
+}
+// .lr-fs-disabled-th{
+//   cursor: not-allowed;
+// }
+.lr_file_be_selected{
+  td {
+    border-top: 1px solid #a5d6ff;
+    background-color: $activeBgColor;
+  }
+  // &.lr_file_be_selected_first { // DO
+  //   td {
+  //     border-color: transparent!important;
+  //     background-color: $activeBgColor;
+  //   }
+  // }
+  // &:hover{
+  //   background-color: $activeBgColor!important;
+  // }
+}
+
+// $activeBorderColor: red;
+tr.lr_file_focus, tr.lr_file_former{
+  td:first-child{
+    border-left: 1px solid $activeBorderColor!important;
+  }
+  td:last-child{
+    border-right: 1px solid $activeBorderColor!important;
+  }
+  td {
+    border-top: 1px solid $activeBorderColor!important;
+    border-bottom: 1px solid $activeBorderColor!important;
+  }
+  // &:hover{
+  //   background-color: $activeBgColor;
+  // }
+}
+
+tr.lr_file_focus {
+  overflow:visible;
+  background-color: $activeBgColor;
+}
+
+tr:not(.lr_file_be_selected) + tr.lr_file_be_selected, tr.lr_file_be_selected:first-child{
+  td {
+    border-color: transparent;
+    background-color: $activeBgColor;
+  }
+}
+tr.lr_file_be_selected.lr_file_former + tr.lr_file_be_selected {
+  td {
+    border-top-color: transparent!important;
+  }
+}
+tr.lr_file_be_selected.lr_file_former{
+  td {
+    border-top-color: #7bc3ff!important;
+    border-bottom-color: #7bc3ff!important;
+  }
+}
+
+.lr_task_un_focus tr.lr_file_be_selected, .lr_task_un_focus tr.lr_file_focus {
+  td {
+    background-color: #d9d9d9!important;
+    border-color: transparent!important;
+  }
+}
+// .lr_task_un_focus tr.lr_file_former{
+//   td {
+//     border-color: #b9b9b9!important;
+//     border-left-color: transparent!important;
+//     border-right-color: transparent!important;
+//   }
+// }
+// .lr_task_un_focus tr.lr_file_focus {
+//   td {
+//     border-color: transparent!important;
+//   }
+  
+// }
+.lr-fs-item-name{
+  min-width: 2em;
+  white-space: pre-wrap;
+}
+.lr_file_model_on{
+  background-color: red;
+}
+.lr_file_model_icon{
+  display: flex!important;
+  flex-wrap: wrap;
+}
+.lr_file_model_icon tr:first-child{
+  display: none!important;
+}
+.lr_file_model_icon tr{
+  display: flex!important;
+  //padding: 20px 0;
+  margin: 20px;
+  border: 2px solid red;
+  flex-direction: column;
+  flex-shrink: 0;
+  height: 100px;
+  width: 100px;
+  position: relative;
+}
+.lr_file_model_icon td{
+  display: flex!important;
+  flex-grow: 1;
+  padding: 0!important;
+  .lr-name-wrap{
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    
+  }
+  .lr-icon{
+    height: 70px;
+    width: 100%;
+    margin: 0;
+   
+  }
+  .lr-fs-item-name{
+    font-weight: normal;
+  }
+}
+.lr_file_model_icon td:not(:first-child){
+  display: none!important;
+}
+.lr_file_model_icon td:nth-child(4){
+  display: flex!important;
+  .lr-per-relation-wrap{
+    position: static;
+  }
+  .lr-per-relation{
+    display: none;
+  }
+  .lr_per_is{
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 20;
+  }
+  .lr-per-ACL{
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 20;
+    font-size: 10px;
+    // width: 1em;
+    // text-align: center;
+    // word-break: break-all;
+    // line-height: 1;
+    // font-size: 12px;
+  }
+}
+
+
+.lr-fieldset-body{
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+.lr-disk-item{
+  flex-shrink: 0;
+  margin-right: 20px;
+  display: flex;
+  //cursor: pointer;
+  // &:hover{
+  //   background-color: rgba($bg, .5);
+  // }
+}
+.lr-disk-icon{
+  width: 50px;
+  height: 50px;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  
+}
+.lr-disk-cd{
+  background-image: url('/public/img/drive-optical-6.png');
+}
+.lr-disk-hd{
+  background-image: url('/public/img/drive-harddisk-9.png');
+}
+.lr-disk-memory{
+  background-image: url('/public/img/memory-ram.png');
+}
+.lr-disk-item-right{
+  width: 220px;
+}
+.lr-disk-process-wrap{
+  height: 18px;
+  background-color: #eee;
+  border: 1px solid #ddd;
+  width: 96%;
+  position: relative;
+}
+.lr-disk-process{
+  height: 100%;
+  background-color: #00CED1;
+}
+.lr-disk-left{
+  width: 50px;
+  margin-right: 10px;
+  position: relative;
+}
+.lr-disk-type{
+  font-size: 12px;
+  text-align: center;
+  color:#fff;
+  position: absolute;
+  top: 0;
+  left: -10px;
+  background-color: red;
+  padding: 0 3px;
+
+}
+.lr-disk-i-process-wrap{
+  width: 96%;
+  background-color: #ddd;
+  z-index: 2;
+  top: 100%;
+  left: 0;
+  height: 3px;
+  margin-bottom: 2px;
+}
+.lr-disk-i-process-wrap:hover {
+  background-color: #eee;
+  .lr-disk-i-process{
+    background-color: #1E90FF;
+  }
+}
+.lr-disk-i-process{
+  height: 100%;
+  background-color: #006400;
+  width: 0;
+}
+
+.lr-disk-info{
+  font-size: 13px;
+  color: #444;
+}
+.lr-disk-link{
+  text-decoration: underline;
+  color: blue;
+  cursor: pointer;
+  width: 100%;
+}
+.lr-fs-favorites{
+  flex-grow: 1;
+  position: relative;
+  width: 100%;
+  border-top: 1px solid #999;
+  background-image: url('/public/img/favorites.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+
+}
+.lr-fs-favorites-inner{
+  height: 100%;
+  position: absolute;
+  width: 100%;
+  background-color: rgba(255,255,255, .8);
+}
+.lr-disk-link:hover{
+  color: green;
+}
+
+.lr_file_cut td{
+  color: red
+}
+
+// .lr-fs-upload-tr{
+
+//   // background-color: #eee;
+//   // &:hover, &:focus{
+//   //   td {
+//   //     background-color: $activeBgColor!important;
+//   //   }
+//   //   &:focus{
+//   //     outline: none;
+//   //   }
+    
+//   // }
+//   // .lr-fs-item-name{
+//   //   color: #666;
+//   // }
+//   // td {
+//   //   // pointer-events: none;
+//   // }
+// }
+.lr-fs-upload-process{
+  background-color: #ddd;
+  position: relative;
+  margin: 0 5px;
+  height: 14px;
+  line-height: 14px;
+}
+.lr-fs-upload-processbar, .lr-fs-upload-info{
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+}
+.lr-fs-upload-processbar{
+  background-color: #0078D7;
+  width: 0;
+}
+.lr-fs-upload-info{
+  z-index: 2;
+  right: 0;
+  font-size: 12px;
+  line-height: 1em;
+  color: #333;
+  text-align: center;
+}
+.lr-fs-upload-btn{
+  background-color: $color-accent;
+  color: #fff;
+  border: 0;
+  padding: 0 10px;
+  &:hover{
+    background-color: darken($color: $color-accent, $amount: 5);
+  }
+  &:focus{
+    outline: none;
+  }
+}
+.lr_bookmark_active{
+  opacity: .1;
+  pointer-events: none;
+}

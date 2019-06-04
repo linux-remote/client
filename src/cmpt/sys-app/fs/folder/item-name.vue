@@ -3,8 +3,7 @@
 </template>
 
 <script>
-// const DELAY = 500;
-import {initIconAttr, encodePath} from './util';
+import {encodePath} from '__ROOT__/cmpt/sys-app/util';
 export default {
   props: ['item', 'p'],
   data(){
@@ -19,12 +18,12 @@ export default {
       this.$data._dblClick_count ++;
     },
     handleClick(e){
+ 
       if(e.ctrlKey || e.shiftKey){
         return;
       }
       const item = this.item;
-      const pData = this.$parent;
-      if(!pData.focus){
+      if(!item.focus){
         return;
       }
       if(this.$data._isClicked){
@@ -36,42 +35,49 @@ export default {
       const self = this;
       setTimeout(() => {
               
-        if(self.$data._dblClick_count !== _dblClick_count | !pData.focus){
+        if(self.$data._dblClick_count !== _dblClick_count | !item.focus){
           this.$data._isClicked = false;
           return;
         }
-        if(!pData.focus){
+        if(!item.focus){
           return;
         }
 
-        const data = {
-          target: e.target,
-          handleBlur : function(newName){
-            self.isStart = false;
-            self.$data._isClicked = false;
-            if(!newName || item.name === newName){
-              return;
-            }
-            self.rename(newName);
-          }
-        }
-        this.isStart = true;
-        self.$store.commit('flyTextarea/open', data);
+        this.startRename();
       }, 500);
+    },
+    startRename() {
+      const self = this;
+      const item = self.item;
+      const data = {
+        target: this.$el,
+        handleBlur : function(newName){
+          self.isStart = false;
+          self.$data._isClicked = false;
+          if(!newName || item.name === newName){
+            return;
+          }
+          self.rename(newName);
+        }
+      }
+      self.isStart = true;
+      self.$store.commit('flyTextarea/open', data);
     },
     rename(newName){
       const item = this.item;
+      let oldName = item.name;
       this.request({
         url: '~/fs/' + encodePath(this.p.address),
         type: 'post',
-        data: {type: 'rename', oldName: item.name, newName},
+        data: {type: 'rename', oldName, newName},
         success(){
-          item.name = newName;
-          if(!item.isFolder){
-            initIconAttr(item);
-          }
-          this.p.reSortByItem(item);
-          //console.log('rename success');
+          
+          this.p.publicEmit({
+            type: 'rename',
+            address: this.p.address,
+            oldName,
+            newName
+          });
         }
       })
     }

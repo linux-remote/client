@@ -1,11 +1,12 @@
 //修改自: https://github.com/hezedu/dwlib/blob/master/request.js
-// 增加了codeError, 去掉 omitEmpty, 修改了:opts.url
+// 去掉 omitEmpty, 修改了:opts.url
 import {noop} from './util';
 import store from '__ROOT__/store/index.js';
+import router from '../router';
 const $ = window.$;
 
 const API_ROOT = window.SERVER_CONFIG.API_ROOT;
-const JSON_CONTENT_TYPE = 'application/json; charset=utf-8';
+export const JSON_CONTENT_TYPE = 'application/json; charset=utf-8';
 //const POOL = {};
 //跨站ajax请求初始化.
 if(API_ROOT.indexOf('http') === 0){
@@ -20,14 +21,14 @@ if(API_ROOT.indexOf('http') === 0){
 const POOL = {};
 var poolIndex = 0;
 
+export function defWrapErr(xhr){
+  return `#${xhr.status}: ${xhr.responseText}`;
+}
 // 默认的http处理程序
-function httpErrorHandler(xhr){
-  store.commit('error/show', `#${xhr.status}: ${xhr.responseText}`);
+export function httpErrorHandler(xhr){
+  store.commit('error/show', defWrapErr(xhr));
 }
 
-function codeErrorHandler(data){
-  store.commit('error/show', `*${data.code}: ${data.msg}`);
-}
 
 //过滤掉空的参数
 const omitKeyMap = {
@@ -36,7 +37,6 @@ const omitKeyMap = {
   complete: true,
   success: true,
   error: true,
-  codeError: true,
   rootUrl: true
 };
 
@@ -45,14 +45,14 @@ const globalConfig = {
   rootUrl: API_ROOT
 }
 
-function getUserUrl(url, username){
+function getUserUrl(url){
   if(url[0] === '~'){
-    url = '/user/' + username + url.substr(1);
+    url = '/user/' + router.currentRoute.params.username + url.substr(1);
   }
   return url;
 }
-export function wrapUrl(url, username){
-  return globalConfig.rootUrl + getUserUrl(url, username);
+export function wrapUrl(url){
+  return globalConfig.rootUrl + getUserUrl(url);
 }
 
 function request(opts){
@@ -61,7 +61,6 @@ function request(opts){
     success = noop,
     complete = noop,
     error = httpErrorHandler,
-    codeError = codeErrorHandler,
     //isOmitEmptyData = true,
     repeatSubmitMode = globalConfig.repeatSubmitMode,
     rootUrl = globalConfig.rootUrl,
@@ -89,10 +88,7 @@ function request(opts){
   }
 
 
-  // if(url[0] === '~'){
-  //   url = '/user/' + self.$route.params.username + url.substr(1);
-  // }  
-  opts.url =  rootUrl + getUserUrl(url, self.$route.params.username);
+  opts.url =  rootUrl + getUserUrl(url);
   // if(isOmitEmptyData){
   //   if(TypeOf(opts.data) === 'Object'){
   //     opts.data = omitEmpty(opts.data);
@@ -158,22 +154,13 @@ function request(opts){
         // || xhr.responseText === 'LINUX_REMOTE_USER_SERVER_ERROR'
         console.log('转向登录页');
         request.abortAll();
-        if(confirm(xhr.responseText + ' , 请重新登录')){
-          return store.commit('needRelogin');
-        }
+        return store.commit('needRelogin');
+        // xhr.responseTextInvalid
+      } else {
+        error.call(self,  xhr);
       }
-      
-      error.call(self,  xhr);
     }else{
-      if(xhr.responseJSON){
-        if(xhr.responseJSON.code){
-          codeError.call(self, xhr.responseJSON);
-        }else{
-          success.call(self, xhr.responseJSON.data);
-        }
-      }else{
-        success.call(self, xhr.responseText);
-      }
+      success.call(self, xhr.responseJSON || xhr.responseText);
     }
   }
 

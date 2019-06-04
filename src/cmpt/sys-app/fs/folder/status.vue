@@ -1,13 +1,13 @@
 <template lang="jade">
 .lr-fs-status-wrap
   .lr-fs-status(v-if='$parent.currItem.focus')
-    span {{$parent.currItem.isSymbolicLink ? 'SymbolicLink' : $parent.currItem.type}}
+    span {{$parent.currItem.symbolicLink ? 'SymbolicLink' : $parent.currItem.type}}
     span {{$parent.currItem.size | wellSize}}
     span {{$parent.currItem.permission}}
     span {{$parent.currItem.owner}}
     span {{$parent.currItem.group}}
-    span(v-if='$parent.currItem.isSymbolicLink') linkTo:
-      b.lr-fs-status-link {{$parent.currItem.linkPath}}
+    span(v-if='$parent.currItem.symbolicLink') linkTo:
+      b.lr-fs-status-link {{$parent.currItem.symbolicLink}}
   .lr-fs-status(v-else-if='$parent.dir')
     span Items: {{$parent.list.length}}
     //-span DIR

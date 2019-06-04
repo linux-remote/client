@@ -2,12 +2,13 @@
 <template lang="jade">
 .lr-task-bar-body
   ContextMenu(ref='ctx')
-    .lr-ctx-item(@click='minAll') 显示桌面
-    .lr-ctx-item(@click='closeAll') 全部关闭
+    .lr-ctx-item(@click='minAll') {{isMinAll ? 'Show open windows' : 'Show the desktop'}}
+    //- .lr-ctx-item(@click='closeAll')
   Item(v-for='(item, index) in tasks', 
       :key='item.id',
       :index='index',
       :item='item')
+  //-.lr-task-bar-place
 </template>
 
 <script>
@@ -22,11 +23,14 @@ export default {
   computed:{
     tasks(){
       return this.$store.state.task.list;
+    },
+    isMinAll() {
+      return this.$store.state.task.isMinAll;
     }
   },
   methods: {
     minAll(){
-      this.$store.commit('task/minAll');
+      this.$store.commit('task/toggleMinAll');
       this.$refs.ctx.hidden();
     },
     closeAll(){

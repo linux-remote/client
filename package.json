@@ -1,7 +1,7 @@
 {
   "name": "linux-remote-client",
   "version": "1.2.6",
-  "author": "hezedu",
+  "author": "dw <hezedu@hotmail.com>",
   "description": "linuxRemote's client",
   "main": "index.js",
   "repository": {
@@ -14,11 +14,12 @@
     "build": "webpack --colors --hide-modules",
     "_pro_build": "webpack --colors",
     "pro": "node script/pro",
-    "installPreView": "npm i lr-public jquery vue vue-router vuex --no-bin-links"
+    "installPreView": "npm i lr-public jquery vue vue-router vuex @hezedu/winstrap --no-bin-links"
   },
   "dependencies": {
+    "@hezedu/winstrap": "0.5.15",
     "express": "^4.15.3",
-    "jquery": "3.3.1",
+    "jquery": "^3.4.1",
     "lr-public": "0.0.1",
     "serve-favicon": "^2.5.0",
     "vue": "2.5.16",
@@ -46,6 +47,7 @@
     "@babel/plugin-transform-runtime": "^7.0.0",
     "@babel/preset-env": "^7.4.2",
     "@babel/runtime": "^7.4.2",
+    "autoprefixer": "^9.5.1",
     "babel-eslint": "^10.0.1",
     "babel-loader": "^8.0.5",
     "babel-plugin-transform-remove-console": "^6.9.4",
@@ -59,6 +61,7 @@
     "mini-css-extract-plugin": "^0.5.0",
     "node-sass": "^4.11.0",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
+    "postcss-loader": "^3.0.0",
     "pug": "^2.0.3",
     "pug-plain-loader": "^1.0.0",
     "sass-loader": "^7.1.0",
@@ -69,5 +72,10 @@
     "webpack": "^4.29.6",
     "webpack-cli": "^3.3.0",
     "webpack-dev-server": "^3.2.1"
-  }
+  },
+  "browserslist": [
+    "defaults",
+    "not ie > 0",
+    "not ie_mob > 0"
+  ]
 }

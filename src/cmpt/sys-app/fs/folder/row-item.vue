@@ -1,31 +1,39 @@
 <template lang="jade">
 tr(@dblclick='open',
-  @click='p.itemFocus($data, $event)',
-  @mousedown.stop='',
-  :class='{lr_file_hidden: item.isHidden, lr_file_focus: focus, lr_file_former: focus === 0, lr_file_be_selected: beSelected}')
+   @mousedown.stop='',
+   v-on="$listeners")
   td
     ContextMenu(ref='ctx')
+      .lr-ctx-item(@click="handleCut")
+        | {{LANG.cut}}
+      .lr-ctx-item(@click="handleCopy")
+        | {{LANG.copy}}
+      hr
       .lr-ctx-item(@click='handleDel')
-        .lr-icon(:style="{backgroundImage: 'url(' + recycleIcon + ')'}")
         | {{LANG.remove}}
+
       //-.lr-ctx-item(@click='open', v-if='item.type === "RegularFile"')
         .lr-icon
         | 使用打开
-      .lr-ctx-item(@click='download', v-if='item.type === "RegularFile"')
-        .lr-icon
-        | {{LANG.download}}
+
       //-.lr-ctx-item(@click='copy')
         .lr-icon
         | 复制
-      hr
-      .lr-ctx-item(@click='createSymbolicLink')
-        .lr-icon
-        | {{LANG.createSymbolicLink}}
+      template(v-if="selectedLen === 1")
+        .lr-ctx-item(@click='handleRename')
+          | {{LANG.rename}}
+        .lr-ctx-item(@click='createSymbolicLink')
+          | {{LANG.createSymbolicLink}}
+        //- hr
+        //- .lr-ctx-item(@click='sendToDesktop') {{LANG.sendToDesktop}}
+        hr
+        .lr-ctx-item(@click='download', v-if='item.type === "RegularFile"')
+          | {{LANG.download}}
         
     .lr-name-wrap
-      .lr-icon(:class='["lr_file_type_" + item.type, {["lr_fs_open_type_" + item.openType]: item.type !== "Directory"}]', :style='iconStyle')
+      .lr-icon(:class='["lr_file_type_" + item.type, {["lr_fs_open_type_" + item.openType]: item.type === "RegularFile"}]', :style='iconStyle')
         .lr-icon.lr-error-icon(v-if='item.linkTargetError')
-      ItemName(:item='item', :p='p')
+      ItemName(:item='item', :p='p', ref="name")
   td
     span(:class='{lr_per_is_on: item.is_owner}') {{item.owner}}
   td
@@ -39,26 +47,23 @@ tr(@dblclick='open',
         .lr-per-sticky(v-if='item.isSticky')
       .lr-per-ACL(v-if='item.isMask') ACL
   td {{item.mtime}}
-  td(v-if='item.size') {{item.size | wellSize}}
-  td(v-else) 
+  td(v-if='!item.device_type') {{item.size | wellSize}}
+  td(v-else)
     span.lr_is_device_type {{item.device_type}}
 </template>
 <script>
 import ContextMenu from '__ROOT__/cmpt/global/contextmenu/index.vue';
 import ItemName from './item-name.vue';
-import {encodePath} from './util';
+import { getNewUnSuffixName } from './util';
+import {encodePath, basename} from '__ROOT__/cmpt/sys-app/util';
+
 export default {
   beSelectable : true,
   components: {
     ContextMenu,
     ItemName
   },
-  data(){
-    return {
-      beSelected: false,
-      focus: false
-    }
-  },
+
   props: {
     item: {
       type: Object
@@ -68,26 +73,30 @@ export default {
     },
     index: {
       type: Number
+    },
+    selectedLen: {
+      type: Number
     }
   },
   computed: {
     LANG(){
       return this.p.LANG.ctx
     },
-    recycleIcon(){
-      return this.$store.state.app.sysMap.sys_app_recycle_bin.iconUrl
-    },
+
     iconStyle(){
-      const app = this.item.openApp
+      const app = this.item.openApp;
       return app ? 
       'background-image: url(' + app.iconUrl + ')'
       : undefined
     }
   },
   methods: {
-    // copy(){
+    onBeSelecting(isBeSelected){
+      if(this.item.isBeSelected !== isBeSelected){ // Vue 会判定 NaN.
+        this.item.isBeSelected = isBeSelected;
+      }
+    },
 
-    // },
     // send2Desktop(){
     //   this.$store.commit('deskTopTrigger', {
     //     type: 'add',
@@ -96,41 +105,56 @@ export default {
     // },
     getRealAddress(){
       let address, item = this.item;
-      if(item.isSymbolicLink){
-        address = item.linkPath;
+      const symLink = item.symbolicLink;
+      if(symLink){
+        if(symLink[0] === '/'){
+          address = item.symbolicLink;
+        } else {
+          address = this.p.getItemPath(symLink);
+        }
+        
       }else{
-        address = this.p.getItemPath(item.name)
+        address = this.p.getItemPath(item.name);
       }
       return address;
     },
     createSymbolicLink(){
-      this.$refs.ctx.hidden();
-      this.p.createSysLinkName = this.item.name;
-    },
-    handleDel(){
-      if(this.p.selectedArr.length){
-        this.p.selectedArr.forEach(item => {
-          console.log('item', item)
-          item.del();
-        })
-      }else{
-        this.del();
+      let itemName = this.item.name;
+      if(this.item.symbolicLink){
+        itemName = basename(this.item.symbolicLink);
       }
-    },
-    del(){
-
+      const newName = getNewUnSuffixName(this.p.list, itemName + '-SymLink');
       this.request({
-        type: 'delete',
-        url: '~/fs/' + encodePath(this.p.getItemPath(this.item.name)),
-        success(){
-          this.$store.commit('recycleBinTrigger');
-          this.$store.commit('fsTrigger', {
+        type: 'post',
+        url: '~/fs/' + this.p.address,
+        data: {
+          type: 'createSymbolicLink',
+          srcName: itemName,
+          newName
+        },
+        success(stdout){
+          this.p.$options._shouldFocusItemName = newName;
+          this.p.publicEmit({
             address: this.p.address,
-            type: 'del',
-            item: this.item
+            type: 'add',
+            focus: true,
+            data: stdout
           });
         }
-      })
+      });
+      this.$refs.ctx.hidden();
+    },
+    handleCut(){
+      this.p.cut();
+      this.$refs.ctx.hidden();
+    },
+    handleCopy(){
+      this.p.copy();
+      this.$refs.ctx.hidden();
+    },
+    handleDel(){
+      this.$emit('del');
+      this.$refs.ctx.hidden();
     },
     open(){
       const item = this.item;
@@ -140,35 +164,39 @@ export default {
         this.p.go(address);
       }else if(item.type === 'RegularFile'){
         if(item.openType === 'image'){
-          return this.winOpen(address);
+          return this.windowOpen(address);
         }
         if(item.openApp){
           this.$store.commit('task/add', {
             appId: item.openAppId,
-            title: item.name,
-            width: 500,
-            height:500,
-            dir: this.p.address,
-            address: '~/fs/' + encodePath(address)
+            filePath: address
           });
         }else{
           this.$store.commit('openWith', {
-            item,
-            address: '~/fs/' + encodePath(address)
+            filePath: address
           });
         }
 
       }
     },
 
-    winOpen(address, queryStr = ''){
-      window.open(this.request.wrapUrl('~/fs/' + encodePath(address) + queryStr, this.$route.params.username));
+    windowOpen(address, queryStr = ''){
+      window.open(this.request.wrapUrl('~/fs/' + encodePath(address) + queryStr));
     },
 
     download(){
       var url = this.p.getItemPath(this.item.name);
-      this.winOpen(url, '?download=true');
+      this.windowOpen(url, '?download=true');
+    },
+    handleRename() {
+      this.$refs.name.startRename();
+      this.$refs.ctx.hidden();
+    },
+    sendToDesktop(){
+      this.$refs.ctx.hidden();
     }
   }
 }
+
+
 </script>

@@ -6,10 +6,11 @@
   .lr-icon.lr-fs-new-folder(@click='addItem("Directory")')
   .lr-icon.lr-fs-new-file(@click='addItem("RegularFile")')
    
-  button.lr-upload-btn(@click='handleUploadBtnClick')
-    .lr-fs-upload
-    | {{$parent.LANG.upload}}
-
+  button.lr-btn-sm.lr-fs-upload-btn(@click='handleUploadBtnClick')
+    span.glyph.glyph-upload
+    span {{$parent.LANG.upload}}
+  //- button(@click="errDev") errDev
+  .lr-fs-home-mark(@click="$parent.go(homedir)", :class="{lr_bookmark_active: address === homedir}")
 </template>
 <script>
   // div(style='flex-grow: 1')
@@ -25,6 +26,14 @@ export default {
       default: false
     }
   },
+  computed: {
+    homedir(){
+      return this.$store.state.homedir
+    },
+    address(){
+      return this.$parent.address
+    }
+  },
   methods: {
     changeModel(model){
       this.$parent.model = model;
@@ -38,11 +47,15 @@ export default {
         type,
         size: 10
       }
-      this.$parent.itemFocus(this.$parent.preCreateItem)
+      this.$parent.selectAndFocusItem(this.$parent.preCreateItem);
     },
     handleUploadBtnClick(){
       this.$store.commit('upload/start', this.$parent.address);
     },
+    // errDev() {
+      
+    // this.$store.commit('error/show', `Error: ${Date.now()}`);
+    // }
   }
 }
 </script>

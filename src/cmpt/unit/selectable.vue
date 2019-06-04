@@ -3,22 +3,24 @@
   position: absolute;
   width:0;
   height: 0;
-  border: 1px solid #000;
+  border: 1px solid #0078d7;
   z-index: 999999999;
-  background-color: rgba(11, 170, 104, 0.5);
-
+  /* background-color: rgba(11, 170, 104, 0.5); */
+  background-color: rgba(#0078d7, 0.34);
 }
 </style>
 <template lang='jade'>
-div(@mousedown='mousedownListener', v-on='$listeners')
-  .lr-select-area(v-show='isSelect',:style='style')
-    //-span X:{{layerX}} Y: {{layerY}} w:{{w}} h:{{h}}
-  slot
+div(style="position: relative; width: 100%; height: 100%; overflow: auto; ")
+  div(@mousedown='mousedownListener', style="min-width: 100%; min-height: 100%")
+    .lr-select-area(v-show='isSelect',:style='style')
+    //- span X:{{layerX}} Y: {{layerY}} w:{{w}} h:{{h}}
+    slot
 </template>
 
 <script>
+import LimitOnceInTime from '../../lib/limit-once-in-time';
 export default {
-  props: ['onSelected'],
+  // props: ['selectEed'],
   data(){
     return {
       isSelect : false,
@@ -29,9 +31,7 @@ export default {
       layerX : 0,
       layerY : 0,
       w: 0,
-      h: 0,
-
-      _timer: null
+      h: 0
     }
   },
   computed: {
@@ -44,8 +44,8 @@ export default {
     // clearSelected(){
     //   if(!this.isSelect){
     //     this.$children.forEach(item => {
-    //       if(item.beSelectable && item.beSelected){
-    //         item.beSelected = false;
+    //       if(item.beSelectable && item.isBeSelected){
+    //         item.isBeSelected = false;
     //       }
     //     });
     //   }
@@ -70,12 +70,15 @@ export default {
         maxW: el.scrollWidth,
         maxH: el.scrollHeight
       });
+     
+      this.$emit('start');
+       this.$options._limitOnceInTime.limit();
     },
     selecting (moveE, isLoop) {
       
-      if(!isLoop && this.$data._timer){
-        clearTimeout(this.$data._timer);
-        this.$data._timer = null;
+      if(!isLoop && this.$options._scrollLoopTimer){
+        clearTimeout(this.$options._scrollLoopTimer);
+        this.$options._scrollLoopTimer = null;
       }
 
       var shouldLoop = false;
@@ -207,56 +210,54 @@ export default {
       // **************************** H end ******************************
 
       
-      
-      this.childSelect();
-
-
+      this.$options._limitOnceInTime.trigger();
+        
       if(shouldLoop){
-        this.$data._timer = setTimeout(() => {
+        this.$options._scrollLoopTimer = setTimeout(() => {
           this.selecting(moveE, true);
         }, 100);
 
       }else{
-        this.$data._timer = null;
+        this.$options._scrollLoopTimer = null;
       }
 
     },
     selectEnd () {
-      this.childSelect();
-      if(this.$data._timer){
-        clearTimeout(this.$data._timer);
+      if(this.$options._scrollLoopTimer){
+        clearTimeout(this.$options._scrollLoopTimer);
       }
       this.isSelect = false;
       this.w = 0;
       this.h = 0;
-      if(this.onSelected){
-        const arr = []
-        this.$children.forEach(item => {
-          if(item.$options.beSelectable && item.beSelected){
-            arr.push(item)
-          }
-        })
-        this.onSelected(arr);
-      }
+      this.$emit('end');
 
     },
     mousedownListener(e){
+      if(e.button === 1 || e.button === 2) { 
+        // 禁掉 middle, right. 
+        // win 10 right 也起作用,不过会弹出右键菜单.
+        return;
+      }
       //e.stopPropagation();
       const self = this;
       self.selectStart(e);
+      
       window.addEventListener('mousemove', mousemoveListener);
       window.addEventListener('mouseup', mouseupListener, {
         once: true
       });
-
+      
+      
       function mousemoveListener(e){
         e.preventDefault();
         self.selecting(e);
       }
 
-      function mouseupListener(){
-        self.selectEnd();
+      function mouseupListener(e){
+        self.$options._limitOnceInTime.unLimit();
+        self.selecting(e);
         window.removeEventListener('mousemove', mousemoveListener);
+        self.selectEnd();
       }
     },
     passX(item){
@@ -286,24 +287,32 @@ export default {
       }
       return false;
     },
-    childSelect(){
-      this.$children.forEach(item => {
-        if(item.$options.beSelectable){
-          if(this.passX(item) && this.passY(item)){
-            item.beSelected = true;
+    childSelect(){ // 为了性能没用 forEach.
+      var i = 0, len = this.$children.length, vItem;
+      for(; i < len; i++){
+        vItem = this.$children[i];
+        if(vItem.onBeSelecting){
+          if(this.passX(vItem) && this.passY(vItem)){
+            vItem.onBeSelecting(true);
           }else{
-            item.beSelected = false;
+            vItem.onBeSelecting(false);
           }
         }
-      })
+      }
+      // this.$children.forEach((vItem, i) => {
+
+        
+      // });
+      // return arr;
     }
   },
-  // mounted(){
-  //   this.$parent.el.addEventListener('mousedown', this.mousedownListener)
-  //  //console.log(this.$el)
-  // },
-  // destroyed(){
-  //   this.$parent.removeEventListener('mousedown', this.mousedownListener)
-  // }
+  mounted(){
+   this.$options._limitOnceInTime = new LimitOnceInTime(() => {
+        this.childSelect();
+    }, 100);
+    // this.$options._debounceChildSelect = new DebounceTime(() => {
+    //   this.childSelect();
+    // }, 1);
+  }
 }
 </script>
