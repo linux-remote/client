@@ -2,17 +2,24 @@
 .lr-page.lr-desktop-wrap(v-if='!isRequest',
                         :class="{lr_desktop_launch: isQuickLaunch}")
   h2.lr-err-color(v-if="error") {{error}}
-  template(v-else)
-    DeskTop(:icons='icons')
-    TasksBar
+  DeskTop(:icons='icons', v-else)
+  TasksBar
+  .lr-modal(v-if='sessError')
+    .lr-modal-box
+      .lr-modal-title Invalid session
+      .lr-modal-body
+        div Invalid session, Please login again.
+      .lr-modal-footer
+        button(@click="afterLogout") Yes
+        button(@click="closeSessErrorModal") No
   //- QuickBar
 </template>
 <script>
 import safeBind from '../lib/mixins/safe-bind';
+import logout from '../lib/mixins/logout';
 import DeskTop from '__ROOT__/cmpt/desktop/body.vue';
 import TasksBar from '__ROOT__/cmpt/task/bar.vue';
 // import QuickBar from '__ROOT__/cmpt/quick-bar/quick-bar.vue';
-import logout from '__ROOT__/lib/mixins/logout';
 const EVENT_CAPTURE = {capture: true};
 // const API_ROOT = window.SERVER_CONFIG.API_ROOT;
 export default {
@@ -45,14 +52,14 @@ export default {
       if(val.params.username !== this.username){ //hold url.
         return this.$router.replace('/user/' + this.username);
       }
-    },
-    sessError(val){
-      if(val){
-        this.afterLogout();
-      }
     }
   },
   methods: {
+    closeSessErrorModal(){
+      this.$store.commit('set', {
+        sessError: false
+      })
+    },
     init(){
       const username = this.$route.params.username;
       this.error = null;

@@ -11,13 +11,13 @@
     img.lr-login-logo(src="/public/img/windows-linux-logo-c.png")
     h2 Linux Remote
     .lr-login-box
-      form(@submit.prevent="login", style="display:")
+      form(@submit.prevent="login")
         div
           label {{LANG.username}}
           input.lr-input( v-model='username' required="required")
         div
           label {{LANG.password}}
-          input.lr-input(type='password' v-model='password' required="required")
+          input.lr-input(type='password', v-model='password', required="required")
         LoadingBtn.lr-btn.lr-w100.lr-btn-hollow(type="submit", :text="LANG.submitBtn", :isLoading="isRequest")
   //-.lr-login-bottom
     a(href='https://github.com/linux-remote/linux-remote/blob/master/LICENSE', target='_blank') Licenses

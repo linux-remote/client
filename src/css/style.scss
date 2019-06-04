@@ -28,6 +28,8 @@ $color-alert: #D02E00;
 }
 
 body {
+  padding: 0;
+  margin: 0;
   height: 100vh;
   overflow: hidden;
   font-family: 'Microsoft YaHei',"Segoe UI", Selawik,  Tahoma,Verdana,Arial,sans-serif;
@@ -123,6 +125,12 @@ body {
     border-bottom: 0;
   }
 }
+.lr-ctx-item, button{
+  &:first-letter {
+    // https://zhidao.baidu.com/question/1695348555292540668.html
+    text-transform:uppercase;
+  }
+}
 .lr-ctx-item{
   height: 28px;
   line-height: 28px;
@@ -131,10 +139,7 @@ body {
   color: #000;
   cursor: default;
   padding: 0 10px 0 34px;
-  &:first-letter {
-    // https://zhidao.baidu.com/question/1695348555292540668.html
-    text-transform:uppercase;
-  }
+
   &:hover{
     background-color: #d9d9d9; 
   }
@@ -155,9 +160,10 @@ body {
   margin: auto;
   height: 100%;
   width: 100%; 
-  background-color: rgba(0,0,0, .5);
+  background-color: rgba(0,0,0, .2);
   z-index: 30; 
   color:#888;
+  cursor: wait;
 }
 
 .lr_fly_textarea{
@@ -224,11 +230,11 @@ body {
   justify-content: space-between;
   margin-top: 10px;
 }
-.lr-btn-primary{
-  background-color: $drakColor;
-  color: #fff;
-  border-color: $bg;
-}
+// .lr-btn-primary{
+//   background-color: $drakColor;
+//   color: #fff;
+//   border-color: $bg;
+// }
 
 
 .lr-upload-item{
@@ -298,7 +304,7 @@ body {
 button.lr-desktop-icon{
   position: absolute;
   width: 80px;
-  height: 80px;
+  min-height: 80px;
   padding: 0;
   user-select: none;
   display:flex;
@@ -339,10 +345,10 @@ button.lr-desktop-icon{
 }
 .lr-desktop-icon-text{
   line-height: 15px;
-  height: 30px;
+  // height: 30px;
   width: 100%;
   text-align: center;
-  overflow: hidden;
+  // overflow: hidden;
   text-overflow: ellipsis;
   text-shadow: 1px 2px #000;
   color:#fff;
@@ -465,6 +471,12 @@ $topBarRight : 100px;
   border-bottom: 2px solid #83c0ef;
   display: flex;
   align-items: center;
+  padding-left: 5px;
+  padding-right: 5px;
+  .lr-icon{
+    width: 23px;
+    height: 23px;
+  }
 }
 
 .lr-quick-launch{

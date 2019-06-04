@@ -158,7 +158,8 @@ $fsStatusBarH: 23px;
   >.glyph{
     color: #808080;
     // font-size: 7px;
-    margin: 1px 5px 0;
+    margin: -1px 5px 0;
+    text-align: center;
   }
 }
 .lr-fs-crumb-name {

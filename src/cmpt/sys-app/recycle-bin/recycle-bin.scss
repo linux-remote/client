@@ -1,8 +1,14 @@
 .lr-rb-wrap{
   padding-top: 35px;
+  button{
+    height: 25px;
+    border-width: 2px;
+    line-height: 21px;
+  }
 }
 .lr-rb-ctrl-bar{
   height: 35px;
+  padding: 0 10px;
   background-color: #eee;
   display: flex;
   justify-content: space-between;
@@ -19,5 +25,18 @@
 .lr-rb-table{
   tr:hover{
     background-color: #eee;
+  }
+}
+.lr-rm-table{
+  th{
+    color: #484848;
+    text-align: left;
+    font-weight: normal;
+  }
+  tr:nth-child(even){
+    background-color: #eee;
+  }
+  td{
+    padding: 2px 5px;
   }
 }

@@ -49,19 +49,6 @@ export default {
     }
   },
   methods: {
-    // clearRecycleBin(){
-    //   if(!confirm('Are you sure to delete All?')){
-    //     return;
-    //   }
-    //   this.request({
-    //     url: '~/recycleBin',
-    //     type: 'delete',
-    //     success(){
-    //       this.$store.commit('recycleBinTrigger', true);
-    //       this.$refs.ctx.hidden();
-    //     }
-    //   })
-    // },
     hidden(){
       this.$refs.ctx.hidden();
     },

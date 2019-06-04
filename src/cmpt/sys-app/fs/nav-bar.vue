@@ -17,7 +17,7 @@
                   @click='handleCrumbClick(i)',
                   v-if='v')
         span.lr-fs-crumb-name {{v}}
-        span.glyph / 
+        span.glyph /
     input(v-model='inputAddress', 
           @focus="handleInputFocus",
           ref='input',

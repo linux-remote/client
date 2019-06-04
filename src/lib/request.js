@@ -154,10 +154,8 @@ function request(opts){
         // || xhr.responseText === 'LINUX_REMOTE_USER_SERVER_ERROR'
         console.log('转向登录页');
         request.abortAll();
-        // xhr.responseText
-        if(confirm('User logged out or session expired, Please login again.')){
-          return store.commit('needRelogin');
-        }
+        return store.commit('needRelogin');
+        // xhr.responseTextInvalid
       } else {
         error.call(self,  xhr);
       }

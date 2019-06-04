@@ -30,7 +30,7 @@ export default  {
       const APP = this.getters['sysApps/getById'](appId);
 
       if(APP.IS_UNKNOWN_APP){
-        return alert('Unknown App!');
+        return this.commit('error/show', 'Unknown App!');
       }
 
       const data = {

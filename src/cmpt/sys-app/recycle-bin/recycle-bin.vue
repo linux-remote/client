@@ -11,14 +11,23 @@
   h2(v-text='error' style='color:red' v-if='error')
   h2(v-else-if='list.length === 0' style='color:gray') Empty
   .lr-fs-folder-inner(v-else)
-    table.lr-fs-table.lr_file_model_list
+    table.lr-rm-table(style="width: 100%")
       tr
         th Name
         th Original Location
         th Date Deleted
         th Size
+        th Operation
       RowItem(v-for='(item,i) in list' , :item='item', :key='item.id')
-    div(style="height: 10px")  
+    div(style="height: 10px")
+  .lr-modal(v-if='isShowPreDelModal')
+    .lr-modal-box
+      .lr-modal-title Delete
+      .lr-modal-body
+        div {{preDelMsg}}
+      .lr-modal-footer
+        button(@click="PreDelYes") Yes
+        button(@click="closePreDelModal") No
 </template>
 
 <script>
@@ -36,6 +45,8 @@ export default {
       list: [],
       maxLen: 100,
       totalCount: 0,
+      isShowPreDelModal: false,
+      preDelMsg: '',
       error: null
     }
   },
@@ -96,35 +107,47 @@ export default {
       // const i = this.list.findIndex(v => v === item);
       // this.list.splice(i, 1);
     },
+    showPreDelModal(msg, cb){
+      this.isShowPreDelModal = true;
+      this.preDelMsg = msg;
+      this._preDelYes = cb;
+    },
+    closePreDelModal(){
+      this.isShowPreDelModal = false;
+      this.preDelMsg ='';
+      this._preDelYes = null;
+    },
+    PreDelYes(){
+      this._preDelYes();
+      this.closePreDelModal();
+    },
     del(item){
-
-      if(!confirm('Are you sure you want to permanently delete "' + item.source.name + '" ?')){
-        return;
-      }
-      this.request({
-        url: '~/recycleBin/' + item.id,
-        type: 'delete',
-        success(){
-          this.removeItem(item);
-        }
+      this.showPreDelModal('Are you sure you want to permanently delete "' + item.source.base + '" ?', () => {
+        this.request({
+          url: '~/recycleBin/' + item.id,
+          type: 'delete',
+          success(){
+            this.removeItem(item);
+          }
+        })
       })
+
     },
     clearAll(){
-      if(!confirm('Are you sure to delete All?')){
-        return;
-      }
-      this.request({
-        url: '~/recycleBin',
-        type: 'delete',
-        stateKey: 'isDeling',
-        success(){
-          this.list = [];
-          this.error = null;
-        },
-        error(xhr){
-          this.error = xhr.responseText;
-        }
-      })
+      this.showPreDelModal('Are you sure to permanently delete All ?', () => {
+        this.request({
+          url: '~/recycleBin',
+          type: 'delete',
+          stateKey: 'isDeling',
+          success(){
+            this.list = [];
+            this.error = null;
+          },
+          error(xhr){
+            this.error = xhr.responseText;
+          }
+        })
+      });
     },
     getData(){
       this.request({

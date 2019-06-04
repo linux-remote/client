@@ -8,6 +8,9 @@ tr
   td {{item.source.dir}}
   td {{item.source.delTime}}
   td {{item.size | wellSize}}
+  td
+    button(@click="restore", style="margin-right: 8px") Restore
+    button(@click="del") Delete
 </template>
 
 <script>

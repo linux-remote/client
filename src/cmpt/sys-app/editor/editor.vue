@@ -7,7 +7,7 @@
       button.lr-editor-btn(@click='save', :disabled='isSaveDisabled') save
     textarea.lr_editor_textarea(v-model='data')
   .lr-modal(v-if='isShowModal')
-    form(@submit.prevent="submit")
+    form(@submit.prevent="saveAsSubmit")
       .lr-modal-box
         .lr-modal-title {{LANG.saveAs}}
         .lr-modal-body
@@ -18,7 +18,7 @@
             | {{LANG.fileName}}:
             input(required='required', v-model='filename')
         .lr-modal-footer
-          button.lr-btn-primary(type="submit") {{LANG.ok}}
+          button(type="submit") {{LANG.ok}}
           button(@click='hiddenModal') {{LANG.cancel}}
   .lr-modal(v-if='isShowBeforeCloseModal')
     .lr-modal-box
@@ -67,8 +67,13 @@ export default {
     }
   },
   methods: {
-    hiddenModal(){
+    hiddenModal(e){
+      if(e){
+        e.preventDefault();
+      }
+      
       this.$nextTick(() => { // bug: 在第二个输入框输入后, 点关闭不消失.
+        
         this.isShowModal = false;
       });
     },
@@ -87,7 +92,7 @@ export default {
 
       this.taskWindow.title = this.filename;
     },
-    submit(){
+    saveAsSubmit(){
 
       // console.log('folderPath', this.folderPath, 'filename',this.filename )
       // console.log('pathJoin', pathJoin(this.folderPath , this.filename) )
@@ -96,10 +101,8 @@ export default {
       // this.taskWindow.dir = this.folderPath;
       // const address = pathJoin(this.folderPath , this.filename);
       // this.taskWindow.address = '~/fs/' + encodePath(address)
-   
-      this.create(() => {
-          this.hiddenModal();
-      });
+      this.hiddenModal();
+      this.create();
       
     },
     create(cb){
