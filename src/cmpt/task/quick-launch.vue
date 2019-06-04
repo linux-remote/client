@@ -1,6 +1,6 @@
 
 <template lang="jade">
-.lr-quick-launch(@mousedown="handleMousedown")
+.lr-quick-launch( title="Shortcut Key: Ctrl + Win")
 </template>
 <script>
 export default {
@@ -10,9 +10,9 @@ export default {
     }
   },
   methods: {
-    handleMousedown(){
-      this.$store.commit('toggleQuickLaunch');
-    }
+    // handleMousedown(){
+    //   this.$store.commit('toggleQuickLaunch');
+    // }
   }
 }
 </script>

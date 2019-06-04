@@ -1,6 +1,6 @@
 <template lang="jade">
 button.lr-desktop-icon(draggable="true",
-              @click="handleClick",
+              @mousedown="handleClick",
               @dblclick="handleDblclick",
               @dragstart.stop='handleDragStart(item, $event)',
               :style='{left: item.x + "px", top: item.y + "px"}')

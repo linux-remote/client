@@ -358,13 +358,13 @@ button.lr-desktop-icon{
   
   .lr-desktop-icons{
     z-index: $maxZindex;
-    background: #730202;
+    background: rgba(#730202, .95);
     // background-image: url('/public/img/preferences-desktop-launch-feedback.png');
     // background-position: center;
     // background-repeat: no-repeat;
   }
   .lr-quick-launch{
-    background-color: #730202;
+    background-color: rgba(#730202, .95);
   }
 }
 .lr_be_selected{
