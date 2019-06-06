@@ -17,6 +17,9 @@ table{
   justify-content: center;
   align-items: center;
   line-height: 1;
+  &:focus{
+    outline: none;
+  }
 }
 .lr-btn{
   height: 36px;

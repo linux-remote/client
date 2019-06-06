@@ -1,17 +1,21 @@
 <template lang="jade">
-.lr-window-body
-  button.lr-tmp-btn(style="font-size: 12px") OK
-  button.lr-tmp-btn(disabled="disabled") OK
-  button Cancel
-  table.lr-tmp-table
-    thead
-      tr
-        th id
-        th name
-    tbody
-      tr(tabindex="-1")
-        td 1
-        td hello
+.lr-window-body(style="user-select: text;")
+  div(style="border-top: 1px solid #f0f0f0;")
+  table.lr-about-table
+    tr
+      td Version: 
+      td 2.0.0
+    tr
+      td Author: 
+      td DW&lt;hezedu@hotmail.com&gt;
+    tr
+      td repositorie: 
+      td 
+        a(target="_blank" href="https://github.com/linux-remote/linux-remote") github
+    tr
+      td Donate: 
+      td 
+        a(target="_blank" href="https://www.patreon.com/hezedu") Patreon
 </template>
 <script>
 // import Menu from './menu.vue';

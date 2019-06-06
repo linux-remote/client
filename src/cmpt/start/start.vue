@@ -10,8 +10,8 @@
                                 :id='k',
                                 :key="k")
     .lr-start-bottom-menu
-      button.lr-clear-btn(@click="handleSettingsClick")
-        span.glyph.glyph-settings(title="Settings")
+      button.lr-btn-sm.lr-btn-hollow(@click="handleSettingsClick")
+        | About
       router-link.lr-clear-btn(to='/' target='_blank')
         span.glyph.glyph-other-user(title="Login with other account")
       button.lr-btn-sm.lr-start-logout-btn(@click="logout") Sign out
@@ -53,6 +53,9 @@ export default {
   methods: {
     handleSettingsClick(){
       this.$store.commit('task/add', 'sys_app_settings');
+      this.$nextTick(() => {
+        this.handleBtnClick();
+      })
     },
     handleBtnClick(){
       this.isShowMenu = !this.isShowMenu;

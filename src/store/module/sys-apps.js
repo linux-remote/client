@@ -56,7 +56,7 @@ export default   {
         // }
       },
       sys_app_task_manager: {
-        iconUrl: '/public/img/utilities-system-monitor-6.png',
+        iconUrl: '/public/img/top.png',
         unique: true,
         
         height: 800
@@ -67,9 +67,11 @@ export default   {
         // }
       },
       sys_app_settings: {
-        iconUrl: '/public/img/system-settings.png',
+        iconUrl: '/public/img/windows-linux-logo-c.png',
         unique: true,
-        hidden: true
+        hidden: true,
+        width: 500,
+        height: 300
         // title: null,
         // name: {
         //   'zh-CN': '笔记本',

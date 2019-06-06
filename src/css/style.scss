@@ -290,11 +290,12 @@ body {
 .lr-desktop-wrap {
   position: relative;
   padding-bottom: $taskBarH;
-  background-image: url('/public/img/bg-blaze-100.jpg');
+  // background-image: url('/public/img/bg-blaze-100.jpg');
+  // background-repeat: no-repeat;
+  // background-size: cover;
+  // background-position: center;
   background-color: #0063b1;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
+
 }
 .lr-desktop, .lr-desktop-icons{
   height: 100%;
@@ -616,7 +617,7 @@ $taskGlyphPositonX: 14px;
 @import '../cmpt/sys-app/terminal/xterm.css'; // 3.13.1
 @import '../cmpt/global/upload/upload.scss';
 @import '../cmpt/sys-app/computer-info/computer-info.scss';
-@import '../cmpt/sys-app/settings/ui.scss';
+// @import '../cmpt/sys-app/settings/ui.scss';
 //************* app start *************
 .lr-sys-app-icon{
   width: 30px;
@@ -754,4 +755,22 @@ $taskGlyphPositonX: 14px;
 // }
 // .lr-chat-name small{
 //   font-size: 10px;
+// }
+.lr-about-table {
+  td:first-child{
+    padding-right: 2em;
+    font-weight: bold;
+  }
+}
+// .lr-seeking{
+//   font-size: 50px;
+//   color: rgba(#fff, .5);
+//   position: absolute;
+//   right: 20%;
+//   top: 0;
+//   bottom: 0;
+//   margin: auto;
+//   padding: 0;
+//   height: 168px;
+//   user-select: none;
 // }
