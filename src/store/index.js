@@ -24,6 +24,8 @@ import flyTextarea from './module/fly-textarea';
 import sysApps from './module/sys-apps';
 import users from './module/users';
 import fs from './module/fs';
+
+let _tmp = null;
 const store = new window.Vuex.Store({
   modules: {
     language,
@@ -108,6 +110,23 @@ const store = new window.Vuex.Store({
       // if(state.task.isMinAll) {
 
       // }
+      if(state.isQuickLaunch){
+        _tmp = [(e) => {
+          e._capture_by_doc = true;
+          _tmp = null;
+          state.isQuickLaunch = false;
+          console.log('mousedown');
+        }, {
+          capture: true,
+          once: true
+        }]
+        document.addEventListener('mousedown', _tmp[0], _tmp[1]);
+      } else {
+        if(_tmp){
+          document.removeEventListener('mousedown', _tmp[0], _tmp[1]);
+        }
+      }
+
     }
   }
 });

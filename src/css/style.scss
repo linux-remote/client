@@ -488,8 +488,11 @@ $topBarRight : 100px;
   background-size: 85%;
   background-repeat: no-repeat;
   &:hover{
-    background-color: rgba(#fff, .5);
+    background-color: lighten($taskBarBg, 15%);
   }
+}
+.lr_desktop_launch .lr-quick-launch:hover{
+  background-color: rgba(115, 2, 2, 0.85);
 }
 
 

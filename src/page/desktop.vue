@@ -88,13 +88,7 @@ export default {
     handleDocKeyDown(e){
       if(e.ctrlKey && e.key === 'Meta'){
         this.$store.commit('toggleQuickLaunch');
-        document.addEventListener('mousedown', () => {
-          if(this.$store.state.isQuickLaunch){
-            this.$store.commit('toggleQuickLaunch');
-          }
-        }, {
-          once: true
-        })
+
         e.preventDefault();
         e.stopPropagation();
       }
