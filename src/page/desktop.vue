@@ -20,7 +20,7 @@ import logout from '../lib/mixins/logout';
 import DeskTop from '__ROOT__/cmpt/desktop/body.vue';
 import TasksBar from '__ROOT__/cmpt/task/bar.vue';
 // import QuickBar from '__ROOT__/cmpt/quick-bar/quick-bar.vue';
-const EVENT_CAPTURE = {capture: true};
+
 // const API_ROOT = window.SERVER_CONFIG.API_ROOT;
 export default {
   mixins: [safeBind, logout],

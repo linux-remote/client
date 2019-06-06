@@ -34,7 +34,6 @@ export default {
     },
 
     handleDragStart(e){
-      const item = this.item;
       const value = JSON.stringify({
         id: this.id,
         from: 'startMenu',

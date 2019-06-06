@@ -114,7 +114,7 @@ export default {
     },
     closePreDelModal(){
       this.isShowPreDelModal = false;
-      this.preDelMsg ='';
+      this.preDelMsg = '';
       this._preDelYes = null;
     },
     PreDelYes(){

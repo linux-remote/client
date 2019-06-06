@@ -69,7 +69,7 @@ export default {
           username,
           password
         },
-        success(data){
+        success(){
           this.$store.commit('set', {
             username
           });
