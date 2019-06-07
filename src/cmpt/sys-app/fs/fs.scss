@@ -289,29 +289,29 @@ $fsRowItemH: 50px;
   align-items: center;
 }
 .lr_file_type_Directory{
-  background-image: url('/public/img/tango-style/folder.png');
+  background-image: url('/public/img/tango/folder.png');
 }
 .lr_file_type_RegularFile {
-  background-image: url('/public/img/tango-style/text-x-generic.png');
+  background-image: url('/public/img/tango/text-x-generic.png');
 }
 .lr_file_type_Socket{
-  background-image: url('/public/img/tango-style/inode-socket.png');
+  background-image: url('/public/img/tango/inode-socket.png');
 }
 .lr_file_type_Unknown{
 background-image: url('/public/img/oxygen/unknown.png');
 }
 .lr_file_type_CharacterDevice{
-background-image: url('/public/img/tango-style/inode-chardevice.png');
+background-image: url('/public/img/tango/inode-chardevice.png');
 }
 .lr_file_type_BlockDevice{
-  background-image: url('/public/img/tango-style/inode-blockdevice.png');
+  background-image: url('/public/img/tango/inode-blockdevice.png');
 }
 .lr_file_type_SymbolicLink{
-  background-image: url('/public/img/nuvola-style/link.png');
+  background-image: url('/public/img/nuvola/link.png');
 }
 .lr_file_type_NamedPipe{
   background-size: auto 80%;
-  background-image: url('/public/img/nuvola-style/pipe.png');
+  background-image: url('/public/img/nuvola/pipe.png');
 }
 
 // door 类型只存在于 Solaris 系统. 几乎不会遇到
@@ -328,7 +328,7 @@ background-image: url('/public/img/tango-style/inode-chardevice.png');
   height: 100%;
   left: 0;
   top: 0;
-  background-image: url('/public/img/nuvola-style/lockoverlay.png');
+  background-image: url('/public/img/nuvola/lockoverlay.png');
 }
 
 // ================== item end ==================
@@ -413,7 +413,7 @@ background-image: url('/public/img/tango-style/inode-chardevice.png');
   top: 0;
   bottom: 0;
   margin:auto;
-  background-image: url('/public/img/tango-style/user-home.png');
+  background-image: url('/public/img/tango/user-home.png');
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
@@ -427,11 +427,11 @@ background-image: url('/public/img/tango-style/inode-chardevice.png');
   }
 }
 .lr-fs-new-folder{
-  background-image: url('/public/img/tango-style/folder-new-5.png');
+  background-image: url('/public/img/tango/folder-new-5.png');
 
 }
 .lr-fs-new-file{
-  background-image: url('/public/img/tango-style/document-new-4.png');
+  background-image: url('/public/img/tango/document-new-4.png');
 }
 .lr-fs-create-layer{
     background-color: $bg;
@@ -441,7 +441,7 @@ background-image: url('/public/img/tango-style/inode-chardevice.png');
 }
 
 .lr_fs_open_type_image{
-  background-image: url('/public/img/tango-style/image-x-generic.png');
+  background-image: url('/public/img/tango/image-x-generic.png');
 }
 .lr-fs-table {
   border-collapse: separate;

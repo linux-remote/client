@@ -5,14 +5,14 @@ export default   {
   state: {
     sysMap: {
       sys_app_fs: {
-        iconUrl: '/public/img/tango-style/user-home.png',
+        iconUrl: '/public/img/tango/user-home.png',
         // name: {
         //   'zh-CN': '文件管理器',
         //   'en-US': 'FS Manager'
         // }
       },
       sys_app_recycle_bin : {
-        iconUrl: '/public/img/tango-style/user-trash.png',
+        iconUrl: '/public/img/tango/user-trash.png',
         isEmpty: true,
         unique: true,
         ctx: ['empty']
@@ -38,7 +38,7 @@ export default   {
         // }
       },
       sys_app_editor: {
-        iconUrl: '/public/img/nuvola-style/accessories-text-editor-6.png',
+        iconUrl: '/public/img/nuvola/accessories-text-editor-6.png',
         // title: null,
         // name: {
         //   'zh-CN': '笔记本',
@@ -46,7 +46,7 @@ export default   {
         // }
       },
       sys_app_terminal: {
-        iconUrl: '/public/img/kterm.png',
+        iconUrl: '/public/img/nuvola/utilities-terminal-6.png',
         width: 742,
         height: 440
         // title: null,
@@ -110,7 +110,7 @@ export default   {
     changeRecycleBinIcon(state, bool){
       let name = bool ? 'user-trash.png' : 'user-trash-full-2.png';
       state.sysMap.sys_app_recycle_bin.isEmpty = bool;
-      state.sysMap.sys_app_recycle_bin.iconUrl = '/public/img/tango-style/' + name;
+      state.sysMap.sys_app_recycle_bin.iconUrl = '/public/img/tango/' + name;
     }
   },
   actions: {
