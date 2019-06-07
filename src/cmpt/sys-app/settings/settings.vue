@@ -7,7 +7,7 @@
       td 2.0.0
     tr
       td Author: 
-      td DW&lt;hezedu@hotmail.com&gt;
+      td Du Wei &lt;hezedu@hotmail.com&gt;
     tr
       td repositorie: 
       td 
