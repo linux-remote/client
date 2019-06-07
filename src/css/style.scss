@@ -483,7 +483,7 @@ $topBarRight : 100px;
 .lr-quick-launch{
   width: $taskBarH;
   height: $taskBarH;
-  background-image: url('/public/img/preferences-desktop-launch-feedback.png');
+  background-image: url('/public/img/oxygen/preferences-desktop-launch-feedback.png');
   background-position: center;
   background-size: 85%;
   background-repeat: no-repeat;
@@ -765,15 +765,15 @@ $taskGlyphPositonX: 14px;
     font-weight: bold;
   }
 }
-.lr-seeking{
-  font-size: 50px;
-  color: rgba(#fff, .5);
-  position: absolute;
-  right: 20%;
-  top: 0;
-  bottom: 0;
-  margin: auto;
-  padding: 0;
-  height: 168px;
-  user-select: none;
-}
+// .lr-seeking{
+//   font-size: 50px;
+//   color: rgba(#fff, .15);
+//   position: absolute;
+//   right: 20%;
+//   top: 0;
+//   bottom: 0;
+//   margin: auto;
+//   padding: 0;
+//   height: 168px;
+//   user-select: none;
+// }

@@ -23,7 +23,7 @@ export default   {
       },
       sys_app_disk : {
         unique: true,
-        iconUrl: '/public/img/system-file-manager-6.png',
+        iconUrl: '/public/img/oxygen/kdf.png',
         // name: {
         //   'zh-CN': '存储管理器',
         //   'en-US': 'Storage Manager'
@@ -38,7 +38,7 @@ export default   {
         // }
       },
       sys_app_editor: {
-        iconUrl: '/public/img/accessories-text-editor-6.png',
+        iconUrl: '/public/img/nuvola-style/accessories-text-editor-6.png',
         // title: null,
         // name: {
         //   'zh-CN': '笔记本',
@@ -81,7 +81,7 @@ export default   {
     },
     thirdPartyMap: null,
     unknownApp: {
-      iconUrl: '/public/img/image-missing-3.png',
+      iconUrl: '/public/img/oxygen/image-missing-3.png',
       IS_UNKNOWN_APP: true
     }
   },

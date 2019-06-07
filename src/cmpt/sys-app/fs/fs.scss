@@ -298,7 +298,7 @@ $fsRowItemH: 50px;
   background-image: url('/public/img/tango-style/inode-socket.png');
 }
 .lr_file_type_Unknown{
-background-image: url('/public/img/unknown.png');
+background-image: url('/public/img/oxygen/unknown.png');
 }
 .lr_file_type_CharacterDevice{
 background-image: url('/public/img/tango-style/inode-chardevice.png');
@@ -307,7 +307,7 @@ background-image: url('/public/img/tango-style/inode-chardevice.png');
   background-image: url('/public/img/tango-style/inode-blockdevice.png');
 }
 .lr_file_type_SymbolicLink{
-  background-image: url('/public/img/emblem-symbolic-link.png');
+  background-image: url('/public/img/nuvola-style/link.png');
 }
 .lr_file_type_NamedPipe{
   background-size: auto 80%;
@@ -318,8 +318,9 @@ background-image: url('/public/img/tango-style/inode-chardevice.png');
 // https://en.wikipedia.org/wiki/Unix_file_types#Door
 .lr_file_type_Door{
   background-size: auto 80%;
-  background-image: url('/public/img/wine-doors.png');
+  background-image: url('/public/img/file-type-door.png');
 }
+
 .lr-error-icon{
   z-index: 20;
   position: absolute;
@@ -676,10 +677,10 @@ tr.lr_file_be_selected.lr_file_former{
   
 }
 .lr-disk-cd{
-  background-image: url('/public/img/drive-optical-6.png');
+  background-image: url('/public/img/oxygen/drive-optical-5.png');
 }
 .lr-disk-hd{
-  background-image: url('/public/img/drive-harddisk-9.png');
+  background-image: url('/public/img/oxygen/drive-harddisk-8.png');
 }
 .lr-disk-memory{
   background-image: url('/public/img/memory-ram.png');

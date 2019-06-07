@@ -8,9 +8,9 @@
         :key="v.id",
         :index="i",
         :item="v")
-  h2.lr-seeking Seeking
-    br
-    | Sponsor
+  //- h2.lr-seeking Seeking
+  //-   br
+  //-   | Sponsor
 
   ContextMenu(ref='ctx')
     .lr-ctx-item(@click="sortIcon")
