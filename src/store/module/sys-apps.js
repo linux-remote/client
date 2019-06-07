@@ -56,7 +56,7 @@ export default   {
         // }
       },
       sys_app_task_manager: {
-        iconUrl: '/public/img/top.png',
+        iconUrl: '/public/my-img/top.png',
         unique: true,
         
         height: 800
@@ -67,7 +67,7 @@ export default   {
         // }
       },
       sys_app_settings: {
-        iconUrl: '/public/img/windows-linux-logo-c.png',
+        iconUrl: '/public/my-img/windows-linux-logo-c.png',
         unique: true,
         hidden: true,
         width: 500,

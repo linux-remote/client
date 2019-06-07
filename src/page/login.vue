@@ -8,7 +8,7 @@
           span.glyph.glyph-contact
         .lr-logined-item-text {{username}}
   .lr-login-box-wrap(:class="{lr_login_have_logined: loginedList.length}")
-    img.lr-login-logo(src="/public/img/windows-linux-logo-c.png")
+    img.lr-login-logo(src="/public/my-img/windows-linux-logo-c.png")
     h2 Linux Remote
     .lr-login-box
       form(@submit.prevent="login")
