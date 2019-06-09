@@ -26,9 +26,10 @@ tr(@dblclick='open',
           | {{LANG.createSymbolicLink}}
         //- hr
         //- .lr-ctx-item(@click='sendToDesktop') {{LANG.sendToDesktop}}
-        hr
-        .lr-ctx-item(@click='download', v-if='item.type === "RegularFile"')
-          | {{LANG.download}}
+        template(v-if='item.type === "RegularFile"')
+          hr
+          .lr-ctx-item(@click='download')
+            | {{LANG.download}}
         
     .lr-name-wrap
       .lr-icon(:class='["lr_file_type_" + item.type, {["lr_fs_open_type_" + item.openType]: item.type === "RegularFile"}]', :style='iconStyle')
