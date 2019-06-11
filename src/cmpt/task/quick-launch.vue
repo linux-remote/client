@@ -11,9 +11,6 @@ export default {
   },
   methods: {
     handleMousedown(e){
-      if(e._capture_by_doc){
-        return;
-      }
       this.$store.commit('toggleQuickLaunch');
     }
   }
