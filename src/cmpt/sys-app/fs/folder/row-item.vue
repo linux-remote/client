@@ -93,6 +93,8 @@ export default {
   },
   methods: {
     onBeSelecting(isBeSelected){
+
+      
       if(this.item.isBeSelected !== isBeSelected){ // Vue 会判定 NaN.
         this.item.isBeSelected = isBeSelected;
       }
