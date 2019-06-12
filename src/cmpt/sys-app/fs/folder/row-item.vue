@@ -24,8 +24,8 @@ tr(@dblclick='open',
           | {{LANG.rename}}
         .lr-ctx-item(@click='createSymbolicLink')
           | {{LANG.createSymbolicLink}}
-        hr
-        .lr-ctx-item(@click='sendToDesktop', v-if='item.type === "Directory" || item.type === "RegularFile"') {{LANG.sendToDesktop}}
+        //- hr
+        //- .lr-ctx-item(@click='sendToDesktop', v-if='item.type === "Directory" || item.type === "RegularFile"') {{LANG.sendToDesktop}}
         template(v-if='item.type === "RegularFile"')
           hr
           .lr-ctx-item(@click='download')
@@ -189,19 +189,32 @@ export default {
       this.$refs.name.startRename();
       this.$refs.ctx.hidden();
     },
-    sendToDesktop(){
-      this.$refs.ctx.hidden();
-      // folder
-      const data = {
-        id: this.getRealAddress()
-      }
-      if(this.item.type === 'Directory'){
-        data.type = 'folder';
-      } else {
-        data.type = 'file';
-      }
-      this.$store.commit('desktop/addIcon', data);
-    }
+    // sendToDesktop(){
+    //   this.$refs.ctx.hidden();
+    //   // folder
+    //   const data = {
+    //     id: this.getRealAddress()
+    //   }
+    //   const item = this.item;
+    //   if(item.type === 'Directory'){
+    //     data.type = 'folder';
+    //   } else {
+    //     data.type = 'file';
+    //     const isImage = item.openType === 'image';
+
+    //     if(isImage) {
+    //       if(item.openApp) {
+    //         data.openWidth = ''
+    //       }else {
+    //         this.$store.commit('openWith', {
+    //           filePath: address
+    //         });
+    //       }
+    //     }
+    //     data.openType = this.item.openType;
+    //   }
+    //   this.$store.commit('desktop/addIcon', data);
+    // }
   }
 }
 
