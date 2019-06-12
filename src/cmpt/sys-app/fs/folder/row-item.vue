@@ -24,8 +24,8 @@ tr(@dblclick='open',
           | {{LANG.rename}}
         .lr-ctx-item(@click='createSymbolicLink')
           | {{LANG.createSymbolicLink}}
-        //- hr
-        //- .lr-ctx-item(@click='sendToDesktop') {{LANG.sendToDesktop}}
+        hr
+        .lr-ctx-item(@click='sendToDesktop', v-if='item.type === "Directory" || item.type === "RegularFile"') {{LANG.sendToDesktop}}
         template(v-if='item.type === "RegularFile"')
           hr
           .lr-ctx-item(@click='download')
@@ -100,12 +100,6 @@ export default {
       }
     },
 
-    // send2Desktop(){
-    //   this.$store.commit('deskTopTrigger', {
-    //     type: 'add',
-    //     item: this.item
-    //   })
-    // },
     getRealAddress(){
       let address, item = this.item;
       const symLink = item.symbolicLink;
@@ -197,6 +191,16 @@ export default {
     },
     sendToDesktop(){
       this.$refs.ctx.hidden();
+      // folder
+      const data = {
+        id: this.getRealAddress()
+      }
+      if(this.item.type === 'Directory'){
+        data.type = 'folder';
+      } else {
+        data.type = 'file';
+      }
+      this.$store.commit('desktop/addIcon', data);
     }
   }
 }

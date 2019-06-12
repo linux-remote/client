@@ -20,8 +20,8 @@ $topLayerZindex : $maxZindex - 100;
 
 $color-accent:#0078D7;
 $color-alert: #D02E00;
-
-
+$desktopC: #0063b1;
+$desktopLaunchC: #B22222;
 *, *:before,
 *:after {
   box-sizing: border-box;
@@ -290,11 +290,11 @@ body {
 .lr-desktop-wrap {
   position: relative;
   padding-bottom: $taskBarH;
-  background-image: url('/public/my-img/bg-blaze-100.jpg');
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  background-color: #0063b1;
+  // background-image: url('/public/my-img/bg-blaze-100.jpg');
+  // background-repeat: no-repeat;
+  // background-size: cover;
+  // background-position: center;
+  background-color: $desktopC;
 
 }
 .lr-desktop, .lr-desktop-icons{
@@ -337,9 +337,8 @@ button.lr-desktop-icon{
 
 
 .lr-desktop-icon-img{
-  /* height: 60px; */
   height: 50px;
-  width: 100%;
+  width: 80px;
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
@@ -355,17 +354,17 @@ button.lr-desktop-icon{
   color:#fff;
   font-size: 12px;
 }
-.lr_desktop_launch{ // #f20505 #730202
+.lr_desktop_launch{ // #f20505 #d13438
   
   .lr-desktop-icons{
     z-index: $maxZindex;
-    background: rgba(#730202, 1);
+    background: rgba($desktopLaunchC, 1);
     // background-image: url('/public/img/preferences-desktop-launch-feedback.png');
     // background-position: center;
     // background-repeat: no-repeat;
   }
   .lr-task-bar{
-    background-color: rgba(#730202, 1);
+    background-color: rgba($desktopLaunchC, 1);
   }
   .lr-task-bar-body,
   .lr-start, .lr-watch{

@@ -14,7 +14,7 @@
 
   ContextMenu(ref='ctx')
     .lr-ctx-item(@click="sortIcon")
-      | {{LANG.ctx.SortOut}}
+      | Sort icon
     .lr-ctx-item(@click="reload")
       | {{LANG.ctx.Refresh}}
   //- UsersChat
@@ -37,17 +37,12 @@ export default {
     //Cascade
   },
   props: ['icons'],
-  data(){
-
-    return {
-      list: this.getIconsFromProp(),
-      _isInDesk: false
-    }
-
-  },
   computed:{
-    deskTopEvent(){
-      return this.$store.state.deskTopEvent
+    list(){
+      return this.$store.state.desktop.icons
+    },
+    saveEvent(){
+      return this.$store.state.desktop.saveEvent
     },
     LANG(){
       return this.$store.getters['language/currLanguage'].deskTop
@@ -57,46 +52,11 @@ export default {
     }
   },
   watch: {
-    deskTopEvent(e){
-      switch(e.type){
-        case 'add':
-          this.list.push(e.item);
-          this.save();
-          break;
-        case 'quickLaunch':
-          console.log('quickLaunch');
-          break;
-      }
+    saveEvent(){
+      this.save();
     }
   },
   methods: {
-    getIconsFromProp(){
-      var icons = this.icons;
-
-      if(!icons){ // 回收站可以被移除
-        icons = [{
-          id: 'sys_app_recycle_bin',
-          x:0,
-          y:0
-        }]
-
-      }else{
-        icons = JSON.parse(icons);
-      }
-      
-      icons = this.forMatList(icons);
-      return icons;
-    },
-    wrapItem(v){
-      const app = this.$store.getters['sysApps/getById'](v.id);
-      Object.assign(v, app);
-    },
-    forMatList(arr){
-      arr.forEach(v => {
-        this.wrapItem(v);
-      });
-      return arr;
-    },
     handleDragenter(e){
       e.preventDefault();
     },
@@ -135,7 +95,8 @@ export default {
           return {
             id: v.id,
             x: v.x,
-            y: v.y
+            y: v.y,
+            type: v.type
           }
         });
         // console.log('save', arr);
@@ -164,11 +125,10 @@ export default {
       if(item){
         if(data.from === 'desktop'){
           this.setDropedItemXY(data, item, e);
+          this.save();
         } else {
           this.$store.commit('error/show', 'The icon already exists on the desktop.');
         }
-        
-        this.save();
       } else {
         if(data.from === 'startMenu'){
           let newItem = {
@@ -176,12 +136,12 @@ export default {
             x: e.clientX,
             y: e.clientY
           }
-          this.wrapItem(newItem);
           const xy = this.keepIconIn(e.clientX, e.clientY);
           newItem.x = xy.x;
           newItem.y = xy.y;
-          this.list.push(newItem);
-          this.save();
+          this.$store.commit('desktop/addIcon', newItem);
+          // this.list.push(newItem);
+          // this.save();
         }
       }
       
@@ -228,8 +188,7 @@ export default {
           if(!result){
             return;
           }
-          result = JSON.parse(result);
-          this.list = this.forMatList(result);
+          this.$store.commit('desktop/setIcons', JSON.parse(result));
         }
       })
     }

@@ -4,13 +4,13 @@ button.lr-desktop-icon(draggable="true",
               @dblclick="handleDblclick",
               @dragstart.stop='handleDragStart(item, $event)',
               :style='{left: item.x + "px", top: item.y + "px"}')
-  .lr-desktop-icon-img(:style="{backgroundImage: `url(${app.iconUrl})`}")
-  .lr-desktop-icon-text {{LANG.title}}
+  .lr-desktop-icon-img(:style="{backgroundImage: `url(${iconUrl})`}")
+  .lr-desktop-icon-text {{name}}
 
   ContextMenu(ref='ctx')
     
     .lr-ctx-item(@click="remove")
-      | {{$parent.LANG.ctx.remove}}
+      | Remove
     template(v-if="item.ctx")
       .lr-ctx-item(v-for="name in item.ctx", @click="handleSpecialCtxClick(item.id, name)") {{name}}
     //-.lr-ctx-item(v-if='item.id === "sys_app_recycle_bin"', @click="clearRecycleBin")
@@ -39,9 +39,33 @@ export default {
     app(){
       return this.$store.getters['sysApps/getById'](this.item.id)
     },
+
     LANG(){
       return this.$store.getters['language/currLanguage'][this.item.id] || {
         title: 'Unknown'
+      }
+    },
+    iconUrl(){
+      const type = this.item.type;
+      if(!type){
+        return this.app.iconUrl;
+      }
+      switch(type){
+        case 'folder':
+          return '/public/img/tango/folder.png';
+        case 'file':
+          return '/public/img/nuvola/accessories-text-editor-6.png'
+      }
+    },
+    name(){
+      const type = this.item.type;
+      if(!type){
+        return this.LANG.title;
+      }
+      switch(type){
+        case 'folder':
+        case 'file':
+          return this.item.name;
       }
     },
     isQuickLaunch() {
@@ -49,18 +73,16 @@ export default {
     }
   },
   methods: {
-    hidden(){
-      this.$refs.ctx.hidden();
+    onBeSelecting(isBelectSelected){
+      this.isBelectSelected = isBelectSelected;
     },
     handleSpecialCtxClick(id, name) {
+      this.$refs.ctx.hidden();
       this.$store.dispatch(`sysApps/${id}_${name}`);
-      this.hidden();
     },
     remove(){
-      this.$nextTick(()=> {
-        this.$parent.list.splice(this.index, 1);
-        this.$parent.save();
-      })
+      this.$refs.ctx.hidden();
+      this.$store.commit('desktop/removeIcon', this.index);
     },
     handleClick(){
       if(this.isQuickLaunch){
@@ -75,7 +97,7 @@ export default {
       this.launch();
     },
     launch(){
-      this.$store.commit('task/add', this.item.id);
+      this.$store.commit('task/add', this.item.openWith);
     },
     handleDragStart(v, e){
       // console.log('Desktop icon handleDragStart');

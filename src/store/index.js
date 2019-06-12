@@ -24,7 +24,7 @@ import flyTextarea from './module/fly-textarea';
 import sysApps from './module/sys-apps';
 import users from './module/users';
 import fs from './module/fs';
-
+import desktop from './module/desktop';
 // let _tmp = null;
 const store = new window.Vuex.Store({
   modules: {
@@ -36,7 +36,8 @@ const store = new window.Vuex.Store({
     flyTextarea,
     sysApps,
     fsClipBoard,
-    fs
+    fs,
+    desktop
   },
   state: {
     dragTransferData: null,
@@ -57,7 +58,6 @@ const store = new window.Vuex.Store({
 
     // quickBarItems: [],
 
-    deskTopEvent: null,
     recycleBinEvent: null,
 
 
@@ -82,10 +82,7 @@ const store = new window.Vuex.Store({
       state.recycleBinEvent = Date.now();
       this.commit('sysApps/changeRecycleBinIcon', bool)
     },
-    
-    deskTopTrigger(state, data){
-      state.deskTopEvent = data;
-    },
+
 
     needRelogin(state){
       state.sessError = true;

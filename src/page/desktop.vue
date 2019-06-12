@@ -77,7 +77,7 @@ export default {
             hostname: data.hostname
           });
           this.$store.commit('sysApps/changeRecycleBinIcon', data.recycebinIsEmpty);
-          this.icons = data.icons;
+          this.$store.commit('desktop/setIcons', _initIcons(data.icons));
         },
         error(xhr){
           this.error = this.request.defWrapErr(xhr);
@@ -114,5 +114,21 @@ export default {
   created(){
     this.init();
   }
+}
+
+
+function _initIcons(icons){
+
+  if(!icons){ // 回收站可以被移除
+    icons = [{
+      id: 'sys_app_recycle_bin',
+      x:0,
+      y:0
+    }]
+
+  }else{
+    icons = JSON.parse(icons);
+  }
+  return icons;
 }
 </script>
