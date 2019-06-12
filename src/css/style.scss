@@ -184,6 +184,9 @@ body {
   word-wrap: normal;
   white-space:normal;
   word-break: break-all;
+  &:focus{
+    outline: 1px solid #000;
+  }
 }
 
 @import '../cmpt/global/toust/error.scss';
