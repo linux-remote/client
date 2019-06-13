@@ -15,14 +15,16 @@ $activeBgColor: #cce8ff;
 $taskTitleH: 24px; // 任务窗口 title 栏高度
 $taskCtrlW: $taskTitleH; // 任务窗口 title 栏右侧按钮宽度
 $taskTitleColor: #00BFFF;
-$taskTitleUnFocusColor:$bg;
+$taskTitleUnFocusColor:#C0C0C0;
 
 // task-bar
 $taskBarH : 30px; // 底部任务栏
 $taskBarBg: #f5f5f5; // 底部任务栏背景
-$taskBarItemBg: #B5B5B5; // 任务 背景
-$taskBarItemFocusBg: #757575; // 任务 focus 背景
 
+$taskBarItemBg: rgba($taskTitleUnFocusColor, .4); // 任务 背景
+$taskBarItemHoverBg: rgba($bg, .5);  // 任务 背景
+$taskBarItemFocusBg: rgba($bg, 1);   // 任务 背景
+// $taskBarItemFocusHoverBg: rgba($taskTitleUnFocusColor, .8);
 
 $maxZindex : 2147483647; // https://stackoverflow.com/questions/491052/minimum-and-maximum-value-of-z-index
 $uploadModalZindex: $maxZindex - 2;
@@ -47,7 +49,9 @@ body {
 
 
 // upload up reload left right  https://www.iconfont.cn/collections/detail?cid=16506
-
+// button{
+//   font: inherit;
+// }
 .lr-w100{
   width: 100%;
 }
@@ -389,7 +393,7 @@ button.lr-desktop-icon{
     background-color: rgba($desktopLaunchColor, 1);
   }
   .lr-task-bar-body,
-  .lr-start, .lr-watch, .lr-show-desktop{
+  .lr-start, .lr-watch, .lr-quick-item:not(.lr-quick-launch){
     visibility: hidden;
     // opacity: .04;
     pointer-events: none;

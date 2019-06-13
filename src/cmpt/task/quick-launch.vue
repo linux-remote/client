@@ -1,6 +1,6 @@
 
 <template lang="jade">
-.lr-quick-launch(@mousedown="handleMousedown", title="Shortcut Key: Ctrl + Win")
+.lr-quick-item.lr-quick-launch(@mousedown="handleMousedown", title="Shortcut Key: Ctrl + Win")
 </template>
 <script>
 export default {

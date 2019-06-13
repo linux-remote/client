@@ -11,8 +11,6 @@
   background-color: $taskBarBg;
   user-select: none;
   color: #000;
-  // padding-top: 2px;
-  // padding-bottom: 2px;
 }
 
 .lr-task-bar-body{
@@ -23,13 +21,13 @@
 }
 
 .lr-task-bar-item {
-  border: 2px outset $taskBarItemBg;
-  background-color: $taskBarBg;
+  background-color: $taskBarItemBg;
   position: relative;
   flex-grow: 1;
   max-width: 200px;
   min-width: 50px;
   overflow: hidden;
+  // margin-right: 1px;
   text-overflow:ellipsis;
   white-space: nowrap;
   cursor: default;
@@ -37,18 +35,17 @@
   .lr-icon{
     margin-right: 5px;
   }
-  
-
   &.lr_task_bar_item_focus{
-    border-style: inset;
-    background-color: #fff;
-    font-weight: bold;
+    background-color: $taskBarItemFocusBg;
   }
+  &:hover{
+    background-color: $taskBarItemHoverBg;
+  }
+
 }
 
 .lr-task-bar-item-inner {
   height: 100%;
-  // border-top: 2px solid #000;
   display: flex;
   align-items: center;
   padding-left: 5px;
@@ -58,14 +55,16 @@
     height: 23px;
   }
 }
-.lr-quick-launch, .lr-show-desktop{
+
+// Quick item
+.lr-quick-item{
   width: $taskBarH;
   height: $taskBarH;
   background-position: center;
   background-size: 85%;
   background-repeat: no-repeat;
   &:hover{
-    background-color: lighten($taskBarBg, 15%);
+    background-color: $taskBarItemHoverBg;
   }
 }
 .lr-quick-launch{
@@ -81,7 +80,6 @@
       background-color: rgba(#fff, .3);
     }
   }
-  
 }
 
 
@@ -91,7 +89,7 @@
   position: absolute;
   z-index: 2; 
   top:0;
-  border: 1px solid #1883d7;
+  border: 1px solid $taskTitleColor;
   bottom: 0;
   left: 0; 
   right: 0;
@@ -143,7 +141,6 @@
 
 .lr_task_un_focus{
   border-color: rgba(#333, .3);
-
   
   >.lr-task-title{
     color: #999;

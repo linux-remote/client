@@ -16,15 +16,15 @@
   align-items: center;
   justify-content: center;
   &:not(.lr_start_focus):hover{
-    background-color: lighten($taskBarBg, 15%);
+    background-color: $taskBarItemHoverBg;
   }
 }
 .lr_start_focus{
-  background-color: lighten($taskBarBg, 30%);
+  background-color: $taskBarItemFocusBg;
 }
 .lr-start-menu{
-  background-color: #131a21;
-  color: #fff;
+  background-color: $taskBarBg;
+  color: #000;
   bottom: $taskBarH;
   position: absolute;
   z-index: $topLayerZindex + 2;
@@ -51,14 +51,14 @@
   font-size: 1.3em;
   line-height: 38px;
   height: 38px;
-  border-bottom: 1px solid #fff;
+  border-bottom: 1px solid #000;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   padding: 0 1em;
 }
 .lr-start-bottom-menu{
-  border-top: 1px solid #fff;
+  border-top: 1px solid #000;
   line-height: 35px;
   height: 35px;
   display: flex;
@@ -66,15 +66,16 @@
   justify-content: space-between;
   padding-left: 8px;
   padding-right: 10px;
+  
   .lr-clear-btn{
     width: 34px;
     height: 34px;
     line-height: 34px;
     text-align: center;
     display: block;
-    color: #fff;
+    color: #000;
     &:hover{
-      background-color: #494d52;
+      background-color: #ccc;
     }
   }
 }
@@ -92,7 +93,7 @@
   min-width: auto;
   margin: 0;
   background-color: rgba($errColor, .6);
-  border: 1px solid #fff;
+  border: 1px solid #000;
   color: #fff;
   cursor: pointer;
   &:hover{

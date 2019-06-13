@@ -1,6 +1,6 @@
 
 <template lang="jade">
-.lr-show-desktop(@click="handleClick")
+.lr-quick-item.lr-show-desktop(@click="handleClick")
 </template>
 <script>
 export default {

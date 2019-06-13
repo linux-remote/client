@@ -10,7 +10,7 @@
                                 :id='k',
                                 :key="k")
     .lr-start-bottom-menu
-      button.lr-btn-sm.lr-btn-hollow(@click="handleSettingsClick")
+      button.lr-btn-sm(@click="handleSettingsClick")
         | About
       router-link.lr-clear-btn(to='/' target='_blank')
         span.iconfont.icon-accountmultiple(title="Login with other account")
