@@ -13,8 +13,8 @@
   //-   | Sponsor
 
   ContextMenu(ref='ctx')
-    .lr-ctx-item(@click="sortIcon")
-      | Sort icon
+    //- .lr-ctx-item(@click="sortIcon")
+    //-   | Sort icon
     .lr-ctx-item(@click="reload")
       | {{LANG.ctx.Refresh}}
   //- UsersChat

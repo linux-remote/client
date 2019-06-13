@@ -7,9 +7,10 @@ table{
 .lr-input{
   width: 100%;
   max-width: 296px;
-  height: 36px;
-  padding: 4px 8px;
-  border: 1px solid #eee;
+  height: 35px;
+  line-height: normal;
+  padding: 0 4px;
+  // border: 1px solid #eee;
 }
 .lr-btn, .lr-btn-sm{
   display: flex;

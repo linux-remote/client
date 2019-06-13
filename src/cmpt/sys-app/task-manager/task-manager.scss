@@ -22,7 +22,11 @@ table.lr-tm-table{
     font-size: 12px;
   }
 }
-
+.lr-tm-icon{
+  &::before{
+    content: 'Top';
+  }
+}
 .lr-tm-wrap{
   // padding-top: $TM_HEAD_H;
   display: flex;
@@ -44,15 +48,15 @@ table.lr-tm-table{
       font-size: 12px;
       padding: 8px 5px;
       &.active{
-        background-color: rgba($color-accent, .4);
+        background-color: rgba($bg222, .4);
       }
     }
     tbody tr:hover{
-      background-color: rgba($color-accent, .2);
+      background-color: rgba($bg222, .2);
     }
     tr.active{
       td{
-        background-color: $color-accent;
+        background-color: $bg222;
         color: #fff;
       }
     }

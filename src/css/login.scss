@@ -3,8 +3,8 @@
   display: flex;
   justify-content: center;
   padding-top: 1px;
-  background-color: $color-accent;
-  h2 {
+  background-color: $bg;
+  h1{
     color: #fff;
   }
   label{
@@ -13,11 +13,11 @@
     color: #fff;
     display: block;
   }
-  .lr-input{
-    display: block;
-    max-width: 296px;
-    border: 1px solid #fff;
-  }
+  // .lr-input{
+  //   display: block;
+  //   max-width: 296px;
+  //   border: 1px solid #fff;
+  // }
 }
 
 .lr-login-box-wrap{
@@ -41,7 +41,8 @@
 }
 .lr-logined-item{
   display: block;
-  color: #000;
+  
+  color:#666;
   width: 200px;
   background-color: rgba(#fff, .8);
   display: flex;
@@ -54,25 +55,27 @@
   }
 }
 .lr-logined-item-icon{
-  background-color: $color-accent;
-  color:#fff;
   width: 40px;
   height: 40px;
   margin-left: 10px;
+  margin-right: 5px;
   text-align: center;
   line-height: 40px;
-  font-size: 25px;
+  font-size: 35px;
+  color: $bg;
 }
 .lr-logined-item-text{
-  margin-left: 13px;
   font-size: 18px;
-  color: #222;
 }
 .lr-login-logo{
   width: 160px;
   height: 160px;
+  text-align: center;
+  line-height: 160px;
   display: block;
-  margin-top: 140px;
+  font-size: 90px;
+  color: #fff;
+  margin-top: 120px;
 }
 .lr_login_have_logined{
   justify-content: center;

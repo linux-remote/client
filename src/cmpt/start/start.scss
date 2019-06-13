@@ -91,11 +91,11 @@
 .lr-start-logout-btn{
   min-width: auto;
   margin: 0;
-  background-color: rgba($color-alert, .6);
+  background-color: rgba($errColor, .6);
   border: 1px solid #fff;
   color: #fff;
   cursor: pointer;
   &:hover{
-    background-color: rgba($color-alert, .8);
+    background-color: rgba($errColor, .8);
   }
 }

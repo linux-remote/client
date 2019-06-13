@@ -7,7 +7,7 @@
   .lr-icon.lr-fs-new-file(@click='addItem("RegularFile")')
    
   button.lr-btn-sm.lr-fs-upload-btn(@click='handleUploadBtnClick')
-    span.glyph.glyph-upload
+    span.iconfont.icon-upload
     span {{$parent.LANG.upload}}
   //- button(@click="errDev") errDev
   .lr-fs-home-mark(@click="$parent.go(homedir)", :class="{lr_bookmark_active: address === homedir}")

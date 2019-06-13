@@ -1,11 +1,17 @@
 $bg: #87CEEB;
+$bg222: $bg;
+// $errColor: #D02E00;
+$errColor: red;
+$desktopColor: $bg;
+$desktopLaunchColor: #B22222;
 $drakColor: #6AA1B8;
 
 $activeBorderColor: #99d1ff;
 $activeBgColor: #cce8ff;
 
 $taskBarH : 40px; // 底部任务栏
-$taskBarBg: rgba(0, 0, 0, .85); // 底部任务栏背景
+$taskBarBg: rgba(0, 0, 0, 1); // 底部任务栏背景
+$taskBarBg: #C0C0C0; // 底部任务栏背景
 $taskBarFocusBg: lighten($taskBarBg, 60%);
 
 $taskTitleH: 30px; // 任务窗口 title 栏高度
@@ -18,10 +24,9 @@ $maxZindex : 2147483647; // https://stackoverflow.com/questions/491052/minimum-a
 $uploadModalZindex: $maxZindex - 2;
 $topLayerZindex : $maxZindex - 100;
 
-$color-accent:#0078D7;
-$color-alert: #D02E00;
-$desktopC: #0063b1;
-$desktopLaunchC: #B22222;
+
+
+
 *, *:before,
 *:after {
   box-sizing: border-box;
@@ -32,24 +37,31 @@ body {
   margin: 0;
   height: 100vh;
   overflow: hidden;
-  font-family: 'Microsoft YaHei',"Segoe UI", Selawik,  Tahoma,Verdana,Arial,sans-serif;
+  font-family: arial,sans-serif;
 }
+// account: https://www.iconfont.cn/collections/detail?spm=a313x.7781069.0.da5a778a4&cid=816
+
+
+// upload up reload left right  https://www.iconfont.cn/collections/detail?cid=16506
+
 .lr-w100{
   width: 100%;
 }
+.iconfont{
+  color: inherit;
+  font-size: inherit;
+}
 .lr-err-color{
-  color: #D02E00;
+  color: $errColor;
 }
 .lr-pre-load{
-  background-color: $color-accent;
+  background-color: $bg;
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 50px;
-  .progress-circle::after{
-    color: #fff;
-  }
+  cursor: wait;
 }
 
 @import './common.scss';
@@ -76,6 +88,9 @@ body {
   background-position: center;
   width:20px; 
   height: 20px;
+}
+.icon-logo_LR{
+  color: #628abd;
 }
 .lr-clear-btn{
   border: 0;
@@ -297,7 +312,7 @@ body {
   // background-repeat: no-repeat;
   // background-size: cover;
   // background-position: center;
-  background-color: $desktopC;
+  background-color: $desktopColor;
 
 }
 .lr-desktop, .lr-desktop-icons{
@@ -321,30 +336,31 @@ button.lr-desktop-icon{
   cursor: default;
   &:focus, &:hover{
     background-color: rgba(255, 255, 255, 0.25);
-    &::after{
-      content: '';
-      display: block;
-      position: absolute;
-      top: 1px;
-      left: 1px;
-      right: 1px;
-      bottom: 1px;
-      border: 1px solid rgba(255, 255, 255, 0.5);
-      z-index: -1;
-    }
+    border-radius: 5px;
   }
   &:focus {
     outline: none;
   }
 }
 
-
-.lr-desktop-icon-img{
+.lr-text-icon{
+  background-color: #ccc;
+}
+.lr-desktop-icon-cls, .lr-desktop-icon-img{
   height: 50px;
   width: 80px;
+
+  text-align: center;
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
+}
+.lr-desktop-icon-cls{
+  width: 50px;
+  margin: 0 auto;
+  font-size: 25px;
+  line-height: 50px;
+  font-weight: bold;
 }
 .lr-desktop-icon-text{
   line-height: 15px;
@@ -353,27 +369,29 @@ button.lr-desktop-icon{
   text-align: center;
   // overflow: hidden;
   text-overflow: ellipsis;
-  text-shadow: 1px 2px #000;
-  color:#fff;
+  color:#000;
   font-size: 12px;
 }
 .lr_desktop_launch{ // #f20505 #d13438
   
   .lr-desktop-icons{
     z-index: $maxZindex;
-    background: rgba($desktopLaunchC, 1);
+    background: rgba($desktopLaunchColor, 1);
     // background-image: url('/public/img/preferences-desktop-launch-feedback.png');
     // background-position: center;
     // background-repeat: no-repeat;
   }
   .lr-task-bar{
-    background-color: rgba($desktopLaunchC, 1);
+    background-color: rgba($desktopLaunchColor, 1);
   }
   .lr-task-bar-body,
   .lr-start, .lr-watch{
     visibility: hidden;
     // opacity: .04;
     pointer-events: none;
+  }
+  .lr-desktop-icon-text{
+    color: #fff;
   }
 }
 .lr_be_selected{
@@ -559,6 +577,9 @@ $topBarRight : 100px;
 .lr-task-title-content .lr-icon{
   width: $taskTitleH - 2px;
   height: $taskTitleH - 2px;
+  line-height: $taskTitleH - 2px;
+  font-size: $taskTitleH - 4px;
+  text-align: center;
   margin-right: 8px;
 }
 
@@ -596,36 +617,14 @@ $topBarRight : 100px;
     background-color: #e5e5e5;
   }
 }
-.lr-task-ctrl-colse{
-  transition: all .15s;
-  &:hover{
-    background-color: #e81123;
-    color: #fff;
-  }
-}
-.lr-task-glyph-stop-2 {
-  display: none;
-}
-$taskGlyphPositon: 10px;
-$taskGlyphPositonX: 14px;
-.lr_task_control_shrink {
-  position: relative;
-  .glyph {
-    position: absolute;
-    background-color: inherit;
-  }
-  .glyph:first-child{
-    bottom: $taskGlyphPositon;
-    right: $taskGlyphPositonX;
-  } 
-  .lr-task-glyph-stop-2 {
-    display: block;
-    top: $taskGlyphPositon;
-    left: $taskGlyphPositonX;
-    z-index: 2;
-    
-  }
-}
+// .lr-task-ctrl-colse{
+//   transition: all .15s;
+//   &:hover{
+//     background-color: #e81123;
+//     color: #fff;
+//   }
+// }
+
 @import '../cmpt/start/start.scss';
 @import '../cmpt/sys-app/fs/fs.scss';
 @import '../cmpt/sys-app/editor/editor.scss';

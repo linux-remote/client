@@ -155,9 +155,8 @@ $fsStatusBarH: 23px;
   display: flex;
   justify-content: center;
   align-items: center;
-  >.glyph{
+  >span:last-child{
     color: #808080;
-    // font-size: 7px;
     margin: -1px 5px 0;
     text-align: center;
   }
@@ -816,15 +815,22 @@ tr.lr_file_be_selected.lr_file_former{
   text-align: center;
 }
 .lr-fs-upload-btn{
-  background-color: $color-accent;
+  background-color: $bg222;
   color: #fff;
   border: 0;
   padding: 0 10px;
+  // display: flex;
+  // justify-content: center;
+  // align-items: center;
   &:hover{
-    background-color: darken($color: $color-accent, $amount: 5);
+    background-color: darken($color: $bg222, $amount: 5);
   }
   &:focus{
     outline: none;
+  }
+  .iconfont{
+    font-size: 1.5em;
+    padding-right: 3px;
   }
 }
 .lr_bookmark_active{

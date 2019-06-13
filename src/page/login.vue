@@ -5,13 +5,14 @@
     div
       router-link.lr-logined-item(v-for="username in loginedList", :key="username", :to="'/user/' + username")
         .lr-logined-item-icon
-          span.glyph.glyph-contact
+          span.iconfont.icon-accountbox
         .lr-logined-item-text {{username}}
   .lr-login-box-wrap(:class="{lr_login_have_logined: loginedList.length}")
-    img.lr-login-logo(src="/public/my-img/windows-linux-logo-c.png")
-    h2 Linux Remote
+    .lr-login-logo
+      span.iconfont.icon-logo_LR
+    h1 Linux Remote
     .lr-login-box
-      form(@submit.prevent="login")
+      form(@submit.prevent="login", @keydown.13="login")
         div
           label {{LANG.username}}
           input.lr-input( v-model='username' required="required")

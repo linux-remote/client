@@ -9,17 +9,17 @@
     Movable.lr-task-title-content(:onMove='handleMove',
                                   :startX='positionLeft',
                                   :startY='positionTop')
-      .lr-icon(:style="`background-image:url(${APP.iconUrl})`")
+      .lr-icon(v-if="APP.iconUrl", :style="`background-image:url(${APP.iconUrl})`")
+      .lr-icon(v-else :class="APP.iconClassName")
       | {{currTitle}}
     .lr-task-control
       .lr-task-ctrl-item(@click.stop='hiddenTask')
-        span.glyph.glyph-remove
-      .lr-task-ctrl-item(@click.stop='maxToggle',
-                    :class='isMax ? "lr_task_control_shrink" : "lr-task-control-max"')
-        span.glyph.glyph-stop
-        span.glyph.glyph-stop.lr-task-glyph-stop-2
-      .lr-task-ctrl-item.lr-task-ctrl-colse(@click.stop='close', @dblclick.stop)
-        span.glyph.glyph-cancel
+        span.iconfont.icon-ctrl_min
+      .lr-task-ctrl-item(@click.stop='maxToggle')
+        span.iconfont.icon-ctrl_max(v-if="!isMax")
+        span.iconfont.icon-ctrl_shrink(v-else)
+      .lr-task-ctrl-item(@click.stop='close', @dblclick.stop)
+        span.iconfont.icon-ctrl_close
 
 
   component(:is="appId", ref="body")

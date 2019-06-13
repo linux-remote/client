@@ -13,7 +13,7 @@
       button.lr-btn-sm.lr-btn-hollow(@click="handleSettingsClick")
         | About
       router-link.lr-clear-btn(to='/' target='_blank')
-        span.glyph.glyph-other-user(title="Login with other account")
+        span.iconfont.icon-accountmultiple(title="Login with other account")
       button.lr-btn-sm.lr-start-logout-btn(@click="logout") Sign out
     //-.lr-start-menu-item 第三方程序
     //-AppItem.lr-start-menu-item(v-for='(v, k) in thirdPartyAppMap',

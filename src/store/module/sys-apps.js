@@ -57,6 +57,7 @@ export default   {
       },
       sys_app_task_manager: {
         iconUrl: '/public/my-img/top.png',
+        // iconClassName: 'lr-text-icon lr-tm-icon',
         unique: true,
         
         height: 800
@@ -67,7 +68,7 @@ export default   {
         // }
       },
       sys_app_settings: {
-        iconUrl: '/public/my-img/windows-linux-logo-c.png',
+        iconClassName: 'iconfont icon-logo_LR',
         unique: true,
         hidden: true,
         width: 500,

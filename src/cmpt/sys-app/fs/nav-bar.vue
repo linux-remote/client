@@ -1,32 +1,32 @@
 <template lang="jade">
 .lr-fs-nav-bar
   .lr-fs-nav-item(@click='handleArrowLeftClick', :class='{lr_fs_nav_disabled:backStack.length === 0}')
-    span.glyph.glyph-back
+    span.iconfont.icon-left
   .lr-fs-nav-item(@click='handleArrowRightClick', :class='{lr_fs_nav_disabled:goStack.length === 0}')
-    span.glyph.glyph-forward
+    span.iconfont.icon-right
   .lr-fs-nav-item(@click='handleArrowUpClick', :class='{lr_fs_nav_disabled:address === ""}')
-    span.glyph.glyph-up
+    span.iconfont.icon-up
 
   .lr-fs-address
     .lr-fs-address-inner(v-if="!isInputFocus")
       .lr-fs-crumb(@click='goToRoot', v-if='addressArr.length')
         //- span.lr-fs-crumb-name /
-        span.glyph /
+        span /
       .lr-fs-crumb(v-for='(v, i) in addressArr',
                   :key='i',
                   @click='handleCrumbClick(i)',
                   v-if='v')
         span.lr-fs-crumb-name {{v}}
-        span.glyph /
+        span /
     input(v-model='inputAddress', 
           @focus="handleInputFocus",
           ref='input',
           @blur="handleInputBlur",
           @keydown.stop='handleInputKeydown')
   .lr-fs-nav-item(v-if='address===inputAddress' @click='$emit("change", address)')
-    span.glyph.glyph-refresh
+    span.iconfont.icon-reload
   .lr-fs-nav-item(v-else @click='go(inputAddress)')
-    span.glyph.glyph-forward
+    span.iconfont.icon-right
 </template>
 <script>
 const MAX_LEN = 50;

@@ -4,7 +4,8 @@ button.lr-desktop-icon(draggable="true",
               @dblclick="handleDblclick",
               @dragstart.stop='handleDragStart(item, $event)',
               :style='{left: item.x + "px", top: item.y + "px"}')
-  .lr-desktop-icon-img(:style="{backgroundImage: `url(${iconUrl})`}")
+  .lr-desktop-icon-img(v-if="iconUrl", :style="{backgroundImage: `url(${iconUrl})`}")
+  .lr-desktop-icon-cls(v-else, :class="app.iconClassName")
   .lr-desktop-icon-text {{name}}
 
   ContextMenu(ref='ctx')
