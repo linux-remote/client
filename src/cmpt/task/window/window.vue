@@ -18,7 +18,7 @@
       .lr-task-ctrl-item(@click.stop='maxToggle')
         span.iconfont.icon-ctrl_max(v-if="!isMax")
         span.iconfont.icon-ctrl_shrink(v-else)
-      .lr-task-ctrl-item(@click.stop='close', @dblclick.stop)
+      .lr-task-ctrl-item.lr-task-ctrl-close(@click.stop='close', @dblclick.stop)
         span.iconfont.icon-ctrl_close
 
 

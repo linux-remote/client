@@ -1,0 +1,184 @@
+
+
+// -------------------- task bar --------------------
+.lr-task-bar{
+  height:$taskBarH;
+  position: absolute;
+  width: 100%;
+  left: 0;
+  bottom: 0;
+  display:flex;
+  background-color: $taskBarBg;
+  user-select: none;
+  color: #000;
+  // padding-top: 2px;
+  // padding-bottom: 2px;
+}
+
+.lr-task-bar-body{
+  flex-grow: 1;
+  display:flex;
+  overflow: hidden;
+  padding-left: 1px;
+}
+
+.lr-task-bar-item {
+  border: 2px outset $taskBarItemBg;
+  background-color: $taskBarBg;
+  position: relative;
+  flex-grow: 1;
+  max-width: 200px;
+  min-width: 50px;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+  cursor: default;
+  font-size: 14px;
+  .lr-icon{
+    margin-right: 5px;
+  }
+  
+
+  &.lr_task_bar_item_focus{
+    border-style: inset;
+    background-color: #fff;
+    font-weight: bold;
+  }
+}
+
+.lr-task-bar-item-inner {
+  height: 100%;
+  // border-top: 2px solid #000;
+  display: flex;
+  align-items: center;
+  padding-left: 5px;
+  padding-right: 5px;
+  .lr-icon{
+    width: 23px;
+    height: 23px;
+  }
+}
+.lr-quick-launch, .lr-show-desktop{
+  width: $taskBarH;
+  height: $taskBarH;
+  background-position: center;
+  background-size: 85%;
+  background-repeat: no-repeat;
+  &:hover{
+    background-color: lighten($taskBarBg, 15%);
+  }
+}
+.lr-quick-launch{
+  background-image: url('/public/img/oxygen/preferences-desktop-launch-feedback.png');
+}
+.lr-show-desktop{
+  background-image: url('/public/img/tango/user-desktop.png');
+}
+.lr_desktop_launch {
+  .lr-quick-launch{
+    background-color: rgba(#fff, .5);
+    &:hover{
+      background-color: rgba(#fff, .3);
+    }
+  }
+  
+}
+
+
+// -------------------- task body --------------------
+
+.lr-task-window{
+  position: absolute;
+  z-index: 2; 
+  top:0;
+  border: 1px solid #1883d7;
+  bottom: 0;
+  left: 0; 
+  right: 0;
+  background-color:#fff;
+  box-shadow: rgba(#fff, .22) 3px 3px 15px 0;
+  padding-top: $taskTitleH;
+  outline: none; // tabindex 会有 outline. 不可去掉 tabindex， 不然键盘事件不生效。
+}
+
+.lr_task_max { // 最大化窗口
+  box-shadow: none; 
+  width: 100%;
+  height: 100%;
+  border:0;
+}
+
+
+.lr-task-title {
+  user-select: none;
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-shrink: 0;
+  background: $taskTitleColor; 
+  color: #000;
+  height: $taskTitleH; 
+  line-height: $taskTitleH;
+  font-size: 13px;
+  // font-family: 'Microsoft YaHei', Arial;
+}
+.lr-task-title-content {
+  flex-grow:1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: flex;
+  // cursor: move;
+}
+.lr-task-title-content .lr-icon{
+  width: $taskTitleH - 2px;
+  height: $taskTitleH - 2px;
+  line-height: $taskTitleH - 2px;
+  font-size: $taskTitleH - 4px;
+  text-align: center;
+  margin-right: 8px;
+}
+
+.lr_task_un_focus{
+  border-color: rgba(#333, .3);
+
+  
+  >.lr-task-title{
+    color: #999;
+    background: $taskTitleUnFocusColor; 
+  }
+}
+
+.lr-window-body{
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+}
+
+// ------- right control -------
+
+.lr-task-control{
+  display: flex;
+  flex-shrink: 0;
+  justify-content: space-between;
+  align-items: center;
+}
+.lr-task-ctrl-item{
+  width: $taskCtrlW;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 2px;
+  height: 100%;
+  // background-color: #fff;
+  &:hover{
+    background-color: rgba(#fff, .5);
+  }
+}
+.lr-task-ctrl-close{
+  margin-left: 2px;
+  margin-right: 0;
+}

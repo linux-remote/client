@@ -1,24 +1,28 @@
 $bg: #87CEEB;
 $bg222: $bg;
 // $errColor: #D02E00;
-$errColor: red;
+$errColor: #EE9FAF;
 $desktopColor: $bg;
-$desktopLaunchColor: #B22222;
+$desktopLaunchColor: #EE9FAF;
 $drakColor: #6AA1B8;
 
 $activeBorderColor: #99d1ff;
 $activeBgColor: #cce8ff;
 
-$taskBarH : 40px; // 底部任务栏
-$taskBarBg: rgba(0, 0, 0, 1); // 底部任务栏背景
-$taskBarBg: #C0C0C0; // 底部任务栏背景
-$taskBarFocusBg: lighten($taskBarBg, 60%);
-
-$taskTitleH: 30px; // 任务窗口 title 栏高度
-$taskCtrlW: 45px; // 任务窗口 title 栏右侧按钮宽度
 
 
-// $quickBarW: 40px; // 快速启动栏
+// task-window
+$taskTitleH: 24px; // 任务窗口 title 栏高度
+$taskCtrlW: $taskTitleH; // 任务窗口 title 栏右侧按钮宽度
+$taskTitleColor: #00BFFF;
+$taskTitleUnFocusColor:$bg;
+
+// task-bar
+$taskBarH : 30px; // 底部任务栏
+$taskBarBg: #f5f5f5; // 底部任务栏背景
+$taskBarItemBg: #B5B5B5; // 任务 背景
+$taskBarItemFocusBg: #757575; // 任务 focus 背景
+
 
 $maxZindex : 2147483647; // https://stackoverflow.com/questions/491052/minimum-and-maximum-value-of-z-index
 $uploadModalZindex: $maxZindex - 2;
@@ -385,14 +389,14 @@ button.lr-desktop-icon{
     background-color: rgba($desktopLaunchColor, 1);
   }
   .lr-task-bar-body,
-  .lr-start, .lr-watch{
+  .lr-start, .lr-watch, .lr-show-desktop{
     visibility: hidden;
     // opacity: .04;
     pointer-events: none;
   }
-  .lr-desktop-icon-text{
-    color: #fff;
-  }
+  // .lr-desktop-icon-text{
+  //   color: #fff;
+  // }
 }
 .lr_be_selected{
   background-color: green;
@@ -407,224 +411,13 @@ $topBarRight : 100px;
   text-align: center; 
   align-items: center;
   flex-direction: column;
-  color: #fff;
   font-size: 12px;
   line-height: 20px;
   padding: 0 10px;
 }
 
 
-// -------------------- task bar --------------------
-.lr-task-bar{
-  height:$taskBarH;
-  position: absolute;
-  width: 100%;
-  left: 0;
-  bottom: 0;
-  display:flex;
-  background-color: $taskBarBg;
-  user-select: none;
-}
-
-.lr-task-bar-body{
-  flex-grow: 1;
-  display:flex;
-  overflow: hidden;
-  padding-left: 1px;
-}
-// .lr-task-bar-place{
-//   flex-grow: 1;
-//   background-color: $taskBarBg;
-// }
-.lr-task-bar-item {
-  background-color: $taskBarBg;
-  color:#fff;
-  position: relative;
-  flex-grow: 1;
-  max-width: 200px;
-  min-width: 50px;
-  overflow: hidden;
-  text-overflow:ellipsis;
-  white-space: nowrap;
-  cursor: default;
-  font-size: 14px;
-  border-right: 1px solid $taskBarBg;
-  .lr-icon{
-    margin-right: 4px;
-  }
-
-  &::before, &::after{
-    background-color: $taskBarBg;
-    content: '';
-    display: block;
-    width: 4px;
-    transition: width .1s;
-    height: 100%;
-    top: 0;
-    position: absolute;
-  }
-  &::before{
-    left: 0;
-  }
-  &::after{
-    right: 0;
-    transition: width .2s;
-  }
-  &:hover, &.lr_task_bar_item_focus{
-    // background: none;
-    &::before, &::after {
-      width: 0;
-    }
-  }
-  &:hover {
-    .lr-task-bar-item-inner{
-      background-color: rgba(255, 255, 255, .1);
-    }
-  }
-  &.lr_task_bar_item_focus{
-    .lr-task-bar-item-inner{
-      background-color: rgba(255, 255, 255, .2);
-    }
-    &:hover{
-      .lr-task-bar-item-inner{
-        background-color: rgba(255, 255, 255, 0.225);
-      }
-    }
-  }
-}
-
-.lr-task-bar-item-inner {
-  height: 100%;
-  border-bottom: 2px solid #83c0ef;
-  display: flex;
-  align-items: center;
-  padding-left: 5px;
-  padding-right: 5px;
-  .lr-icon{
-    width: 23px;
-    height: 23px;
-  }
-}
-
-.lr-quick-launch{
-  width: $taskBarH;
-  height: $taskBarH;
-  background-image: url('/public/img/oxygen/preferences-desktop-launch-feedback.png');
-  background-position: center;
-  background-size: 85%;
-  background-repeat: no-repeat;
-  &:hover{
-    background-color: lighten($taskBarBg, 15%);
-  }
-}
-.lr_desktop_launch {
-  .lr-quick-launch{
-    background-color: rgba(#fff, .5);
-    &:hover{
-      background-color: rgba(#fff, .3);
-    }
-  }
-  
-}
-
-
-// -------------------- task body --------------------
-
-.lr-task-window{
-  position: absolute;
-  z-index: 2; 
-  top:0;
-  border: 1px solid #1883d7;
-  bottom: 0;
-  left: 0; 
-  right: 0;
-  background-color:#fff;
-  box-shadow: rgba(#000, .22) 3px 3px 15px 0;
-  padding-top: $taskTitleH;
-  outline: none; // tabindex 会有 outline. 不可去掉 tabindex， 不然键盘事件不生效。
-}
-
-.lr_task_max { // 最大化窗口
-  box-shadow: none; 
-  width: 100%;
-  height: 100%;
-  border:0;
-}
-
-
-.lr-task-title {
-  user-select: none;
-  position: absolute;
-  width: 100%;
-  top: 0;
-  left: 0;
-  display: flex;
-  flex-shrink: 0;
-  background: #fff; 
-  color: #000;
-  height: $taskTitleH; 
-  line-height: $taskTitleH;
-  font-size: 13px;
-  // font-family: 'Microsoft YaHei', Arial;
-}
-.lr-task-title-content {
-  flex-grow:1;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  display: flex;
-}
-.lr-task-title-content .lr-icon{
-  width: $taskTitleH - 2px;
-  height: $taskTitleH - 2px;
-  line-height: $taskTitleH - 2px;
-  font-size: $taskTitleH - 4px;
-  text-align: center;
-  margin-right: 8px;
-}
-
-.lr_task_un_focus{
-  border-color: rgba(#333, .3);
-  >.lr-task-title{
-    color: #999;
-  }
-}
-
-.lr-window-body{
-  height: 100%;
-  position: relative;
-  overflow: hidden;
-  user-select: none;
-}
-
-// ------- right control -------
-
-.lr-task-control{
-  display: flex;
-  flex-shrink: 0;
-  justify-content: space-between;
-  align-items: center;
-}
-.lr-task-ctrl-item{
-  width: $taskCtrlW;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 29px;
-  color: #000;
-  background-color: #fff;
-  &:hover{
-    background-color: #e5e5e5;
-  }
-}
-// .lr-task-ctrl-colse{
-//   transition: all .15s;
-//   &:hover{
-//     background-color: #e81123;
-//     color: #fff;
-//   }
-// }
-
+@import '../cmpt/task/task.scss';
 @import '../cmpt/start/start.scss';
 @import '../cmpt/sys-app/fs/fs.scss';
 @import '../cmpt/sys-app/editor/editor.scss';

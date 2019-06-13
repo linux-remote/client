@@ -1,8 +1,8 @@
 
 <template lang="jade">
 .lr-task-bar-body
-  ContextMenu(ref='ctx')
-    .lr-ctx-item(@click='minAll') {{isMinAll ? 'Show open windows' : 'Show the desktop'}}
+  //- ContextMenu(ref='ctx')
+  //-   .lr-ctx-item(@click='minAll') {{isMinAll ? 'Show open windows' : 'Show the desktop'}}
     //- .lr-ctx-item(@click='closeAll')
   Item(v-for='(item, index) in tasks', 
       :key='item.id',
@@ -12,11 +12,11 @@
 </template>
 
 <script>
-import ContextMenu from '__ROOT__/cmpt/global/contextmenu/index.vue';
+// import ContextMenu from '__ROOT__/cmpt/global/contextmenu/index.vue';
 import Item from './bar-item.vue';
 export default {
   components: {
-    ContextMenu,
+    // ContextMenu,
     Item
   },
 
@@ -24,19 +24,19 @@ export default {
     tasks(){
       return this.$store.state.task.list;
     },
-    isMinAll() {
-      return this.$store.state.task.isMinAll;
-    }
+    // isMinAll() {
+    //   return this.$store.state.task.isMinAll;
+    // }
   },
   methods: {
-    minAll(){
-      this.$store.commit('task/toggleMinAll');
-      this.$refs.ctx.hidden();
-    },
-    closeAll(){
-      this.$store.commit('task/closeAll');
-      this.$refs.ctx.hidden();
-    },
+    // minAll(){
+    //   this.$store.commit('task/toggleMinAll');
+    //   this.$refs.ctx.hidden();
+    // },
+    // closeAll(){
+    //   this.$store.commit('task/closeAll');
+    //   this.$refs.ctx.hidden();
+    // },
     handleClick(task){
       if(task.isMin){
         this.$store.commit('task/show', task);
