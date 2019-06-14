@@ -5,7 +5,7 @@
   .lr-hourglass(v-if='isRequest')
   fieldset(v-for='field in map', v-if='field.list.length')
     legend {{field.title}}
-    .lr-fieldset-body
+    .lr-disk-fieldset-body
       .lr-disk-item(v-for='(v, i) in field.list', :key='i', :title='v.source')
         .lr-disk-left
           .lr-disk-icon(:class='"lr-disk-" + v.type')
@@ -22,6 +22,7 @@
 
 <script>
 import ContextMenu from '__ROOT__/cmpt/global/contextmenu/index.vue';
+import {trimEnd0} from '__ROOT__/lib/util';
 ///dev/sr0
 function parseHeadBody({head, body}, ite){
   return body.map((line, j) => {
@@ -33,7 +34,7 @@ function parseHeadBody({head, body}, ite){
     return obj;
   })
 }
-import {trimEnd0} from '__ROOT__/lib/util'
+
 export default {
   components: {
     ContextMenu
