@@ -16,14 +16,14 @@
   align-items: center;
   justify-content: center;
   &:hover{
-    background-color: #fff;
+    background-color: $taskBarItemHoverBg;
   }
 }
 .lr_start_focus{
-  background-color: #fff;
+  background-color: $taskBarItemFocusBg;
 }
 .lr-start-menu{
-  background-color: $topLayerBg;
+  background-color: $taskBarBg;
   color: #000;
   bottom: $taskBarH;
   position: absolute;

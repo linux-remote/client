@@ -1,8 +1,10 @@
 
 <template lang="jade">
-.lr-watch(v-if='clientDate')
+.lr-watch(v-if='clientDate', tabindex="-1")
   | {{watch.hours}}:{{watch.minutes}}
-  //- div {{watch.year}}/{{watch.mounth}}/{{watch.day}}
+  .lr-watch-detail 
+    p {{watch.year}}/{{watch.mounth}}/{{watch.day}} 
+    p {{timeZoneOffset}}
 </template>
 
 <script>
