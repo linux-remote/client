@@ -55,11 +55,11 @@
   position: absolute;
   top: 0;
   left: -10px;
-  background-color: red;
+  background-color: violet;
   padding: 0 3px;
 
 }
-.lr-disk-i-process-wrap{
+.lr-disk-i-process-wrap{ 
   width: 96%;
   background-color: #ddd;
   z-index: 2;
@@ -68,15 +68,9 @@
   height: 3px;
   margin-bottom: 2px;
 }
-.lr-disk-i-process-wrap:hover {
-  background-color: #eee;
-  .lr-disk-i-process{
-    background-color: #1E90FF;
-  }
-}
 .lr-disk-i-process{
   height: 100%;
-  background-color: #006400;
+  background-color: darkmagenta;
   width: 0;
 }
 
@@ -85,11 +79,15 @@
   color: #444;
 }
 .lr-disk-link{
-  text-decoration: underline;
+  text-decoration: none;
   color: blue;
   cursor: pointer;
-  width: 100%;
+  width: 96%;
+  margin-bottom:5px;
+  line-height: 1.2;
+  border-bottom: 1px solid #ccc;
 }
 .lr-disk-link:hover{
   color: green;
+  border-color: green;
 }
