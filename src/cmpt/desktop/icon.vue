@@ -12,8 +12,8 @@ button.lr-desktop-icon(draggable="true",
     
     .lr-ctx-item(@click="remove")
       | Remove
-    template(v-if="item.ctx")
-      .lr-ctx-item(v-for="name in item.ctx", @click="handleSpecialCtxClick(item.id, name)") {{name}}
+    template(v-if="app.ctx")
+      .lr-ctx-item(v-for="name in app.ctx", @click="handleSpecialCtxClick(item.id, name)") {{name}}
 </template>
 <script>
 
@@ -113,6 +113,9 @@ export default {
 
       return;
     }
+  },
+  mounted(){
+    console.log(this.item)
   }
 }
 

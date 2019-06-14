@@ -64,6 +64,7 @@ const store = new window.Vuex.Store({
     onDustbinRecycle: null,
     sessError: false,
     openWidthData: null,
+    confirmData: null,
     isQuickLaunch: false
   },
   mutations: {
@@ -101,6 +102,15 @@ const store = new window.Vuex.Store({
     },
     hiddenOpenWith(state){
       state.openWidthData = null;
+    },
+    confirm(state, data){
+      if(state.confirmData){
+        return;
+      }
+      state.confirmData = data;
+    },
+    hiddenConfirm(state){
+      state.confirmData = null;
     },
     toggleQuickLaunch(state){
       state.isQuickLaunch = !state.isQuickLaunch;

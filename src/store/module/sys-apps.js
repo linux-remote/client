@@ -117,14 +117,22 @@ export default   {
   actions: {
     sys_app_recycle_bin_empty({ state }){
       const self = this;
-      request({
-        context: state.sysMap.sys_app_recycle_bin,
-        url: '~/recycleBin',
-        type: 'delete',
-        success() {
-          self.commit('recycleBinTrigger', true);
+      self.commit('confirm', {
+        text: 'Are you sure to permanently delete All ?',
+        ok: () => {
+
+          request({
+            context: state.sysMap.sys_app_recycle_bin,
+            url: '~/recycleBin',
+            type: 'delete',
+            success() {
+              self.commit('recycleBinTrigger', true);
+            }
+          })
+
         }
       })
+
       
     }
   }
