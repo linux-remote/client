@@ -1,8 +1,12 @@
-
+.lr-computer-wrap{
+  overflow: auto;
+  padding: 10px;
+}
 .lr-computer-table{
   width: 100%;
   border: 1px solid #ddd;
   height: 100%;
+  font-size: 14px;
   user-select:text;
   td{
     border: 1px solid #ddd;
@@ -11,6 +15,7 @@
 }
 .lr-small-table{
   width: 100%;
+  font-size: 12px;
 }
 td.lr-computer-td-wrap{
   padding: 0;
