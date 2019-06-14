@@ -35,13 +35,13 @@
   .lr-icon{
     margin-right: 5px;
   }
-  &.lr_task_bar_item_focus{
-    background-color: $taskBarItemFocusBg;
-  }
+
   &:hover{
     background-color: $taskBarItemHoverBg;
   }
-
+  &.lr_task_bar_item_focus{
+    background-color: $taskBarItemFocusBg;
+  }
 }
 
 .lr-task-bar-item-inner {
@@ -63,8 +63,9 @@
   background-position: center;
   background-size: 85%;
   background-repeat: no-repeat;
+  background-color: darken($taskBarBg, 10%);
   &:hover{
-    background-color: $taskBarItemHoverBg;
+    background-color: rgba(#000, .1);
   }
 }
 .lr-quick-launch{

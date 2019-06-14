@@ -15,15 +15,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  &:not(.lr_start_focus):hover{
-    background-color: $taskBarItemHoverBg;
+  &:hover{
+    background-color: #fff;
   }
 }
 .lr_start_focus{
-  background-color: $taskBarItemFocusBg;
+  background-color: #fff;
 }
 .lr-start-menu{
-  background-color: $taskBarBg;
+  background-color: $topLayerBg;
   color: #000;
   bottom: $taskBarH;
   position: absolute;

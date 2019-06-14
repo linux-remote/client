@@ -1,7 +1,9 @@
 $bg: #87CEEB;
-$bg222: $bg;
+$focusBg: #00BFFF;
+$topLayerBg: #fff;
+$bg222: $focusBg;
 // $errColor: #D02E00;
-$errColor: #EE9FAF;
+$errColor: red;
 $desktopColor: $bg;
 $desktopLaunchColor: #EE9FAF;
 $drakColor: #6AA1B8;
@@ -14,7 +16,7 @@ $activeBgColor: #cce8ff;
 // task-window
 $taskTitleH: 24px; // 任务窗口 title 栏高度
 $taskCtrlW: $taskTitleH; // 任务窗口 title 栏右侧按钮宽度
-$taskTitleColor: #00BFFF;
+$taskTitleColor: $focusBg;
 $taskTitleUnFocusColor:#C0C0C0;
 
 // task-bar
@@ -409,18 +411,9 @@ button.lr-desktop-icon{
 $topBarRight : 100px;
 
 
-.lr-watch{
-  user-select: none;
-  display: flex;
-  text-align: center; 
-  align-items: center;
-  flex-direction: column;
-  font-size: 12px;
-  line-height: 20px;
-  padding: 0 10px;
-}
 
 
+@import '../cmpt/watch/watch.scss';
 @import '../cmpt/task/task.scss';
 @import '../cmpt/start/start.scss';
 @import '../cmpt/sys-app/fs/fs.scss';

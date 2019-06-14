@@ -11,7 +11,7 @@
 <script>
 import Start from '../start/start.vue';
 import BarBody from './bar-body.vue';
-import Watch from '../watch.vue';
+import Watch from '../watch/watch.vue';
 import QuickLaunch from './quick-launch.vue';
 import ShowDesktop from './show-desktop.vue';
 export default {
