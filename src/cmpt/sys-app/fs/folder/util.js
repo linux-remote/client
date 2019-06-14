@@ -39,6 +39,10 @@ export function getOpenAppIcon(openType){
     }
   }
 }
+export function handleNameAndIcon(v){
+  Object.assign(v, parseName(v.name));
+  initIconAttr(v);
+}
 export function initIconAttr(v){
   v.openType = getOpenType(v.suffix);
   const openApp = getOpenAppIcon(v.openType);

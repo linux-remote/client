@@ -7,17 +7,9 @@ $errColor: red;
 $desktopColor: $bg;
 $desktopLaunchColor: #EE9FAF;
 $drakColor: #6AA1B8;
-
+$topLayerColor: #fff;
 // $activeBorderColor: #99d1ff;
 $activeBgColor: #cce8ff;
-
-
-
-// task-window
-$taskTitleH: 24px; // 任务窗口 title 栏高度
-$taskCtrlW: $taskTitleH; // 任务窗口 title 栏右侧按钮宽度
-$taskTitleColor: $focusBg;
-$taskTitleUnFocusColor:#C0C0C0;
 
 // task-bar
 $taskBarH : 30px; // 底部任务栏
@@ -27,6 +19,14 @@ $taskBarItemBg: #dee1e6; // 任务 背景
 $taskBarItemHoverBg: #eff0f2;  // 任务 背景
 $taskBarItemFocusBg: #fff;   // 任务 背景
 // $taskBarItemFocusHoverBg: rgba($taskTitleUnFocusColor, .8);
+
+// task-window
+$taskTitleH: 24px; // 任务窗口 title 栏高度
+$taskCtrlW: $taskTitleH; // 任务窗口 title 栏右侧按钮宽度
+$taskTitleColor: #fff;
+$taskTitleUnFocusColor:$taskBarBg;
+
+
 
 $maxZindex : 2147483647; // https://stackoverflow.com/questions/491052/minimum-and-maximum-value-of-z-index
 $uploadModalZindex: $maxZindex - 2;
@@ -171,7 +171,7 @@ button.lr_loading::before{
   position: absolute; 
   z-index:$topLayerZindex; 
   border: 1px solid #a0a0a0;
-  background: #f2f2f2; 
+  background: $topLayerColor; 
   top:0;
   left:0;
   font-size: 14px;
@@ -183,7 +183,7 @@ button.lr_loading::before{
 
   hr {
     margin: 3px 10px;
-    border-color: #919191;
+    border-color: #fff;
     border-bottom: 0;
   }
 }
@@ -203,7 +203,7 @@ button.lr_loading::before{
   padding: 0 10px 0 34px;
 
   &:hover{
-    background-color: #d9d9d9; 
+    background-color: #e8eaed; 
   }
 
 }

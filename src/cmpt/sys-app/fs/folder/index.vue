@@ -27,7 +27,7 @@
                 @click='handleItemClick(item, $event)',
                 @contextmenu="handleItemContentmenu(item)"
                 :selectedLen="$options._selectedItems.size"
-                :class='{lr_file_hidden: item.isHidden, lr_file_focus: item.focus,  lr_file_be_selected: item.isBeSelected, lr_file_cut: item.isCut}')
+                :class='{lr_file_hidden: item.isHidden, lr_file_be_selected: item.isBeSelected, lr_file_focus: item.focus, lr_file_cut: item.isCut}')
     .lr-fs-empty(v-if='!list.length') This folder is empty.
     div(style="height: 1px")
   Status

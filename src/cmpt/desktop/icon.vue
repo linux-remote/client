@@ -14,8 +14,6 @@ button.lr-desktop-icon(draggable="true",
       | Remove
     template(v-if="item.ctx")
       .lr-ctx-item(v-for="name in item.ctx", @click="handleSpecialCtxClick(item.id, name)") {{name}}
-    //-.lr-ctx-item(v-if='item.id === "sys_app_recycle_bin"', @click="clearRecycleBin")
-      | 清空
 </template>
 <script>
 

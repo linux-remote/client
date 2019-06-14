@@ -1,5 +1,6 @@
 import lsParse from '../../../lib/ls-parse';
 import {timeFormat} from '__ROOT__/lib/util';
+import {handleNameAndIcon} from '../util';
 export default  {
   computed: {
     publicEvent(){
@@ -64,6 +65,7 @@ export default  {
     on_public_rename({newName, oldName}){
       // type, address, oldName, newName
       const item = this.$options._sync.changeKey(oldName, newName);
+      handleNameAndIcon(item);
       this.reHiddenBottomSortByItem(item);
     },
 

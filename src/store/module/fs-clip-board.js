@@ -3,7 +3,8 @@ const defState = () => {
   return {
     type: null,
     address: null,
-    files: []
+    files: [],
+    filenames: []
   }
 }
 export default {

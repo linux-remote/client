@@ -130,13 +130,17 @@ export default {
           newName
         },
         success(stdout){
-          this.p.$options._shouldFocusItemName = newName;
+          // this.p.shouldActiveNewItems([newName]);
+          // console.log('stdout', stdout)
           this.p.publicEmit({
-            address: this.p.address,
             type: 'add',
-            focus: true,
-            data: stdout
+            address: this.p.address,
+            data: this.p.createBaseItem(stdout)
           });
+          this.$nextTick(() => {
+            const item = this.p.$options._sync.get(newName);
+            this.p.selectAndFocusItem(item);
+          })
         }
       });
       this.$refs.ctx.hidden();

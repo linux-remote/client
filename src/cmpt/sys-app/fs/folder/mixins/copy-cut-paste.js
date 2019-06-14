@@ -10,14 +10,22 @@ export default  {
     },
 
     paste(){
-      const {type, files, address} = this.fsClipBoard;
+      const {type, files, address, filenames} = this.fsClipBoard;
       if(!files.length || !address){
         return;
       }
       let _files = [];
-      files.forEach(v => {
-        _files.push(v.name);
-      });
+      let fileIndex = 0, fileLen = filenames.length;
+      for(; fileIndex < fileLen; fileIndex ++){
+        let v = files[fileIndex];
+        let filename = filenames[fileIndex];
+        if(v.name !== filename){
+          return this.$store.commit('error/show', `Paste error: ${filename} has renamed`); // win 10是 : 只认名字.
+        }
+        _files.push(filename);
+
+      }
+
       if(address === this.address){
         if(type === 'copy'){
           if(files.length === 1){
@@ -32,7 +40,7 @@ export default  {
                 destFile: newFileName
               },
               success(){
-                this.$options._shouldFocusItemName = newFileName;
+                this.shouldActiveNewItems([newFileName]);
                 this.publicEmit({
                   type: 'copy_in',
                   address: this.address,
@@ -91,14 +99,16 @@ export default  {
       if(!this.$options._selectedItems.size){
         return;
       }
-      const files = [];
+      const files = [], filenames = [];
       this.$options._selectedItems.forEach(v => {
         files.push(v);
+        filenames.push(v.name);
       });
       this.$store.commit('fsClipBoard/set', {
         type,
         address: this.address,
-        files
+        files,
+        filenames
       });
     },
   }

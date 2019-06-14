@@ -101,7 +101,7 @@
   left: 0; 
   right: 0;
   background-color:#fff;
-  box-shadow: rgba(#fff, .22) 3px 3px 15px 0;
+  box-shadow: rgba(#000, .22) 3px 3px 15px 0;
   padding-top: $taskTitleH;
   outline: none; // tabindex 会有 outline. 不可去掉 tabindex， 不然键盘事件不生效。
 }
@@ -150,8 +150,8 @@
   border-color: rgba(#333, .3);
   
   >.lr-task-title{
-    color: #999;
-    background: $taskTitleUnFocusColor; 
+     // color: $taskTitleUnFocusColor;
+   background: $taskTitleUnFocusColor; 
   }
 }
 
@@ -174,12 +174,13 @@
   width: $taskCtrlW;
   display: flex;
   align-items: center;
+  font-size: .82em;
   justify-content: center;
   margin-right: 2px;
   height: 100%;
   // background-color: #fff;
   &:hover{
-    background-color: rgba(#fff, .5);
+    background-color: rgba(#000, .1);
   }
 }
 .lr-task-ctrl-close{

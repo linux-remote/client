@@ -23,7 +23,7 @@
   background-color: $taskBarItemFocusBg;
 }
 .lr-start-menu{
-  background-color: $taskBarBg;
+  background-color: $topLayerColor;
   color: #000;
   bottom: $taskBarH;
   position: absolute;
@@ -87,7 +87,7 @@
   cursor: pointer;
 }
 .lr-start-menu-item:hover{
-  background-color:#494d52;
+  background-color:rgba(#000, .1);
 }
 .lr-start-logout-btn{
   min-width: auto;

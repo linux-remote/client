@@ -15,19 +15,15 @@ export default  {
       const $opts = this.$options;
       const filenames = $opts._shouldActiveNewItemNames;
       if(filenames && filenames.length){
-        if(filenames.length === 0){
-          const item = $opts._sync.get(filenames);
-          this.selectAndFocusItem(item);
-        } else {
-          const items = [];
-          filenames.forEach(name => {
-            const item = $opts._sync.get(name);
-            if(item){
-              items.push(item);
-            }
-          })
-          this.selectItems(items);
-        }
+
+        const items = [];
+        filenames.forEach(name => {
+          const item = $opts._sync.get(name);
+          if(item){
+            items.push(item);
+          }
+        })
+        this.selectItems(items);
       }
       this.$options._shouldActiveNewItemNames = null;
     },
@@ -43,6 +39,10 @@ export default  {
     },
     selectItems(items){
       this.clearSelected();
+      this.unFocusCurrItem();
+      if(items.length === 1){
+        this.focusItem(items[0]);
+      }
       items.forEach(item => {
         this.selectItem(item);
       })
