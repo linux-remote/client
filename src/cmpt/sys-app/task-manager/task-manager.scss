@@ -47,14 +47,14 @@ table.lr-tm-table{
       text-align: left;
       font-size: 12px;
       padding: 8px 5px;
-      &.active{
+      &.lr_tm_active{
         background-color: rgba($bg222, .4);
       }
     }
     tbody tr:hover{
       background-color: rgba($bg222, .2);
     }
-    tr.active{
+    tr.lr_tm_active{
       td{
         background-color: $bg222;
         color: #fff;
@@ -74,7 +74,7 @@ table.lr-tm-table{
   bottom: 0;
   left: 0;
   height: 0;
-  background-color: #0078D7;
+  background-color: $focusBg;
   width: 100%;
 }
 .lr-tm-cpus{
@@ -109,7 +109,7 @@ table.lr-tm-table{
   font-size: 12px;
 }
 .lr-tm-porcess-bar{
-  background-color: #0078D7;
+  background-color: $focusBg;
   height: 100%;
   width: 0;
   text-indent: 10px;
@@ -164,4 +164,16 @@ table.lr-tm-table{
 table.lr-tm-table span.lr-tm-mem-title{
   font-size: 16px;
   color: #000;
+}
+th.lr_tm_active::after{
+  color: #000;
+  float: right;
+}
+.lr_tm_sort_asc{
+  th.lr_tm_active::after{
+    content: '^';
+  }
+}
+.lr_tm_sort_desc th.lr_tm_active::after{
+  content: 'v';
 }

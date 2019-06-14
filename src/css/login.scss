@@ -24,7 +24,7 @@
   display: flex;
   align-items: center;
   flex-direction: column;
-  
+  justify-content: center;
 }
 
 
@@ -68,21 +68,22 @@
   font-size: 18px;
 }
 .lr-login-logo{
-  width: 160px;
-  height: 160px;
+  width: 90px;
+  height: 90px;
   text-align: center;
-  line-height: 160px;
+  line-height: 90px;
   display: block;
   font-size: 90px;
   color: #fff;
-  margin-top: 120px;
+  margin-top: -70px;
+  margin-bottom: 10px;
 }
-.lr_login_have_logined{
-  justify-content: center;
-  .lr-login-logo{
-    margin-top: 0;
-  }
-}
+// .lr_login_have_logined{
+//   justify-content: center;
+//   .lr-login-logo{
+//     margin-top: 0;
+//   }
+// }
 .lr-login-box{
   width: 100%;
   max-width: 296px;

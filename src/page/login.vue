@@ -1,13 +1,13 @@
 
 <template lang="jade">
-.lr-page.lr-login-wrap.theme-dark.color-fill-accent-vivid-high
+.lr-page.lr-login-wrap
   .lr-logined-wrap(v-if="loginedList.length")
     div
       router-link.lr-logined-item(v-for="username in loginedList", :key="username", :to="'/user/' + username")
         .lr-logined-item-icon
           span.iconfont.icon-accountbox
         .lr-logined-item-text {{username}}
-  .lr-login-box-wrap(:class="{lr_login_have_logined: loginedList.length}")
+  .lr-login-box-wrap
     .lr-login-logo
       span.iconfont.icon-logo_LR
     h1 Linux Remote
@@ -19,18 +19,14 @@
         div
           label {{LANG.password}}
           input.lr-input(type='password', v-model='password', required="required")
-        LoadingBtn.lr-btn.lr-w100.lr-btn-hollow(type="submit", :text="LANG.submitBtn", :isLoading="isRequest")
+        button.lr-btn.lr-w100.lr-btn-hollow(type="submit", :class='{lr_loading:isRequest}') {{LANG.submitBtn}}
   //-.lr-login-bottom
     a(href='https://github.com/linux-remote/linux-remote/blob/master/LICENSE', target='_blank') Licenses
     a(href='https://github.com/linux-remote', target='_blank') Source code
 </template>
 
 <script>
-import LoadingBtn from '../cmpt/loading-btn.vue';
 export default {
-  components: {
-    LoadingBtn
-  },
   data(){
     return {
       currLangIndex: this.$store.state.language.currIndex,

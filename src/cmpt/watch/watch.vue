@@ -4,7 +4,7 @@
   | {{watch.hours}}:{{watch.minutes}}
   .lr-watch-detail 
     p {{watch.year}}/{{watch.mounth}}/{{watch.day}} 
-    p {{timeZoneOffset}}
+    p {{hourTimeZone}}
 </template>
 
 <script>
@@ -27,7 +27,11 @@ export default {
     timeDiff(){
       return this.clientDate.getTime() - (this.time  + (this.clientDate.getTimezoneOffset() - this.timeZoneOffset) * ONE_MIN);
     },
-
+    hourTimeZone(){
+      let t = -this.timeZoneOffset;
+      let suffix = t > 0 ? '+' : '-';
+      return `${suffix}${t / 60}00`
+    },
     watch(){
       const d = new Date(this.now - this.timeDiff);
       let min = d.getMinutes();

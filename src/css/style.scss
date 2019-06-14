@@ -1,5 +1,6 @@
 $bg: #87CEEB;
 $focusBg: #00BFFF;
+// $focusBg: #628abd;
 $bg222: $focusBg;
 // $errColor: #D02E00;
 $errColor: red;
@@ -20,11 +21,11 @@ $taskTitleUnFocusColor:#C0C0C0;
 
 // task-bar
 $taskBarH : 30px; // 底部任务栏
-$taskBarBg: #f5f5f5; // 底部任务栏背景
+$taskBarBg: #dee1e6; // 底部任务栏背景
 
-$taskBarItemBg: rgba($taskTitleUnFocusColor, .4); // 任务 背景
-$taskBarItemHoverBg: rgba($bg, .5);  // 任务 背景
-$taskBarItemFocusBg: rgba($bg, 1);   // 任务 背景
+$taskBarItemBg: #dee1e6; // 任务 背景
+$taskBarItemHoverBg: #eff0f2;  // 任务 背景
+$taskBarItemFocusBg: #fff;   // 任务 背景
 // $taskBarItemFocusHoverBg: rgba($taskTitleUnFocusColor, .8);
 
 $maxZindex : 2147483647; // https://stackoverflow.com/questions/491052/minimum-and-maximum-value-of-z-index
@@ -72,7 +73,44 @@ body {
   font-size: 50px;
   cursor: wait;
 }
-
+.lr_loading{
+  cursor: auto;
+  position: relative;
+  pointer-events: none;
+}
+.lr_loading::before, .lr-hourglass::before{
+  content: '';
+}
+.lr_loading::before , .lr-hourglass::before{
+  padding:0;
+  margin:0;
+  position: absolute;
+  top:0;
+  bottom:0;
+  right:0;
+  left:0;
+  margin:auto;
+  height: 12px;
+  width: 12px;
+  animation: rotate 0.8s infinite linear;
+  border: 3px solid $drakColor;
+  border-right-color: #fff;
+  border-radius: 50%;
+  z-index: 2;
+}
+button.lr_loading{
+  background-color: rgba(#000, .5);
+  color: rgba(#fff, .5);
+}
+button.lr_loading::before{
+  height: 25px;
+  width: 25px;
+  
+}
+@keyframes rotate { //lr_loading 动画
+  0%    { transform: rotate(0deg); }
+  100%  { transform: rotate(360deg); }
+}
 @import './common.scss';
 // Fixed: https://github.com/winjs/winstrap/issues/181
 // .btn-group-sm>.btn, .btn-group-xs>.btn, .btn-sm, .btn-xs {

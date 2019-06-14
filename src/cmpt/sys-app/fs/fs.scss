@@ -630,7 +630,7 @@ background-image: url('/public/img/tango/inode-chardevice.png');
   height: 100%;
 }
 .lr-fs-upload-processbar{
-  background-color: #0078D7;
+  background-color: $focusBg;
   width: 0;
 }
 .lr-fs-upload-info{

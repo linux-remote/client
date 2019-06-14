@@ -23,6 +23,7 @@
 .lr-task-bar-item {
   background-color: $taskBarItemBg;
   position: relative;
+  border-right: 1px solid #8a8e92;
   flex-grow: 1;
   max-width: 200px;
   min-width: 50px;
@@ -35,7 +36,12 @@
   .lr-icon{
     margin-right: 5px;
   }
-
+  &:hover, &.lr_task_bar_item_focus{
+    border-color: transparent;
+    margin-left: -1px;
+    margin-right: 1px;
+    padding-left: 1px;
+  }
   &:hover{
     background-color: $taskBarItemHoverBg;
   }
@@ -63,6 +69,7 @@
   background-position: center;
   background-size: 85%;
   background-repeat: no-repeat;
+  margin: 0 5px;
   &:hover{
     background-color: $taskBarItemHoverBg;
   }

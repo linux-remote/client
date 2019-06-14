@@ -65,13 +65,13 @@
 
   //- div {{JSON.stringify(total, null, '\t')}}
   //- pre.lr-tm-pre {{list}}
-  .lr-tm-list
+  .lr-tm-list(:class="'lr_tm_sort_' + sortType")
     table
       thead
         tr
-          th(v-for="v in keys", :key="v", :class="{active: v === sortKey}", @click="sortBy(v)") {{v}}
+          th(v-for="v in keys", :key="v", :class="{lr_tm_active: v === sortKey}", @click="sortBy(v)") {{v}}
       tbody
-        Item(v-for="v in list", :key="v.pid", :v="v", @click="handleItemClick(v)", :class="{active: v.pid === selectedPid}", @kill="handleItemKill")
+        Item(v-for="v in list", :key="v.pid", :v="v", @click="handleItemClick(v)", :class="{lr_tm_active: v.pid === selectedPid}", @kill="handleItemKill")
 </template>
 
 <script>
@@ -85,7 +85,9 @@ export default {
   data(){
     return {
       keys: ['PID', 'User', 'CPU', 'Memory', 'Time', 'Command'],
-      sortKey: 'CPU',
+      sortKey: '',
+      sortType: 'asc',
+      
       total: null,
       list: [],
       interval: 1000,
@@ -120,34 +122,44 @@ export default {
     handleItemClick(v){
       this.selectedPid = v.pid;
     },
-    sortBy(key) {
+    sortBy(key, isNotTogger) {
+      if(key === this.sortKey && !isNotTogger){
+        this.sortType = this.sortType === 'desc' ? 'asc' : 'desc';
+      } else {
+        this.sortKey = key;
+        let defKey = 'asc';
+        if(key === 'CPU' || key === 'Memory' || key === 'Time'){
+          defKey = 'desc';
+        }
+        this.sortType = defKey;
+      }
 
-      this.sortKey = key;
-      this.sort();
+      this._sort();
     },
-    sort(){
+    _sort(){
       let key = this.sortKey;
       if(key === 'Memory'){
         key = 'mem';
       }
       key = key.toLowerCase();
+      let isAsc = this.sortType === 'asc';
       switch(key) {
         case 'pid':
-          return sortByNumberKey(this.list, key, true);
+          return sortByNumberKey(this.list, key, isAsc);
         case 'cpu':
         case 'mem':
-          return sortByNumberKey(this.list, key);
+          return sortByNumberKey(this.list, key, isAsc);
         case 'time':
-          return sortByNumberKey(this.list, 'sTime'); 
+          return sortByNumberKey(this.list, 'sTime', isAsc); 
         default: 
-          return sortByStrKey(this.list, key); 
+          return sortByStrKey(this.list, key, isAsc); 
       }
     },
     setResult(data) {
       const result = parse(data.toString());
       this.forMatList(result.list);
       this.list = result.list;
-      this.sort();
+      this.sortBy('CPU', true);
       const total = result.total;
       this.total = total;
       let cpusPer = total.cpus.us + total.cpus.sy;
