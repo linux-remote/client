@@ -3,6 +3,7 @@
 // -------------------- task bar --------------------
 .lr-task-bar{
   height:$taskBarH;
+  line-height: $taskBarH;
   position: absolute;
   width: 100%;
   left: 0;
@@ -32,9 +33,13 @@
   text-overflow:ellipsis;
   white-space: nowrap;
   cursor: default;
-  font-size: 14px;
+  font-size: 12px;
   .lr-icon{
     margin-right: 5px;
+    width: 23px;
+    height: 23px;
+    font-size: 20px;
+    line-height: 23px;
   }
   &:hover, &.lr_task_bar_item_focus{
     border-color: transparent;
@@ -56,10 +61,6 @@
   align-items: center;
   padding-left: 5px;
   padding-right: 5px;
-  .lr-icon{
-    width: 23px;
-    height: 23px;
-  }
 }
 
 // Quick item

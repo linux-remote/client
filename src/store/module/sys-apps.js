@@ -78,6 +78,13 @@ export default   {
         //   'zh-CN': '笔记本',
         //   'en-US': 'Notepad'
         // }
+      },
+      sys_app_account: {
+        iconClassName: 'iconfont icon-accountbox',
+        unique: true,
+        hidden: true,
+        width: 300,
+        height: 200
       }
     },
     thirdPartyMap: null,

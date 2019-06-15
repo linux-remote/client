@@ -4,7 +4,7 @@
   h2(v-text='error' style='color:red' v-if='error')
   .lr-editor-body(v-else @keydown='handleKeyDown')
     .lr-editor-bar
-      button.lr-editor-btn(@click='save', :disabled='isSaveDisabled') save
+      button.lr-btn-sm.lr-editor-btn(@click='save', :disabled='isSaveDisabled') save
     textarea.lr_editor_textarea(v-model='data')
   .lr-modal(v-if='isShowModal')
     form(@submit.prevent="saveAsSubmit")

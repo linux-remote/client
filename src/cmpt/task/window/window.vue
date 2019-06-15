@@ -36,6 +36,7 @@ import sys_app_editor from '../../sys-app/editor/editor.vue';
 import sys_app_terminal from '../../sys-app/terminal/index.vue';
 import sys_app_task_manager from '../../sys-app/task-manager/task-manager.vue';
 import sys_app_settings from '../../sys-app/settings/settings.vue';
+import sys_app_account from '../../sys-app/account/account.vue';
 //import ThirdPartyApp from '../../third-party-app/index.vue';
 import Resizable from '../../unit/resizable.vue';
 import Movable from '../../unit/movable.vue';
@@ -56,6 +57,7 @@ export default {
     sys_app_terminal,
     sys_app_task_manager,
     sys_app_settings,
+    sys_app_account,
     //ThirdPartyApp,
 
     Resizable,

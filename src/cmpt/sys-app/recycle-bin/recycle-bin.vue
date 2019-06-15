@@ -3,10 +3,10 @@
   
   .lr-hourglass(v-show='isRequest || isDeling')
   .lr-rb-ctrl-bar
-    button.btn(@click='clearAll', :disabled='isEmpty') Delete All
+    button(@click='clearAll', :disabled='isEmpty') Delete All
     //- div(style="color: red") {{(totalCount / maxLen) * 100}} %
 
-    button.btn(@click='getData') Reload
+    button(@click='getData') Reload
   
   h2(v-text='error' style='color:red' v-if='error')
   h2(v-else-if='list.length === 0' style='color:gray') Empty

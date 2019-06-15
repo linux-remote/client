@@ -19,7 +19,8 @@
         div
           label {{LANG.password}}
           input.lr-input(type='password', v-model='password', required="required")
-        button.lr-btn.lr-w100.lr-btn-hollow(type="submit", :class='{lr_loading:isRequest}') {{LANG.submitBtn}}
+        .lr-login-box-footer
+          button(type="submit", :class='{lr_loading:isRequest}') {{LANG.submitBtn}}
   //-.lr-login-bottom
     a(href='https://github.com/linux-remote/linux-remote/blob/master/LICENSE', target='_blank') Licenses
     a(href='https://github.com/linux-remote', target='_blank') Source code

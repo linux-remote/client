@@ -91,3 +91,16 @@
     margin-top: 20px;
   }
 }
+.lr-login-box-footer{
+  text-align: right;
+  margin-top: 10px;
+  button {
+    height: 28px;
+    position: relative;
+    cursor: pointer;
+    font-size: 14px;
+    outline: none;
+    padding: 0 8px;
+    min-width: 3em;
+  }
+}

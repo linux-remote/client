@@ -66,6 +66,9 @@ export default  {
           sys_app_settings: {
             title: 'About'
           },
+          sys_app_account: {
+            title: 'Account'
+          },
           sys_app_fs: {
             title: 'FS Manager',
             ctx: {

@@ -1,6 +1,7 @@
 $bg: #87CEEB;
 $focusBg: #00BFFF;
 // $focusBg: #628abd;
+$logoColor: #628abd;
 $bg222: $focusBg;
 // $errColor: #D02E00;
 $errColor: red;
@@ -12,7 +13,7 @@ $topLayerColor: #fff;
 $activeBgColor: #cce8ff;
 
 // task-bar
-$taskBarH : 30px; // 底部任务栏
+$taskBarH : 34px; // 底部任务栏
 $taskBarBg: #dee1e6; // 底部任务栏背景
 
 $taskBarItemBg: #dee1e6; // 任务 背景
@@ -98,13 +99,9 @@ body {
   border-radius: 50%;
   z-index: 2;
 }
-button.lr_loading{
-  background-color: rgba(#000, .5);
-  color: rgba(#fff, .5);
-}
 button.lr_loading::before{
-  height: 25px;
-  width: 25px;
+  height: 18px;
+  width: 18px;
   
 }
 @keyframes rotate { //lr_loading 动画
@@ -145,25 +142,7 @@ button.lr_loading::before{
   padding: 0;
   background: none;
   height: auto;
-}
-
-.loading-btn{
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  &:disabled>span{
-    visibility: hidden;
-  }
-}
-.loading-btn .progress-ring{
-  position: absolute;
-  height: 0;
-  left: 0;
-  right: 0;
-  top:6px;
-  bottom: 0;
-  margin: 0 auto;
+  outline: none;
 }
 
 
@@ -444,11 +423,6 @@ button.lr-desktop-icon{
 .lr_be_selected{
   background-color: green;
 }
-
-$topBarRight : 100px;
-
-
-
 
 @import '../cmpt/watch/watch.scss';
 @import '../cmpt/task/task.scss';
