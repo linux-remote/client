@@ -11,7 +11,7 @@ export default {
     }
   },
   methods: {
-    handleMousedown(e){
+    handleMousedown(){
       this.$store.commit('toggleQuickLaunch');
     }
   }
