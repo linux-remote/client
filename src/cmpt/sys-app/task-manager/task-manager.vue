@@ -31,7 +31,7 @@
                 .lr-tm-porcess-bar(:style="{width: availPer + '%'}")
                 .lr-tm-porcess-info(style="text-align: right") {{total.mem_avail | wellSize}}
             .lr-tm-mems
-              span.lr-tm-mem-title Mem: {{memBCPer.toFixed(1)}}%
+              span.lr-tm-mem-title Mem: {{memsPer.toFixed(1)}}%
               .lr-tm-porcess
                 .lr-tm-porcess-bar(:style="{width: memsPer + '%'}", title="used") 
                 .lr-tm-porcess-bar.lr-tm-mem-bc-bg(:style="{width: memBCPer + '%'}", title="buff/cache")
@@ -172,8 +172,7 @@ export default {
       
       let swapPer = total.swap.used / total.swap.total;
       this.swapPer = swapPer * 100;
-
-      let memBCPer = total.mem['buff/cache'] / total.swap.total;
+      let memBCPer = total.mem['buff/cache'] / total.mem.total;
       this.memBCPer = memBCPer * 100;
 
       if(total.mem_avail){
