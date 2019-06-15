@@ -13,7 +13,7 @@ $topLayerColor: #fff;
 $activeBgColor: #cce8ff;
 
 // task-bar
-$taskBarH : 34px; // 底部任务栏
+$taskBarH : 30px; // 底部任务栏
 $taskBarBg: #dee1e6; // 底部任务栏背景
 
 $taskBarItemBg: #dee1e6; // 任务 背景
@@ -415,6 +415,9 @@ button.lr-desktop-icon{
     visibility: hidden;
     // opacity: .04;
     pointer-events: none;
+  }
+  .lr-quick-launch-info{
+    display:block;
   }
   // .lr-desktop-icon-text{
   //   color: #fff;
