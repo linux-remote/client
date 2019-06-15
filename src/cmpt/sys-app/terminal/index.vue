@@ -79,10 +79,15 @@ export default {
       if(_Terminal_cache){
         return cb(_Terminal_cache);
       }
+      const span = document.createElement('span');
+      span.style.color = '#666';
+      span.innerText = 'Loading xterm.js static resources...';
+      this.$el.appendChild(span);
       window.require(['/public/xterm/3.13.1/xterm.min.js', 
       '/public/xterm/3.13.1/addons/attach/attach.min.js', 
       '/public/xterm/3.13.1/addons/fit/fit.min.js',
       '/public/xterm/3.13.1/addons/webLinks/webLinks.min.js'], (Terminal, attach, fit, webLinks) => {
+        this.$el.removeChild(span);
         Terminal.applyAddon(attach);
         Terminal.applyAddon(fit);
         Terminal.applyAddon(webLinks);
