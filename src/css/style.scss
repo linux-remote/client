@@ -1,3 +1,4 @@
+
 $bg: #87CEEB;
 $focusBg: #00BFFF;
 // $focusBg: #628abd;
@@ -48,10 +49,7 @@ body {
   overflow: hidden;
   font-family: arial,sans-serif;
 }
-// account: https://www.iconfont.cn/collections/detail?spm=a313x.7781069.0.da5a778a4&cid=816
 
-
-// upload up reload left right  https://www.iconfont.cn/collections/detail?cid=16506
 // button{
 //   font: inherit;
 // }
@@ -108,22 +106,48 @@ button.lr_loading::before{
   0%    { transform: rotate(0deg); }
   100%  { transform: rotate(360deg); }
 }
-@import './common.scss';
-// Fixed: https://github.com/winjs/winstrap/issues/181
-// .btn-group-sm>.btn, .btn-group-xs>.btn, .btn-sm, .btn-xs {
-//   font-size: 12px;
-//   line-height: 1.5625;
-//   border-radius: 0;
-//   padding: 1px 5px;
-//   min-width: 100px;
-// }
+// ================== common ================== 
+button{
+  font: inherit;
+}
+table{
+  border-spacing: 0;
+}
+
+.lr-btn-sm{
+  display: flex;
+  padding: 0 5px;
+  justify-content: center;
+  align-items: center;
+  line-height: 1;
+  &:focus{
+    outline: none;
+  }
+}
+.lr-btn-sm{
+  height: 25px;
+  font-size: 12px;
+}
+.lr-btn-hollow{
+  background: none;
+  border: 1px solid #eee;
+  color: #fff;
+  cursor: pointer;
+  &:hover{
+    background-color: rgba(#fff, .1);
+  }
+  &:disabled{
+    background-color: rgba(#fff, .6);
+  }
+}
+// ================== common end ==================
+
 
 .lr-page {
   height: 100vh;
 }
 
 @import './login.scss';
-
 
 
 .lr-icon{

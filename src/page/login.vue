@@ -15,10 +15,10 @@
       form(@submit.prevent="login", @keydown.13="login")
         div
           label {{LANG.username}}
-          input.lr-input( v-model='username' required="required")
+          input.lr-login-input( v-model='username' required="required")
         div
           label {{LANG.password}}
-          input.lr-input(type='password', v-model='password', required="required")
+          input.lr-login-input(type='password', v-model='password', required="required")
         .lr-login-box-footer
           button(type="submit", :class='{lr_loading:isRequest}') {{LANG.submitBtn}}
   //-.lr-login-bottom

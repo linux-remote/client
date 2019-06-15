@@ -13,11 +13,6 @@
     color: #fff;
     display: block;
   }
-  // .lr-input{
-  //   display: block;
-  //   max-width: 296px;
-  //   border: 1px solid #fff;
-  // }
 }
 
 .lr-login-box-wrap{
@@ -27,7 +22,13 @@
   justify-content: center;
 }
 
-
+.lr-login-input{
+  width: 100%;
+  max-width: 296px;
+  height: 35px;
+  line-height: normal;
+  padding: 0 4px;
+}
 .lr-logined-wrap{
 
   margin-right: 40px;
@@ -87,9 +88,6 @@
 .lr-login-box{
   width: 100%;
   max-width: 296px;
-  .lr-btn{
-    margin-top: 20px;
-  }
 }
 .lr-login-box-footer{
   text-align: right;
