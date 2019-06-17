@@ -12,7 +12,7 @@
       span.iconfont.icon-logo_LR
     h1 Linux Remote
     .lr-login-box
-      form(@submit.prevent="login", @keydown.13="login")
+      form(@submit.prevent="login")
         div
           label {{LANG.username}}
           input.lr-login-input( v-model='username' required="required")
