@@ -130,7 +130,11 @@ export default {
   watch: {
     triggerContainSame(newVal, oldVal){
       if(newVal.address !== oldVal.address){
-        this.currItem = {};
+
+        // Fixed: FS: 父级目录名一样会focus. https://github.com/linux-remote/linux-remote/issues/184
+        this.clearSelected();
+        this.unFocusCurrItem();
+
       }
       this.getData();
     }
