@@ -18,7 +18,7 @@
 .lr-drop-menu-wrap
   .lr-drop-menu-btn(@click.stop='show', :class='{lr_drop_menu_active:showDrop}')
     slot
-  .lr-drop-menu(v-show='showDrop', @click='noopStop')
+  .lr-drop-menu(v-show='showDrop')
     slot(name='menu')
 </template>
 

@@ -8,8 +8,3 @@ function vRequest(opts){
 vRequest.wrapUrl = wrapUrl;
 vRequest.defWrapErr = defWrapErr;
 Vue.prototype.request = vRequest;
-
-
-Vue.prototype.noopStop = function(e){
-  e.stopPropagation();
-}

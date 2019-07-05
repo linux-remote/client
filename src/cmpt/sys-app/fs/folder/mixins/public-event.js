@@ -40,6 +40,7 @@ export default  {
     on_public_getList(e) {
       const data = e.data;
       this.dir = data.dir;
+      this.isHaveDevice = e.isHaveDevice;
       this.list = this.$options._sync.reload(data.list);
       this.error = null;
       this.sort();

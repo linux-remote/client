@@ -11,7 +11,9 @@
         tr
           //- th(v-for="key in theads", :key="key", :class="{active: key === sortKey, ['lr_fs_th_' + key]: true}", @mousedown="sortBy(key)") {{LANG.th[key]}}
           th(v-for="key in theads", :key="key") {{LANG.th[key]}}
-
+          th {{LANG.th.size}}
+            span.lr_is_device_type(v-if="isHaveDevice") /{{LANG.th.deviceType}}
+              
       tbody.lr-fs-tbody
         tr(v-if='preCreateItem', class='lr-fs-create-layer', @mousedown.stop='')
           td(colspan='7')
@@ -76,7 +78,7 @@ export default {
   data(){
     return {
       model: 'list',
-      theads: ['name',  'owner', 'group' ,'permission', 'mtime',  'size'],
+      theads: ['name',  'owner', 'group' ,'permission', 'mtime'],
       dir: null,
       list: [],
       isHaveDevice: false,
@@ -201,6 +203,7 @@ export default {
     },
 
     getData(){
+      this.isHaveDevice = false;
       this.request({
         url: '~/fs/' + encodePath(this.address),
         stateKey: 'isRequest',
@@ -212,6 +215,7 @@ export default {
           this.publicEmit({
             type: 'getList',
             address: this.address,
+            isHaveDevice: this.isHaveDevice,
             data
           })
           this.$nextTick(() => {

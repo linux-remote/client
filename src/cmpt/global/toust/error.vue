@@ -1,6 +1,6 @@
 
 <template lang="jade">
-.lr-error(@mousedown='noopStop' v-if="message.length")
+.lr-error(v-if="message.length")
   .lr-error-item(v-for='(v, i) in message', :class="{lr_error_latest: i === (message.length - 1)}") {{v}}
 
 </template>
