@@ -8,3 +8,4 @@ function vRequest(opts){
 vRequest.wrapUrl = wrapUrl;
 vRequest.defWrapErr = defWrapErr;
 Vue.prototype.request = vRequest;
+window.Vuex.Store.prototype.request = vRequest;

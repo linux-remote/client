@@ -18,7 +18,7 @@ if(API_ROOT.indexOf('http') === 0){
   });
 }
 
-const POOL = {};
+const POOL = Object.create(null);
 var poolIndex = 0;
 
 export function defWrapErr(xhr){
@@ -79,6 +79,18 @@ function request(opts){
     }
   });
   const self = opts.context;
+  let state = self;
+  const isStore = self instanceof window.Vuex.Store;
+  if(isStore){
+    state = self.state;
+    if(stateKey){
+      if(stateKey.indexOf('/') !== -1){
+        const _stateArr = stateKey.split('/');
+        state = state[_stateArr[0]];
+        stateKey = _stateArr[1];
+      }
+    }
+  }
   opts.type = opts.type || 'get';
   if(opts.type === 'post' || opts.type === 'put'){
     opts.contentType = opts.contentType === undefined ? JSON_CONTENT_TYPE : opts.contentType;
@@ -116,7 +128,7 @@ function request(opts){
       }
     }
 
-    if(self[stateKey]){
+    if(state[stateKey]){
       //if(repeatSubmitMode === 'abort'){
       //
       //}else 
@@ -124,7 +136,8 @@ function request(opts){
         return; //阻塞模式
       }
     }else {
-      self[stateKey] = true;
+      state[stateKey] = true;
+      
     }
   }
 
@@ -135,7 +148,7 @@ function request(opts){
     delete(POOL[_pIndex]); //销毁 POOL 的数据
     
     if(stateKey){
-      self[stateKey] = false;
+      state[stateKey] = false;
       // if(_pIndex !== self[selfPoolIndex]){
       //   console.log('=============重载阻止=============');
       //   return;
