@@ -22,9 +22,8 @@ router.onReady(() => {
 
   app.request({
     url: '/touch',
-    success(data){
-      preLoad.remove();
-      store.commit('set', data);
+    success(){
+      preLoad.remove(); // Fixed: store 未知数据。o k #/issues/194
       app.$mount(dom);
     },
     error(xhr){

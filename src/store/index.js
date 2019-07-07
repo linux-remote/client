@@ -13,7 +13,7 @@ window.APP = {
   $elMain: null,
   contextMenuTransferData: null
 }
-
+import { TypeOf } from '../lib/util';
 import language from './module/language';
 
 import upload from './module/upload';
@@ -40,7 +40,6 @@ const store = new window.Vuex.Store({
     desktop
   },
   state: {
-    dragTransferData: null,
     // global
     winH: $win.height(),
     winW: $win.width(),
@@ -89,6 +88,9 @@ const store = new window.Vuex.Store({
       state.sessError = true;
     },
     set (state, data) {
+      if(TypeOf(data)  !== 'Object'){
+        throw new Error('data must be a object.')
+      }
       Object.assign(state, data);
     },
     clearDesktop(){
