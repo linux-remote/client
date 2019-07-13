@@ -3,7 +3,7 @@ ContextMenu(v-if='isShow')
   slot
 </template>
 <script>
-import ContextMenu from './contextmenu.vue';
+import ContextMenu from './_contextmenu.vue';
 export default {
   props: {
     // isStop: {
