@@ -3,25 +3,51 @@
 export default {
   methods: {
     safeBind(dom, key, fn, opts){
+      const _map = this.$options._safeBindedMap;
+      const index = this.$options._safeBindIndex;
+      this.$options._safeBindIndex = index + 1;
+
       if(dom instanceof window.Vue) {
+        // Vue Simple event
         dom.$on(key, fn);
-        this.$options._safeBindedList.push(() => {
+        _map[index] = () => {
           dom.$off(key, fn);
-        });
+        }
+
       } else {
-        dom.addEventListener(key, fn, opts);
-        this.$options._safeBindedList.push(() => {
-          dom.removeEventListener(key, fn, opts);
-        })
+        if(opts && opts.once === true){
+          // Once model:
+          const fn2 = (e) => {
+            delete(_map[index]);
+            fn(e);
+          }
+          dom.addEventListener(key, fn2, opts);
+          _map[index] = () => {
+            dom.removeEventListener(key, fn2, opts);
+          }
+
+        } else {
+
+          dom.addEventListener(key, fn, opts);
+          _map[index] = () => {
+            dom.removeEventListener(key, fn, opts);
+          }
+
+        }
       }
     }
   },
   created() {
-    this.$options._safeBindedList = [];
+    this.$options_safeBindIndex = 1;
+    this.$options._safeBindedMap = Object.create(null);
   },
   destroyed() {
-    this.$options._safeBindedList.forEach(unbind => {
-      unbind();
-    });
+    const _map = this.$options._safeBindedMap;
+    let i;
+    
+    for(i in _map){
+      console.log('unbind')
+      _map[i]();
+    }
   },
 };
