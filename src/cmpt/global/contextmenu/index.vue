@@ -25,6 +25,7 @@ export default {
       this.isShow = false;
     },
     show(e) {
+      this.$emit('beforeShow');
       window.APP.contextMenuTransferData = {
         x: e.clientX,
         y: e.clientY
