@@ -22,8 +22,7 @@ import {encodePath} from '__ROOT__/cmpt/sys-app/util';
 export default {
   data(){
     return {
-      coveredList: [],
-      _selectedFile: []
+      coveredList: []
     }
   },
   computed: {
@@ -55,11 +54,11 @@ export default {
       this.next();
     },
     setCoverByName(name){
-      this.tmp_selectedFile.find(v => v.rawFile.name === name)._isUploadCover = true;
+      this.$options._selectedFile.find(v => v.rawFile.name === name)._isUploadCover = true;
     },
     removeItemByName(name){
-      var index = this.tmp_selectedFile.findIndex((v) => v.rawFile.name === name)
-      this.tmp_selectedFile.splice(index, 1);
+      var index = this.$options._selectedFile.findIndex((v) => v.rawFile.name === name)
+      this.$options._selectedFile.splice(index, 1);
     },
     skip(name ,i){
       this.removeItemByName(name);
@@ -68,15 +67,15 @@ export default {
     },
 
     next(){
-      if(!this.coveredList.length && this.tmp_selectedFile.length){
-        this.$store.commit('upload/addSelectedFile', this.tmp_selectedFile);
-        this.tmp_selectedFile = null;
+      if(!this.coveredList.length && this.$options._selectedFile.length){
+        this.$store.commit('upload/addSelectedFile', this.$options._selectedFile);
+        this.$options._selectedFile = null;
       }
     },
 
     cancel(){
       this.coveredList = [];
-      this.tmp_selectedFile = null;
+      this.$options._selectedFile = null;
     },
     handleChange(e){
       const files = e.target.files;
@@ -108,7 +107,7 @@ export default {
         success(covered){
           
           if(covered.length){
-            this.tmp_selectedFile = selectedFile;
+            this.$options._selectedFile = selectedFile;
             this.coveredList = covered;
           }else{
             this.$store.commit('upload/addSelectedFile', selectedFile);
