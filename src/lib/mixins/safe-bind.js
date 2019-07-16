@@ -46,7 +46,6 @@ export default {
     let i;
     
     for(i in _map){
-      console.log('unbind')
       _map[i]();
     }
   },
