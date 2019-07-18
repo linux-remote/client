@@ -164,7 +164,7 @@ export default  {
       this.initItemStatus(baseItem);
       baseItem.isUploading = false;
       baseItem.status = '';
-      this.$options._sync.update(baseItem);
+      this.$options._sync.set(baseItem);
     },
     on_public_uploadAbort(e){
       this.$options._sync.update({
