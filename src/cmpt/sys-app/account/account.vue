@@ -20,7 +20,7 @@ export default {
       return this.$store.state.username;
     },
     group(){
-      return this.$store.state.groups[0]
+      return this.$store.state.group;
     },
     groups(){
       return this.$store.state.groups.join(', ');
