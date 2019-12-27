@@ -85,7 +85,7 @@ export default {
   data(){
     return {
       keys: ['PID', 'User', 'CPU', 'Memory', 'Time', 'Command'],
-      sortKey: '',
+      sortKey: 'CPU',
       sortType: 'asc',
       
       total: null,
@@ -159,7 +159,7 @@ export default {
       const result = parse(data.toString());
       this.forMatList(result.list);
       this.list = result.list;
-      this.sortBy('CPU', true);
+      this._sort();
       const total = result.total;
       this.total = total;
       let cpusPer = total.cpus.us + total.cpus.sy;
