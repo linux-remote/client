@@ -19,6 +19,7 @@
     "pro": "node script/pro",
     "installPreView": "npm i lr-public jquery vue vue-router vuex @hezedu/winstrap --no-bin-links"
   },
+  "files": ["dist", "index.js", "node-module-static.js", "logo_def.png"],
   "dependencies": {
     "jquery": "^3.4.1",
     "lr-public": "2.0.0",

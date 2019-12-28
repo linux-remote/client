@@ -1,14 +1,16 @@
-const { getUrlAndDir } = require('./node-module-static');
-const map = Object.create(null);
 const path = require('path');
 let publicPath = require('lr-public');
+
+const { getUrlAndDir } = require('./node-module-static');
+
+
+
+
 if(process.env.NODE_ENV !== 'production') {
   publicPath = path.join(__dirname, '../lr-public/public');
-  
-} else {
-
 }
 
+const map = Object.create(null);
 map['jquery'] = getUrlAndDir('jquery');
 
 
