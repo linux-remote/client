@@ -1,9 +1,9 @@
 
 <template lang="jade">
 .lr-page.lr-login-wrap
-  .lr-logined-wrap(v-if="loginedList.length")
+  .lr-logined-wrap(v-if="loggedInList.length")
     div
-      router-link.lr-logined-item(v-for="username in loginedList", :key="username", :to="'/user/' + username")
+      router-link.lr-logined-item(v-for="username in loggedInList", :key="username", :to="'/user/' + username")
         .lr-logined-item-icon
           span.iconfont.icon-accountbox
         .lr-logined-item-text {{username}}
@@ -34,7 +34,7 @@ export default {
       isRequest: false,
       username: this.$route.query.user || '',
       password: '',
-      loginedList: []
+      loggedInList: []
     }
   },
   computed: {
@@ -48,9 +48,9 @@ export default {
   methods: {
     getData(){
       this.request({
-        url: '/loginedList',
+        url: '/loggedInList',
         success(data){
-          this.loginedList = data;
+          this.loggedInList = data;
         }
       })
     },

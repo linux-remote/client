@@ -21,7 +21,7 @@ var app = new window.Vue({
 router.onReady(() => {
 
   app.request({
-    url: '/touch',
+    url: '/loggedInList',
     success(){
       preLoad.remove(); // Fixed: store 未知数据。o k #/issues/194
       app.$mount(dom);
