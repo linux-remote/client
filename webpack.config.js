@@ -1,7 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
@@ -13,9 +12,11 @@ const confName = process.env.NODE_BUILD_CONF_NAME || 'dev';
 const conf = require('./config/' + confName);
 const package = require('./package.json');
 const setup = require('./setup');
-
-var bundleName = conf.bundleName;
-var chunkName = conf.chunkName;
+const sortDistName = 'lr-client';
+var bundleName = sortDistName + '.js';
+if(isPro){
+  bundleName = sortDistName + '.min.js';
+}
 var optimization;
 
 var outputPath, publicPath, cssRule;
@@ -29,8 +30,8 @@ if(confName === 'dev' && !isPro){ //使用 命令weblack
   }
 
 }else{
-  outputPath = path.join(__dirname, conf.indexDir, '/build');
-  publicPath = conf.baseUrl + '/build/';
+  outputPath = path.join(__dirname, conf.indexDir, '/build/' + package.version);
+  publicPath = conf.baseUrl + '/build/' + package.version;
   cssRule = {
     test: /(\.scss$)|(\.css$)/,
     //use: ["css-loader", "postcss-loader", "sass-loader"]
@@ -59,13 +60,13 @@ var plugins = [
   }),
 
   // create index.html
-  new HtmlWebpackPlugin({
-    chunksSortMode: 'dependency',
-    filename: path.join(__dirname, conf.indexDir + '/index.html'),
-    template: path.join(__dirname, '/src/index.ejs'),
-    nodeModuleStatic : setup.nodeModuleStatic,
-    indexData
-  })
+  // new HtmlWebpackPlugin({
+  //   chunksSortMode: 'dependency',
+  //   filename: path.join(__dirname, conf.indexDir + '/index.html'),
+  //   template: path.join(__dirname, '/src/index.ejs'),
+  //   nodeModuleStatic : setup.nodeModuleStatic,
+  //   indexData
+  // })
 ]
 var rules = [
   {
@@ -96,8 +97,8 @@ if (isPro) {
     new MiniCssExtractPlugin({
       // Options similar to the same options in webpackOptions.output
       // both options are optional
-      filename: "styles_[name]_[contenthash].css",
-      chunkFilename: "chunk_[id]_[contenthash].css"
+      filename: sortDistName + ".min.css",
+      // chunkFilename: "chunk_[id]_[contenthash].css"
     }),
 
     // new webpack.optimize.UglifyJsPlugin({
@@ -138,7 +139,7 @@ const webpackConf = {
     path: outputPath,
     publicPath,
     filename: bundleName,
-    chunkFilename: chunkName
+    // chunkFilename: chunkName
   },
   module: {
     rules

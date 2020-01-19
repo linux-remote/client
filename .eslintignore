@@ -4,4 +4,5 @@ node_modules
 public
 script
 index.js
+setup.js
 express-mount.js

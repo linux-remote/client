@@ -19,13 +19,19 @@
     "pro": "node script/pro",
     "installPreView": "npm i lr-public jquery vue vue-router vuex @hezedu/winstrap --no-bin-links"
   },
-  "files": ["dist", "index.js", "node-module-static.js", "logo_def.png"],
+  "files": [
+    "dist",
+    "index.js",
+    "node-module-static.js",
+    "logo_def.png"
+  ],
   "dependencies": {
     "jquery": "^3.4.1",
     "lr-public": "2.0.0",
     "vue": "2.5.16",
     "vue-router": "3.0.1",
-    "vuex": "3.0.1"
+    "vuex": "3.0.1",
+    "xterm": "^4.3.0"
   },
   "devDependencies": {
     "express": "^4.15.3",
@@ -60,7 +66,6 @@
     "eslint-plugin-vue": "^5.2.2",
     "fuckwinfsdel": "^2.1.0",
     "html-loader": "^0.5.5",
-    "html-webpack-plugin": "^3.2.0",
     "mini-css-extract-plugin": "^0.5.0",
     "node-sass": "^4.11.0",
     "optimize-css-assets-webpack-plugin": "^5.0.1",

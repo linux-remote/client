@@ -1,6 +1,6 @@
 const favicon = require('serve-favicon');
 const eStatic = require('express').static;
-
+const {clientIndex} = require('../client-index/index');
 
 const DAY_TIME = 1000 * 60 * 60 * 24 //一天
 const MONTH_TIME  = DAY_TIME * 30 //一月
@@ -39,6 +39,16 @@ for(let name in map){
 }
 
 function setup(app){
+  app.get('/', function(req, res, next) {
+    clientIndex({_dev: true, CORS: 'http://192.168.56.101:3000'}, false, function(err, html){
+      if(err){
+        return next(err);
+      }
+      console.log('html', html)
+      res.type('html').send(html);
+    });
+  });
+
   app.use('/public', eStatic(publicPath));
   app.use(favicon(faviconPath));
   const maxAge = IS_PRO ? HALF_YEAR_TIME : 0;

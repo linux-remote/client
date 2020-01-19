@@ -1,18 +1,21 @@
 export function getWsOrigin() {
-  var wsOrigin,
-  isHttps = location.protocol.indexOf('https') !== -1 || // $DEV
-  window.SERVER_CONFIG.API_ROOT.indexOf('https') !== -1;
+  
+  const CORS = window.CLIENT_CONFIG.CORS;
+  let isHttps;
+  if(CORS){
+    isHttps = CORS.indexOf('https') !== -1;
+  } else {
+    isHttps = location.protocol.indexOf('https') !== -1;
+  }
+  
+  let wsOrigin;
   if(isHttps){
     wsOrigin = 'wss:'
   }else{
     wsOrigin = 'ws:'
   }
-  if(window.SERVER_CONFIG.API_ROOT === '/api'){
-    wsOrigin = wsOrigin + '//' + location.host;
-  }else{
-    wsOrigin = wsOrigin + '//' + window.SERVER_CONFIG.API_ROOT.split('/')[2]
-  }
-  return wsOrigin;
+  let apiHost = CORS ? CORS.split('/')[2] : location.host;
+  return wsOrigin + '//' + apiHost;
 }
 
 export const wsOrigin = getWsOrigin();
