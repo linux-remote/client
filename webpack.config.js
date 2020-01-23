@@ -10,7 +10,6 @@ const isPro = NODE_ENV === 'production';
 const confName = process.env.NODE_BUILD_CONF_NAME || 'dev';
 
 const conf = require('./config/' + confName);
-const package = require('./package.json');
 const setup = require('./setup');
 const sortDistName = 'lr-client';
 var bundleName = sortDistName + '.js';
@@ -19,10 +18,12 @@ if(isPro){
 }
 var optimization;
 
-var outputPath, publicPath, cssRule;
+
+const  outputPath = path.join(__dirname, conf.indexDir, '/dist/');
+const publicPath = conf.baseUrl + '/dist/';
+
+var cssRule;
 if(confName === 'dev' && !isPro){ //使用 命令weblack
-  outputPath = path.join(__dirname, conf.indexDir, '/dist/dev/build');
-  publicPath = conf.baseUrl + '/dist/dev/build/';
   cssRule = {
     test: /(\.scss$)|(\.css$)/,
     use: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader'],
@@ -30,8 +31,6 @@ if(confName === 'dev' && !isPro){ //使用 命令weblack
   }
 
 }else{
-  outputPath = path.join(__dirname, conf.indexDir, '/build/' + package.version);
-  publicPath = conf.baseUrl + '/build/' + package.version;
   cssRule = {
     test: /(\.scss$)|(\.css$)/,
     //use: ["css-loader", "postcss-loader", "sass-loader"]
@@ -46,9 +45,9 @@ if(confName === 'dev' && !isPro){ //使用 命令weblack
 
 }
 
-var indexData = conf.indexData || {};
-indexData.BASE_URL = conf.baseUrl;
-indexData.VERSION = package.version;
+// var indexData = conf.indexData || {};
+// indexData.BASE_URL = conf.baseUrl;
+// indexData.VERSION = package.version;
 
 // ***************************** plugins *****************************
 var plugins = [
@@ -153,6 +152,7 @@ const webpackConf = {
   plugins: plugins,
   devServer: {
     before: setup,
+    onListening: setup.wsProxyHandle,
     contentBase: path.join(__dirname, conf.indexDir),
     hot: true,
     noInfo: true

@@ -1,12 +1,7 @@
 export function getWsOrigin() {
-  
-  const CORS = window.CLIENT_CONFIG.CORS;
-  let isHttps;
-  if(CORS){
-    isHttps = CORS.indexOf('https') !== -1;
-  } else {
-    isHttps = location.protocol.indexOf('https') !== -1;
-  }
+
+  let isHttps = location.protocol.indexOf('https') !== -1;
+ 
   
   let wsOrigin;
   if(isHttps){
@@ -14,8 +9,7 @@ export function getWsOrigin() {
   }else{
     wsOrigin = 'ws:'
   }
-  let apiHost = CORS ? CORS.split('/')[2] : location.host;
-  return wsOrigin + '//' + apiHost;
+  return wsOrigin + '//' + location.host;
 }
 
 export const wsOrigin = getWsOrigin();

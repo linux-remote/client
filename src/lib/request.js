@@ -7,16 +7,16 @@ const $ = window.$;
 
 export const JSON_CONTENT_TYPE = 'application/json; charset=utf-8';
 //const POOL = {};
-let _apiHost = window.CLIENT_CONFIG.CORS || '';
+
 //跨站ajax请求初始化.
-if(_apiHost){
-  $.ajaxSetup({
-    xhrFields: {
-      withCredentials: true
-    },
-    headers: {'X-Requested-With': 'XMLHttpRequest'}
-  });
-}
+// if(_apiHost){
+//   $.ajaxSetup({
+//     xhrFields: {
+//       withCredentials: true
+//     },
+//     headers: {'X-Requested-With': 'XMLHttpRequest'}
+//   });
+// }
 
 const POOL = Object.create(null);
 var poolIndex = 0;
@@ -42,7 +42,7 @@ const omitKeyMap = {
 
 const globalConfig = {
   repeatSubmitMode: undefined,
-  rootUrl: _apiHost + '/api'
+  rootUrl: '/api'
 }
 
 function getUserUrl(url){
