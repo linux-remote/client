@@ -46,14 +46,14 @@ export default {
     }
   },
   methods: {
-    getData(){
-      this.request({
-        url: '/loggedInList',
-        success(data){
-          this.loggedInList = data;
-        }
-      })
-    },
+    // getData(){
+    //   this.request({
+    //     url: '/loggedInList',
+    //     success(data){
+    //       this.loggedInList = data;
+    //     }
+    //   })
+    // },
     handleChange(){
       this.$store.commit('language/set', this.currLangIndex);
     },
@@ -78,9 +78,6 @@ export default {
     routeTo(username){
       this.$router.push('user/' + username);
     }
-  },
-  created(){
-    this.getData();
   }
 }
 </script>
