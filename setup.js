@@ -6,9 +6,15 @@ const clientMount = require('../client-mount/index.js');
 
 const faviconPath = path.join(__dirname,  'logo_def.png');
 
-function setup(app){
-  setup.wsProxyHandle = clientMount(app, {_dev: '/dist/lr-client.js', target: 'http://192.168.56.101:3000'});
+function setup(app, webpackDevServer){
+  
 
+  clientMount(app, {_dev: '/dist/lr-client.js', CORS: 'http://192.168.56.101:3000'});
+
+  // setTimeout(function(){
+  //   // server.listeningApp eq http server.
+  //   wsHandle(webpackDevServer.listeningApp);
+  // });
   app.use(favicon(faviconPath));
   // dev
   app.use('/dist', eStatic(path.join(__dirname, 'dist')));

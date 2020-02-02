@@ -152,6 +152,7 @@ const webpackConf = {
   plugins: plugins,
   devServer: {
     before: setup,
+    host: '127.0.0.1',
     onListening: setup.wsProxyHandle,
     contentBase: path.join(__dirname, conf.indexDir),
     hot: true,

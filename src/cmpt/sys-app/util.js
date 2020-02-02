@@ -1,7 +1,12 @@
 export function getWsOrigin() {
-
-  let isHttps = location.protocol.indexOf('https') !== -1;
- 
+  
+  const CORS = window.CLIENT_CONFIG.CORS;
+  let isHttps;
+  if(CORS){
+    isHttps = CORS.indexOf('https') !== -1;
+  } else {
+    isHttps = location.protocol.indexOf('https') !== -1;
+  }
   
   let wsOrigin;
   if(isHttps){
@@ -9,13 +14,14 @@ export function getWsOrigin() {
   }else{
     wsOrigin = 'ws:'
   }
-  return wsOrigin + '//' + location.host;
+  let apiHost = CORS ? CORS.split('/')[2] : location.host;
+  return wsOrigin + '//' + apiHost;
 }
 
 export const wsOrigin = getWsOrigin();
 
 export function composeUserWsUrl(username, subPath) {
-  return `${wsOrigin}/api/user/${username}/${subPath}`;
+  return `${wsOrigin}/api/user/${username}${subPath ? '/' + subPath : ''}`;
 }
 
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort

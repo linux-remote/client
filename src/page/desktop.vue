@@ -19,6 +19,7 @@ import safeBind from '../lib/mixins/safe-bind';
 import logout from '../lib/mixins/logout';
 import DeskTop from '__ROOT__/cmpt/desktop/body.vue';
 import TasksBar from '__ROOT__/cmpt/task/bar.vue';
+import { composeUserWsUrl } from '../cmpt/sys-app/util';
 // import QuickBar from '__ROOT__/cmpt/quick-bar/quick-bar.vue';
 
 export default {
@@ -59,14 +60,24 @@ export default {
         sessError: false
       })
     },
-    init(){
-      const username = this.$route.params.username;
-      this.error = null;
+    createWs(){
+      const url = composeUserWsUrl(this.$route.params.username);
+      const ws = new WebSocket(url);
+      ws.onmessage = function(msg){
+        console.log('msg', msg);
+      }
+      ws.onopen = function(){
+        console.log('onopen');
+        ws.send('getDesktopBundle');
+      }
+    },
+    getData(){
+
       this.request({
         url: '~/desktop/bundle',
         stateKey: 'isRequest',
         success(data){
-
+          const username = this.$route.params.username;
           document.title = username + '@' + data.hostname;
           // id
           // uid=1000(dw) gid=2004(dw) groups=2004(dw),4(adm),24(cdrom),27(sudo),30(dip),46(plugdev),113(lpadmin),128(sambashare)
@@ -111,6 +122,10 @@ export default {
           this.error = this.request.defWrapErr(xhr);
         }
       });
+    },
+    init(){
+      
+      this.error = null;
 
     },
     handleDocKeyDown(e){
@@ -128,19 +143,20 @@ export default {
     this.safeBind(document, 'keydown', (e) => {
       this.handleDocKeyDown(e);
     });
-    this.$options._keep_alive = setInterval(() => {
-      this.request({
-        url: '~/alive'
-      });
-    }, 60 * 1000);
+    // this.$options._keep_alive = setInterval(() => {
+    //   this.request({
+    //     url: '~/alive'
+    //   });
+    // }, 60 * 1000);
 
   },
   destroyed(){
-    clearInterval(this.$options._keep_alive);
+    // clearInterval(this.$options._keep_alive);
   },
 
   created(){
     this.init();
+    this.createWs();
   }
 }
 
