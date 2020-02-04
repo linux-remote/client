@@ -9,7 +9,7 @@
     Movable.lr-task-title-content(:onMove='handleMove',
                                   :startX='positionLeft',
                                   :startY='positionTop')
-      .lr-icon(v-if="APP.iconUrl", :style="`background-image:url(${APP.iconUrl})`")
+      .lr-icon(v-if="APP.iconUrl", v-open-icon="APP.iconUrl")
       .lr-icon(v-else :class="APP.iconClassName")
       | {{currTitle}}
     .lr-task-control

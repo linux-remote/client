@@ -76,7 +76,6 @@
   }
 }
 .lr-quick-launch{
-  background-image: url('/public/img/oxygen/preferences-desktop-launch-feedback.png');
   position: relative;
 }
 .lr-quick-launch-info{
@@ -89,9 +88,7 @@
   padding-left: 10px;
   white-space: nowrap;
 }
-.lr-show-desktop{
-  background-image: url('/public/img/tango/user-desktop.png');
-}
+
 .lr_desktop_launch {
   .lr-quick-launch{
     background-color: rgba(#fff, .5);

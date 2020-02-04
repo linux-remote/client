@@ -5,7 +5,7 @@
     .lr-modal-title {{LANG.global.openWith}}
     .lr-modal-body
       .lr-open-with-item
-        .lr-icon(:style="{backgroundImage: `url(${sysEditor.iconUrl})`}")
+        .lr-icon(v-open-icon="sysEditor.iconUrl")
         | {{editorTitle}}
     .lr-modal-footer
       button(@click='open') {{LANG.global.ok}}

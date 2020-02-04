@@ -4,7 +4,7 @@ button.lr-desktop-icon(draggable="true",
               @dblclick="handleDblclick",
               @dragstart.stop='handleDragStart(item, $event)',
               :style='{left: item.x + "px", top: item.y + "px"}')
-  .lr-desktop-icon-img(v-if="iconUrl", :style="{backgroundImage: `url(${iconUrl})`}")
+  .lr-desktop-icon-img(v-if="iconUrl", v-open-icon="iconUrl")
   .lr-desktop-icon-cls(v-else, :class="app.iconClassName")
   .lr-desktop-icon-text {{name}}
 
@@ -51,9 +51,9 @@ export default {
       }
       switch(type){
         case 'folder':
-          return '/public/img/tango/folder.png';
+          return 'tango/folder.png';
         case 'file':
-          return '/public/img/nuvola/accessories-text-editor-6.png'
+          return 'nuvola/accessories-text-editor-6.png'
       }
     },
     name(){

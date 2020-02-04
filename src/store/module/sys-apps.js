@@ -5,14 +5,14 @@ export default   {
   state: {
     sysMap: {
       sys_app_fs: {
-        iconUrl: '/public/img/tango/user-home.png',
+        iconUrl: 'tango/user-home.png',
         // name: {
         //   'zh-CN': '文件管理器',
         //   'en-US': 'FS Manager'
         // }
       },
       sys_app_recycle_bin : {
-        iconUrl: '/public/img/tango/user-trash.png',
+        iconUrl: 'tango/user-trash.png',
         isEmpty: true,
         unique: true,
         ctx: ['empty']
@@ -23,7 +23,7 @@ export default   {
       },
       sys_app_disk : {
         unique: true,
-        iconUrl: '/public/img/oxygen/kdf.png',
+        iconUrl: 'oxygen/kdf.png',
         // name: {
         //   'zh-CN': '存储管理器',
         //   'en-US': 'Storage Manager'
@@ -31,14 +31,14 @@ export default   {
       },
       sys_app_computer: {
         unique: true,
-        iconUrl: '/public/img/virt-manager.png',
+        iconUrl: 'virt-manager.png',
         // name: {
         //   'zh-CN': '系统信息',
         //   'en-US': 'System Info'
         // }
       },
       sys_app_editor: {
-        iconUrl: '/public/img/nuvola/accessories-text-editor-6.png',
+        iconUrl: 'nuvola/accessories-text-editor-6.png',
         // title: null,
         // name: {
         //   'zh-CN': '笔记本',
@@ -46,7 +46,7 @@ export default   {
         // }
       },
       sys_app_terminal: {
-        iconUrl: '/public/img/nuvola/utilities-terminal-6.png',
+        iconUrl: 'nuvola/utilities-terminal-6.png',
         width: 742,
         height: 440
         // title: null,
@@ -89,7 +89,7 @@ export default   {
     },
     thirdPartyMap: null,
     unknownApp: {
-      iconUrl: '/public/img/oxygen/image-missing-3.png',
+      iconUrl: 'oxygen/image-missing-3.png',
       IS_UNKNOWN_APP: true
     }
   },
@@ -118,7 +118,7 @@ export default   {
     changeRecycleBinIcon(state, bool){
       let name = bool ? 'user-trash.png' : 'user-trash-full-2.png';
       state.sysMap.sys_app_recycle_bin.isEmpty = bool;
-      state.sysMap.sys_app_recycle_bin.iconUrl = '/public/img/tango/' + name;
+      state.sysMap.sys_app_recycle_bin.iconUrl = 'tango/' + name;
     }
   },
   actions: {

@@ -2,7 +2,7 @@
 div(draggable="true",
     @dragstart.stop='handleDragStart',
     @click='handleCLick')
-  .lr-sys-app-icon(:style="`background-image:url(${item.iconUrl})`") 
+  .lr-sys-app-icon(v-open-icon="item.iconUrl") 
   .lr-sys-app-title {{LANG.title}}
 </template>
 

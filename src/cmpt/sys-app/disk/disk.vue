@@ -8,7 +8,7 @@
     .lr-disk-fieldset-body
       .lr-disk-item(v-for='(v, i) in field.list', :key='i', :title='v.source')
         .lr-disk-left
-          .lr-disk-icon(:class='"lr-disk-" + v.type')
+          .lr-disk-icon(v-open-icon="iconMap[v.type]")
           .lr-disk-type {{v.fstype}} 
         .lr-disk-item-right
           .lr-disk-link(@click='go(v.target)') {{v.target}}
@@ -42,6 +42,11 @@ export default {
   data(){
     return {
       isRequest: false,
+      iconMap: {
+        cd: 'oxygen/drive-harddisk-8.png',
+        hd: 'oxygen/drive-harddisk-8.png',
+        memory: 'nuvola/memory.png'
+      },
       map: {
         hd: {
           title: 'hd',

@@ -8,6 +8,6 @@ const router = new window.VueRouter({
     { path: '/user/:username', component: Desktop},
     { path: '*', component: NotFound}
   ]
-})
+});
 
 export default router;

@@ -3,7 +3,7 @@
 .lr-task-bar-item(@click = 'handleClick',
                   :class='{lr_task_bar_item_focus: item.isFocus, lr_task_bar_item_close: item.isMin, lr_task_bar_item_max: item.isMax}')
   .lr-task-bar-item-inner
-    .lr-icon(v-if="item.APP.iconUrl", :style="{backgroundImage: `url(${item.APP.iconUrl})`}")
+    .lr-icon(v-if="item.APP.iconUrl", v-open-icon="item.APP.iconUrl")
     .lr-icon(v-else :class="item.APP.iconClassName")
     | {{itemTitle}}
   ContextMenu

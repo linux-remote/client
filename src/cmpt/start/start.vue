@@ -1,6 +1,7 @@
 <template lang="jade">
 .lr-start
-  .lr-start-btn(@click='handleBtnClick', :class='{lr_start_focus: isShowMenu}')
+  .lr-start-btn(@click='handleBtnClick', 
+    :class='{lr_start_focus: isShowMenu}', v-open-icon="'tango/start-here.png'")
   .lr-start-menu(v-show="isShowMenu")
     .lr-start-username(@click="handleAccountClick") {{username}}
     .lr-start-apps

@@ -427,7 +427,6 @@ button.lr-desktop-icon{
   .lr-desktop-icons{
     z-index: $maxZindex;
     background: rgba($desktopLaunchColor, 1);
-    // background-image: url('/public/img/preferences-desktop-launch-feedback.png');
     // background-position: center;
     // background-repeat: no-repeat;
   }
@@ -459,7 +458,6 @@ button.lr-desktop-icon{
 @import '../cmpt/sys-app/editor/editor.scss';
 @import '../cmpt/sys-app/task-manager/task-manager.scss';
 @import '../cmpt/sys-app/recycle-bin/recycle-bin.scss';
-@import '../cmpt/sys-app/terminal/xterm.css'; // 3.13.1
 @import '../cmpt/global/upload/upload.scss';
 @import '../cmpt/sys-app/computer-info/computer-info.scss';
 // @import '../cmpt/sys-app/settings/ui.scss';
