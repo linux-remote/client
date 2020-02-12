@@ -21,9 +21,9 @@
           input.lr-login-input(type='password', v-model='password', autocomplete="off",  required="required")
         .lr-login-box-footer
           button(type="submit", :class='{lr_loading:isRequest}') {{LANG.submitBtn}}
-  //-.lr-login-bottom
-    a(href='https://github.com/linux-remote/linux-remote/blob/master/LICENSE', target='_blank') Licenses
-    a(href='https://github.com/linux-remote', target='_blank') Source code
+  .lr-login-bottom
+    | Powered By
+    a(href='https://github.com/linux-remote', target='_blank') linux-remote
 </template>
 
 <script>
