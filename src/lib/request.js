@@ -9,13 +9,18 @@ export const JSON_CONTENT_TYPE = 'application/json; charset=utf-8';
 let _apiHost = window.CLIENT_CONFIG.CORS || '';
 
 //跨站ajax请求初始化.
+const ajaxGlobalOption = {
+  beforeSend: function( xhr ) {
+    xhr.overrideMimeType( "text/plain");
+  }
+} 
 if(_apiHost){
-  $.ajaxSetup({
-    xhrFields: {
-      withCredentials: true
-    }
-  });
+  ajaxGlobalOption.xhrFields = {
+    withCredentials: true
+  };
 }
+
+$.ajaxSetup(ajaxGlobalOption);
 
 const POOL = Object.create(null);
 var poolIndex = 0;
