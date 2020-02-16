@@ -2,13 +2,13 @@
 DropMenu(ref='drop')
   h2 Settings
     span V
-  div(slot='menu')
+  div(v-slot:menu)
 
     Cascade.lr-ctx-item 
       span(style='color:#666') {{LANG.loginPage.langTitle}}: 
       span {{language.list[currLangIndex].name}}
       span >
-      div(slot='menu')
+      div(v-slot:menu)
         .lr-ctx-item(v-for='(v, i) in language.list',
                     :value='i',
                     :key='v.id', class='lr_lang_item', 

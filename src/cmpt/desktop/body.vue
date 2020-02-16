@@ -207,15 +207,15 @@ export default {
 }
     // Cascade.lr-ctx-item
     //   | 设置桌面壁纸
-    //   .lr-test-parent(slot='menu')
+    //   .lr-test-parent(v-slot:menu)
     //     .lr-ctx-item 选择
     //     .lr-ctx-item 上传
     //     Cascade 333
-    //       div(slot='menu')
+    //       div(v-slot:menu)
     //         .lr-ctx-item 333
     //         .lr-ctx-item 333
     //         Cascade 444
-    //           div(slot='menu')
+    //           div(v-slot:menu)
     //             .lr-ctx-item 444
     //             .lr-ctx-item 444
 </script>

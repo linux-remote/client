@@ -1,7 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const NODE_ENV = process.env.NODE_ENV || 'development';
@@ -87,7 +87,7 @@ var rules = [
 if (isPro) {
   optimization = {
     minimizer: [
-      new UglifyJsPlugin(),
+      new TerserPlugin(),
       new OptimizeCSSAssetsPlugin({})
     ]
   }
@@ -100,7 +100,7 @@ if (isPro) {
       // chunkFilename: "chunk_[id]_[contenthash].css"
     }),
 
-    // new webpack.optimize.UglifyJsPlugin({
+    // new webpack.optimize.TerserPlugin({
     //   compress: {
     //     warnings: false,
     //   },
