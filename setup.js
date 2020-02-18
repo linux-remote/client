@@ -12,6 +12,7 @@ function setup(app /*, webpackDevServer */){
   clientMount(app, 
     {_dev: '/dist/lr-client.js', 
       eStatic, 
+      indexTplPath: path.join(__dirname, 'src/index.ejs'),
       CORS: 'http://192.168.56.101:3000'
   });
 

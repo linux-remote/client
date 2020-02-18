@@ -1,13 +1,15 @@
-import './css/iconfont.scss';
-import './css/style.scss';
-
+// import './css/iconfont.scss';
+import './css/style-new.scss';
+// import './ui/css/style.scss';
+// import './css/login.scss';
 import './lib/vue-prototype';
 import './lib/vue-filter';
 
 import store from './store/index.js';
 import router from './router';
-import Root from './page/root.vue';
-const dom = document.getElementById('lr-app');
+import Root from './root.vue';
+
+const dom = document.getElementById('lr-root');
 let preLoadHtml = `<div id="lr-pre-load" class="lr-pre-load"></div>`;
 dom.innerHTML = preLoadHtml;
 

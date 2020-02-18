@@ -10,7 +10,6 @@ $win.on('resize', function(){
 });
 
 window.APP = {
-  $elMain: null,
   contextMenuTransferData: null
 }
 import { TypeOf } from '../lib/util';

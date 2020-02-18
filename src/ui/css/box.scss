@@ -1,0 +1,103 @@
+
+$boxShadowBoxPadding: 3px;
+$boxOutsetBoxBg: $color1;
+$boxInsetBoxBg:#fff;
+$boxBorderBoxPadding:2px;
+
+// 外右下，外上左，内右下，内上左
+// outset: 白在里面。示例：tab panel
+.lr-box{
+  box-shadow: -1px -1px #000 inset,
+  1px 1px  $color1 inset,
+  -2px -2px $color2 inset, 
+  2px 2px  #fff inset;
+  padding: $boxShadowBoxPadding;
+  background-color: $boxOutsetBoxBg;
+}
+
+// 外右下，外上左，内右下，内上左
+// // outset: 白在外面。示例：tab panel 的内里
+.lr-box_2{
+  box-shadow: -1px -1px #000 inset,
+  1px 1px  #fff inset,
+  -2px -2px $color2 inset, 
+  2px 2px  $color1 inset;
+  padding: $boxShadowBoxPadding;
+  background-color: $boxOutsetBoxBg;
+}
+
+// inset  示例：input
+.lr-box_in{
+  box-shadow: -1px -1px #fff inset,
+  1px 1px  $color2 inset,
+  -2px -2px $color1 inset,
+  2px 2px  #000 inset;
+  padding: $boxShadowBoxPadding;
+  background-color: $boxInsetBoxBg;
+}
+
+// 使用 shadow 的方形跟原型一模一样。但圆型, 圆角不可用 shadow.
+// .lr-box_radius 示例：radio
+// .lr-box_radius_out 示例：tab panel 的 tab
+%lr__box_radius_base__{
+  border-style: solid;
+  border-width: 1px;
+  position: relative; 
+  padding: $boxBorderBoxPadding;
+  &::before{
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    border-width: inherit;
+    border-style: inherit;
+    border-radius: inherit;
+  }
+}
+.lr-box_radius, .lr-box_radius_out{
+  @extend %lr__box_radius_base__;
+}
+
+.lr-box_radius{
+  border-top-color: $color2;
+  border-left-color: $color2;
+  border-right-color: #fff;
+  border-bottom-color: #fff;
+  background-color: $boxInsetBoxBg;
+  &::before{
+    border-top-color: #000;
+    border-left-color: #000;
+    border-right-color: $color1;
+    border-bottom-color: $color1;
+  }
+}
+
+// 圆角 外向
+.lr-box_radius_out{
+  border-top-color: #fff;
+  border-left-color: #fff;
+  border-right-color: #000;
+  border-bottom-color: #000;
+  background-color: $boxOutsetBoxBg;
+  &::before{
+    border-top-color: $color1;
+    border-left-color: $color1;
+    border-right-color: $color2;
+    border-bottom-color: $color2;
+  }
+}
+
+%lr__box_active_padding_base__{
+  padding-left: 4px;
+  padding-right: 2px;
+  padding-top: 4px;
+  padding-bottom: 2px;
+}
+%lr__box_pushed_in_base__{
+  box-shadow: -1px -1px #fff inset,
+  1px 1px #000 inset,
+  -2px -2px $color1 inset,
+  2px 2px $color2 inset;
+}

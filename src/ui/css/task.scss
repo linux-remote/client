@@ -1,0 +1,125 @@
+.lr-window{
+  @extend .lr-box;
+  position: absolute;
+  padding: $taskTitleH + 3 3px 3px;
+}
+
+
+.lr-title{
+  background-color: $taskTitleColor;
+  color: $color1;
+  height: $taskTitleH;
+  line-height: $taskTitleH;
+  position: absolute;
+  top: $titlePadding;
+  left: $titlePadding;
+  right: $titlePadding;
+  padding-left: 2px;
+  padding-right: 2px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  
+  .lr-btn_nf{
+    width: 16px;
+    height: 14px;
+    display: block;
+    font-family: Arial;
+    line-height: 14px - $boxPadding * 2;
+  }
+}
+
+.lr-window{
+  &:focus-within{
+    .lr-title{
+      color: #fff;
+      background-color: $taskActiveTitleColor;
+    }
+  }
+
+}
+.lr_window_resizable{
+  padding: $taskTitleH + 4 4px 4px;
+  .lr-title{
+    top: $titlePadding + 1;
+    left: $titlePadding + 1;
+    right: $titlePadding + 1;
+  }
+}
+.lr-window-body{
+  padding-top: 1px;
+  height: 100%;
+}
+
+.lr_mask_clicked{
+  animation-name: maskOutClick;
+  animation-duration: .1s;
+  animation-timing-function: linear;
+  animation-iteration-count: 2;
+}
+@keyframes maskOutClick
+{
+  50%  {
+    background: $color2;
+    color: $color1;
+  }
+}
+.lr-title-content{
+  flex-grow: 1;
+  font-weight: bold;
+}
+
+
+
+.lr-btn-close{
+  margin-left: 2px;
+}
+
+// $DEL
+.lr_task_focus{
+  .lr-title{
+    color: #fff;
+    background-color: $taskActiveTitleColor;
+  }
+}
+
+.lr-task-item{
+  @extend .lr-box;
+  height: 22px;
+  line-height: 18px;
+  width: 160px;
+  text-align: left;
+  margin-left: 3px;
+  &:active, &.lr__focus{
+    font-weight: bold;
+  }
+  &.lr__focus{
+  // https://www.jianshu.com/p/d81cbc10ee83
+    background-image: 
+    linear-gradient(135deg, #fff 25%, transparent 0, transparent 75%, #fff 0),
+    linear-gradient(135deg, #fff 25%, transparent 0, transparent 75%, #fff 0);
+    background-position: 0 0, 1px 1px;
+    background-size: 2px 2px;
+  }
+}
+
+.lr-task-item.lr__focus{
+  box-shadow: -1px -1px #fff inset,
+  1px 1px  #000 inset,
+  -2px -2px $color1 inset, 
+  2px 2px  $color2 inset;
+}
+
+.lr-task-item:active:not(.lr__focus){
+  padding-left: 3px;
+  padding-right: 1px;
+  padding-top: 3px;
+  padding-bottom: 1px;
+}
+
+.lr-task-item:active{
+  box-shadow: 1px 1px  #000 inset,
+  -1px -1px  #fff inset,
+  -2px -2px $color1 inset,
+  2px 2px $color2 inset;
+}

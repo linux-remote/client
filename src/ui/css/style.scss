@@ -1,0 +1,60 @@
+
+
+*{
+  box-sizing: border-box;
+}
+body{
+  user-select: none;
+}
+body, h1, h2, ul, li, button{
+  padding: 0;
+  margin: 0;
+}
+input {
+  line-height: normal;
+}
+div:focus{
+  outline: none;
+}
+ul {
+  list-style: none;
+}
+form{
+  display: block;
+}
+button{
+  background: none;
+  border: 0;
+  outline: none;
+  text-align: center;
+  overflow: hidden;
+  // line-height:normal !important;
+}
+// .lr-root{
+//   height: 100vh;
+//   position: relative;
+// }
+.lr-page{
+  height: 100vh;
+  min-height: 100vh;
+  position: relative;
+}
+.lr-mask{
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+.lr-global{
+  width: 0;
+  height: 0;
+}
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+
+

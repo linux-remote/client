@@ -1,0 +1,89 @@
+body, button{
+  font-size: 11px;
+  font-family:Tahoma , Arial, sans-serif, SimSun;
+  color: #000;
+}
+// common
+// padding
+
+// color
+.lr-bar{
+  background-color: $color1;
+}
+
+// 外右下，外上左，内右下，内上左
+// 上下
+.lr-table-head{
+  box-shadow: 0 -1px #000 inset,
+  1px 1px  #fff inset,
+  0 -2px $color2 inset;
+  //2px 2px  $color1 inset;
+  background-color: $color1;
+}
+
+.lr-inner{
+  box-shadow: -1px -1px #fff inset,
+  1px 1px  $color2 inset;
+  padding: 1px;
+}
+
+// 外下右，外上左，内下右，内上左
+
+// common end
+.lr-title{
+  height: 18px;
+  line-height: 18px;
+  background-color: $color2;
+  color: $color1;
+  padding: 0 2px;
+  display: flex;
+  align-items: center;
+  &.lr__focus{
+    background-color: $color3;
+    color: #fff;
+  }
+}
+.lr-title-name{
+  flex-grow: 1;
+  font-weight: bold;
+}
+
+
+
+
+
+
+
+// input[type="checkbox"]{
+//   background: #fff;
+//   border: 0;
+//   padding: 0;
+//   color: #fff;
+// }
+
+
+
+// 外下右，外上左，内下右，内上左
+.lr-fieldset{
+  border: 0;
+  box-shadow: -1px -1px #fff inset,
+  1px 1px  $color2 inset,
+  -2px -2px $color2 inset,
+  2px 2px  #fff inset;
+  background-color: $color1;
+  padding: 3px;
+  >legend{
+    padding: 0 3px;
+    background-color: inherit;
+    position: relative;
+    left: 4px;
+  }
+}
+
+// ∇ &Delta; 
+// ≡ &equiv;
+// 	» &raquo;
+// ! &excl;
+// ░, △, ▽, ⧍, ★, ✓ ↺ ?
+// ⧫ ⩟ 𝕎
+

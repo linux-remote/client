@@ -20,7 +20,7 @@ export default {
     if(data){
 
 
-      document.getElementById('lr-app').appendChild(this.$el);
+      this.$root.$el.appendChild(this.$el);
       
 
       const height = this.$el.offsetHeight;
@@ -38,7 +38,7 @@ export default {
       this.x = x;
       this.y = y;
 
-      window.APP.$elMain
+      this.$root.$el
       .addEventListener('mousedown', this.$parent.hidden, {
         once: true,
         capture: true
@@ -47,7 +47,7 @@ export default {
   },
   destroyed(){
     if(this.$parent._isBeingDestroyed){
-      document.getElementById('lr-app').removeChild(this.$el);
+      this.$root.$el.removeChild(this.$el);
     }
   }
 }

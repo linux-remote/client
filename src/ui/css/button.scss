@@ -1,0 +1,53 @@
+
+.lr-btn,
+.lr-btn_nf{
+  @extend .lr-box_2;
+  width: 75px;
+  height: 23px;
+  font-size: 12px;
+  color: #000;
+  text-align: center;
+  overflow: hidden;
+  vertical-align: top;
+  line-height: 19px;
+  display: inline-block;
+}
+
+.lr-btn{
+  margin-right: 6px;
+  &:last-child{
+    margin-right: 0;
+  }
+}
+
+.lr-btn:active,
+.lr-btn_nf:active{
+  @extend %lr__box_active_padding_base__;
+}
+
+.lr-btn:active{
+  box-shadow: 1px 1px #000 inset, 
+  -1px -1px #000 inset,
+  2px 2px  $color2 inset, 
+  -2px -2px $color2 inset;
+}
+
+.lr-btn_nf:active{
+  @extend %lr__box_pushed_in_base__;
+}
+
+.lr-btn:focus:not(:active),
+.lr-btn.lr__focus:not(:active){
+  box-shadow: 1px 1px  #000 inset,
+  -2px -2px  #000 inset,
+  2px 2px #fff inset,
+  -3px -3px $color2 inset;
+}
+
+.lr-btn:disabled,
+.lr-btn_nf:disabled{
+  pointer-events: none;
+  color: $color2;
+  text-shadow: $disabledTextShadow;
+}
+

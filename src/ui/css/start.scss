@@ -1,0 +1,33 @@
+.lr-start{
+  width: 55px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+.lr-start-btn{
+  @extend .lr-box_2;
+  height: 100%;
+  width: 100%;
+  line-height: 16px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  font-size: 11px;
+  .lr-icon{
+    font-weight: normal;
+    color: $deskTopColor;
+    // background-color: #4682B4;
+  }
+}
+.lr-start-btn.lr__focus{
+  @extend %lr__box_pushed_in_base__;
+}
+.lr-start-menu{
+  @extend .lr-box;
+  position: absolute;
+  left: 2px;
+  bottom: 24px;
+  width: 176px;
+  height: 300px;
+  z-index: 2;
+}

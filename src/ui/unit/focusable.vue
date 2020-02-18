@@ -1,0 +1,34 @@
+<template lang='jade'>
+div(:tabindex="tabIndex",  @focusout="handleFocusout", @focusin="handleFocusin", v-on="$listeners")
+  slot
+</template>
+
+<script>
+export default {
+  props: {
+    tabIndex: {
+      type: Number,
+      default: -1
+    }
+  },
+  methods:{
+    handleFocusin(){
+      // console.log('relatedTarget', e.relatedTarget);
+      // console.log('targt', e.target);
+      if(!this.$options._is_focusenter){
+        this.$options._is_focusenter = true;
+        // console.log('focusenter')
+      }
+      // if(e.relatedTarget || this.$el.contains(e.relatedTarget)){
+      //   this.$emit('focusenter', e);
+      // }
+    },
+    handleFocusout(e){
+      if(!e.relatedTarget || !this.$el.contains(e.relatedTarget)){
+        this.$options._is_focusenter = false;
+        this.$emit('focusleave', e);
+      }
+    }
+  }
+}
+</script>
