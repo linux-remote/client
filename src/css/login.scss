@@ -11,10 +11,10 @@
   // color: $deskTopColor;
   color: $color1;
   font-size: 10px;
-  a {
+  >h1 {
     color: $deskTopColor;
     // color: #000;
-    font-weight: bold;
+    // font-weight: bold;
     font-size: 25px;
     font-family: Arial, Helvetica, sans-serif;
     text-decoration: none;
@@ -28,7 +28,21 @@
 
 .lr-login_form{
   padding: 15px 10px 0;
+  position: relative;
 }
+.lr-login_form_mask{
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: $color1;
+  padding-left: 10px;
+  align-items: center;
+  font-size: 14px;
+  display: none;
+}
+
 .lr-login_input_wrap{
   margin-bottom: 7px;
   display: flex;
@@ -43,12 +57,52 @@
   text-align: right;
 }
 .lr-login_process{
-  height: 5px;
+  width: 200%;
+  height: 100%;
   position: absolute;
   left: 0;
+  bottom: 0;
+  &::before, &::after{
+    height: 100%;
+    position: absolute;
+    width: 50%;
+    top: 0;
+    content: '';
+    background-image: linear-gradient(to right, $color3 0%, $color2 32%, $color1 50%,  $color2 68%, $color3 100% );
+  }
+  &::before{
+    left: 0;
+  }
+  &::after{
+    right: 0;
+  }
+
+  // background-image: linear-gradient(to right, $color3 0%, $color2 64%, $color1 100%),
+  // linear-gradient(to left, $color3 0%, $color2 64%, $color1 100%);
+  // background-size: 100% 100%;
+  // background-position: top left, top right;
+  // animation: changebg 3s linear infinite alternate;
+}
+.lr-login_process_wrap{
+  height: 5px;
+  position: absolute;
   width: 100%;
   bottom: 0;
-  background-image: linear-gradient(to right, $color3 0%, $color2 32%, $color1 50%,  $color2 68%, $color3 100%);
+  left: 0;
+  overflow: hidden;
+}
+
+@keyframes changebg{
+  0%{left: 0;}
+  100%{left: -100%;}
+}
+.lr_login_logging{
+  .lr-login_form_mask{
+    display: flex;
+  }
+  .lr-login_process{
+    animation: changebg 1s linear infinite;
+  }
 }
 /*
 .lr-login-wrap{

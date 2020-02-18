@@ -4,15 +4,19 @@
   .lr-mask(@mousedown.prevent)
   Window(ref="win",
   :title="title",
+  :enterBindBtn="true",
   style="top: 21%; left: 0; right: 0; margin: auto; width: 417px; height: 230px"
   )
     .lr-login_banner
       Icon.lr-login_logo(type="css", :size="50", value="iconfont icon-logo_LR")
       .lr-login_powerBy 
         div POWERED BY
-        a(href="https://github.com/linux-remote/linux-remote", target="_blank") linux-remote
-      .lr-login_process
+        h1 linux-remote
+        //- a(href="https://github.com/linux-remote/linux-remote", target="_blank") linux-remote
+      .lr-login_process_wrap
+        .lr-login_process
     form.lr-login_form(@submit.prevent)
+      .lr-login_form_mask Logging...
       .lr-login_input_wrap
         label {{LANG.username}}
         input.lr-input( v-model='username' required="required")
@@ -20,7 +24,7 @@
         label {{LANG.password}}
         input.lr-input(type='password', v-model='password', autocomplete="off",  required="required")
       .lr-login-box-footer
-        Btn(:isSubmit="true", @click="login", ref="submit", :class='{lr_loading:isRequest}') {{LANG.submitBtn}}
+        Btn(type="submit", @click="handleBtnClick", ref="submit") {{LANG.submitBtn}}
 
 //-.lr-page.lr-login-wrap
   .lr-logined-wrap(v-if="loggedInList.length")
@@ -49,15 +53,12 @@
 </template>
 
 <script>
-
-import { Icon, Window, Btn } from '../ui/index.js';
-import MixinEnterBindBtn from '../lib/mixins/enter-bind-last-focused-btn.js';
+import { Window,  Icon,  Btn  } from '../ui/index.js';
 export default {
-  mixins: [MixinEnterBindBtn],
   components: {
+    Window,
     Icon,
-    Btn,
-    Window
+    Btn
   },
   data(){
     const CORS = window.CLIENT_CONFIG.CORS;
@@ -110,14 +111,17 @@ export default {
         }
       })
     },
+    handleBtnClick(){
+      this.login();
+    },
     routeTo(username){
       this.$router.push('user/' + username);
     }
   },
   mounted(){
     this.$nextTick(() => {
-      this.$refs.win.$el.focus();
-      this.setEnterBindBtn(this.$refs.submit.$el);
+      this.$refs.submit.$el.focus();
+      // this.setEnterBindBtn(this.$refs.submit.$el);
     });
   }
 }
