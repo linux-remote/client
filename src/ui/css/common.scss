@@ -38,10 +38,7 @@ body, button{
   padding: 0 2px;
   display: flex;
   align-items: center;
-  &.lr__focus{
-    background-color: $color3;
-    color: #fff;
-  }
+
 }
 .lr-title-name{
   flex-grow: 1;
@@ -79,7 +76,20 @@ body, button{
     left: 4px;
   }
 }
-
+.lr-err-color{
+  color: red;
+  user-select: text;
+}
+.lr-pre-load{
+  background-color: $deskTopColor;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 36px;
+  
+  // cursor: wait;
+}
 // ∇ &Delta; 
 // ≡ &equiv;
 // 	» &raquo;

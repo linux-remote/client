@@ -1,7 +1,9 @@
 
 <template lang="jade">
-.lr-page
+.lr-page(:class="{lr_login_logging: isRequest}")
   .lr-mask(@mousedown.prevent)
+  
+  
   Window(ref="win",
   :title="title",
   :enterBindBtn="true",
@@ -24,8 +26,8 @@
         label {{LANG.password}}
         input.lr-input(type='password', v-model='password', autocomplete="off",  required="required")
       .lr-login-box-footer
-        Btn(type="submit", @click="handleBtnClick", ref="submit") {{LANG.submitBtn}}
-
+        Btn(@click="handleBtnClick", ref="submit") {{LANG.submitBtn}}
+  Alert(v-if="isShowAlert", :close="() => isShowAlert = false", v-bind="alertOpt")
 //-.lr-page.lr-login-wrap
   .lr-logined-wrap(v-if="loggedInList.length")
     div
@@ -53,12 +55,13 @@
 </template>
 
 <script>
-import { Window,  Icon,  Btn  } from '../ui/index.js';
+import { Window,  Icon,  Btn, Alert  } from '../ui/index.js';
 export default {
   components: {
     Window,
     Icon,
-    Btn
+    Btn,
+    Alert
   },
   data(){
     const CORS = window.CLIENT_CONFIG.CORS;
@@ -66,11 +69,13 @@ export default {
     title = CORS ? title + ' - ' + CORS : title;
     return {
       title,
+      alertOpt: null,
       currLangIndex: this.$store.state.language.currIndex,
       isRequest: false,
       username: this.$route.query.user || '',
       password: '',
-      loggedInList: []
+      loggedInList: [],
+      isShowAlert: false
     }
   },
   computed: {
@@ -90,6 +95,10 @@ export default {
     //     }
     //   })
     // },
+    alert(opt){
+      this.isShowAlert = true;
+      this.alertOpt = opt;
+    },
     handleChange(){
       this.$store.commit('language/set', this.currLangIndex);
     },
@@ -108,11 +117,23 @@ export default {
             username
           });
           this.routeTo(username);
+        },
+        error(xhr){
+          this.$refs.win.alert({
+            text: xhr.responseText,
+            status: 'warn'
+          });
         }
       })
     },
     handleBtnClick(){
-      this.login();
+      console.log('handleBtnClick');
+
+      this.alert({
+        text: 'xhr.responseText',
+        status: 'warn'
+      });
+      // this.login();
     },
     routeTo(username){
       this.$router.push('user/' + username);

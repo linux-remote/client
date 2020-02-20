@@ -15,27 +15,22 @@ Focusable.lr-window(:tabIndex="tabIndex", :class="{lr_window_maximized: maximize
   .lr-window-body
     slot
   Resizable(:proxy="box", :direction="resizeDirection", v-if="resizable", v-show="!maximized")
-  Alert(v-if="alertMsg", :close="() => alertMsg = null")
 </template>
 <script>
 import Focusable from '../../unit/focusable.vue';
 import LRIcon from '../../cmpt/icon/icon.vue';
 import Resizable from '../../unit/resizable.vue';
 import Movable from '../../unit/movable.vue';
-import Alert from '../block/alert.vue';
+import MixinEnterBindBtn from '__ROOT__/lib/mixins/enter-bind-last-focused-btn.js'
 export default {
+  mixins: [MixinEnterBindBtn],
   components: {
     Focusable,
     LRIcon,
     Resizable,
-    Movable,
-    Alert
+    Movable
   },
   props: {
-    // style: {
-    //   type: String,
-    //   default: ''
-    // },
     tabIndex: {
       type: Number
     },
@@ -89,21 +84,13 @@ export default {
     left: {
       type: Number,
       default: 0
-    },
-    enterBindBtn: {
-      type: Boolean,
-      default: false
     }
-    // showTitle: {
-    //   type: Boolean,
-    //   default: 
-    // }
   },
 
   data(){
     return {
       maximized: false,
-      alertMsg: null,
+      
       // cssText: this.style,
       box: {
         height: this.height,
@@ -114,6 +101,7 @@ export default {
     }
   },
   methods: {
+
     reStyle(){
       const width = this.$el.clientWidth;
       const height = this.$el.clientHeight;
@@ -143,44 +131,10 @@ export default {
       this.maximized = !this.maximized;
     },
 
-    setEnterBindBtn(el){
-      let btn = this.$options._last_focused_btn;
-      if(btn && btn[0] === el){
-        return;
-      }
-      if(btn){
-        btn.removeClass('lr__focus');
-      }
-      btn = window.$(el);
-      this.$options._last_focused_btn = btn;
-      btn.addClass('lr__focus');
-    },
-    removeEnterBindBtn(){
-      if(this.$options._last_focused_btn){
-        this.$options._last_focused_btn.removeClass('lr__focus');
-        this.$options._last_focused_btn = null;
-      }
-    }
+
   },
   mounted(){
     this.reStyle();
-    if(this.enterBindBtn){
-      this.$el.addEventListener('focusin', (e) => {
-        if(e.target.tagName === 'BUTTON'){
-          this.setEnterBindBtn(e.target);
-        }
-      });
-      this.$el.addEventListener('keydown', (e) => {
-        if(this.$options._last_focused_btn && e.key === 'Enter'){
-          this.$options._last_focused_btn.click();
-        }
-      });
-    }
-  },
-  destroyed(){
-    if(this.enterBindBtn && this.$options._last_focused_btn){
-      this.$options._last_focused_btn = null;
-    }
   }
 }
 </script>

@@ -37,12 +37,13 @@
 }
 
 .lr-btn:focus:not(:active),
-.lr-btn.lr__focus:not(:active){
+.lr-window:focus-within .lr-btn.lr__focus:not(:active){
   box-shadow: 1px 1px  #000 inset,
   -2px -2px  #000 inset,
   2px 2px #fff inset,
   -3px -3px $color2 inset;
 }
+
 
 .lr-btn:disabled,
 .lr-btn_nf:disabled{

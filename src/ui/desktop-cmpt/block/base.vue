@@ -1,5 +1,5 @@
 <template lang="jade">
-form.lr-confirm-wrap(tabindex="-1", :class="{lr_task_focus: isTaskFocus}", @focusin="handleFocusin", @focusout="handleFocusout", @submit.prevent="handleSubmit")
+.lr-confirm-wrap(tabindex="-1", :class="{lr_task_focus: isTaskFocus}", @focusin="handleFocusin", @focusout="handleFocusout", @submit.prevent="handleSubmit")
   .lr-confirm-mask(@mousedown="handleMaskMouseDown")
   .lr-window.lr-confirm(:style="{top: top}")
     .lr-title(:class="{lr_mask_clicked: isMaskClick}")
@@ -12,7 +12,7 @@ form.lr-confirm-wrap(tabindex="-1", :class="{lr_task_focus: isTaskFocus}", @focu
       slot
 </template>
 <script>
-export default {
+export default { // 0.356 
   props: {
     status: {
       type: String,
@@ -99,14 +99,20 @@ export default {
     },
     handleOkClick(){
       this.$emit('ok');
+      console.log('base handleOkClick')
       this.close();
     }
   },
   mounted(){
     const footer = this.$refs.footer;
-
+    console.log('base mounted')
     this.$options._focusBakBtn = footer.firstElementChild;
-    this.$el.focus();
+    this.$nextTick(() => {
+      this.$el.focus();
+    });
+  },
+  destroyed(){
+    console.log('base destroyed')
   }
 }
 </script>

@@ -12,16 +12,11 @@ export default {
     }
   },
   methods:{
-    handleFocusin(){
-      // console.log('relatedTarget', e.relatedTarget);
-      // console.log('targt', e.target);
+    handleFocusin(e){
       if(!this.$options._is_focusenter){
         this.$options._is_focusenter = true;
-        // console.log('focusenter')
+        this.$emit('focusenter', e);
       }
-      // if(e.relatedTarget || this.$el.contains(e.relatedTarget)){
-      //   this.$emit('focusenter', e);
-      // }
     },
     handleFocusout(e){
       if(!e.relatedTarget || !this.$el.contains(e.relatedTarget)){

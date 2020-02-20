@@ -1,6 +1,6 @@
 <template lang="jade">
 BaseBlock(:close="close", v-bind="$attrs", :status="status", :class="'lr-alert lr-alert-' + status")
-  Btn(@click="close") {{okText}}
+  Btn(@click="handleBtnClick") {{okText}}
 </template>
 <script>
 import Btn from '../../cmpt/button/btn.vue';
@@ -24,6 +24,12 @@ export default {
       required: true
     }
   },
+  methods: {
+    handleBtnClick(){
+      console.log('handleAlertBtnClick');
+      this.close();
+    }
+  }
   // computed: {
   //   icon(){
   //     let cls = 'lr-alert-icon-' + this.status;
