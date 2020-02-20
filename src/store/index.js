@@ -24,6 +24,7 @@ import sysApps from './module/sys-apps';
 import users from './module/users';
 import fs from './module/fs';
 import desktop from './module/desktop';
+import windows from './module/windows.js';
 // let _tmp = null;
 const store = new window.Vuex.Store({
   modules: {
@@ -36,7 +37,8 @@ const store = new window.Vuex.Store({
     sysApps,
     fsClipBoard,
     fs,
-    desktop
+    desktop,
+    windows
   },
   state: {
     // global

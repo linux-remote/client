@@ -7,7 +7,12 @@
   Window(ref="win",
   :title="title",
   :enterBindBtn="true",
-  style="top: 21%; left: 0; right: 0; margin: auto; width: 417px; height: 230px"
+  :startWidth="417",
+  :startHeight="230",
+  :startLeft="0",
+  :startTop="200",
+  :movable="true",
+  :resizable="true"
   )
     .lr-login_banner
       Icon.lr-login_logo(type="css", :size="50", value="iconfont icon-logo_LR")
@@ -96,6 +101,7 @@ export default {
     //   })
     // },
     alert(opt){
+      this.$refs.win.alert();
       this.isShowAlert = true;
       this.alertOpt = opt;
     },

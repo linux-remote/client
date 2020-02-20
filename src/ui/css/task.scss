@@ -2,6 +2,7 @@
   @extend .lr-box;
   position: absolute;
   padding: $taskTitleH + 3 3px 3px;
+  overflow: hidden;
 }
 
 
@@ -50,7 +51,20 @@
   padding-top: 1px;
   height: 100%;
 }
-
+.lr-window_block_mask{
+  position: absolute;
+  z-index: $maxZindex;
+  display: none;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.lr_window_block{
+  .lr-window_block_mask{
+    display: block;
+  }
+}
 .lr_mask_clicked{
   animation-name: maskOutClick;
   animation-duration: .1s;

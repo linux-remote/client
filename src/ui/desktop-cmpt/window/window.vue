@@ -1,7 +1,9 @@
 <template lang="jade">
-Focusable.lr-window(:tabIndex="tabIndex", :class="{lr_window_maximized: maximized, lr_window_resizable: resizable}")
+Focusable.lr-window(:tabIndex="tabIndex", :class="{lr_window_maximized: maximized, lr_window_resizable: resizable, lr_window_block: isBlock}", 
+:style="{top: top + 'px', left: left + 'px', width: width + 'px', height: height + 'px'}")
+  .lr-window_block_mask(@mousedown.prevent="hanldeBlockMaskMouseDown")
   .lr-title
-    Movable(@moveStart="handleMoveStart", @moving="handleMoving", v-if="movable")
+    Movable(v-if="movable", @moveStart="handleMoveStart", @moving="handleMoving")
     LRIcon(:type="iconType", :value="icon")
     .lr-title-content
       span {{title}}
@@ -14,7 +16,11 @@ Focusable.lr-window(:tabIndex="tabIndex", :class="{lr_window_maximized: maximize
       span.lr-icon_close
   .lr-window-body
     slot
-  Resizable(:proxy="box", :direction="resizeDirection", v-if="resizable", v-show="!maximized")
+  Resizable(v-if="resizable", 
+    v-show="!maximized", 
+    :direction="resizeDirection",  
+    @resizeStart="handleResizeStart", 
+    @resizing="handleResizing")
 </template>
 <script>
 import Focusable from '../../unit/focusable.vue';
@@ -69,19 +75,20 @@ export default {
       type: String,
       default: 'all'
     },
-    width: {
+    
+    startWidth: {
       type: Number,
       default: 600
     },
-    height: {
+    startHeight: {
       type: Number,
       default: 480
     },
-    top: {
+    startTop: {
       type: Number,
       default: 0
     },
-    left: {
+    startLeft: {
       type: Number,
       default: 0
     }
@@ -90,51 +97,52 @@ export default {
   data(){
     return {
       maximized: false,
-      
-      // cssText: this.style,
-      box: {
-        height: this.height,
-        width: this.width,
-        positionTop: this.top,
-        positionLeft: this.left
-      }
+      isBlock: false,
+      height: this.startHeight,
+      width: this.startWidth,
+      top: this.startTop,
+      left: this.startLeft
     }
   },
   methods: {
-
-    reStyle(){
-      const width = this.$el.clientWidth;
-      const height = this.$el.clientHeight;
-      const top = this.$el.offsetTop;
-      const left = this.$el.offsetLeft;
-      // https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/style
-      this.$el.style.cssText = 'width:' + width + 'px;' + 
-      'height:' + height + 'px;' + 
-      'top:' + top + 'px;' +
-      'left:' + left + 'px';
+    alert(){
+      this.isBlock = true;
     },
+
     handleMinClick(){
 
     },
-    handleMoveStart(){
-      this.$options._moveStartData = {
-        top: this.$el.offsetTop,
-        left: this.$el.offsetLeft
-      }
+
+    handleMoveStart(virtual){
+      virtual.top = this.top;
+      virtual.left = this.left;
     },
-    handleMoving({moveX, moveY}){
-      const data = this.$options._moveStartData;
-      this.$el.style.top = (data.top - moveY) + 'px';
-      this.$el.style.left = (data.left - moveX) + 'px';
+    handleMoving(virtual){
+      this.top = virtual.top;
+      this.left = virtual.left;
     },
+    handleResizeStart(virtual){
+      virtual.top = this.top;
+      virtual.left = this.left;
+      virtual.width = this.width;
+      virtual.height = this.height;
+    },
+    handleResizing(virtual){
+      this.top = virtual.top;
+      this.left = virtual.left;
+      this.width = virtual.width;
+      this.height = virtual.height;
+    },
+
     handleMaxClick(){
       this.maximized = !this.maximized;
     },
-
+    hanldeBlockMaskMouseDown(){
+      console.log('hanldeBlockMaskMouseDown')
+    }
 
   },
   mounted(){
-    this.reStyle();
   }
 }
 </script>
