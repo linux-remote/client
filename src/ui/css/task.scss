@@ -1,10 +1,13 @@
 .lr-window{
-  @extend .lr-box;
   position: absolute;
-  padding: $taskTitleH + 3 3px 3px;
-  overflow: hidden;
 }
 
+.lr-window_main{
+  @extend .lr-box;
+  padding: $taskTitleH + 3 3px 3px;
+  height: 100%;
+  overflow: hidden;
+}
 
 .lr-title{
   background-color: $taskTitleColor;
@@ -30,12 +33,12 @@
   }
 }
 
-.lr-window{
+.lr-window_main{
   &:focus-within{
-    >.lr-title{
-      color: #fff;
-      background-color: $taskActiveTitleColor;
-    }
+      >.lr-title{
+        color: #fff;
+        background-color: $taskActiveTitleColor;
+      }
   }
 
 }
@@ -51,20 +54,20 @@
   padding-top: 1px;
   height: 100%;
 }
-.lr-window_block_mask{
-  position: absolute;
-  z-index: $maxZindex;
-  display: none;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-}
-.lr_window_block{
-  .lr-window_block_mask{
-    display: block;
-  }
-}
+// .lr-window_block_mask{
+//   position: absolute;
+//   z-index: $maxZindex;
+//   display: none;
+//   top: 0;
+//   bottom: 0;
+//   left: 0;
+//   right: 0;
+// }
+// .lr_window_block{
+//   .lr-window_block_mask{
+//     display: block;
+//   }
+// }
 .lr_mask_clicked{
   animation-name: maskOutClick;
   animation-duration: .1s;
@@ -81,6 +84,8 @@
 .lr-title-content{
   flex-grow: 1;
   font-weight: bold;
+  position: relative;
+  height: 100%;
 }
 
 

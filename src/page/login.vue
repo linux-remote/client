@@ -7,9 +7,9 @@
   Window(ref="win",
   :title="title",
   :enterBindBtn="true",
-  :startWidth="417",
+  :startWidth="width",
   :startHeight="230",
-  :startLeft="0",
+  :startLeft="left",
   :startTop="200"
   )
     .lr-login_banner
@@ -30,7 +30,6 @@
         input.lr-input(type='password', v-model='password', autocomplete="off",  required="required")
       .lr-login-box-footer
         Btn(@click="handleBtnClick", ref="submit") {{LANG.submitBtn}}
-  Alert(v-if="isShowAlert", :close="() => isShowAlert = false", v-bind="alertOpt")
 //-.lr-page.lr-login-wrap
   .lr-logined-wrap(v-if="loggedInList.length")
     div
@@ -58,27 +57,29 @@
 </template>
 
 <script>
-import { Window,  Icon,  Btn, Alert  } from '../ui/index.js';
+import { Window,  Icon,  Btn } from '../ui/index.js';
 export default {
   components: {
     Window,
     Icon,
-    Btn,
-    Alert
+    Btn
   },
   data(){
     const CORS = window.CLIENT_CONFIG.CORS;
     let title = 'Log On to Linux';
     title = CORS ? title + ' - ' + CORS : title;
+    const width = 417;
+    const left = (document.body.clientWidth - width) / 2;
     return {
       title,
+      width,
+      left,
       alertOpt: null,
       currLangIndex: this.$store.state.language.currIndex,
       isRequest: false,
       username: this.$route.query.user || '',
       password: '',
-      loggedInList: [],
-      isShowAlert: false
+      loggedInList: []
     }
   },
   computed: {
@@ -99,9 +100,7 @@ export default {
     //   })
     // },
     alert(opt){
-      this.$refs.win.alert();
-      this.isShowAlert = true;
-      this.alertOpt = opt;
+      this.$refs.win.alert(opt);
     },
     handleChange(){
       this.$store.commit('language/set', this.currLangIndex);

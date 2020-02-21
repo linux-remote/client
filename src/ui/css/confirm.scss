@@ -4,7 +4,6 @@
   top: 0;
   left: 0;
   position: absolute;
-  
   outline: none;
 }
 .lr-confirm-mask{
@@ -12,10 +11,11 @@
   width: 100%;
 }
 .lr-confirm{
-  @extend .lr-box;
-  width: 419px;
-  height: 133px;
+  // @extend .lr-box;
+  // width: 419px;
+  // height: 133px;
   z-index: 2;
+  position: absolute;
 }
 
 

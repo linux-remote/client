@@ -4,7 +4,9 @@ div(:tabindex="tabIndex",  @focusout="handleFocusout", @focusin="handleFocusin",
 </template>
 
 <script>
+import MixinEnterBindBtn from '__ROOT__/lib/mixins/enter-bind-last-focused-btn.js';
 export default {
+  mixins: [ MixinEnterBindBtn ],
   props: {
     tabIndex: {
       type: Number,

@@ -1,33 +1,20 @@
 <template lang="jade">
-.lr-window(:style="{top: top + 'px', left: left + 'px', width: width + 'px', height: height + 'px'}")
-  Resizable(v-if="resizable",
-    v-show="!maximized", 
-    :direction="resizeDirection",  
-    @resizeStart="handleResizeStart", 
-    @resizing="handleResizing")
-  Focusable.lr-window_main(:tabIndex="tabIndex", 
-                  :enterBindBtn="enterBindBtn",
-                  :class="{lr_window_maximized: maximized, lr_window_resizable:       resizable}")
-    .lr-title
-      LRIcon(:type="iconType", :value="icon")
-      .lr-title-content
-        Movable(v-if="movable", @moveStart="handleMoveStart", @moving="handleMoving")
-        span {{title}}
-      .lr-btn_nf(@click="handleMinClick", v-if="minimizable")
-        span.lr-icon_min
-      .lr-btn_nf(@click="handleMaxClick", v-if="maximizable")
-        span.lr-icon_unmax(v-if="maximized")
-        span.lr-icon_max(v-else)
-      .lr-btn_nf.lr-btn-close(@click="close", v-if="close")
-        span.lr-icon_close
-    .lr-window-body
-      slot
-
-  Alert(v-if="alertData",
-        :pWidth="width",
-        :pHeight="height",
-        :close="closeAlert",
-        v-bind="alertData")
+.lr-window_main(:tabIndex="tabIndex", 
+        :class="{lr_window_maximized: maximized, lr_window_resizable: resizable}")
+  .lr-title
+    Movable(v-if="movable", @moveStart="handleMoveStart", @moving="handleMoving")
+    LRIcon(:type="iconType", :value="icon")
+    .lr-title-content
+      span {{title}}
+    .lr-btn_nf(@click="handleMinClick", v-if="minimizable")
+      span.lr-icon_min
+    .lr-btn_nf(@click="handleMaxClick", v-if="maximizable")
+      span.lr-icon_unmax(v-if="maximized")
+      span.lr-icon_max(v-else)
+    .lr-btn_nf.lr-btn-close(@click="close", v-if="close")
+      span.lr-icon_close
+  .lr-window-body
+    slot
 </template>
 <script>
 import Focusable from '../../unit/focusable.vue';
@@ -35,7 +22,9 @@ import LRIcon from '../../cmpt/icon/icon.vue';
 import Resizable from '../../unit/resizable.vue';
 import Movable from '../../unit/movable.vue';
 import Alert from '../block/alert.vue';
+import MixinEnterBindBtn from '__ROOT__/lib/mixins/enter-bind-last-focused-btn.js';
 export default {
+  mixins: [MixinEnterBindBtn],
   components: {
     Focusable,
     LRIcon,
@@ -98,9 +87,6 @@ export default {
     startLeft: {
       type: Number,
       default: 0
-    },
-    enterBindBtn: {
-      type: Boolean
     }
   },
 
@@ -115,19 +101,13 @@ export default {
     }
   },
   methods: {
-    focus(){
-      this.$el.lastElementChild.focus();
-    },
     alert(data){
       this.alertData = data;
     },
     closeAlert(){
       this.alertData = null;
-      this.$nextTick(() => {
-        this.focus();
-      });
+      this.$el.focus();
     },
-
     handleMinClick(){
 
     },

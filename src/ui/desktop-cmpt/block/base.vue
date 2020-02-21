@@ -1,10 +1,14 @@
 <template lang="jade">
-.lr-confirm-wrap(tabindex="-1", :class="{lr_task_focus: isTaskFocus}", @focusin="handleFocusin", @focusout="handleFocusout", @submit.prevent="handleSubmit")
+.lr-confirm-wrap(:class="{lr_task_focus: isTaskFocus}", @focusin="handleFocusin", @focusout="handleFocusout", @submit.prevent="handleSubmit", tabIndex="-1")
   .lr-confirm-mask(@mousedown="handleMaskMouseDown")
-  .lr-window.lr-confirm(:style="{top: top}")
+
+  .lr-window_main.lr-confirm(:style="{width: width + 'px', height: height + 'px', top: top + 'px', left: left + 'px'}")
     .lr-title(:class="{lr_mask_clicked: isMaskClick}")
-      .lr-title-content {{title}}
-      .lr-btn_nf.lr-btn-close(@click="close") &#10006;
+      .lr-title-content
+        Movable(@moveStart="handleMoveStart", @moving="handleMoving")
+        | {{title}}
+      .lr-btn_nf.lr-btn-close(@click="close")
+        span.lr-icon_close
     .lr-window-body.lr-confirm-body
       .lr-block-icon(v-if="cIcon", :class="cIcon")
       | {{text}}
@@ -12,7 +16,11 @@
       slot
 </template>
 <script>
+import Movable from '../../unit/movable.vue';
 export default { // 0.356 
+  components: {
+    Movable
+  },
   props: {
     status: {
       type: String,
@@ -26,8 +34,21 @@ export default { // 0.356
       type: String,
       required: true
     },
-    top: {
+    pWidth: {
+      type: Number,
       default: 0
+    },
+    pHeight: {
+      type: Number,
+      default: 0
+    },
+    width: {
+      type: Number,
+      default: 419
+    },
+    height: {
+      type: Number,
+      default: 133
     },
     icon: {
       type: String,
@@ -39,7 +60,11 @@ export default { // 0.356
     }
   },
   data(){
+    const top = (this.pHeight - this.height) / 2;
+    const left = (this.pWidth - this.width) / 2;
     return {
+      top,
+      left,
       isMaskClick: false,
       isTaskFocus: true
     }
@@ -61,6 +86,14 @@ export default { // 0.356
     // bakFocusBtn(e){
     //   this.$options._focusBakBtn = e.currentTarget;
     // },
+    handleMoveStart(virtual){
+      virtual.top = this.top;
+      virtual.left = this.left;
+    },
+    handleMoving(virtual){
+      this.top = virtual.top;
+      this.left = virtual.left;
+    },
     handleFocusin(e){
       if(!this.isTaskFocus){
         this.isTaskFocus = true;
