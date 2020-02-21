@@ -132,20 +132,15 @@ export default { // 0.356
     },
     handleOkClick(){
       this.$emit('ok');
-      console.log('base handleOkClick')
       this.close();
     }
   },
   mounted(){
     const footer = this.$refs.footer;
-    console.log('base mounted')
     this.$options._focusBakBtn = footer.firstElementChild;
     this.$nextTick(() => {
       this.$el.focus();
     });
-  },
-  destroyed(){
-    console.log('base destroyed')
   }
 }
 </script>

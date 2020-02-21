@@ -1,5 +1,5 @@
 <template lang='jade'>
-div(:tabindex="tabIndex",  @focusout="handleFocusout", @focusin="handleFocusin", v-on="$listeners")
+div(:tabindex="tabindex",  @focusout="handleFocusout", @focusin="handleFocusin", v-on="$listeners")
   slot
 </template>
 
@@ -8,7 +8,7 @@ import MixinEnterBindBtn from '__ROOT__/lib/mixins/enter-bind-last-focused-btn.j
 export default {
   mixins: [ MixinEnterBindBtn ],
   props: {
-    tabIndex: {
+    tabindex: {
       type: Number,
       default: -1
     }

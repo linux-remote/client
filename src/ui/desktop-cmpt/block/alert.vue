@@ -26,7 +26,6 @@ export default {
   },
   methods: {
     handleBtnClick(){
-      console.log('handleAlertBtnClick');
       this.close();
     }
   }

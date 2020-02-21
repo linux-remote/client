@@ -39,10 +39,13 @@ export default {
       }
   },
   enterBindHandleFocusIn(e){
+      const lastFocused = this.$options._last_focused;
+      if(lastFocused.el === e.target){
+        return;
+      }
       if(e.target.tagName === 'BUTTON'){
         this.setEnterBindBtn(e.target);
       } else {
-        const lastFocused = this.$options._last_focused;
         if(lastFocused.btn){
           if(e.target.tagName !== 'TEXTAREA' && e.target.contentEditable !== 'true'){
             lastFocused.btn.addClass('lr__focus');
@@ -52,15 +55,23 @@ export default {
         }
         this.$options._last_focused.el = e.target;
       }
+  },
+  enterBindHandleFocus(){
+    const lastFocused = this.$options._last_focused;
+    if(lastFocused.el){
+      lastFocused.el.focus();
+    }
   }
   },
   mounted() {
-
     if(this.enterBindBtn){
       this.$options._last_focused = Object.create(null);
 
       this.$el.addEventListener('focusin', (e) => {
         this.enterBindHandleFocusIn(e);
+      });
+      this.$el.addEventListener('focus', (e) => {
+        this.enterBindHandleFocus(e);
       });
       this.$el.addEventListener('keydown', (e) => {
         if(e.key === 'Enter'){

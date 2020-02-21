@@ -5,7 +5,7 @@
     :direction="resizeDirection",  
     @resizeStart="handleResizeStart", 
     @resizing="handleResizing")
-  Focusable.lr-window_main(:tabIndex="tabIndex", 
+  Focusable.lr-window_main(:tabindex="tabIndex",
                   :enterBindBtn="enterBindBtn",
                   :class="{lr_window_maximized: maximized, lr_window_resizable:       resizable}")
     .lr-title

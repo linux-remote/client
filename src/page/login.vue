@@ -130,8 +130,6 @@ export default {
       })
     },
     handleBtnClick(){
-      console.log('handleBtnClick');
-
       this.alert({
         text: 'xhr.responseText',
         status: 'warn'
