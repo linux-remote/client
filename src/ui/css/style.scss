@@ -39,6 +39,7 @@ button{
   min-height: 100vh;
   position: relative;
 }
+
 .lr-mask{
   position: absolute;
   top: 0;
@@ -49,6 +50,8 @@ button{
 .lr-global{
   width: 0;
   height: 0;
+  position: relative;
+  z-index: 2;
 }
 .fade-enter-active, .fade-leave-active {
   transition: opacity .5s;

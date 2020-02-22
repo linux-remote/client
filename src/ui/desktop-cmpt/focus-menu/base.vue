@@ -25,7 +25,7 @@
 </style>
 <template lang="jade">
 div(tabindex="-1", @blur="handleBlur", :class="cssBase")
-  div(:class="{[cssBase + '-btn']: true, lr__focus: isFocus}", @mousedown="handleBtnMousedown")
+  div(:class="{[cssBase + '-btn']: true, lr__focus: isFocus}", @mousedown.left="handleBtnMousedown")
     slot(name="btn")
   transition(name="fade" mode="out-in" appear)
     div(:class="cssBase + '-menu'", ref="menu", style="display: none;")

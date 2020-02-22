@@ -1,17 +1,25 @@
 <template lang="jade">
-.lr-page.lr-desktop-wrap(v-if='!isRequest',
-                        :class="{lr_desktop_launch: isQuickLaunch}")
-  h2.lr-err-color(v-if="error") {{error}}
-  DeskTop(:icons='icons', v-else)
-  TasksBar
-  .lr-modal(v-if='sessError')
-    .lr-modal-box
-      .lr-modal-title Invalid session
-      .lr-modal-body
-        div Invalid session, Please login again.
-      .lr-modal-footer
-        button(@click="afterLogout") Yes
-        button(@click="closeSessErrorModal") No
+.lr-desktop(v-if='!isRequest')
+  .lr-bar
+    Start
+    QuickLaunch
+    .lr-task-bar
+      TaskItem ABC
+      TaskItem focus
+    .lr-inner.lr-clock-area 12:12
+  .lr-desktop-body
+    h2 body
+  //- h2.lr-err-color(v-if="error") {{error}}
+  //- DeskTop(:icons='icons', v-else)
+  //- TasksBar
+  //- .lr-modal(v-if='sessError')
+  //-   .lr-modal-box
+  //-     .lr-modal-title Invalid session
+  //-     .lr-modal-body
+  //-       div Invalid session, Please login again.
+  //-     .lr-modal-footer
+  //-       button(@click="afterLogout") Yes
+  //-       button(@click="closeSessErrorModal") No
   //- QuickBar
 </template>
 <script>
@@ -21,12 +29,15 @@ import DeskTop from '__ROOT__/cmpt/desktop/body.vue';
 import TasksBar from '__ROOT__/cmpt/task/bar.vue';
 import { composeUserWsUrl } from '../cmpt/sys-app/util';
 // import QuickBar from '__ROOT__/cmpt/quick-bar/quick-bar.vue';
-
+import {Start, QuickLaunch, TaskItem} from '../ui/index.js';
 export default {
   mixins: [safeBind, logout],
   components: {
     TasksBar,
     DeskTop,
+    Start,
+    QuickLaunch,
+    TaskItem
     // QuickBar
   },
   data(){
@@ -42,9 +53,6 @@ export default {
     },
     username(){
       return this.$store.state.username
-    },
-    isQuickLaunch() {
-      return this.$store.state.isQuickLaunch
     }
   },
   watch: {
@@ -123,26 +131,26 @@ export default {
         }
       });
     },
-    init(){
+    // init(){
       
-      this.error = null;
+    //   this.error = null;
 
-    },
-    handleDocKeyDown(e){
-      if(e.ctrlKey && e.key === 'Meta'){
-        this.$store.commit('toggleQuickLaunch');
+    // },
+    // handleDocKeyDown(e){
+    //   if(e.ctrlKey && e.key === 'Meta'){
+    //     this.$store.commit('toggleQuickLaunch');
 
-        e.preventDefault();
-        e.stopPropagation();
-      }
-    }
+    //     e.preventDefault();
+    //     e.stopPropagation();
+    //   }
+    // }
   },
 
   mounted(){
     
-    this.safeBind(document, 'keydown', (e) => {
-      this.handleDocKeyDown(e);
-    });
+    // this.safeBind(document, 'keydown', (e) => {
+    //   this.handleDocKeyDown(e);
+    // });
     // this.$options._keep_alive = setInterval(() => {
     //   this.request({
     //     url: '~/alive'
@@ -155,8 +163,8 @@ export default {
   },
 
   created(){
-    this.init();
-    this.createWs();
+    // this.init();
+    // this.createWs();
   }
 }
 

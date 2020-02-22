@@ -1,12 +1,12 @@
 <template lang="jade">
 #lr-root.lr-root(@dragover.prevent, @drop.prevent)
-  .lr-desktop(style="width: 100%;height: 100%;left: 0; top: 0")
+  .lr-desktop-wrap
     router-view
   .lr-global
     FlyTextarea
     UploadInput
     UploadBox
-    Error
+    //- Error
     OpenWith
     Confirm
 </template>

@@ -122,7 +122,8 @@ export default {
           this.routeTo(username);
         },
         error(xhr){
-          this.$refs.win.alert({
+          this.alert({
+            title: 'Logon Message',
             text: xhr.responseText,
             status: 'warn'
           });
@@ -130,11 +131,11 @@ export default {
       })
     },
     handleBtnClick(){
-      this.alert({
-        text: 'xhr.responseText',
-        status: 'warn'
-      });
-      // this.login();
+      // this.alert({
+      //   text: 'xhr.responseText',
+      //   status: 'warn'
+      // });
+      this.login();
     },
     routeTo(username){
       this.$router.push('user/' + username);
@@ -143,7 +144,6 @@ export default {
   mounted(){
     this.$nextTick(() => {
       this.$refs.submit.$el.focus();
-      // this.setEnterBindBtn(this.$refs.submit.$el);
     });
   }
 }
