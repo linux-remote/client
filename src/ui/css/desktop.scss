@@ -11,15 +11,28 @@
   1px 1px  #fff inset;
 }
 
+.lr-desktop-wrap{
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  background-color: $deskTopColor;
+}
 
 .lr-desktop{
-  height: 100vh;
+  height: 100%;
   // position: relative;
-  background-color: $deskTopColor;
+  // background-color: $deskTopColor;
   padding-bottom: $taskBarH;
-  box-shadow: none;
-  overflow: hidden;
   position: relative;
+}
+.lr-desktop_body{
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+.lr-desktop_container .lr-window_main{
+  box-shadow: none;
+  background: none;
   padding: 0;
   >.lr-title{
     display: none;

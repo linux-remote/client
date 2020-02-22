@@ -7,8 +7,10 @@
       TaskItem ABC
       TaskItem focus
     .lr-inner.lr-clock-area 12:12
-  .lr-desktop-body
-    h2 body
+  .lr-desktop_body(ref="body")
+    Window.lr-desktop_container(
+    :startIsMax="true")
+      h2 body
   //- h2.lr-err-color(v-if="error") {{error}}
   //- DeskTop(:icons='icons', v-else)
   //- TasksBar
@@ -29,7 +31,7 @@ import DeskTop from '__ROOT__/cmpt/desktop/body.vue';
 import TasksBar from '__ROOT__/cmpt/task/bar.vue';
 import { composeUserWsUrl } from '../cmpt/sys-app/util';
 // import QuickBar from '__ROOT__/cmpt/quick-bar/quick-bar.vue';
-import {Start, QuickLaunch, TaskItem} from '../ui/index.js';
+import {Start, QuickLaunch, TaskItem, Window} from '../ui/index.js';
 export default {
   mixins: [safeBind, logout],
   components: {
@@ -37,7 +39,8 @@ export default {
     DeskTop,
     Start,
     QuickLaunch,
-    TaskItem
+    TaskItem,
+    Window
     // QuickBar
   },
   data(){

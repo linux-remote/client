@@ -1,9 +1,9 @@
 <template lang="jade">
-.lr-window(:style="{top: top + 'px', left: left + 'px', width: width + 'px', height: height + 'px'}")
+.lr-window(:style="{top: top + 'px', left: left + 'px', width: width + 'px', height: height + 'px'}", :class="{lr_window_max: isMax}")
   Resizable(v-if="resizable",
     v-show="!maximized", 
     :direction="resizeDirection",  
-    @resizeStart="handleResizeStart", 
+    @resizeStart="handleResizeStart",
     @resizing="handleResizing")
   Focusable.lr-window_main(:tabindex="tabIndex",
                   :enterBindBtn="enterBindBtn",
@@ -82,7 +82,10 @@ export default {
       type: String,
       default: 'all'
     },
-    
+    startIsMax: {
+      type: Boolean,
+      default: false
+    },
     startWidth: {
       type: Number,
       default: 600
@@ -107,6 +110,7 @@ export default {
   data(){
     return {
       maximized: false,
+      isMax: this.startIsMax,
       height: this.startHeight,
       width: this.startWidth,
       top: this.startTop,
@@ -159,6 +163,12 @@ export default {
 
   },
   mounted(){
+    if(this.startIsMax){
+      this.top = 0;
+      this.left = 0;
+      this.width = this.$el.parentElement.clientWidth;
+      this.height = this.$el.parentElement.clientHeight;
+    }
   }
 }
 </script>
