@@ -30,6 +30,7 @@ import logout from '../lib/mixins/logout';
 import DeskTop from '__ROOT__/cmpt/desktop/body.vue';
 import TasksBar from '__ROOT__/cmpt/task/bar.vue';
 import { composeUserWsUrl } from '../cmpt/sys-app/util';
+const SocketRequest = require('../../../socket-request/index.js');
 // import QuickBar from '__ROOT__/cmpt/quick-bar/quick-bar.vue';
 import {Start, QuickLaunch, TaskItem, Window} from '../ui/index.js';
 export default {
@@ -74,15 +75,22 @@ export default {
     createWs(){
       const url = composeUserWsUrl(this.$route.params.username);
       const ws = new WebSocket(url);
-      ws.onmessage = function(msg){
-        console.log('msg', msg);
-      }
+      // ws.onmessage = function(e){
+      //   console.log('msg', e.data);
+      // }
       ws.onopen = () => {
         console.log('onopen');
-        setTimeout(() => {
-        const data = this.$options._pako.deflate('getDesktopBundle', {gzip: true});
-        ws.send(data);
-        }, 2000)
+        const sr = new SocketRequest(ws, true);
+        sr.request({method: 'getTime'}, function(data){
+          console.log('data', data);
+        })
+        sr.request({method: 'getDesktopBundle'}, function(data){
+          console.log('data', data);
+        })
+        // setTimeout(() => {
+        // const data = this.$options._pako.deflate('getDesktopBundle');
+        // ws.send(data);
+        // // }, 2000);
         // ws.send('getDesktopBundle');
       }
     },
@@ -156,8 +164,7 @@ export default {
   mounted(){
     window.require(['pako'], (pako) => {
       this.$options._pako = pako;
-      console.log('pako', pako)
-    })
+    });
     // this.safeBind(document, 'keydown', (e) => {
     //   this.handleDocKeyDown(e);
     // });
