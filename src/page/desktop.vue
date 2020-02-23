@@ -72,7 +72,7 @@ export default {
         sessError: false
       })
     },
-    createWs(){
+    createWs(pako){
       const url = composeUserWsUrl(this.$route.params.username);
       const ws = new WebSocket(url);
       // ws.onmessage = function(e){
@@ -80,7 +80,16 @@ export default {
       // }
       ws.onopen = () => {
         console.log('onopen');
-        const sr = new SocketRequest(ws, true);
+        const sr = new SocketRequest(ws, {
+          isWs: true,
+          isCompress: true,
+          inflateFn: (data) => {
+            return pako.inflate(data, { to: 'string' });
+          },
+          deflateFn: (data) => {
+            return pako.deflate(data);
+          }
+        });
         sr.request({method: 'getTime'}, function(data){
           console.log('data', data);
         })
@@ -162,9 +171,7 @@ export default {
   },
 
   mounted(){
-    window.require(['pako'], (pako) => {
-      this.$options._pako = pako;
-    });
+
     // this.safeBind(document, 'keydown', (e) => {
     //   this.handleDocKeyDown(e);
     // });
@@ -181,7 +188,10 @@ export default {
 
   created(){
     // this.init();
-    this.createWs();
+    window.require(['pako'], (pako) => {
+      this.createWs(pako);
+    });
+    
   }
 }
 
