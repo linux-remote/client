@@ -77,9 +77,13 @@ export default {
       ws.onmessage = function(msg){
         console.log('msg', msg);
       }
-      ws.onopen = function(){
+      ws.onopen = () => {
         console.log('onopen');
-        ws.send('getDesktopBundle');
+        setTimeout(() => {
+        const data = this.$options._pako.deflate('getDesktopBundle', {gzip: true});
+        ws.send(data);
+        }, 2000)
+        // ws.send('getDesktopBundle');
       }
     },
     getData(){
@@ -150,7 +154,10 @@ export default {
   },
 
   mounted(){
-    
+    window.require(['pako'], (pako) => {
+      this.$options._pako = pako;
+      console.log('pako', pako)
+    })
     // this.safeBind(document, 'keydown', (e) => {
     //   this.handleDocKeyDown(e);
     // });
@@ -167,7 +174,7 @@ export default {
 
   created(){
     // this.init();
-    // this.createWs();
+    this.createWs();
   }
 }
 
