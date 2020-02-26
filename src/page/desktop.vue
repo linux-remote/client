@@ -1,5 +1,5 @@
 <template lang="jade">
-.lr-desktop(v-if='!isRequest')
+.lr-desktop
   .lr-bar
     Start
     QuickLaunch
@@ -11,6 +11,7 @@
     Window.lr-desktop_container(
     :startIsMax="true")
       h2 body
+      button.lr-btn(@click="createWs") ws
   //- h2.lr-err-color(v-if="error") {{error}}
   //- DeskTop(:icons='icons', v-else)
   //- TasksBar
@@ -22,16 +23,13 @@
   //-     .lr-modal-footer
   //-       button(@click="afterLogout") Yes
   //-       button(@click="closeSessErrorModal") No
-  //- QuickBar
 </template>
 <script>
 import safeBind from '../lib/mixins/safe-bind';
 import logout from '../lib/mixins/logout';
 import DeskTop from '__ROOT__/cmpt/desktop/body.vue';
 import TasksBar from '__ROOT__/cmpt/task/bar.vue';
-import { composeUserWsUrl } from '../cmpt/sys-app/util';
-const SocketRequest = require('../../../socket-request/index.js');
-// import QuickBar from '__ROOT__/cmpt/quick-bar/quick-bar.vue';
+
 import {Start, QuickLaunch, TaskItem, Window} from '../ui/index.js';
 export default {
   mixins: [safeBind, logout],
@@ -47,7 +45,7 @@ export default {
   data(){
     return {
       icons: null,
-      isRequest: false,
+      isConnected: false,
       error: null
     }
   },
@@ -72,125 +70,77 @@ export default {
         sessError: false
       })
     },
-    createWs(pako){
-      const url = composeUserWsUrl(this.$route.params.username);
-      const ws = new WebSocket(url);
-      // ws.onmessage = function(e){
-      //   console.log('msg', e.data);
-      // }
-      ws.onopen = () => {
-        console.log('onopen');
-        const sr = new SocketRequest(ws, {
-          isWs: true,
-          isCompress: true,
-          inflateFn: (data) => {
-            return pako.inflate(data, { to: 'string' });
-          },
-          deflateFn: (data) => {
-            return pako.deflate(data);
-          }
-        });
-        sr.request({method: 'getTime'}, function(data){
-          console.log('data', data);
-        })
-        sr.request({method: 'getDesktopBundle'}, function(data){
-          console.log('data', data);
-        })
-        // setTimeout(() => {
-        // const data = this.$options._pako.deflate('getDesktopBundle');
-        // ws.send(data);
-        // // }, 2000);
-        // ws.send('getDesktopBundle');
-      }
-    },
-    getData(){
+    parseBundle(data){
+      const username = this.$route.params.username;
+      document.title = username + '@' + data.hostname;
+      // id
+      // uid=1000(dw) gid=2004(dw) groups=2004(dw),4(adm),24(cdrom),27(sudo),30(dip),46(plugdev),113(lpadmin),128(sambashare)
 
-      this.request({
-        url: '~/desktop/bundle',
-        stateKey: 'isRequest',
-        success(data){
-          const username = this.$route.params.username;
-          document.title = username + '@' + data.hostname;
-          // id
-          // uid=1000(dw) gid=2004(dw) groups=2004(dw),4(adm),24(cdrom),27(sudo),30(dip),46(plugdev),113(lpadmin),128(sambashare)
-
-          let id = data.id.trim();
-          id = id.split(' ');
-          function parseItem(str){
-            str = str.substr(str.indexOf('=') + 1);
-            let i1 = str.indexOf('(');
-            let id = str.substr(0, i1);
-            let name = str.substring(i1 + 1, str.length - 1);
-            return  {
-              id,
-              name
-            }
-          }
-          let group = parseItem(id[1]);
-          let groups = id[2];
-          groups = groups.split(',');
-          
-          groups = groups.map(item => {
-            return parseItem(item)
-          });
-
-          let groupNames = [];
-          groups.forEach(v => {
-            groupNames.push(v.name);
-          })
-          this.$store.commit('set', {
-            isLogin: true,
-            username,
-            group,
-            _groups: groups, // will switch name.
-            groups: groupNames,
-            homedir: data.homedir,
-            hostname: data.hostname
-          });
-          this.$store.commit('sysApps/changeRecycleBinIcon', data.recycebinIsEmpty);
-          this.$store.commit('desktop/setIcons', _initIcons(data.icons));
-        },
-        error(xhr){
-          this.error = this.request.defWrapErr(xhr);
+      let id = data.id.trim();
+      id = id.split(' ');
+      function parseItem(str){
+        str = str.substr(str.indexOf('=') + 1);
+        let i1 = str.indexOf('(');
+        let id = str.substr(0, i1);
+        let name = str.substring(i1 + 1, str.length - 1);
+        return  {
+          id,
+          name
         }
-      });
-    },
-    // init(){
+      }
+      let group = parseItem(id[1]);
+      let groups = id[2];
+      groups = groups.split(',');
       
-    //   this.error = null;
+      groups = groups.map(item => {
+        return parseItem(item)
+      });
 
-    // },
-    // handleDocKeyDown(e){
-    //   if(e.ctrlKey && e.key === 'Meta'){
-    //     this.$store.commit('toggleQuickLaunch');
-
-    //     e.preventDefault();
-    //     e.stopPropagation();
-    //   }
-    // }
+      let groupNames = [];
+      groups.forEach(v => {
+        groupNames.push(v.name);
+      })
+      this.$store.commit('set', {
+        isLogin: true,
+        username,
+        group,
+        _groups: groups, // will switch name.
+        groups: groupNames,
+        homedir: data.homedir,
+        hostname: data.hostname
+      });
+      this.$store.commit('sysApps/changeRecycleBinIcon', data.recycebinIsEmpty);
+      this.$store.commit('desktop/setIcons', _initIcons(data.icons));
+        
+    },
+    createWs(){
+      this.$store.commit('wsConnect');
+    },
+    handleSr(sr){
+      sr.request({method: 'getTime'}, function(data){
+        console.log('data', data);
+      });
+      sr.request({method: 'getDesktopBundle'}, function(data){
+        console.log('data', data);
+      });
+    }
   },
 
   mounted(){
-
-    // this.safeBind(document, 'keydown', (e) => {
-    //   this.handleDocKeyDown(e);
-    // });
-    // this.$options._keep_alive = setInterval(() => {
-    //   this.request({
-    //     url: '~/alive'
-    //   });
-    // }, 60 * 1000);
-
   },
+
   destroyed(){
-    // clearInterval(this.$options._keep_alive);
   },
 
   created(){
-    // this.init();
-    window.require(['pako'], (pako) => {
-      this.createWs(pako);
-    });
+    const username = this.$route.params.username;
+    this.$store.commit('setUsername', username);
+    // this.$store.commit('wsConnect');
+    // window.require(['pako'], (pako) => {
+    //   this.createWs(pako, (sr) => {
+    //     this.handleSr(sr);
+    //   });
+    // });
     
   }
 }
@@ -204,7 +154,6 @@ function _initIcons(icons){
       x:0,
       y:0
     }]
-
   }else{
     icons = JSON.parse(icons);
   }

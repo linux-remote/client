@@ -1,6 +1,5 @@
 <template lang="jade">
 button.lr-desktop-icon(draggable="true",
-              @click="handleClick",
               @dblclick="handleDblclick",
               @dragstart.stop='handleDragStart(item, $event)',
               :style='{left: item.x + "px", top: item.y + "px"}')
@@ -66,9 +65,6 @@ export default {
         case 'file':
           return this.item.name;
       }
-    },
-    isQuickLaunch() {
-      return this.$store.state.isQuickLaunch
     }
   },
   methods: {
@@ -83,16 +79,7 @@ export default {
       this.$refs.ctx.hidden();
       this.$store.commit('desktop/removeIcon', this.index);
     },
-    handleClick(){
-      if(this.isQuickLaunch){
-        this.launch();
-        this.$store.commit('toggleQuickLaunch');
-      }
-    },
     handleDblclick(){
-      if(this.isQuickLaunch){
-        return;
-      }
       this.launch();
     },
     launch(){

@@ -1,3 +1,4 @@
+import { composeUserWsUrl } from '../cmpt/sys-app/util';
 
 const $ = window.$;
 const $win = $(window);
@@ -9,9 +10,17 @@ $win.on('resize', function(){
   store.commit('setDeskTopWH');
 });
 
+$win.on('online', function(){
+  store.commit('chOnline', true)
+});
+$win.on('offline', function(){
+  store.commit('chOnline', false);
+})
+
 window.APP = {
   contextMenuTransferData: null
 }
+
 import { TypeOf } from '../lib/util';
 import language from './module/language';
 
@@ -25,7 +34,11 @@ import users from './module/users';
 import fs from './module/fs';
 import desktop from './module/desktop';
 import windows from './module/windows.js';
+const SocketRequest = require('../../../socket-request/index.js');
 // let _tmp = null;
+const AFRTimeout = 15 * 60 * 1000;
+let ws, sr, _pako;
+let wsCloseTime = 0;
 const store = new window.Vuex.Store({
   modules: {
     language,
@@ -49,14 +62,22 @@ const store = new window.Vuex.Store({
     // desktop
     deskTopW: 0,
     deskTopH: 0,
-    isLogin: false,
-    
-    username:'',
-    groups: [],
-    homedir: '',
-    hostname: '',
 
-    // quickBarItems: [],
+    hostname: '',
+    isLogin: false,
+    isOnLine: true,
+
+    username:'',
+    homedir: '',
+    wsIsConnected: false,
+    // wsCloseCode: -1,
+    // wsCloseReason: '',
+
+    groups: [],
+    
+    
+
+    quickLaunchItems: [],
 
     recycleBinEvent: null,
 
@@ -64,11 +85,96 @@ const store = new window.Vuex.Store({
     onDustbinRecycle: null,
     sessError: false,
     openWidthData: null,
-    confirmData: null,
-    isQuickLaunch: false
+    confirmData: null
   },
   mutations: {
+    setUsername(state, username){
+      state.username = username;
+    },
+    chOnline(state, bool){
+      console.log('chOnline', bool)
+      state.isOnLine = bool;
+    },
+    wsConnect(state){
+      if(state.wsIsConnected){
+        return;
+      }
+      if(ws){
+        if(ws.readyState !== WebSocket.CLOSED){
+          console.log('ws', ws.readyState);
+          return;
+        }
+      }
+      if(wsCloseTime){
+        if((Date.now() - wsCloseTime) >= AFRTimeout){
+          console.log('ex')
+          return;
+        }
+      }
+      getPako((pako) => {
+        const url = composeUserWsUrl(state.username);
+        const ws = new WebSocket(url);
+        ws.onopen = () => {
+          wsCloseTime = 0;
+          sr = new SocketRequest(ws, {
+            isWs: true, 
+            isCompress: true,
+            inflateFn: (data) => {
+              return pako.inflate(data, { to: 'string' });
+            },
+            deflateFn: (data) => {
+              return pako.deflate(data);
+            }
+          });
+          state.wsIsConnected = true;
+        }
 
+        const handleClose =  (e) => {
+          state.wsIsConnected = false;
+          wsCloseTime = Date.now();
+          if(e.code === 1000){
+            this.commit('logout');
+          } else {
+            // state.wsCloseCode = e.code;
+            // state.wsCloseReason = e.reason;
+            
+            if(!state.isOnLine){
+              window.addEventListener('online', () => {
+                store.commit('wsConnect');
+              }, {
+                once: true
+              });
+            } else {
+              if(e.code === 1006){
+                // 1006:
+                // Connection closed before receiving a handshake response
+                // ECONREFUSED 
+                this.request({
+                  type: 'get',
+                  url: '~/alive',
+                  success: () => {
+                    store.commit('wsConnect');
+                  },
+                  error: (xhr) => {
+                    if(xhr.status !== 403){
+                      setTimeout(() => {
+                        console.log('re connect');
+                        store.commit('wsConnect');
+                      }, 1500);
+                    }
+                  }
+                })
+              } else {
+                setTimeout(() => {
+                  store.commit('wsConnect');
+                }, 1500);
+              }
+            }
+          }
+        }
+        ws.onclose = handleClose;
+      });
+    },
     setDeskTopWH(state){
       var dom = document.getElementById('lr-desktop');
       if(dom){
@@ -84,7 +190,9 @@ const store = new window.Vuex.Store({
       this.commit('sysApps/changeRecycleBinIcon', bool)
     },
 
-
+    logout(state){
+      state.isLogin = false;
+    },
     needRelogin(state){
       state.sessError = true;
     },
@@ -95,7 +203,7 @@ const store = new window.Vuex.Store({
       Object.assign(state, data);
     },
     clearDesktop(){
-      // state.quickBarItems = [];
+      state.quickLaunchItems = [];
       store.commit('task/closeAll');
       store.commit('users/clear');
       store.commit('fsClipBoard/clear');
@@ -114,35 +222,18 @@ const store = new window.Vuex.Store({
     },
     hiddenConfirm(state){
       state.confirmData = null;
-    },
-    toggleQuickLaunch(state){
-      state.isQuickLaunch = !state.isQuickLaunch;
-      // if(state.task.isMinAll) {
-
-      // }
-      /*
-      if(state.isQuickLaunch){
-        _tmp = [(e) => {
-          e._capture_by_doc = true;
-          _tmp = null;
-          setTimeout(() => {
-            state.isQuickLaunch = false;
-            console.log('mousedown');
-          }, 200)
-
-        }, {
-          capture: true,
-          once: true
-        }]
-        document.addEventListener('mousedown', _tmp[0], _tmp[1]);
-      } else {
-        if(_tmp){
-          document.removeEventListener('mousedown', _tmp[0], _tmp[1]);
-        }
-      }*/
-
     }
   }
 });
 
+function getPako(cb){
+  if(_pako){
+    cb(_pako);
+    return;
+  }
+  window.require(['pako'], function(pako){
+    _pako = pako;
+    cb(_pako)
+  });
+}
 export default store;

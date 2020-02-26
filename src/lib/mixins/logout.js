@@ -14,7 +14,7 @@ export default {
         }
       })
     },
-    afterLogout(){
+    afterLogout(){ 
       
       let route = '/';
       const storeData = {

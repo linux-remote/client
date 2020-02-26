@@ -2,7 +2,6 @@
 <template lang="jade">
 .lr-task-bar
   Start
-  QuickLaunch
   ShowDesktop
   BarBody
   Watch
@@ -12,14 +11,12 @@
 import Start from '../start/start.vue';
 import BarBody from './bar-body.vue';
 import Watch from '../watch/watch.vue';
-import QuickLaunch from './quick-launch.vue';
 import ShowDesktop from './show-desktop.vue';
 export default {
   components: {
     Start,
     BarBody,
     Watch,
-    QuickLaunch,
     ShowDesktop
   },
 
