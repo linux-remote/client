@@ -95,7 +95,7 @@ const store = new window.Vuex.Store({
       console.log('chOnline', bool)
       state.isOnLine = bool;
     },
-    wsConnect(state){
+    wsConnect(state, callback){
       if(state.wsIsConnected){
         return;
       }
@@ -127,14 +127,16 @@ const store = new window.Vuex.Store({
             }
           });
           state.wsIsConnected = true;
+          callback();
         }
 
         const handleClose =  (e) => {
           state.wsIsConnected = false;
-          wsCloseTime = Date.now();
+          
           if(e.code === 1000){
             this.commit('logout');
           } else {
+            wsCloseTime = Date.now();
             // state.wsCloseCode = e.code;
             // state.wsCloseReason = e.reason;
             
@@ -158,7 +160,6 @@ const store = new window.Vuex.Store({
                   error: (xhr) => {
                     if(xhr.status !== 403){
                       setTimeout(() => {
-                        console.log('re connect');
                         store.commit('wsConnect');
                       }, 1500);
                     }
@@ -183,7 +184,20 @@ const store = new window.Vuex.Store({
       }
     },
 
+    wsRequest(state, opts){
+      if(!state.wsIsConnected){
+        opts.error && opts.error('disConnected');
+        return;
+      }
+      if(ws){
+        if(ws.readyState !== WebSocket.OPEN){
+          opts.error && opts.error('readyStateNotOpen');
+          return;
+        }
+      }
+      sr.request({method: opts.method}, opts.success);
 
+    },
 
     recycleBinTrigger(state, bool){
       state.recycleBinEvent = Date.now();

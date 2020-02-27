@@ -1,5 +1,5 @@
 <template lang="jade">
-.lr-desktop
+.lr-desktop(v-if="isConnected")
   .lr-bar
     Start
     QuickLaunch
@@ -135,7 +135,9 @@ export default {
   created(){
     const username = this.$route.params.username;
     this.$store.commit('setUsername', username);
-    // this.$store.commit('wsConnect');
+    this.$store.commit('wsConnect', () => {
+      this.isConnected = true;
+    });
     // window.require(['pako'], (pako) => {
     //   this.createWs(pako, (sr) => {
     //     this.handleSr(sr);

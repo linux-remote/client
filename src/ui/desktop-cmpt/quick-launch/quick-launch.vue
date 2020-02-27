@@ -15,7 +15,7 @@
           | {{v.name}}
   .lr-groove
   .lr-ridge
-  Resizable(direction="r", :proxy="$data",  @resized="handleResized", :minWidth="69", :maxWidth="460")
+  Resizable(direction="r", @resizeStart="handleResizeStart", @resizing="handleResizing", @resized="handleResized", :minWidth="69", :maxWidth="460")
 </template>
 <script>
 import Resizable from '../../unit/resizable.vue';
@@ -43,11 +43,19 @@ export default {
     }
   },
   methods: {
-    handleResized({width}){
-      localStorage.quickLaunchWidth = width;
+    handleResizeStart(virtual){
+      virtual.width = this.width;
     },
-    parse(){
-      const rawList = this.$options._rawList;
+    handleResizing(virtual){
+      this.width = virtual.width;
+    },
+    handleResized(virtual){
+      localStorage.quickLaunchWidth = virtual.width;
+    },
+    parse(rawList){
+      if(!rawList){
+        return;
+      }
       let list = [], moreList = [];
       let crrList = list;
       let limitLen = Math.floor(this.width / ITEM_WIDTH) - 1;
@@ -61,39 +69,47 @@ export default {
       this.moreList = moreList;
     }
   },
+  created(){
+    this.$store.commit('wsRequest',{
+      method: 'getQuickLaunchItems',
+      success: (data) => {
+        this.parse(data);
+      }
+    });
+  },
   mounted(){
-    this.$options._rawList = [{
-        icon: {
-          type: 'img',
-          value: '/public/note.jpg'
-        },
-        name: 'note.txt'
-      },{
-        icon: {
-          type: 'img',
-          value: '/public/note.jpg'
-        },
-        name: 'note.txt'
-      },{
-        icon: {
-          type: 'img',
-          value: '/public/note.jpg'
-        },
-        name: 'note.txt'
-      },{
-        icon: {
-          type: 'img',
-          value: '/public/note.jpg'
-        },
-        name: 'note.txt'
-      },{
-        icon: {
-          type: 'css',
-          value: 'iconfont icon-logo_LR'
-        },
-        name: 'note.txt'
-      }]
-    this.parse();
+    // this.$options._rawList = [{
+    //     icon: {
+    //       type: 'img',
+    //       value: '/public/note.jpg'
+    //     },
+    //     name: 'note.txt'
+    //   },{
+    //     icon: {
+    //       type: 'img',
+    //       value: '/public/note.jpg'
+    //     },
+    //     name: 'note.txt'
+    //   },{
+    //     icon: {
+    //       type: 'img',
+    //       value: '/public/note.jpg'
+    //     },
+    //     name: 'note.txt'
+    //   },{
+    //     icon: {
+    //       type: 'img',
+    //       value: '/public/note.jpg'
+    //     },
+    //     name: 'note.txt'
+    //   },{
+    //     icon: {
+    //       type: 'css',
+    //       value: 'iconfont icon-logo_LR'
+    //     },
+    //     name: 'note.txt'
+    //   }]
+    // this.parse();
   }
 }
 </script>

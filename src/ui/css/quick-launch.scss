@@ -3,9 +3,11 @@
   display: flex;
   align-items: center;
   position: relative;
-  .lr-resize-r{
+  .lr-resize_r{
+    // background-color: red;
     right: 3px;
-    left: auto;
+    width: 5px;
+    // left: auto;
   }
 }
 
