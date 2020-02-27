@@ -16,6 +16,16 @@ $win.on('online', function(){
 $win.on('offline', function(){
   store.commit('chOnline', false);
 })
+// window.addEventListener('focus', function(e){
+//   if(e.target === window){
+
+//   }
+//   e.preventDefault();
+//   e.stopPropagation();
+// }, {
+//   capture: true
+// });
+
 
 window.APP = {
   contextMenuTransferData: null

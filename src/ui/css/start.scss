@@ -31,3 +31,16 @@
   height: 300px;
   z-index: 2;
 }
+.lr-start-menu-item{
+  height: 20px;
+  line-height: 20px;
+  display: flex;
+  font-size: 12px;
+  .lr-icon{
+    margin-right: 9px;
+  }
+  &:hover{
+    color: #fff;
+    background-color: $color3;
+  }
+}

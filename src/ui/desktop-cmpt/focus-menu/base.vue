@@ -24,7 +24,7 @@
 }
 </style>
 <template lang="jade">
-div(tabindex="-1", @blur="handleBlur", :class="cssBase")
+Focusable(tabindex="-1", @focusleave="handleBlur", :class="cssBase")
   div(:class="{[cssBase + '-btn']: true, lr__focus: isFocus}", @mousedown.left="handleBtnMousedown")
     slot(name="btn")
   transition(name="fade" mode="out-in" appear)
@@ -32,7 +32,11 @@ div(tabindex="-1", @blur="handleBlur", :class="cssBase")
       slot(name="menu")
 </template>
 <script>
+import Focusable from '../../unit/focusable.vue';
 export default {
+  components: {
+    Focusable
+  },
   props: {
     cssBase: {
       type: String,
@@ -51,7 +55,6 @@ export default {
       } else {
         this.hideMenu();
       }
-      
     },
     handleBlur(){
       this.hideMenu();

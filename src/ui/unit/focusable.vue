@@ -1,5 +1,5 @@
 <template lang='jade'>
-div(:tabindex="tabindex",  @focusout="handleFocusout", @focusin="handleFocusin", v-on="$listeners")
+div(:tabindex="tabindex", @focusout="handleFocusout", @focusin="handleFocusin", v-on="$listeners")
   slot
 </template>
 
@@ -21,6 +21,9 @@ export default {
       }
     },
     handleFocusout(e){
+      if(!document.hasFocus()){
+        return;
+      }
       if(!e.relatedTarget || !this.$el.contains(e.relatedTarget)){
         this.$options._is_focusenter = false;
         this.$emit('focusleave', e);

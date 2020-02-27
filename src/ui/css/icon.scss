@@ -1,7 +1,7 @@
 .lr-icon{
-  // width: 16px;
-  // height: 16px;
-  // line-height: 16px;
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
   text-align: center;
   flex-shrink: 0;
   margin-right: 2px;
@@ -14,7 +14,10 @@
     max-height: 100%;
   }
 }
-
+.lr-icon{
+  background-size: contain;
+  background-position: center;
+}
 .lr-icon_min{
   width: 6px;
   height: 2px;
