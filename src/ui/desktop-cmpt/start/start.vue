@@ -4,21 +4,23 @@ FocusMenu(cssBase="lr-start")
     LRIcon(type="css", value="iconfont icon-logo_LR")
     | Start
   template(v-slot:menu)
+    //- .lr-start_inner
+    //-   .lr-start_left
     .lr-start-username(@click="handleAccountClick") {{username}}
-    hr
+    .lr-hr
     .lr-start-apps
       AppItem.lr-start-menu-item(v-for='(v, k) in sysAppMap',
                                 :item="v",
                                 v-if="!v.hidden"
                                 :id='k',
                                 :key="k")
-    hr
-    .lr-start-bottom-menu
-      .lr-btn(@click="handleSettingsClick")
+    .lr-hr
+    .lr-start_bottom
+      .lr-btn_nf(@click="handleSettingsClick")
         span.iconfont.icon-info(title="About")
-      router-link.lr-btn(to='/' target='_blank')
+      router-link.lr-btn_nf(to='/' target='_blank')
         span.iconfont.icon-accountmultiple(title="Login with other account")
-      .lr-btn(@click="logout", style="color: red")
+      .lr-btn_nf(@click="logout", style="color: red")
         span.iconfont.icon-logout(title="Exit")
 </template>
 <script>

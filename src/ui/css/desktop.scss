@@ -10,6 +10,13 @@
   box-shadow: -1px -1px $color2  inset,
   1px 1px  #fff inset;
 }
+.lr-hr{
+  margin: 3px 2px;
+  height: 0;
+  border-top: 1px solid $color2;
+  border-bottom: 1px solid #fff;
+
+}
 
 .lr-desktop-wrap{
   width: 100%;

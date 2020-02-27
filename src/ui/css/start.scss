@@ -28,19 +28,76 @@
   left: 2px;
   bottom: 24px;
   width: 176px;
-  height: 300px;
+  height: 279px;
   z-index: 2;
 }
+.lr-start-username{
+  height: 32px;
+  line-height: 32px;
+  font-size: 16px;
+  font-weight: bold;
+  padding-left: 6px;
+  &:hover{
+    color: #fff;
+    background-color: $color3;
+  }
+}
+.lr-start-apps{
+  height: 193px;
+}
+
+.lr-start_inner{
+  height: 100%;
+  position: relative;
+  padding-top: 21px;
+}
+
+// .lr-start_left{
+//   width: 21px;
+//   height: 100%;
+//   line-height: 21px;
+//   padding:  10px 0;
+//   writing-mode: vertical-lr;
+//   color: #fff;
+//   font-weight: bold;
+//   font-size: 14px;
+//   position: absolute;
+//   left: 0;
+//   top: 0;
+//   background-image: linear-gradient(to bottom, 
+//   #000 0%,
+//   #000 21%, 
+//   #0000a8 50%, 
+//   #0000ff 92.3%,
+//   #0000ff 100%);
+//   &::before{
+//     content: 'linux-remote';
+//     transform: rotate(180deg);
+//     display: block;
+//   }
+// }
+
 .lr-start-menu-item{
-  height: 20px;
-  line-height: 20px;
+  height: 24px;
+  line-height: 24px;
   display: flex;
   font-size: 12px;
+  align-items: center;
   .lr-icon{
+    margin-left: 6px;
     margin-right: 9px;
   }
   &:hover{
     color: #fff;
     background-color: $color3;
+  }
+}
+.lr-start_bottom{
+  display: flex;
+  height: 32px;
+  align-items: center;
+  justify-content: space-around;
+  .lr-btn_nf{
+    width: 30px;
   }
 }
