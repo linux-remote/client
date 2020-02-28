@@ -11,8 +11,16 @@
   .lr-desktop_body(ref="body")
     Window.lr-desktop_container(
     :startIsMax="true")
-      h2 body
-      button.lr-btn(@click="createWs") ws
+      Contextmenuable
+        h2 body
+        button.lr-btn(@click="createWs") ws
+        template(v-slot:contextmenu)
+          .lr-cm-item Hello Hello Hello Hello aaa Hello Hello Hello
+          .lr-cm-item World
+          .lr-cm-item rename
+          .lr-cm-item 3
+          .lr-cm-item 3
+          .lr-cm-item 3
   //- h2.lr-err-color(v-if="error") {{error}}
   //- DeskTop(:icons='icons', v-else)
   //- TasksBar
@@ -28,6 +36,7 @@
 <script>
 import safeBind from '../lib/mixins/safe-bind';
 import logout from '../lib/mixins/logout';
+import Contextmenuable from '../ui/desktop-cmpt/global/contextmenuable.vue';
 // import DeskTop from '__ROOT__/cmpt/desktop/body.vue';
 // import TasksBar from '__ROOT__/cmpt/task/bar.vue';
 
@@ -37,6 +46,7 @@ export default {
   components: {
     // TasksBar,
     // DeskTop,
+    Contextmenuable,
     Start,
     QuickLaunch,
     TaskItem,

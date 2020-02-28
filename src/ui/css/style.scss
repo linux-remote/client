@@ -50,8 +50,8 @@ button{
 .lr-global{
   width: 0;
   height: 0;
-  position: relative;
-  z-index: 2;
+  // position: relative;
+  // z-index: 2;
 }
 .fade-enter-active, .fade-leave-active {
   transition: opacity .5s;

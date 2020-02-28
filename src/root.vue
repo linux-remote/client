@@ -2,7 +2,7 @@
 #lr-root.lr-root(@dragover.prevent, @drop.prevent)
   .lr-desktop-wrap
     router-view
-  .lr-global
+  .lr-global#lr-global
     FlyTextarea
     UploadInput
     UploadBox
