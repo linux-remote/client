@@ -6,7 +6,8 @@
     .lr-task-bar
       TaskItem ABC
       TaskItem focus
-    .lr-inner.lr-clock-area 12:12
+    .lr-inner.lr-clock-area
+      Watch
   .lr-desktop_body(ref="body")
     Window.lr-desktop_container(
     :startIsMax="true")
@@ -27,19 +28,20 @@
 <script>
 import safeBind from '../lib/mixins/safe-bind';
 import logout from '../lib/mixins/logout';
-import DeskTop from '__ROOT__/cmpt/desktop/body.vue';
-import TasksBar from '__ROOT__/cmpt/task/bar.vue';
+// import DeskTop from '__ROOT__/cmpt/desktop/body.vue';
+// import TasksBar from '__ROOT__/cmpt/task/bar.vue';
 
-import {Start, QuickLaunch, TaskItem, Window} from '../ui/index.js';
+import {Start, QuickLaunch, TaskItem, Window, Watch} from '../ui/index.js';
 export default {
   mixins: [safeBind, logout],
   components: {
-    TasksBar,
-    DeskTop,
+    // TasksBar,
+    // DeskTop,
     Start,
     QuickLaunch,
     TaskItem,
-    Window
+    Window,
+    Watch
     // QuickBar
   },
   data(){

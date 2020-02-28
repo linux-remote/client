@@ -21,22 +21,22 @@ export default   {
         //   'en-US': 'Recycle Bin'
         // }
       },
-      sys_app_disk : {
-        unique: true,
-        iconUrl: 'oxygen/kdf.png',
-        // name: {
-        //   'zh-CN': '存储管理器',
-        //   'en-US': 'Storage Manager'
-        // }
-      },
-      sys_app_computer: {
-        unique: true,
-        iconUrl: 'virt-manager.png',
-        // name: {
-        //   'zh-CN': '系统信息',
-        //   'en-US': 'System Info'
-        // }
-      },
+      // sys_app_disk : {
+      //   unique: true,
+      //   iconUrl: 'oxygen/kdf.png',
+      //   // name: {
+      //   //   'zh-CN': '存储管理器',
+      //   //   'en-US': 'Storage Manager'
+      //   // }
+      // },
+      // sys_app_computer: {
+      //   unique: true,
+      //   iconUrl: 'virt-manager.png',
+      //   // name: {
+      //   //   'zh-CN': '系统信息',
+      //   //   'en-US': 'System Info'
+      //   // }
+      // },
       sys_app_editor: {
         iconUrl: 'nuvola/accessories-text-editor-6.png',
         // title: null,
@@ -55,18 +55,18 @@ export default   {
         //   'en-US': 'Notepad'
         // }
       },
-      sys_app_task_manager: {
-        iconUrl: '/public/my-img/top.png',
-        // iconClassName: 'lr-text-icon lr-tm-icon',
-        unique: true,
+      // sys_app_task_manager: {
+      //   iconUrl: '/public/my-img/top.png',
+      //   // iconClassName: 'lr-text-icon lr-tm-icon',
+      //   unique: true,
         
-        height: 800
-        // title: null,
-        // name: {
-        //   'zh-CN': '笔记本',
-        //   'en-US': 'Notepad'
-        // }
-      },
+      //   height: 800
+      //   // title: null,
+      //   // name: {
+      //   //   'zh-CN': '笔记本',
+      //   //   'en-US': 'Notepad'
+      //   // }
+      // },
       sys_app_settings: {
         iconClassName: 'iconfont icon-logo_LR',
         unique: true,

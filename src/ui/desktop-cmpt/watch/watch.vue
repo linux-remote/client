@@ -1,14 +1,14 @@
 
 <template lang="jade">
-.lr-watch(v-if='clientDate', tabindex="-1")
+.lr-watch(v-if='clientDate', :title="title")
   | {{watch.hours}}:{{watch.minutes}}
-  .lr-watch-detail 
-    p {{watch.year}}/{{watch.mounth}}/{{watch.day}} 
-    p {{hourTimeZone}}
+  //- .lr-watch-detail 
+  //-   p {{watch.year}}/{{watch.mounth}}/{{watch.day}} 
+  //-   p {{hourTimeZone}}
 </template>
 
 <script>
-import {ONE_MIN} from '__ROOT__/lib/util';
+const ONE_MIN = 1000 * 60;
 // function forMatTimeOffset(hours){
 //   const i = hours.length - 2
 //   return hours.substr(0, i) + ':' + hours.substr(i)
@@ -24,6 +24,7 @@ export default {
     }
   },
   computed:{
+
     timeDiff(){
       return this.clientDate.getTime() - (this.time  + (this.clientDate.getTimezoneOffset() - this.timeZoneOffset) * ONE_MIN);
     },
@@ -46,21 +47,34 @@ export default {
         minutes: min,
         seconds: d.getSeconds()
       }
-    }
+    },
+    title(){
+      return `${this.watch.year}/${this.watch.mounth}/${this.watch.day} ${this.hourTimeZone}`
+    },
   },
   methods:{
     getData(){
-      this.request({
-        url: '~/time',
-        success(data){
+      this.$store.commit('wsRequest', {
+        method: 'getTime',
+        success: (data) => {
           this.clientDate = new Date();
           this.now = this.clientDate.getTime();
-
           this.time = data.time;
           this.timeZoneOffset = data.timeZoneOffset;
           this.start();
         }
       })
+      // this.request({
+      //   url: '~/time',
+      //   success(data){
+      //     this.clientDate = new Date();
+      //     this.now = this.clientDate.getTime();
+
+      //     this.time = data.time;
+      //     this.timeZoneOffset = data.timeZoneOffset;
+      //     this.start();
+      //   }
+      // })
     },
     start(){
       const self = this;
