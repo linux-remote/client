@@ -7,21 +7,16 @@ button.lr-desktop-icon(draggable="true",
   .lr-desktop-icon-cls(v-else, :class="app.iconClassName")
   .lr-desktop-icon-text {{name}}
 
-  ContextMenu(ref='ctx')
+  //- ContextMenu(ref='ctx')
     
-    .lr-ctx-item(@click="remove")
-      | Remove
-    template(v-if="app.ctx")
-      .lr-ctx-item(v-for="name in app.ctx", @click="handleSpecialCtxClick(item.id, name)") {{name}}
+  //-   .lr-ctx-item(@click="remove")
+  //-     | Remove
+  //-   template(v-if="app.ctx")
+  //-     .lr-ctx-item(v-for="name in app.ctx", @click="handleSpecialCtxClick(item.id, name)") {{name}}
 </template>
 <script>
 
-import ContextMenu from '../global/contextmenu/index.vue';
 export default {
-
-  components: {
-    ContextMenu
-  },
   props: {
     item: {
       type: Object,

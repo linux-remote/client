@@ -14,10 +14,11 @@
   )
     .lr-login_banner
       Icon.lr-login_logo(type="css", :size="50", value="iconfont icon-logo_LR")
-      .lr-login_powerBy 
-        div POWERED BY
+      .lr-login_info
+        
         h1 linux-remote
-        //- a(href="https://github.com/linux-remote/linux-remote", target="_blank") linux-remote
+        div Linux web remote desktop
+      a.lr-login_powered(href="https://github.com/linux-remote/linux-remote", target="_blank") POWERED BY
       .lr-login_process_wrap
         .lr-login_process
     form.lr-login_form(@submit.prevent)

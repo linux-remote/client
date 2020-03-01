@@ -137,7 +137,7 @@ const store = new window.Vuex.Store({
             }
           });
           state.wsIsConnected = true;
-          callback();
+          callback && callback();
         }
 
         const handleClose =  (e) => {
@@ -195,18 +195,35 @@ const store = new window.Vuex.Store({
     },
 
     wsRequest(state, opts){
+      if(!opts.error){
+        opts.error = globalWsErrorHandle;
+      }
       if(!state.wsIsConnected){
-        opts.error && opts.error('disConnected');
+        opts.error({
+          status: 0,
+          method: opts.method,
+          message: 'disConnected'
+        });
         return;
       }
       if(ws){
         if(ws.readyState !== WebSocket.OPEN){
-          opts.error && opts.error('readyStateNotOpen');
+          opts.error({
+            status: 1,
+            method: opts.method,
+            message: 'readyStateNotOpen'
+          });
           return;
         }
       }
-      sr.request({method: opts.method}, opts.success);
-
+      sr.request({method: opts.method, data: opts.data}, (resData) => {
+        if(resData.status === 200){
+          opts.success(resData.data);
+        } else {
+          resData.method = opts.method;
+          opts.error(resData);
+        }
+      });
     },
 
     recycleBinTrigger(state, bool){
@@ -259,5 +276,9 @@ function getPako(cb){
     _pako = pako;
     cb(_pako)
   });
+}
+
+function globalWsErrorHandle({status, method, message}){
+  console.error(method, status, message);
 }
 export default store;

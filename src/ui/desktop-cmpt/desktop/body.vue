@@ -1,9 +1,9 @@
 <template lang="jade">
-#lr-desktop.lr-desktop(@drop.stop='handleDeskDrop',
+Contextmenuable(ref="ctx")
+  .lr-desktop-icons(@drop.stop='handleDeskDrop',
                     @dragenter.stop='handleDragenter',
                     @dragover.stop='handleDragover',
                     @mousedown='handleMousedown')
-  .lr-desktop-icons
     Icon(v-for="(v,i) in list",
         :key="v.id",
         :index="i",
@@ -11,38 +11,35 @@
   //- h2.lr-seeking Seeking
   //-   br
   //-   | Sponsor
-
-  ContextMenu(ref='ctx')
-    //- .lr-ctx-item(@click="sortIcon")
-    //-   | Sort icon
-    .lr-ctx-item(@click="reload")
-      | {{LANG.ctx.Refresh}}
+  template(v-slot:contextmenu)
+    .lr-cm-item(@click="refresh") {{LANG.ctx.Refresh}}
+    .lr-cm-item(@click="sortIcon") Sort icon
+  //- ContextMenu(ref='ctx')
+  //-   //- .lr-ctx-item(@click="sortIcon")
+  //-   //-   | Sort icon
+  //-   .lr-ctx-item(@click="reload")
+  //-     | {{LANG.ctx.Refresh}}
   //- UsersChat
-  TaskWindow(v-for='(item, index) in tasks', :key='item.id', :index='index')
+  //- TaskWindow(v-for='(item, index) in tasks', :key='item.id', :index='index')
 </template>
 <script>
-
+import Contextmenuable from '../global/contextmenuable.vue';
 import Icon from './icon.vue';
-import TaskWindow from '__ROOT__/cmpt/task/window/window.vue';
 
-import ContextMenu from '../global/contextmenu/index.vue';
 //import Cascade from '../global/cascade.vue';
 const ICON_WIDTH = 80;
 const ICON_HEIGHT = 80;
 export default {
   components: {
-    Icon,
-    TaskWindow,
-    ContextMenu,
-    //Cascade
+    Contextmenuable,
+    Icon
   },
-  props: ['icons'],
   computed:{
     list(){
-      return this.$store.state.desktop.icons
+      return this.$store.state.desktop.icons;
     },
     saveEvent(){
-      return this.$store.state.desktop.saveEvent
+      return this.$store.state.desktop.saveEvent;
     },
     LANG(){
       return this.$store.getters['language/currLanguage'].deskTop
@@ -80,11 +77,11 @@ export default {
         v.y = (i % maxRow) * ICON_HEIGHT;
       })
       this.save();
-      this.$refs.ctx.hidden();
+      this.$refs.ctx.close();
     },
-    reload(){
+    refresh(){
       this.getData();
-      this.$refs.ctx.hidden();
+      this.$refs.ctx.close();
     },
     _getDragData(e){
       const data = e.dataTransfer.getData('text');
@@ -101,17 +98,23 @@ export default {
         });
         // console.log('save', arr);
 
-        
-        this.request({
-          url: '~/desktop/icons',
-          type: 'post',
-          data: {
-            content: JSON.stringify(arr)
-          },
-          success(){
+        this.$store.commit('wsRequest', {
+          method: 'saveDesktopIcons',
+          data: JSON.stringify(arr),
+          success: () => {
             console.log('desktop save ok');
           }
-        })
+        });
+        // this.request({
+        //   url: '~/desktop/icons',
+        //   type: 'post',
+        //   data: {
+        //     content: JSON.stringify(arr)
+        //   },
+        //   success(){
+        //     console.log('desktop save ok');
+        //   }
+        // })
 
     },
     handleDeskDrop(e){
@@ -182,29 +185,45 @@ export default {
       }
     },
     getData(){
-      this.request({
-        url: '~/desktop/icons',
-        success(result){
-          if(!result){
-            return;
-          }
-          this.$store.commit('desktop/setIcons', JSON.parse(result));
+      this.$store.commit('wsRequest', {
+        method: 'getDesktopIcons',
+        success: (resData) => {
+          const result = this.parseIconsData(resData);
+          this.$store.commit('desktop/setIcons', result);
         }
-      })
+      });
+    },
+    parseIconsData(icons){
+      if(!icons){ // 回收站可以被移除
+        icons = [{
+          id: 'sys_app_recycle_bin',
+          x:0,
+          y:0
+        }]
+      }else{
+        icons = JSON.parse(icons);
+      }
+      return icons;
     }
   },
   created(){
-
       this.$options._isCanDrop = true;
+      this.getData();
   },
   mounted(){
     this.$store.commit('setDeskTopWH');
-    // this.$store.commit('task/add', {appId: 'sys_app_recycle_bin'});
-    // this.$store.commit('task/add', {appId: 'sys_app_fs', address: '/home/dw/fs'});
-    // this.$store.commit('task/add', {appId: 'sys_app_fs', address: '/home/dw/fs2'});
+    setTimeout(() => {
+      console.log(this.list);
+    }, 1200)
+    
     // this.$store.commit('task/add', {appId: 'sys_app_settings'});
   }
 }
+
+
+// this.$store.commit('sysApps/changeRecycleBinIcon', data.recycebinIsEmpty);
+// this.$store.commit('desktop/setIcons', _initIcons(data.icons));
+
     // Cascade.lr-ctx-item
     //   | 设置桌面壁纸
     //   .lr-test-parent(v-slot:menu)

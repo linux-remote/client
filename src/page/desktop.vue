@@ -11,16 +11,7 @@
   .lr-desktop_body(ref="body")
     Window.lr-desktop_container(
     :startIsMax="true")
-      Contextmenuable
-        h2 body
-        button.lr-btn(@click="createWs") ws
-        template(v-slot:contextmenu)
-          .lr-cm-item Hello Hello Hello Hello aaa Hello Hello Hello
-          .lr-cm-item World
-          .lr-cm-item rename
-          .lr-cm-item 3
-          .lr-cm-item 3
-          .lr-cm-item 3
+      DeskTopBody
   //- h2.lr-err-color(v-if="error") {{error}}
   //- DeskTop(:icons='icons', v-else)
   //- TasksBar
@@ -37,15 +28,15 @@
 import safeBind from '../lib/mixins/safe-bind';
 import logout from '../lib/mixins/logout';
 import Contextmenuable from '../ui/desktop-cmpt/global/contextmenuable.vue';
-// import DeskTop from '__ROOT__/cmpt/desktop/body.vue';
 // import TasksBar from '__ROOT__/cmpt/task/bar.vue';
 
-import {Start, QuickLaunch, TaskItem, Window, Watch} from '../ui/index.js';
+import {Start, QuickLaunch, TaskItem, Window, Watch, DeskTopBody} from '../ui/index.js';
 export default {
   mixins: [safeBind, logout],
   components: {
     // TasksBar,
     // DeskTop,
+    DeskTopBody,
     Contextmenuable,
     Start,
     QuickLaunch,
@@ -77,6 +68,14 @@ export default {
     }
   },
   methods: {
+    getData(){
+      this.$store.commit('wsRequest', {
+        method: 'getDesktopBundle',
+        success: (data) => {
+          this.parseBundle(data);
+        }
+      })
+    },
     closeSessErrorModal(){
       this.$store.commit('set', {
         sessError: false
@@ -88,42 +87,39 @@ export default {
       // id
       // uid=1000(dw) gid=2004(dw) groups=2004(dw),4(adm),24(cdrom),27(sudo),30(dip),46(plugdev),113(lpadmin),128(sambashare)
 
-      let id = data.id.trim();
-      id = id.split(' ');
-      function parseItem(str){
-        str = str.substr(str.indexOf('=') + 1);
-        let i1 = str.indexOf('(');
-        let id = str.substr(0, i1);
-        let name = str.substring(i1 + 1, str.length - 1);
-        return  {
-          id,
-          name
-        }
-      }
-      let group = parseItem(id[1]);
-      let groups = id[2];
-      groups = groups.split(',');
+      // let id = data.id.trim();
+      // id = id.split(' ');
+      // function parseItem(str){
+      //   str = str.substr(str.indexOf('=') + 1);
+      //   let i1 = str.indexOf('(');
+      //   let id = str.substr(0, i1);
+      //   let name = str.substring(i1 + 1, str.length - 1);
+      //   return  {
+      //     id,
+      //     name
+      //   }
+      // }
+      // let group = parseItem(id[1]);
+      // let groups = id[2];
+      // groups = groups.split(',');
       
-      groups = groups.map(item => {
-        return parseItem(item)
-      });
+      // groups = groups.map(item => {
+      //   return parseItem(item)
+      // });
 
-      let groupNames = [];
-      groups.forEach(v => {
-        groupNames.push(v.name);
-      })
+      // let groupNames = [];
+      // groups.forEach(v => {
+      //   groupNames.push(v.name);
+      // })
       this.$store.commit('set', {
         isLogin: true,
         username,
-        group,
-        _groups: groups, // will switch name.
-        groups: groupNames,
+        // group,
+        // _groups: groups, // will switch name.
+        // groups: groupNames,
         homedir: data.homedir,
         hostname: data.hostname
       });
-      this.$store.commit('sysApps/changeRecycleBinIcon', data.recycebinIsEmpty);
-      this.$store.commit('desktop/setIcons', _initIcons(data.icons));
-        
     },
     createWs(){
       this.$store.commit('wsConnect');
@@ -149,6 +145,7 @@ export default {
     this.$store.commit('setUsername', username);
     this.$store.commit('wsConnect', () => {
       this.isConnected = true;
+      this.getData();
     });
     // window.require(['pako'], (pako) => {
     //   this.createWs(pako, (sr) => {
@@ -159,18 +156,4 @@ export default {
   }
 }
 
-
-function _initIcons(icons){
-
-  if(!icons){ // 回收站可以被移除
-    icons = [{
-      id: 'sys_app_recycle_bin',
-      x:0,
-      y:0
-    }]
-  }else{
-    icons = JSON.parse(icons);
-  }
-  return icons;
-}
 </script>

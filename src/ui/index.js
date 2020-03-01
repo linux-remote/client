@@ -12,10 +12,10 @@ import FocusMenu from './desktop-cmpt/focus-menu/base.vue';
 import Window from './desktop-cmpt/window/window.vue';
 import TaskItem from './desktop-cmpt/task/item.vue';
 import Watch from './desktop-cmpt/watch/watch.vue';
-
+import DeskTopBody from './desktop-cmpt/desktop/body.vue';
 import Focusable from './unit/focusable.vue';
 import Movable from './unit/movable.vue';
 import Resizable from './unit/resizable.vue';
 
 export {Btn, Icon, Table, Start, QuickLaunch, TabPanel, Alert, Confirm, Triple, 
-  Watch, FocusMenu, Window, TaskItem, Focusable, Movable, Resizable};
+  Watch, FocusMenu, Window, TaskItem, Focusable, Movable, Resizable, DeskTopBody};
