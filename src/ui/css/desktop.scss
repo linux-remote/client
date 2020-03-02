@@ -107,7 +107,7 @@
   align-items: center;
   box-sizing: content-box;
   margin: 0 1px;
-  &:hover:not(.lr__focus){
+  &:not(.lr__focus):hover:not(:active){
     margin: 0;
     box-shadow: -1px -1px $color2 inset,
     1px 1px  #fff inset;
@@ -125,7 +125,7 @@
   padding-right: 2px;
   padding-top: 1px;
   padding-bottom: 1px;
-  &:hover:not(.lr__focus){
+  &:not(.lr__focus):hover:not(:active){
     padding-right: 3px;
     padding-left: 1px;
   }
@@ -139,7 +139,7 @@
 // center
 .lr-more-btn{
   padding: 1px;
-  &:hover:not(.lr__focus){
+  &:not(.lr__focus):hover:not(:active){
     padding-right: 2px;
     padding-left: 2px;
   }

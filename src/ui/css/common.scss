@@ -120,6 +120,23 @@ body, button{
     color: #fff;
   }
 }
+
+.lr_dragenter_self{
+  background-color: #000;
+  &> *{
+    // https://stackoverflow.com/a/18582960/4790016
+    pointer-events: none;
+  }
+}
+// .test{
+//   // position: absolute;
+//   // top: -80px;
+//   // left: 50px;
+//   background-color: red;
+//   width: 50px;
+//   height: 100%;
+// }
+
 // ∇ &Delta; 
 // ≡ &equiv;
 // 	» &raquo;

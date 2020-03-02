@@ -218,7 +218,7 @@ const store = new window.Vuex.Store({
       }
       sr.request({method: opts.method, data: opts.data}, (resData) => {
         if(resData.status === 200){
-          opts.success(resData.data);
+          opts.success && opts.success(resData.data);
         } else {
           resData.method = opts.method;
           opts.error(resData);

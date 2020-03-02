@@ -85,6 +85,9 @@ export default {
     },
     _getDragData(e){
       const data = e.dataTransfer.getData('text');
+      if(!data){
+        return;
+      }
       return JSON.parse(data);
     },
     save(){
@@ -101,9 +104,9 @@ export default {
         this.$store.commit('wsRequest', {
           method: 'saveDesktopIcons',
           data: JSON.stringify(arr),
-          success: () => {
-            console.log('desktop save ok');
-          }
+          // success: () => {
+          //   console.log('desktop save ok');
+          // }
         });
         // this.request({
         //   url: '~/desktop/icons',
@@ -212,10 +215,6 @@ export default {
   },
   mounted(){
     this.$store.commit('setDeskTopWH');
-    setTimeout(() => {
-      console.log(this.list);
-    }, 1200)
-    
     // this.$store.commit('task/add', {appId: 'sys_app_settings'});
   }
 }

@@ -2,7 +2,9 @@
 button.lr-desktop-icon(draggable="true",
               @dblclick="handleDblclick",
               @dragstart.stop='handleDragStart(item, $event)',
-              :style='{left: item.x + "px", top: item.y + "px"}')
+              @dragend.stop='handleDragEnd',
+              :style='{left: item.x + "px", top: item.y + "px"}',
+              :class='{lr_draging: isDraging}')
   .lr-desktop-icon-img(v-if="iconUrl", v-open-icon="iconUrl")
   .lr-desktop-icon-cls(v-else, :class="app.iconClassName")
   .lr-desktop-icon-text {{name}}
@@ -27,7 +29,11 @@ export default {
       required: true
     }
   },
-
+  data(){
+    return {
+      isDraging: true
+    }
+  },
   computed: {
     app(){
       return this.$store.getters['sysApps/getById'](this.item.id)
@@ -82,6 +88,7 @@ export default {
     },
     handleDragStart(v, e){
       // console.log('Desktop icon handleDragStart');
+      this.isDraging = true;
       const value = JSON.stringify({
         id: this.item.id,
         from: 'desktop',
@@ -94,6 +101,9 @@ export default {
       e.dataTransfer.dropEffect = 'move';
 
       return;
+    },
+    handleDragEnd(){
+      this.isDraging = false;
     }
   }
 }
