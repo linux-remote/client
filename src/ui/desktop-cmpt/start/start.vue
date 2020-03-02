@@ -53,7 +53,13 @@ export default {
   }, 
   methods: {
     logout(){
-
+      this.$store.commit('wsRequest', {
+        method: 'logout',
+        success: () => {
+          location.href = '/';
+          // console.log('logout');
+        }
+      })
     },
     handleAccountClick(){
       this.$store.commit('task/add', 'sys_app_account');

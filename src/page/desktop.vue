@@ -26,13 +26,12 @@
 </template>
 <script>
 import safeBind from '../lib/mixins/safe-bind';
-import logout from '../lib/mixins/logout';
 import Contextmenuable from '../ui/desktop-cmpt/global/contextmenuable.vue';
 // import TasksBar from '__ROOT__/cmpt/task/bar.vue';
 
 import {Start, QuickLaunch, TaskItem, Window, Watch, DeskTopBody} from '../ui/index.js';
 export default {
-  mixins: [safeBind, logout],
+  mixins: [safeBind],
   components: {
     // TasksBar,
     // DeskTop,
