@@ -4,14 +4,14 @@
     Start
     QuickLaunch
     .lr-task-bar
-      TaskItem ABC
-      TaskItem focus
+      TaskItem(v-for='(item, index) in tasks', 
+      :key='item.id',
+      :index='index',
+      :item='item')
     .lr-inner.lr-clock-area
       Watch
-  .lr-desktop_body(ref="body")
-    Window.lr-desktop_container(
-    :startIsMax="true")
-      DeskTopBody
+  DeskTopBody#lr-desktop
+    
   //- h2.lr-err-color(v-if="error") {{error}}
   //- DeskTop(:icons='icons', v-else)
   //- TasksBar
@@ -29,7 +29,7 @@ import safeBind from '../lib/mixins/safe-bind';
 import Contextmenuable from '../ui/desktop-cmpt/global/contextmenuable.vue';
 // import TasksBar from '__ROOT__/cmpt/task/bar.vue';
 
-import {Start, QuickLaunch, TaskItem, Window, Watch, DeskTopBody} from '../ui/index.js';
+import {Start, QuickLaunch, TaskItem, Watch, DeskTopBody} from '../ui/index.js';
 export default {
   mixins: [safeBind],
   components: {
@@ -40,7 +40,6 @@ export default {
     Start,
     QuickLaunch,
     TaskItem,
-    Window,
     Watch
     // QuickBar
   },
@@ -52,6 +51,9 @@ export default {
     }
   },
   computed:{
+    tasks(){
+      return this.$store.state.task.list;
+    },
     sessError(){
       return this.$store.state.sessError
     },
@@ -120,20 +122,10 @@ export default {
         hostname: data.hostname
       });
     },
-    createWs(){
-      this.$store.commit('wsConnect');
-    },
-    handleSr(sr){
-      sr.request({method: 'getTime'}, function(data){
-        console.log('data', data);
-      });
-      sr.request({method: 'getDesktopBundle'}, function(data){
-        console.log('data', data);
-      });
-    }
   },
 
   mounted(){
+    this.$store.commit('setDeskTopWH');
   },
 
   destroyed(){
@@ -146,11 +138,6 @@ export default {
       this.isConnected = true;
       this.getData();
     });
-    // window.require(['pako'], (pako) => {
-    //   this.createWs(pako, (sr) => {
-    //     this.handleSr(sr);
-    //   });
-    // });
     
   }
 }

@@ -2,7 +2,6 @@
 const uniqueMap = Object.create(null);
 const TASK_WIDTH = 800;
 const TASK_HEIGHT = 600;
-
 function _defState(){
   return {
     list: [],
@@ -23,7 +22,9 @@ export default  {
       var appId;
       if(typeof opts === 'string'){
         appId = opts;
-        opts = {appId}
+        opts = {
+          appId
+        }
       } else {
          // opts 是一个对象.
         appId = opts.appId;

@@ -22,7 +22,9 @@ export default  {
       var appId;
       if(typeof opts === 'string'){
         appId = opts;
-        opts = {appId}
+        opts = {
+          appId
+        }
       } else {
          // opts 是一个对象.
         appId = opts.appId;
@@ -41,7 +43,7 @@ export default  {
       data.unique = APP.unique || false;
       data.width = APP.width || TASK_WIDTH;
       data.height = APP.height || TASK_HEIGHT;
-
+      console.log('data', data.width)
       if(data.unique){
         if(uniqueMap[appId]){
           return this.commit('task/show', uniqueMap[appId]);
@@ -71,12 +73,13 @@ export default  {
       if(data.height > rootState.deskTopH){
         data.height = rootState.deskTopH;
       }
+      console.log('data', data.width, rootState.deskTopW)
       data.draggable = false;
       data.isMin = false;
       data.isMax = false;
       data.resizeStartData = null;
 
-      this.commit('task/_initPosition', data); // init: positionTop, positionLeft
+      this.commit('task/_initPosition', data); // init: top, left
       this.commit('task/focus', data); // init: isFocus, id.
 
       data.id = state.id;
@@ -102,9 +105,9 @@ export default  {
       state.current = task;
     },
 
-    show(state, task){
+    show(state, task){ 
       task.isMin = false;
-      if(task !== state.current && !state.current.isMax && task.positionLeft === state.current.positionLeft && task.positionTop === state.current.positionTop){
+      if(task !== state.current && !state.current.isMax && task.left === state.current.left && task.top === state.current.top){
         this.commit('task/_initPosition', task);
       }
       this.commit('task/focus', task);
@@ -175,24 +178,24 @@ export default  {
       let parentH = this.state.winH;
       let parentW = this.state.winW;
       if(!state.list.length){ // Appear on center
-        data.positionTop = (parentH - data.height) / 2;
-        data.positionLeft = (parentW - data.width) / 2;
+        data.top = (parentH - data.height) / 2;
+        data.left = (parentW - data.width) / 2;
       }else{
         let current = state.current;
 
-        const top = current.positionTop + 50;
-        const left = current.positionLeft + 50;
+        const top = current.top + 50;
+        const left = current.left + 50;
   
         if(top + data.height >= parentH){
-          data.positionTop = 0;
+          data.top = 0;
         }else{
-          data.positionTop = top;
+          data.top = top;
         }
   
         if(left + data.width >= parentW){
-          data.positionLeft = 0;
+          data.left = 0;
         }else{
-          data.positionLeft = left;
+          data.left = left;
         }
       }
     }

@@ -113,6 +113,9 @@
   width: 160px;
   text-align: left;
   margin-left: 3px;
+  display: flex;
+  align-items: center;
+
   &:active, &.lr__focus{
     font-weight: bold;
   }
@@ -123,6 +126,9 @@
     linear-gradient(135deg, #fff 25%, transparent 0, transparent 75%, #fff 0);
     background-position: 0 0, 1px 1px;
     background-size: 2px 2px;
+  }
+  >.lr-icon{
+    flex-shrink: 0;
   }
 }
 

@@ -1,11 +1,11 @@
 <template lang="jade">
-.lr-window(:style="{top: top + 'px', left: left + 'px', width: width + 'px', height: height + 'px'}", :class="{lr_window_max: isMax}")
+.lr-window(:style="{top: top + 'px', left: left + 'px', width: width + 'px', height: height + 'px'}", :class="{lr_window_max: isMax}", v-show="!isMin")
   Resizable(v-if="resizable",
     v-show="!maximized", 
     :direction="resizeDirection",  
     @resizeStart="handleResizeStart",
     @resizing="handleResizing")
-  Focusable.lr-window_main(:tabindex="tabIndex",
+  Focusable.lr-window_main(:tabindex="tabindex",
                   :enterBindBtn="enterBindBtn",
                   :class="{lr_window_maximized: maximized, lr_window_resizable:       resizable}")
     .lr-title
@@ -44,7 +44,7 @@ export default {
     Alert
   },
   props: {
-    tabIndex: {
+    tabindex: {
       type: Number
     },
     close: {
@@ -115,7 +115,8 @@ export default {
       width: this.startWidth,
       top: this.startTop,
       left: this.startLeft,
-      alertData: null
+      alertData: null,
+      isMin: false
     }
   },
   methods: {
@@ -133,7 +134,8 @@ export default {
     },
 
     handleMinClick(){
-
+      this.isMin = !this.isMin;
+      this.$emit('min');
     },
 
     handleMoveStart(virtual){
@@ -159,6 +161,7 @@ export default {
 
     handleMaxClick(){
       this.maximized = !this.maximized;
+      this.$emit('max');
     }
 
   },

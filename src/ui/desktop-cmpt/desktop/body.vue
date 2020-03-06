@@ -1,5 +1,5 @@
 <template lang="jade">
-Contextmenuable(ref="ctx")
+Contextmenuable.lr-desktop_body(ref="ctx")
   .lr-desktop-icons(@drop.stop='handleDeskDrop',
                     @dragenter.stop='handleDragenter',
                     @dragover.stop='handleDragover',
@@ -8,33 +8,29 @@ Contextmenuable(ref="ctx")
         :key="v.id",
         :index="i",
         :item="v")
-  //- h2.lr-seeking Seeking
-  //-   br
-  //-   | Sponsor
+  TaskWindow(v-for='(item, index) in tasks', :key='item.id', :index='index')
   template(v-slot:contextmenu)
     .lr-cm-item(@click="refresh") {{LANG.ctx.Refresh}}
     .lr-cm-item(@click="sortIcon") Sort icon
-  //- ContextMenu(ref='ctx')
-  //-   //- .lr-ctx-item(@click="sortIcon")
-  //-   //-   | Sort icon
-  //-   .lr-ctx-item(@click="reload")
-  //-     | {{LANG.ctx.Refresh}}
-  //- UsersChat
-  //- TaskWindow(v-for='(item, index) in tasks', :key='item.id', :index='index')
 </template>
 <script>
 import Contextmenuable from '../global/contextmenuable.vue';
+import TaskWindow from '../task/task-window.vue';
 import Icon from './icon.vue';
-
+// import Window from '../window/window.vue';
 //import Cascade from '../global/cascade.vue';
 const ICON_WIDTH = 80;
 const ICON_HEIGHT = 80;
 export default {
   components: {
     Contextmenuable,
-    Icon
+    Icon,
+    TaskWindow
   },
   computed:{
+    tasks(){
+      return this.$store.state.task.list;
+    },
     list(){
       return this.$store.state.desktop.icons;
     },
@@ -43,9 +39,6 @@ export default {
     },
     LANG(){
       return this.$store.getters['language/currLanguage'].deskTop
-    },
-    tasks(){
-      return this.$store.state.task.list;
     }
   },
   watch: {

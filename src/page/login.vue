@@ -2,67 +2,44 @@
 <template lang="jade">
 .lr-page(:class="{lr_login_logging: isRequest}")
   .lr-mask(@mousedown.prevent)
-  
-  
-  Window(ref="win",
-  :title="title",
-  :enterBindBtn="true",
-  :startWidth="width",
-  :startHeight="230",
-  :startLeft="left",
-  :startTop="200"
-  )
-    .lr-login_banner
-      Icon.lr-login_logo(type="css", :size="50", value="iconfont icon-logo_LR")
-      .lr-login_info
-        
-        h1 linux-remote
-        div Linux web remote desktop
-      a.lr-login_powered(href="https://github.com/linux-remote/linux-remote", target="_blank") POWERED BY
-      .lr-login_process_wrap
-        .lr-login_process
-    form.lr-login_form(@submit.prevent)
-      .lr-login_form_mask Logging...
-      .lr-login_input_wrap
-        label {{LANG.username}}
-        input.lr-input( v-model='username' required="required")
-      .lr-login_input_wrap
-        label {{LANG.password}}
-        input.lr-input(type='password', v-model='password', autocomplete="off",  required="required")
-      .lr-login-box-footer
-        Btn(@click="handleBtnClick", ref="submit") {{LANG.submitBtn}}
-//-.lr-page.lr-login-wrap
-  .lr-logined-wrap(v-if="loggedInList.length")
-    div
-      router-link.lr-logined-item(v-for="username in loggedInList", :key="username", :to="'/user/' + username")
-        .lr-logined-item-icon
-          span.iconfont.icon-accountbox
-        .lr-logined-item-text {{username}}
-  .lr-login-box-wrap
-    .lr-login-logo
-      span.iconfont.icon-logo_LR
-    h1 Linux Remote
-    .lr-login-box
-      form(@submit.prevent="login")
-        div
-          label {{LANG.username}}
-          input.lr-login-input( v-model='username' required="required")
-        div
-          label {{LANG.password}}
-          input.lr-login-input(type='password', v-model='password', autocomplete="off",  required="required")
-        .lr-login-box-footer
-          button(type="submit", :class='{lr_loading:isRequest}') {{LANG.submitBtn}}
-  .lr-login-bottom
-    | Powered By
-    a(href='https://github.com/linux-remote', target='_blank') linux-remote
+  .lr-window(:style="{width: width + 'px', height: height + 'px', left: left + 'px', top: top + 'px'}")
+    Focusable.lr-window_main(:enterBindBtn="true", ref="main")
+      .lr-title
+        .lr-title-content {{title}}
+      .lr-window-body
+        .lr-login_banner
+          Icon.lr-login_logo(type="css", :size="50", value="iconfont icon-logo_LR")
+          .lr-login_info
+            
+            h1 linux-remote
+            div Linux web remote desktop
+          a.lr-login_powered(href="https://github.com/linux-remote/linux-remote", target="_blank") POWERED BY
+          .lr-login_process_wrap
+            .lr-login_process
+        form.lr-login_form(@submit.prevent)
+          .lr-login_form_mask Logging...
+          .lr-login_input_wrap
+            label {{LANG.username}}
+            input.lr-input( v-model='username' required="required")
+          .lr-login_input_wrap
+            label {{LANG.password}}
+            input.lr-input(type='password', v-model='password', autocomplete="off",  required="required")
+          .lr-login-box-footer
+            Btn(@click="handleBtnClick", ref="submit") {{LANG.submitBtn}}
+    Alert(v-if="alertOpt",
+      :pWidth="width",
+      :pHeight="height",
+      :close="closeAlert",
+      v-bind="alertOpt")
 </template>
 
 <script>
-import { Window,  Icon,  Btn } from '../ui/index.js';
+import { Icon,  Btn, Focusable, Alert } from '../ui/index.js';
 export default {
   components: {
-    Window,
+    Focusable,
     Icon,
+    Alert,
     Btn
   },
   data(){
@@ -73,8 +50,10 @@ export default {
     const left = (document.body.clientWidth - width) / 2;
     return {
       title,
-      width,
+      width: 417,
       left,
+      top: 200,
+      height: 230,
       alertOpt: null,
       currLangIndex: this.$store.state.language.currIndex,
       isRequest: false,
@@ -101,7 +80,13 @@ export default {
     //   })
     // },
     alert(opt){
-      this.$refs.win.alert(opt);
+      this.alertOpt = opt;
+    },
+    closeAlert(){
+      this.alertOpt = null;
+      this.$nextTick(() => {
+        this.$refs.main.$el.focus();
+      });
     },
     handleChange(){
       this.$store.commit('language/set', this.currLangIndex);

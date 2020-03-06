@@ -1,22 +1,22 @@
 
 <template lang="jade">
-.lr-task-bar-item(@click = 'handleClick',
+.lr-task-bar-item(@click='handleClick',
                   :class='{lr_task_bar_item_focus: item.isFocus, lr_task_bar_item_close: item.isMin, lr_task_bar_item_max: item.isMax}')
   .lr-task-bar-item-inner
     .lr-icon(v-if="item.APP.iconUrl", v-open-icon="item.APP.iconUrl")
     .lr-icon(v-else :class="item.APP.iconClassName")
     | {{itemTitle}}
-  ContextMenu
-    .lr-ctx-item(@click='close') {{LANG.global.close}}
+  //- ContextMenu
+  //-   .lr-ctx-item(@click='close') {{LANG.global.close}}
 </template>
 
 <script>
-import ContextMenu from '__ROOT__/cmpt/global/contextmenu/index.vue';
+// import ContextMenu from '__ROOT__/cmpt/global/contextmenu/index.vue';
 export default {
   props: ['item', 'index'],
-  components: {
-    ContextMenu
-  },
+  // components: {
+  //   ContextMenu
+  // },
   computed: {
     LANG(){
       return this.$store.getters['language/currLanguage']
@@ -31,7 +31,6 @@ export default {
     },
     handleClick(){
       const task = this.item;
-      console.log('task', task.isFocus)
       if(task.isMin){
         this.$store.commit('task/show', task);
       }else if(task.isFocus){

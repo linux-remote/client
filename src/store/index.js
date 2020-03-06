@@ -43,7 +43,6 @@ import sysApps from './module/sys-apps';
 import users from './module/users';
 import fs from './module/fs';
 import desktop from './module/desktop';
-import windows from './module/windows.js';
 const SocketRequest = require('../../../socket-request/index.js');
 // let _tmp = null;
 const AFRTimeout = 15 * 60 * 1000;
@@ -60,8 +59,7 @@ const store = new window.Vuex.Store({
     sysApps,
     fsClipBoard,
     fs,
-    desktop,
-    windows
+    desktop
   },
   state: {
     // global
