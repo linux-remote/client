@@ -1,36 +1,36 @@
 
 <template lang="jade">
 .lr-page(:class="{lr_login_logging: isRequest}")
-  .lr-mask(@mousedown.prevent)
-  .lr-window(:style="{width: width + 'px', height: height + 'px', left: left + 'px', top: top + 'px'}")
-    Focusable.lr-window_main(:enterBindBtn="true", ref="main")
-      .lr-title
-        .lr-title-content {{title}}
-      .lr-window-body
-        .lr-login_banner
-          Icon.lr-login_logo(type="css", :size="50", value="iconfont icon-logo_LR")
-          .lr-login_info
-            
-            h1 linux-remote
-            div Linux web remote desktop
-          a.lr-login_powered(href="https://github.com/linux-remote/linux-remote", target="_blank") POWERED BY
-          .lr-login_process_wrap
-            .lr-login_process
-        form.lr-login_form(@submit.prevent)
-          .lr-login_form_mask Logging...
-          .lr-login_input_wrap
-            label {{LANG.username}}
-            input.lr-input( v-model='username' required="required")
-          .lr-login_input_wrap
-            label {{LANG.password}}
-            input.lr-input(type='password', v-model='password', autocomplete="off",  required="required")
-          .lr-login-box-footer
-            Btn(@click="handleBtnClick", ref="submit") {{LANG.submitBtn}}
-    Alert(v-if="alertOpt",
-      :pWidth="width",
-      :pHeight="height",
-      :close="closeAlert",
-      v-bind="alertOpt")
+  .lr-login_mask(@mousedown.prevent)
+
+  Focusable.lr-window(ref="main", :enterBindBtn="true", :style="{width: width + 'px', height: height + 'px', left: left + 'px', top: top + 'px'}")
+    .lr-title
+      .lr-title-content {{title}}
+    .lr-window-body
+      .lr-login_banner
+        Icon.lr-login_logo(type="css", :size="50", value="iconfont icon-logo_LR")
+        .lr-login_info
+          
+          h1 linux-remote
+          div Linux web remote desktop
+        a.lr-login_powered(href="https://github.com/linux-remote/linux-remote", target="_blank") POWERED BY
+        .lr-login_process_wrap
+          .lr-login_process
+      form.lr-login_form(@submit.prevent)
+        .lr-login_form_mask Logging...
+        .lr-login_input_wrap
+          label {{LANG.username}}
+          input.lr-input( v-model='username' required="required")
+        .lr-login_input_wrap
+          label {{LANG.password}}
+          input.lr-input(type='password', v-model='password', autocomplete="off",  required="required")
+        .lr-login-box-footer
+          Btn(@click="handleBtnClick", ref="submit") {{LANG.submitBtn}}
+  Alert(v-if="alertOpt",
+    :pWidth="width",
+    :pHeight="height",
+    :close="closeAlert",
+    v-bind="alertOpt")
 </template>
 
 <script>

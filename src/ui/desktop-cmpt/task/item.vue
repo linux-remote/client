@@ -1,10 +1,11 @@
 <template lang="jade">
 .lr-task-item(@click='handleClick',
-              :class='{lr__focus: item.isFocus}')
+              @mousedown.prevent,
+              :class='{lr__focus: item.window.isFocusEnter}')
   //- LRIcon(v-bind="$attrs")
-  .lr-icon(v-if="item.APP.iconUrl", v-open-icon="item.APP.iconUrl")
-  .lr-icon(v-else :class="item.APP.iconClassName")
-  | {{itemTitle}}
+  .lr-icon(v-if="item.app.iconUrl", v-open-icon="item.app.iconUrl")
+  .lr-icon(v-else :class="item.app.iconClassName")
+  | {{item.window.title}}
 </template>
 <script>
 // import LRIcon from '../../cmpt/icon/icon.vue';
@@ -24,27 +25,20 @@ export default {
     return {
     }
   },
-  computed: {
-    LANG(){
-      return this.$store.getters['language/currLanguage']
-    },
-    itemTitle(){
-      return this.LANG[this.item.appId].title
-    }
-  },
   methods: {
     close(){
       this.$store.commit('task/remove', this.index);
     },
     handleClick(){
-      const task = this.item;
-      if(task.isMin){
-        this.$store.commit('task/show', task);
-      }else if(task.isFocus){
-        // console.log('hidden')
-        this.$store.commit('task/hidden', task);
+      const taskWindow = this.item.window;
+      if(taskWindow.isMin){
+        taskWindow.show();
+      }else if(taskWindow.isFocusEnter){
+        taskWindow.hidden();
+        // this.$store.commit('task/hidden', task);
       }else{
-        this.$store.commit('task/focus', task);
+        taskWindow.focus();
+        // this.$store.commit('task/focus', task);
       }
     }
   }

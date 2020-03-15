@@ -1,11 +1,68 @@
 //let _id = 3; 
+import sysAppsMap from './sys-apps-map';
+let id = 1;
+let currFocusTask = null;
 const uniqueMap = Object.create(null);
-const TASK_WIDTH = 800;
-const TASK_HEIGHT = 600;
+const startWindowMap = Object.create(null);
+
+const DEF_TASK_WIDTH = 800;
+const DEF_TASK_HEIGHT = 600;
+
+function _initApp(appId, app){
+  if(startWindowMap[appId]){
+    return;
+  }
+  app.id = appId;
+  app.window = app.window || Object.create(null);
+  const appWindow = startWindowMap[appId] = app.window;
+  appWindow.title = app.name;
+  delete(app.window);
+  // init width
+  if(typeof appWindow.width !== 'number'){
+    appWindow.startWidth = DEF_TASK_WIDTH;
+  } else {
+    appWindow.startWidth = appWindow.width;
+    delete(appWindow.width);
+  }
+
+  // init height
+  if(typeof appWindow.height !== 'number'){
+    appWindow.startHeight = DEF_TASK_HEIGHT;
+  } else {
+    appWindow.startHeight = appWindow.height;
+    delete(appWindow.height);
+  }
+}
+
+function _initPosition(current, appWindow){
+  var dom = document.getElementById('lr-desktop');
+  var desktopH = dom.clientHeight;
+  const desktopW = dom.clientWidth;
+  if(!current){ // Appear on center
+    appWindow.startTop = (desktopH - appWindow.startHeight) / 2;
+    appWindow.startLeft = (desktopW - appWindow.startWidth) / 2;
+  }else{
+
+    const startTop = current.top + 50;
+    const startLeft = current.left + 50;
+
+    if(startTop + appWindow.startHeight >= desktopH){
+      appWindow.startTop = 0;
+    }else{
+      appWindow.startTop = startTop;
+    }
+
+    if(startLeft + appWindow.startWidth >= desktopW){
+      appWindow.startLeft = 0;
+    }else{
+      appWindow.startLeft = startLeft;
+    }
+  }
+}
+
 function _defState(){
   return {
     list: [],
-    latest: {}, // last created task
     current: {}, // focused task
     id: 3,  //zIndex
     
@@ -18,100 +75,71 @@ export default  {
   namespaced: true,
   state: _defState(),
   mutations: {
-    add(state, opts){
-      var appId;
-      if(typeof opts === 'string'){
-        appId = opts;
-        opts = {
-          appId
-        }
-      } else {
-         // opts 是一个对象.
-        appId = opts.appId;
-      }
-      const APP = this.getters['sysApps/getById'](appId);
-
-      if(APP.IS_UNKNOWN_APP){
-        return this.commit('error/show', 'Unknown App!');
-      }
-
-      const data = {
-        ...opts,
-        APP
-      }
-      data.title = data.title || null;
-      data.unique = APP.unique || false;
-      data.width = APP.width || TASK_WIDTH;
-      data.height = APP.height || TASK_HEIGHT;
-      console.log('data', data.width)
-      if(data.unique){
-        if(uniqueMap[appId]){
-          return this.commit('task/show', uniqueMap[appId]);
-        }else{
-
-          uniqueMap[appId] = data;
-        }
-      } else {
-        let preSameTask = {zIndex: -1, width: data.width, height: data.height};
-        state.list.forEach(v => {
-          if(v.appId === appId){
-            if(preSameTask.zIndex < v.zIndex){
-              preSameTask = v;
-            }
-          }
-        });
-  
-        const isMax = preSameTask.isMax;
-        data.width = isMax ? data.width : preSameTask.width;
-        data.height = isMax ? data.height : preSameTask.height;
-        
-      }
-      const rootState = this._modules.root.state;
-      if(data.width > rootState.deskTopW){
-        data.width = rootState.deskTopW;
-      }
-      if(data.height > rootState.deskTopH){
-        data.height = rootState.deskTopH;
-      }
-      console.log('data', data.width, rootState.deskTopW)
-      data.draggable = false;
-      data.isMin = false;
-      data.isMax = false;
-      data.resizeStartData = null;
-
-      this.commit('task/_initPosition', data); // init: top, left
-      this.commit('task/focus', data); // init: isFocus, id.
-
-      data.id = state.id;
-      state.latest = data;
-      state.list.push(data);
-    },
-    focus(state, task){
-      if(task.isFocus === true){
+    add(state, appId){
+      const app = sysAppsMap[appId];
+      if(!app){
+        this.commit('error/show', 'Unknown App!');
         return;
-      } 
+      }
+      _initApp(appId, app);
+      const task = Object.create(null);
+      task.app = app;
+      const startWindow = startWindowMap[appId];
+      if(app.unique){
+        if(uniqueMap[appId]){
+          this.commit('task/show', uniqueMap[appId]);
+          return;
+        }else{
+          uniqueMap[appId] = task;
+        }
+      }
+      
+      _initPosition(null, startWindow);
+
+      task.id = id;
+      id = id + 1;
+
+      this.commit('task/focus', startWindow); // init: isFocus, id.
+
+
+      task.startWindow = startWindow;
+      task.window = Object.create(null);
+      console.log('berfer create')
+      state.list.push(task);
+      console.log('berfer after')
+    },
+    onWindowCreate(state, vm){
+      const index = state.list.findIndex(v => v.id === vm.id);
+      state.list[index].window = vm;
+    },
+    onWindowResized(state, index){
+      const item = state.list[index];
+      item.startWindow.startWidth = item.window.width;
+      item.startWindow.startHeight = item.window.height;
+    },
+    focus(state, taskWindow){
+      if(taskWindow.isFocus === true){
+        return;
+      }
       if(state._tmpMinAll.length){
         state._tmpMinAll = [];
         state.isMinAll = false;
       }
-      if(state.current === task){
-        task.isFocus = true;
+      if(state.current === taskWindow){
+        taskWindow.isFocus = true;
         return;
       }
       state.current.isFocus = false;
-      task.isFocus = true;
+      taskWindow.isFocus = true;
       state.id = state.id + 1; //z-index 最前.
-      task.zIndex = state.id;
-      state.current = task;
+      taskWindow.zIndex = state.id;
+      state.current = taskWindow;
     },
 
-    show(state, task){ 
-      task.isMin = false;
-      if(task !== state.current && !state.current.isMax && task.left === state.current.left && task.top === state.current.top){
-        this.commit('task/_initPosition', task);
-      }
-      this.commit('task/focus', task);
-    },
+    // show(state, task){
+    //   task.isMin = false;
+    //   this.commit('task/focus', task);
+    // },
 
     hidden(state, task){
       task.isMin = true;
@@ -119,10 +147,13 @@ export default  {
       this.commit('task/_focusNext');
     },
 
-    remove(state, index){
+    remove(state, id){
+      let index = state.list.findIndex(function(v){
+        return v.id === id;
+      });
       const item = state.list[index];
-      if(item.unique){
-        delete(uniqueMap[item.appId]);
+      if(item.app.unique){
+        delete(uniqueMap[item.app.id]);
       }
       state.list.splice(index, 1);
       this.commit('task/_focusNext');

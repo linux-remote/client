@@ -40,7 +40,7 @@ $fsIconW: 16px;
     margin: 10px;
     padding: 0 5px;
     &:hover{
-      background-color: $color3;
+      background-color: $bg;
     }
   }
 }
@@ -83,6 +83,10 @@ $fsIconW: 16px;
 //   }
 // }
 
+// .lr-fs-bookmark:hover{
+//   background-color: $bg;
+//   color: #000;
+// }
 
 
 // *************** Left End ***************
@@ -427,9 +431,9 @@ background-image: url('/public/img/tango/inode-chardevice.png');
   background-image: url('/public/img/tango/document-new-4.png');
 }
 .lr-fs-create-layer{
-    background-color: $color3;
+    background-color: $bg;
   &:hover{
-    background-color: $color3!important;
+    background-color: $bg!important;
   }
 }
 
@@ -461,14 +465,14 @@ background-image: url('/public/img/tango/inode-chardevice.png');
   }
   tr {
     // &:hover{
-    //   background-color: $color3;
+    //   background-color: $activeBgColor;
     // }
 
     &.lr_file_be_selected{
-      background-color: $color3;
+      background-color: $activeBgColor;
     }
     &.lr_file_focus {
-      background-color: $color3;
+      background-color: $focusBg;
       // td {
       //   color: #fff;
       // }
@@ -603,7 +607,7 @@ background-image: url('/public/img/tango/inode-chardevice.png');
 //   // background-color: #eee;
 //   // &:hover, &:focus{
 //   //   td {
-//   //     background-color: $color3!important;
+//   //     background-color: $activeBgColor!important;
 //   //   }
 //   //   &:focus{
 //   //     outline: none;
@@ -631,7 +635,7 @@ background-image: url('/public/img/tango/inode-chardevice.png');
   height: 100%;
 }
 .lr-fs-upload-processbar{
-  background-color: $color3;
+  background-color: $focusBg;
   width: 0;
 }
 .lr-fs-upload-info{
@@ -671,7 +675,7 @@ background-image: url('/public/img/tango/inode-chardevice.png');
   }
   background-color: gray;
   tr.lr_file_be_selected{
-    background-color: $color3;
+    background-color: $bg;
   }
 }
 .lr_task_un_focus tr.lr_file_be_selected{

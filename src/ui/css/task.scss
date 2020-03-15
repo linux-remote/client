@@ -1,13 +1,15 @@
-.lr-window{
+.lr-window-wrap{
   position: absolute;
 }
-
-.lr-window_main{
+.lr-window{
   @extend .lr-box;
   padding: $taskTitleH + 3 3px 3px;
-  height: 100%;
+  // height: 100%;
+  position: absolute;
   overflow: hidden;
 }
+
+
 
 .lr-title{
   background-color: $taskTitleColor;
@@ -33,14 +35,13 @@
   }
 }
 
-.lr-window_main{
+.lr-window{
   &:focus-within{
       >.lr-title{
         color: #fff;
         background-color: $taskActiveTitleColor;
       }
   }
-
 }
 .lr_window_resizable{
   padding: $taskTitleH + 4 4px 4px;

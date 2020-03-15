@@ -1,55 +1,47 @@
 <template lang="jade">
-.lr-window(:style="{top: top + 'px', left: left + 'px', width: width + 'px', height: height + 'px'}", :class="{lr_window_max: isMax}", v-show="!isMin")
+.lr-window(:style="{top: top + 'px', left: left + 'px', width: width + 'px',   height: height + 'px', zIndex: zIndex}",
+                    :tabindex="tabindex",
+                    :enterBindBtn="enterBindBtn",
+                    :class="{lr_window_maximized: isMax, lr_window_resizable:       resizable}", 
+                    v-show="!isMin")
+  .lr-title
+    .lr-title-content
+      LRIcon(:type="iconType", :value="icon")
+      Movable(v-if="movable", @moveStart="handleMoveStart", @moving="handleMoving")
+      span {{title}} {{id}} {{typeof isFocusEnter}}
+    .lr-btn_nf(@click="handleMinClick", v-if="minimizable")
+      span.lr-icon_min
+    .lr-btn_nf(@click="handleMaxClick", v-if="maximizable")
+      span.lr-icon_unmax(v-if="isMax")
+      span.lr-icon_max(v-else)
+    .lr-btn_nf.lr-btn-close(@click="close")
+      span.lr-icon_close
+  .lr-window-body
+    slot
   Resizable(v-if="resizable",
-    v-show="!maximized", 
+    v-show="!isMax", 
     :direction="resizeDirection",  
     @resizeStart="handleResizeStart",
-    @resizing="handleResizing")
-  Focusable.lr-window_main(:tabindex="tabindex",
-                  :enterBindBtn="enterBindBtn",
-                  :class="{lr_window_maximized: maximized, lr_window_resizable:       resizable}")
-    .lr-title
-      LRIcon(:type="iconType", :value="icon")
-      .lr-title-content
-        Movable(v-if="movable", @moveStart="handleMoveStart", @moving="handleMoving")
-        span {{title}}
-      .lr-btn_nf(@click="handleMinClick", v-if="minimizable")
-        span.lr-icon_min
-      .lr-btn_nf(@click="handleMaxClick", v-if="maximizable")
-        span.lr-icon_unmax(v-if="maximized")
-        span.lr-icon_max(v-else)
-      .lr-btn_nf.lr-btn-close(@click="close", v-if="close")
-        span.lr-icon_close
-    .lr-window-body
-      slot
-
-  Alert(v-if="alertData",
-        :pWidth="width",
-        :pHeight="height",
-        :close="closeAlert",
-        v-bind="alertData")
+    @resizing="handleResizing",
+    @resized="handleResized")
+  .lr-mask(@mousedown.prevent="handleMaskMousedown", v-if="childId")
 </template>
 <script>
-import Focusable from '../../unit/focusable.vue';
+import map from './map.js';
+let zIndex = 3;
 import LRIcon from '../../cmpt/icon/icon.vue';
 import Resizable from '../../unit/resizable.vue';
 import Movable from '../../unit/movable.vue';
-import Alert from '../block/alert.vue';
+import MixinFocusable from '__ROOT__/lib/mixins/focusable.js';
 export default {
+  mixins: [MixinFocusable],
   components: {
-    Focusable,
     LRIcon,
     Resizable,
-    Movable,
-    Alert
+    Movable
   },
   props: {
-    tabindex: {
-      type: Number
-    },
-    close: {
-      type: Function
-    },
+
     icon: {
       type: String,
       default: ''
@@ -64,19 +56,19 @@ export default {
     },
     minimizable: {
       type: Boolean,
-      default: false
+      default: true
     },
     maximizable: {
       type: Boolean,
-      default: false
+      default: true
     },
     resizable: {
       type: Boolean,
-      default: false
+      default: true
     },
     movable: {
       type: Boolean,
-      default: false
+      default: true
     },
     resizeDirection: {
       type: String,
@@ -102,26 +94,100 @@ export default {
       type: Number,
       default: 0
     },
-    enterBindBtn: {
-      type: Boolean
+    id: {
+      type: Number,
+      required: true
+    },
+    index: {
+      type: Number,
+      required: true
+    },
+    parentId: {
+      type: Number,
+      default: null
     }
   },
 
   data(){
     return {
-      maximized: false,
       isMax: this.startIsMax,
       height: this.startHeight,
       width: this.startWidth,
       top: this.startTop,
       left: this.startLeft,
+      zIndex,
       alertData: null,
-      isMin: false
+      isMin: false,
+      childId: null,
+      isBlock: false
     }
   },
   methods: {
+    show(){
+      console.log('show');
+      this.isMin = false;
+      this.$nextTick(() => {
+        this.focus();
+      });
+    },
+    hidden(){
+      console.log('hidden')
+      this.blur();
+      this.isMin = true;
+    },
     focus(){
-      this.$el.lastElementChild.focus();
+      this.$el.focus();
+    },
+    blur(){
+      this.$el.blur();
+    },
+    keepTop(){
+      zIndex = zIndex + 1;
+      this.zIndex = zIndex;
+    },
+    onFocusenter(){
+      console.log('handleFocusenter')
+      map.currFocus = this;
+      this.keepTop();
+      if(this.childId){
+        map[this.childId].fcous();
+      }
+    },
+    onFocusleave(){
+      if(this.parentId){
+        map[this.parentId].focus();
+      }
+    },
+
+    close(){
+      this.$store.commit('task/remove', this.id);
+    },
+
+    handleMaskMousedown(){
+      map[this.childId].shine();
+    },
+    shine(){
+      if(this.childId){
+        return;
+      }
+      if(!this.isFocusEnter){
+        this.focus();
+        return;
+      }
+      if(this.isMaskClick){
+        this.isMaskClick = false;
+          if(this.$options._t){
+            clearTimeout(this.$options._t);
+          }
+          this.$options._t = setTimeout(() => {
+            this.isMaskClick = true;
+          }, 100);
+      } else {
+          this.isMaskClick = true;
+      }
+    },
+    handleMaskMouseDown(){
+      map[this.childId].shine();
     },
     alert(data){
       this.alertData = data;
@@ -135,7 +201,6 @@ export default {
 
     handleMinClick(){
       this.isMin = !this.isMin;
-      this.$emit('min');
     },
 
     handleMoveStart(virtual){
@@ -158,20 +223,37 @@ export default {
       this.width = virtual.width;
       this.height = virtual.height;
     },
-
+    handleResized(){
+      this.$emit('resized');
+      this.$store.commit('task/onWindowResized', this.index);
+    },
     handleMaxClick(){
-      this.maximized = !this.maximized;
-      this.$emit('max');
-    }
-
-  },
-  mounted(){
-    if(this.startIsMax){
+      this.isMax = !this.isMax;
       this.top = 0;
       this.left = 0;
       this.width = this.$el.parentElement.clientWidth;
       this.height = this.$el.parentElement.clientHeight;
     }
+
+  },
+  created(){
+    map[this.id] = this;
+    this.$store.commit('task/onWindowCreate', this);
+  },
+  mounted(){
+    if(this.startIsMax){
+      this.handleMaxClick();
+    }
+    this.$nextTick(() => {
+      this.focus();
+    })
+  },
+  destroyed(){
+    if(map.currFocus === this){
+      map.currFocus = null;
+    }
+    delete(map[this.id]);
+    this.$store.commit('task/windowDestroyed', this.index);
   }
 }
 </script>

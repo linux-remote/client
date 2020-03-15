@@ -23,6 +23,7 @@
   height: 100vh;
   position: relative;
   background-color: $deskTopColor;
+  overflow: hidden;
 }
 
 .lr-desktop{
@@ -37,14 +38,7 @@
   position: relative;
   overflow: hidden;
 }
-.lr-desktop_container .lr-window_main{
-  box-shadow: none;
-  background: none;
-  padding: 0;
-  >.lr-title{
-    display: none;
-  }
-}
+
 .lr-bar{
   border-top: 1px solid $color1;
   box-shadow: 0px 1px #fff inset;
@@ -77,6 +71,7 @@
   height: 100%;
   display: flex;
   align-items: center;
+  overflow-x: hidden;
 }
 
 .lr-clock-area{

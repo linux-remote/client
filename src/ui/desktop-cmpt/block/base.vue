@@ -1,8 +1,9 @@
 <template lang="jade">
+
 .lr-confirm-wrap(:class="{lr_task_focus: isTaskFocus}", @focusin="handleFocusin", @focusout="handleFocusout", @submit.prevent="handleSubmit", tabIndex="-1")
   .lr-confirm-mask(@mousedown="handleMaskMouseDown")
 
-  .lr-window_main.lr-confirm(:style="{width: width + 'px', height: height + 'px', top: top + 'px', left: left + 'px'}")
+  .lr-window.lr-confirm(:style="{width: width + 'px', height: height + 'px', top: top + 'px', left: left + 'px'}")
     .lr-title(:class="{lr_mask_clicked: isMaskClick}")
       .lr-title-content
         Movable(@moveStart="handleMoveStart", @moving="handleMoving")

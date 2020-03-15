@@ -6,9 +6,15 @@ Contextmenuable.lr-desktop_body(ref="ctx")
                     @mousedown='handleMousedown')
     Icon(v-for="(v,i) in list",
         :key="v.id",
+        :id="v.id",
         :index="i",
         :item="v")
-  TaskWindow(v-for='(item, index) in tasks', :key='item.id', :index='index')
+  //- TaskWindow(v-for='(item, index) in tasks', :key='item.id', :index='index')
+  Window(v-for='(item, index) in tasks', 
+                :key='item.id',
+                :id="item.id",
+                :index="index",
+                v-bind="item.startWindow")
   template(v-slot:contextmenu)
     .lr-cm-item(@click="refresh") {{LANG.ctx.Refresh}}
     .lr-cm-item(@click="sortIcon") Sort icon
@@ -17,7 +23,7 @@ Contextmenuable.lr-desktop_body(ref="ctx")
 import Contextmenuable from '../global/contextmenuable.vue';
 import TaskWindow from '../task/task-window.vue';
 import Icon from './icon.vue';
-// import Window from '../window/window.vue';
+import Window from '../window/window.vue';
 //import Cascade from '../global/cascade.vue';
 const ICON_WIDTH = 80;
 const ICON_HEIGHT = 80;
@@ -25,7 +31,8 @@ export default {
   components: {
     Contextmenuable,
     Icon,
-    TaskWindow
+    TaskWindow,
+    Window
   },
   computed:{
     tasks(){
@@ -81,7 +88,11 @@ export default {
       if(!data){
         return;
       }
-      return JSON.parse(data);
+      try{
+        return JSON.parse(data);
+      } catch(e){
+        // console.log('data', e);
+      }
     },
     save(){
         const arr = this.list.map(v => {

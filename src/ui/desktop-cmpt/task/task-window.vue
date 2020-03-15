@@ -1,14 +1,13 @@
 <template lang="jade">
-.lr-window(v-show="!isMin", 
+.lr-window-wrap(v-show="!isMin", 
           :style="{top: top + 'px', left: left + 'px', width: width + 'px', height: height + 'px', zIndex: zIndex}", 
           :class="{lr_window_max: isMax}")
-  .lr-window_main
-
+  Focusable.lr-window( ref="main")
     .lr-title
       .lr-title-content(@dblclick='maxToggle')
         .lr-icon(v-if="APP.iconUrl", v-open-icon="APP.iconUrl")
         .lr-icon(v-else :class="APP.iconClassName")
-        Movable(v-if="movable", @moveStart="handleMoveStart", @moving="handleMoving")
+        Movable( @moveStart="handleMoveStart", @moving="handleMoving")
         span {{currTitle}}
       .lr-btn_nf(@click="hiddenTask", v-if="minimizable")
         span.lr-icon_min
@@ -21,7 +20,7 @@
 
     component(:is="appId", ref="body")
 
-  Resizable(v-if="resizable",
+  Resizable(
     v-show="!isMax",
     :direction="resizeDirection",
     @resizeStart="handleResizeStart",
@@ -43,6 +42,9 @@ import sys_app_terminal from '../../../cmpt/sys-app/terminal/index.vue';
 import Resizable from '../../unit/resizable.vue';
 import Movable from '../../unit/movable.vue';
 import SimpleEvent from './window/simple-event.js';
+import Focusable from '../../unit/focusable.vue';
+import map from './map.js';
+
 export default {
   props: ['index'],
   provide() {
@@ -65,7 +67,8 @@ export default {
     //ThirdPartyApp,
 
     Resizable,
-    Movable
+    Movable,
+    Focusable
   },
   data(){
     return this.$store.state.task.list[this.index];
@@ -85,6 +88,9 @@ export default {
     }
   },
   methods:{
+    focus(){
+      this.$refs.main.$el.focus();
+    },
     handleResizeStart(virtual){
       virtual.top = this.top;
       virtual.left = this.left;
@@ -188,7 +194,6 @@ export default {
     },
     close(){
       const e = new SimpleEvent;
-      this.$emit('close', e);
       if(e.preventDefaulted){
         return;
       }
@@ -198,6 +203,12 @@ export default {
       e._isHandle = true;
       this.$store.commit('task/focus', this.$data);
     }
+  },
+  created(){
+    map[this.id] = this;
+  },
+  destroyed(){
+    delete(map[this.id]);
   }
 }
 </script>
