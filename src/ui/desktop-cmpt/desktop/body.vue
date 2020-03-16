@@ -2,8 +2,7 @@
 Contextmenuable.lr-desktop_body(ref="ctx")
   .lr-desktop-icons(@drop.stop='handleDeskDrop',
                     @dragenter.stop='handleDragenter',
-                    @dragover.stop='handleDragover',
-                    @mousedown='handleMousedown')
+                    @dragover.stop='handleDragover')
     Icon(v-for="(v,i) in list",
         :key="v.id",
         :id="v.id",
@@ -59,11 +58,6 @@ export default {
     },
     handleDragover(e){
       e.preventDefault();
-    },
-    handleMousedown(e){
-      if(!e._isHandle){
-        this.$store.commit('task/currentUnFocus');
-      }
     },
     sortIcon(){
       let deskH = this.$el.offsetHeight;

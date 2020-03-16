@@ -2,21 +2,22 @@
 .lr-window(:style="{top: top + 'px', left: left + 'px', width: width + 'px',   height: height + 'px', zIndex: zIndex}",
                     :tabindex="tabindex",
                     :enterBindBtn="enterBindBtn",
-                    :class="{lr_window_maximized: isMax, lr_window_resizable:       resizable}", 
+                    :class="{lr_window_resizable: resizable, lr_window_maximized: isMax}",
                     v-show="!isMin")
   .lr-title
     .lr-title-content
       LRIcon(:type="iconType", :value="icon")
-      Movable(v-if="movable", @moveStart="handleMoveStart", @moving="handleMoving")
+      Movable(v-if="movable", v-show="!isMax", @moveStart="handleMoveStart", @moving="handleMoving")
       span {{title}} {{id}} {{typeof isFocusEnter}}
     .lr-btn_nf(@click="handleMinClick", v-if="minimizable")
       span.lr-icon_min
-    .lr-btn_nf(@click="handleMaxClick", v-if="maximizable")
+    .lr-btn_nf(@click="maxToggle", v-if="maximizable")
       span.lr-icon_unmax(v-if="isMax")
       span.lr-icon_max(v-else)
     .lr-btn_nf.lr-btn-close(@click="close")
       span.lr-icon_close
   .lr-window-body
+    h1 hello
     slot
   Resizable(v-if="resizable",
     v-show="!isMax", 
@@ -124,14 +125,12 @@ export default {
   },
   methods: {
     show(){
-      console.log('show');
       this.isMin = false;
       this.$nextTick(() => {
         this.focus();
       });
     },
     hidden(){
-      console.log('hidden')
       this.blur();
       this.isMin = true;
     },
@@ -146,8 +145,7 @@ export default {
       this.zIndex = zIndex;
     },
     onFocusenter(){
-      console.log('handleFocusenter')
-      map.currFocus = this;
+      map.latestFocusEnter = this;
       this.keepTop();
       if(this.childId){
         map[this.childId].fcous();
@@ -199,10 +197,6 @@ export default {
       });
     },
 
-    handleMinClick(){
-      this.isMin = !this.isMin;
-    },
-
     handleMoveStart(virtual){
       virtual.top = this.top;
       virtual.left = this.left;
@@ -227,14 +221,31 @@ export default {
       this.$emit('resized');
       this.$store.commit('task/onWindowResized', this.index);
     },
-    handleMaxClick(){
-      this.isMax = !this.isMax;
-      this.top = 0;
-      this.left = 0;
-      this.width = this.$el.parentElement.clientWidth;
-      this.height = this.$el.parentElement.clientHeight;
+    maxToggle(){
+      if(this.isMax){
+        this.isMax = false;
+        const bak = this.$options._bakMaxPre;
+        this.left = bak.left;
+        this.top = bak.top;
+        this.width = bak.width;
+        this.height = bak.height;
+      } else {
+        this.$options._bakMaxPre = {
+          top: this.top,
+          left: this.left,
+          width: this.width,
+          height: this.height
+        }
+        this.isMax = true;
+        this.top = 0;
+        this.left = 0;
+        this.width = this.$el.parentElement.clientWidth;
+        this.height = this.$el.parentElement.clientHeight;
+      }
+    },
+    handleMinClick(){
+      this.isMin = !this.isMin;
     }
-
   },
   created(){
     map[this.id] = this;
@@ -242,18 +253,17 @@ export default {
   },
   mounted(){
     if(this.startIsMax){
-      this.handleMaxClick();
+      this.maxToggle();
     }
     this.$nextTick(() => {
       this.focus();
     })
   },
   destroyed(){
-    if(map.currFocus === this){
-      map.currFocus = null;
+    if(map.latestFocusEnter === this){
+      map.latestFocusEnter = null;
     }
     delete(map[this.id]);
-    this.$store.commit('task/windowDestroyed', this.index);
   }
 }
 </script>

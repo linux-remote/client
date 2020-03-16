@@ -1,10 +1,11 @@
 //let _id = 3; 
 import sysAppsMap from './sys-apps-map';
+import windowMap from '../../ui/desktop-cmpt/window/map.js';
 let id = 1;
-let currFocusTask = null;
 const uniqueMap = Object.create(null);
 const startWindowMap = Object.create(null);
 
+const P_OFFSET = 22;
 const DEF_TASK_WIDTH = 800;
 const DEF_TASK_HEIGHT = 600;
 
@@ -34,17 +35,17 @@ function _initApp(appId, app){
   }
 }
 
-function _initPosition(current, appWindow){
+function _initPosition(latest, appWindow){
   var dom = document.getElementById('lr-desktop');
   var desktopH = dom.clientHeight;
   const desktopW = dom.clientWidth;
-  if(!current){ // Appear on center
+  if(!latest){ // Appear on center
     appWindow.startTop = (desktopH - appWindow.startHeight) / 2;
     appWindow.startLeft = (desktopW - appWindow.startWidth) / 2;
   }else{
 
-    const startTop = current.top + 50;
-    const startLeft = current.left + 50;
+    const startTop = latest.top + P_OFFSET;
+    const startLeft = latest.left + P_OFFSET;
 
     if(startTop + appWindow.startHeight >= desktopH){
       appWindow.startTop = 0;
@@ -71,6 +72,7 @@ function _defState(){
     _tmpMinAllIsCurrFocus: false
   }
 }
+
 export default  {
   namespaced: true,
   state: _defState(),
@@ -94,19 +96,14 @@ export default  {
         }
       }
       
-      _initPosition(null, startWindow);
+      _initPosition(windowMap.latestFocusEnter, startWindow);
 
       task.id = id;
       id = id + 1;
 
-      this.commit('task/focus', startWindow); // init: isFocus, id.
-
-
       task.startWindow = startWindow;
       task.window = Object.create(null);
-      console.log('berfer create')
       state.list.push(task);
-      console.log('berfer after')
     },
     onWindowCreate(state, vm){
       const index = state.list.findIndex(v => v.id === vm.id);
@@ -117,29 +114,6 @@ export default  {
       item.startWindow.startWidth = item.window.width;
       item.startWindow.startHeight = item.window.height;
     },
-    focus(state, taskWindow){
-      if(taskWindow.isFocus === true){
-        return;
-      }
-      if(state._tmpMinAll.length){
-        state._tmpMinAll = [];
-        state.isMinAll = false;
-      }
-      if(state.current === taskWindow){
-        taskWindow.isFocus = true;
-        return;
-      }
-      state.current.isFocus = false;
-      taskWindow.isFocus = true;
-      state.id = state.id + 1; //z-index 最前.
-      taskWindow.zIndex = state.id;
-      state.current = taskWindow;
-    },
-
-    // show(state, task){
-    //   task.isMin = false;
-    //   this.commit('task/focus', task);
-    // },
 
     hidden(state, task){
       task.isMin = true;
@@ -158,16 +132,6 @@ export default  {
       state.list.splice(index, 1);
       this.commit('task/_focusNext');
     },
-
-    currentUnFocus(state){
-      state.current.isFocus = false;
-    },
-    
-    // copy(state, task){
-    //   const cloneTask = cloneDeep(task);
-    //   cloneTask.isFocus = false;
-    //   this.commit('task/add', cloneTask);
-    // },
 
     toggleMinAll(state){
       if(state._tmpMinAll.length){
@@ -189,9 +153,9 @@ export default  {
       }
       state.isMinAll = state._tmpMinAll.length !== 0;
     },
-    closeAll(state){
-      Object.assign(state, _defState());
-    },
+    // closeAll(state){
+    //   Object.assign(state, _defState());
+    // },
     _focusNext(state){
       var preTask = {zIndex : -1};
       state.list.forEach(v => {
@@ -202,32 +166,8 @@ export default  {
         }
       })
       if(preTask.zIndex !== -1){
-        this.commit('task/focus', preTask);
-      }
-    },
-    _initPosition(state, data){
-      let parentH = this.state.winH;
-      let parentW = this.state.winW;
-      if(!state.list.length){ // Appear on center
-        data.top = (parentH - data.height) / 2;
-        data.left = (parentW - data.width) / 2;
-      }else{
-        let current = state.current;
 
-        const top = current.top + 50;
-        const left = current.left + 50;
-  
-        if(top + data.height >= parentH){
-          data.top = 0;
-        }else{
-          data.top = top;
-        }
-  
-        if(left + data.width >= parentW){
-          data.left = 0;
-        }else{
-          data.left = left;
-        }
+        // this.commit('task/focus', preTask);
       }
     }
   }

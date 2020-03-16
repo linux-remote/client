@@ -102,10 +102,17 @@
     background-color: $taskActiveTitleColor;
   }
 }
-.lr_task_max { // 最大化窗口
+.lr_window_maximized{ // 最大化窗口
   box-shadow: none; 
   width: 100%;
   height: 100%;
+  padding: 0;
+  padding-top: $taskTitleH + 1px;
+  .lr-title{
+    top: 0;
+    left: 0;
+    right: 0;
+  }
 }
 .lr-task-item{
   @extend .lr-box;
