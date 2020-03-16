@@ -6,7 +6,7 @@
                     v-show="!isMin")
   .lr-title
     .lr-title-content
-      LRIcon(:type="iconType", :value="icon")
+      .lr-icon(v-open-icon="icon")
       Movable(v-if="movable", v-show="!isMax", @moveStart="handleMoveStart", @moving="handleMoving")
       span {{title}} {{id}} {{typeof isFocusEnter}}
     .lr-btn_nf(@click="handleMinClick", v-if="minimizable")
@@ -42,7 +42,6 @@ export default {
     Movable
   },
   props: {
-
     icon: {
       type: String,
       default: ''
@@ -133,9 +132,19 @@ export default {
     hidden(){
       this.blur();
       this.isMin = true;
+      this.$store.commit('task/focusNext');
     },
     focus(){
       this.$el.focus();
+      // Chrome overflow:hidden, focus bug
+      // https://codepen.io/mediadivisiongmbh/pen/pJWmxp
+      const dom = document.getElementById('lr-desktop');
+      if(dom.scrollTop !== 0){
+        dom.scrollTop = 0;
+      }
+      if(dom.scrollLeft !== 0){
+        dom.scrollLeft = 0;
+      }
     },
     blur(){
       this.$el.blur();
@@ -219,7 +228,7 @@ export default {
     },
     handleResized(){
       this.$emit('resized');
-      this.$store.commit('task/onWindowResized', this.index);
+      this.$store.commit('task/onWindowResized', this.id);
     },
     maxToggle(){
       if(this.isMax){
@@ -244,7 +253,7 @@ export default {
       }
     },
     handleMinClick(){
-      this.isMin = !this.isMin;
+      this.hidden();
     }
   },
   created(){

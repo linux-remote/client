@@ -9,10 +9,10 @@ Contextmenuable.lr-desktop_body(ref="ctx")
         :index="i",
         :item="v")
   //- TaskWindow(v-for='(item, index) in tasks', :key='item.id', :index='index')
-  Window(v-for='(item, index) in tasks', 
+  Window(v-for='(item, index) in tasks',
                 :key='item.id',
                 :id="item.id",
-                :index="index",
+                :icon="item.app.iconUrl",
                 v-bind="item.startWindow")
   template(v-slot:contextmenu)
     .lr-cm-item(@click="refresh") {{LANG.ctx.Refresh}}

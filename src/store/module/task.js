@@ -109,18 +109,12 @@ export default  {
       const index = state.list.findIndex(v => v.id === vm.id);
       state.list[index].window = vm;
     },
-    onWindowResized(state, index){
+    onWindowResized(state, id){
+      const index = state.list.findIndex(v => v.id === id);
       const item = state.list[index];
       item.startWindow.startWidth = item.window.width;
       item.startWindow.startHeight = item.window.height;
     },
-
-    hidden(state, task){
-      task.isMin = true;
-      task.isFocus = false;
-      this.commit('task/_focusNext');
-    },
-
     remove(state, id){
       let index = state.list.findIndex(function(v){
         return v.id === id;
@@ -130,7 +124,7 @@ export default  {
         delete(uniqueMap[item.app.id]);
       }
       state.list.splice(index, 1);
-      this.commit('task/_focusNext');
+      this.commit('task/focusNext');
     },
 
     toggleMinAll(state){
@@ -156,18 +150,18 @@ export default  {
     // closeAll(state){
     //   Object.assign(state, _defState());
     // },
-    _focusNext(state){
-      var preTask = {zIndex : -1};
-      state.list.forEach(v => {
-        if(v.isMin === false){
-          if(preTask.zIndex < v.zIndex){
-            preTask = v;
+    focusNext(state){
+      var ptw = {zIndex : -1};
+      state.list.forEach(task => {
+        let tw = task.window;
+        if(tw.isMin === false){
+          if(ptw.zIndex < tw.zIndex){
+            ptw = tw;
           }
         }
-      })
-      if(preTask.zIndex !== -1){
-
-        // this.commit('task/focus', preTask);
+      });
+      if(ptw.zIndex !== -1){
+        ptw.focus();
       }
     }
   }
