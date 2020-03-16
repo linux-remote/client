@@ -14,6 +14,7 @@ Contextmenuable.lr-desktop_body(ref="ctx")
                 :id="item.id",
                 :icon="item.app.iconUrl",
                 v-bind="item.startWindow")
+    component(:is="item.app.id")
   template(v-slot:contextmenu)
     .lr-cm-item(@click="refresh") {{LANG.ctx.Refresh}}
     .lr-cm-item(@click="sortIcon") Sort icon
@@ -23,6 +24,12 @@ import Contextmenuable from '../global/contextmenuable.vue';
 import TaskWindow from '../task/task-window.vue';
 import Icon from './icon.vue';
 import Window from '../window/window.vue';
+
+import sys_app_fs from '../../../cmpt/sys-app/fs/index.vue';
+import sys_app_recycle_bin from '../../../cmpt/sys-app/recycle-bin/recycle-bin.vue';
+import sys_app_editor from '../../../cmpt/sys-app/editor/editor.vue';
+import sys_app_terminal from '../../../cmpt/sys-app/terminal/index.vue';
+
 //import Cascade from '../global/cascade.vue';
 const ICON_WIDTH = 80;
 const ICON_HEIGHT = 80;
@@ -31,7 +38,11 @@ export default {
     Contextmenuable,
     Icon,
     TaskWindow,
-    Window
+    Window,
+    sys_app_fs,
+    sys_app_recycle_bin,
+    sys_app_editor,
+    sys_app_terminal
   },
   computed:{
     tasks(){

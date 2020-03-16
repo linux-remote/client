@@ -84,7 +84,6 @@ export default {
       this.launch();
     },
     launch(){
-      console.log('this.item', this.item)
       this.$store.commit('task/add', this.item.id);
     },
     handleDragStart(v, e){

@@ -22,7 +22,9 @@ export default {
     sys_app_terminal: {
       name: "Terminal",
       iconUrl: 'nuvola/utilities-terminal-6.png',
-      width: 742,
-      height: 440
+      window: {
+        width: 742,
+        height: 440
+      }
     }
 }

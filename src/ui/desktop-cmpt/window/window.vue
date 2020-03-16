@@ -17,7 +17,6 @@
     .lr-btn_nf.lr-btn-close(@click="close")
       span.lr-icon_close
   .lr-window-body
-    h1 hello
     slot
   Resizable(v-if="resizable",
     v-show="!isMax", 
@@ -36,6 +35,11 @@ import Movable from '../../unit/movable.vue';
 import MixinFocusable from '__ROOT__/lib/mixins/focusable.js';
 export default {
   mixins: [MixinFocusable],
+  provide() {
+    return {
+      taskWindow: this
+    }
+  },
   components: {
     LRIcon,
     Resizable,
@@ -231,15 +235,16 @@ export default {
       this.$store.commit('task/onWindowResized', this.id);
     },
     maxToggle(){
+      let bak;
       if(this.isMax){
         this.isMax = false;
-        const bak = this.$options._bakMaxPre;
+        bak = this.$options._bakMaxPre;
         this.left = bak.left;
         this.top = bak.top;
         this.width = bak.width;
         this.height = bak.height;
       } else {
-        this.$options._bakMaxPre = {
+        bak = this.$options._bakMaxPre = {
           top: this.top,
           left: this.left,
           width: this.width,
@@ -250,6 +255,9 @@ export default {
         this.left = 0;
         this.width = this.$el.parentElement.clientWidth;
         this.height = this.$el.parentElement.clientHeight;
+      }
+      if(bak.width !== this.width || bak.height !== this.height){
+        this.$emit('resized');
       }
     },
     handleMinClick(){
