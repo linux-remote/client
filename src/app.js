@@ -12,7 +12,7 @@ import router from './router';
 import Root from './root.vue';
 
 const dom = document.getElementById('lr-root');
-let preLoadHtml = `<div id="lr-pre-load" class="lr-pre-load"></div>`;
+let preLoadHtml = `<div id="lr-pre-load" class="lr-pre-load">Loading...</div>`;
 dom.innerHTML = preLoadHtml;
 
 const preLoad = document.getElementById('lr-pre-load');

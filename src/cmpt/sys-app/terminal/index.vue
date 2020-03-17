@@ -5,8 +5,10 @@
 // 742 440
 let _Terminal_cache;
 import { composeUserWsUrl } from '../util';
+import SafeBind from '../../../lib/mixins/safe-bind.js';
 export default {
-  props: ['task'],
+  mixins: [SafeBind],
+  inject: ['taskWindow'],
   data(){
     return {
       isRequest: false
@@ -17,19 +19,26 @@ export default {
     create(Terminal) {
       const isWindows = ['Windows', 'Win16', 'Win32', 'WinCE'].indexOf(navigator.platform) >= 0;
       const $opt = this.$options;
-
+      const addons = $opt._addons;
       const term = new Terminal({
         windowsMode: isWindows
       });
-
+      const fitAddon = new addons.Fit();
+      term.loadAddon(fitAddon);
+      term.loadAddon(new addons.WebLinks());
+      term._fit = () => {
+        fitAddon.fit();
+      };
       $opt.term = term;
+
       term.open(this.$el);
-      
+      this.run();
       // resize: 
-      term.on('resize', (size) => {
+      term.onResize((size) => {
         if (!$opt.pid) {
           return;
         }
+        return;
         const cols = size.cols;
         const rows = size.rows;
         const url = '~/terminals/' + $opt.pid + '/size?cols=' + cols + '&rows=' + rows;
@@ -41,9 +50,9 @@ export default {
 
       });
 
-      term.fit(); 
+      term._fit();
       term.focus();
-
+      return;
       // fit is called within a setTimeout, cols and rows need this.
       setTimeout(() => {
         this.request({
@@ -60,20 +69,14 @@ export default {
           }
         })
       }, 0);
-
-      this.$on('resized', () => {
-        this.$nextTick(() => {
-          term.fit();
-        })
-
-      });
     },
     run() {
       const term = this.$options.term;
-      term.attach(this.$options.socket);
+      term.write('Create success!');
+      // term.attach(this.$options.socket);
     },
     termOnError() {
-      this.$options.term.writeln('WebSocket connection error');
+      this.$options.term.write('WebSocket connection error');
     },
     getTerminal(cb){
       if(_Terminal_cache){
@@ -83,16 +86,19 @@ export default {
       span.style.color = '#666';
       span.innerText = 'Loading xterm.js static resources...';
       this.$el.appendChild(span);
-      window.require(['/public/xterm/3.13.1/xterm.min.js', 
-      '/public/xterm/3.13.1/addons/attach/attach.min.js', 
-      '/public/xterm/3.13.1/addons/fit/fit.min.js',
-      '/public/xterm/3.13.1/addons/webLinks/webLinks.min.js'], (Terminal, attach, fit, webLinks) => {
+      window.require(['xterm', 
+      'xterm-addon-attach', 
+      'xterm-addon-fit',
+      'xterm-addon-web-links', 'xterm.css'], (Terminal, attach, Fit, WebLinks) => {
         this.$el.removeChild(span);
-        Terminal.applyAddon(attach);
-        Terminal.applyAddon(fit);
-        Terminal.applyAddon(webLinks);
+        // Terminal.loadAddon(attach);
+        // Terminal.loadAddon(fit);
+        // Terminal.loadAddon(webLinks);
+        this.$options._addons = {
+          attach, Fit, WebLinks
+        };
         // Uncaught TypeError: Cannot read property 'Browser' of undefined
-        // Terminal.applyAddon(zmodem);
+        // Terminal.loadAddon(zmodem);
         _Terminal_cache = Terminal;
         cb(Terminal);
         });
@@ -102,9 +108,15 @@ export default {
     this.getTerminal((Terminal) => {
       this.create(Terminal);
     });
+    this.safeBind(this.taskWindow, () => {
+      const term = this.$options.term;
+      if(term){
+        term._fit();
+      }
+    })
   },
   destroyed() {
-    this.$options.socket.close();
+    // this.$options.socket.close();
   }
 }
 

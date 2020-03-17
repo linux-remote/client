@@ -16,8 +16,7 @@
       span.lr-icon_max(v-else)
     .lr-btn_nf.lr-btn-close(@click="close")
       span.lr-icon_close
-  .lr-window-body
-    slot
+  slot
   Resizable(v-if="resizable",
     v-show="!isMax", 
     :direction="resizeDirection",  

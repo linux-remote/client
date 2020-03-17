@@ -7,15 +7,12 @@
   </head>
   <body>
   <div id="lr-root">Loading...</div>
-  <script>
-    var CLIENT_CONFIG = <%-JSON.stringify(data.CLIENT_CONFIG)%>
-  </script>
   <%data.loadJsArr.forEach(function(src){ %>
   <script src="<%=src%>"></script><% }); %>
   <script>
-    window.require.config({
-      paths: <%-JSON.stringify(data.requirePaths)%>
-    });
+  var CLIENT_CONFIG = <%-JSON.stringify(data.CLIENT_CONFIG)%>;
+  window.require.setMap(<%-JSON.stringify(data.amdMap)%>);
   </script>
+  <script src="<%=data.lrClientJs%>"></script>
 </body>
 </html>
