@@ -3,7 +3,6 @@
 </template>
 <script>
 // 742 440
-let _Terminal_cache;
 import { composeUserWsUrl } from '../util';
 import SafeBind from '../../../lib/mixins/safe-bind.js';
 export default {
@@ -16,16 +15,16 @@ export default {
   },
   methods: {
 
-    create(Terminal) {
+    create({FemTerminal, FemAttach, FemFit, FemWebLinks}) {
+      // Terminal: ƒ, AttachAddon: ƒ, FitAddon: ƒ, WebLinksAddon
       const isWindows = ['Windows', 'Win16', 'Win32', 'WinCE'].indexOf(navigator.platform) >= 0;
       const $opt = this.$options;
-      const addons = $opt._addons;
-      const term = new Terminal({
+      const term = new FemTerminal.Terminal({
         windowsMode: isWindows
       });
-      const fitAddon = new addons.Fit();
+      const fitAddon = new FemFit.FitAddon();
       term.loadAddon(fitAddon);
-      term.loadAddon(new addons.WebLinks());
+      term.loadAddon(new FemWebLinks.WebLinksAddon());
       term._fit = () => {
         fitAddon.fit();
       };
@@ -38,37 +37,40 @@ export default {
         if (!$opt.pid) {
           return;
         }
-        return;
-        const cols = size.cols;
-        const rows = size.rows;
-        const url = '~/terminals/' + $opt.pid + '/size?cols=' + cols + '&rows=' + rows;
+        // return;
+        // const cols = size.cols;
+        // const rows = size.rows;
+        // const url = '~/terminals/' + $opt.pid + '/size?cols=' + cols + '&rows=' + rows;
 
-        this.request({
-          type: 'post',
-          url
-        });
+        // this.request({
+        //   type: 'post',
+        //   url
+        // });
 
       });
 
       term._fit();
-      term.focus();
-      return;
-      // fit is called within a setTimeout, cols and rows need this.
       setTimeout(() => {
-        this.request({
-          type: 'post',
-          url: `~/terminals?cols=${term.cols}&rows=${term.rows}`,
+        term.focus();
+      });
+      
+      // return;
+      // // fit is called within a setTimeout, cols and rows need this.
+      // setTimeout(() => {
+      //   this.request({
+      //     type: 'post',
+      //     url: `~/terminals?cols=${term.cols}&rows=${term.rows}`,
 
-          success: (pid) => {
-            $opt.pid = pid;
-            const url = composeUserWsUrl(this.$route.params.username, 'terminal?pid=' + pid);
-            const socket = new WebSocket(url);
-            socket.onopen = this.run;
-            socket.onerror = this.termOnError;
-            $opt.socket = socket;
-          }
-        })
-      }, 0);
+      //     success: (pid) => {
+      //       $opt.pid = pid;
+      //       const url = composeUserWsUrl(this.$route.params.username, 'terminal?pid=' + pid);
+      //       const socket = new WebSocket(url);
+      //       socket.onopen = this.run;
+      //       socket.onerror = this.termOnError;
+      //       $opt.socket = socket;
+      //     }
+      //   })
+      // }, 0);
     },
     run() {
       const term = this.$options.term;
@@ -79,8 +81,9 @@ export default {
       this.$options.term.write('WebSocket connection error');
     },
     getTerminal(cb){
-      if(_Terminal_cache){
-        return cb(_Terminal_cache);
+      if(this.$options._amdLoaded){
+        cb(this.$options._amdLoaded);
+        return;
       }
       const span = document.createElement('span');
       span.style.color = '#666';
@@ -89,34 +92,41 @@ export default {
       window.require(['xterm', 
       'xterm-addon-attach', 
       'xterm-addon-fit',
-      'xterm-addon-web-links', 'xterm.css'], (Terminal, attach, Fit, WebLinks) => {
+      'xterm-addon-web-links', 'xterm.css'], (FemTerminal, FemAttach, FemFit, FemWebLinks) => {
         this.$el.removeChild(span);
         // Terminal.loadAddon(attach);
         // Terminal.loadAddon(fit);
         // Terminal.loadAddon(webLinks);
-        this.$options._addons = {
-          attach, Fit, WebLinks
-        };
         // Uncaught TypeError: Cannot read property 'Browser' of undefined
         // Terminal.loadAddon(zmodem);
-        _Terminal_cache = Terminal;
-        cb(Terminal);
+        // console.log('FemTerminal', FemTerminal)
+        const loaded = this.$options._amdLoaded = {
+          FemTerminal, FemAttach, FemFit, FemWebLinks
+        };
+        cb(loaded);
         });
     }
   },
   mounted(){
-    this.getTerminal((Terminal) => {
-      this.create(Terminal);
+    this.getTerminal((amdLoaded) => {
+      this.create(amdLoaded);
     });
-    this.safeBind(this.taskWindow, () => {
+    this.safeBind(this.taskWindow, 'resized', () => {
       const term = this.$options.term;
       if(term){
         term._fit();
       }
-    })
+    });
+    this.safeBind(this.taskWindow, 'focus', () => {
+      const term = this.$options.term;
+      if(term){
+        term.focus();
+      }
+    });
   },
   destroyed() {
     // this.$options.socket.close();
+    this.$options._amdLoaded = null;
   }
 }
 

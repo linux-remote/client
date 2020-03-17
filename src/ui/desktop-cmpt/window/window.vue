@@ -148,9 +148,11 @@ export default {
       if(dom.scrollLeft !== 0){
         dom.scrollLeft = 0;
       }
+      this.$emit('focus');
     },
     blur(){
       this.$el.blur();
+      this.$emit('blur');
     },
     keepTop(){
       zIndex = zIndex + 1;
