@@ -1,5 +1,5 @@
 //let _id = 3; 
-import { getApp } from './sys-apps-map';
+import { getApp, startWindowMap } from './sys-apps-map';
 import windowMap from '../../ui/desktop-cmpt/window/map.js';
 let id = 1;
 const uniqueTaskMap = Object.create(null);
@@ -64,7 +64,7 @@ export default  {
       const task = Object.create(null);
       task.app = app;
       task.launchOption = opt;
-      const startWindow = app.window;
+      const startWindow = startWindowMap[appId];
       if(app.unique){
         if(uniqueTaskMap[appId]){
           this.commit('task/show', uniqueTaskMap[appId]);

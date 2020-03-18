@@ -22,7 +22,7 @@
           button(@click='hiddenModal') {{LANG.cancel}}
   .lr-modal(v-if='isShowBeforeCloseModal')
     .lr-modal-box
-      .lr-modal-title {{taskWindow.appTitle}}
+      .lr-modal-title {{taskWindow.app.name}}
       .lr-modal-body
         div Do you want to save changes to
         div {{taskWindow.filePath || 'Untitled'}}?
@@ -84,13 +84,13 @@ export default {
       }
     },
     init(){
-      const filePath = this.taskWindow.filePath;
+      const option = this.taskWindow.launchOption;
+      const filePath = option.filePath;
 
       const dirAndBase = getDirAndBase(filePath);
       this.filename = dirAndBase.base;
       this.dir = dirAndBase.dir;
-
-      this.taskWindow.title = this.filename;
+      this.chTitle();
     },
     saveAsSubmit(){
 
@@ -116,8 +116,8 @@ export default {
           content: this.data
         },
         success(stdout) {
-          this.taskWindow.filePath = pathJoin(this.dir, this.filename);
-          this.taskWindow.title = this.filename;
+          this.$options._filePath = pathJoin(this.dir, this.filename);
+          this.chTitle();
           this.oldData = this.data;
           cb && cb();
           if(this.$options._isSaveAndClose) {
@@ -136,7 +136,7 @@ export default {
       if(this.isSaveDisabled){
         return;
       }
-      let filePath = this.taskWindow.filePath;
+      let filePath = this.$options._filePath;
       if(!filePath) {
         this.isShowModal = true;
         this.$nextTick(() => {
@@ -171,28 +171,42 @@ export default {
         }
       });
     },
+    chTitle(){
+      this.taskWindow.title = this.filename + ' - ' + this.taskWindow.startTitle;
+    },
     getData(){
       if(this.error) {
         this.error = '';
       }
-      this.request({
-        url:  `~/fs/` + encodePath(this.taskWindow.filePath),
-        stateKey: 'isRequest',
-        dataType: 'text',
-        data: {
-          file: true
-        },
-        success(data){
+      this.$store.commit('wsRequest', {
+        method: 'readFile',
+        data: this.$options._filePath,
+        success: (data) => {
           this.oldData = data;
           this.data = data;
         },
-        error(xhr){
-          this.error = xhr.responseText;
+        error: (err) => {
+          this.error = err;
         }
       })
+      // this.request({
+      //   url:  `~/fs/` + encodePath(this.$options._filePath),
+      //   stateKey: 'isRequest',
+      //   dataType: 'text',
+      //   data: {
+      //     file: true
+      //   },
+      //   success(data){
+      //     this.oldData = data;
+      //     this.data = data;
+      //   },
+      //   error(xhr){
+      //     this.error = xhr.responseText;
+      //   }
+      // })
     },
     _isFirstCreateEmpty(){
-       if(this.taskWindow.filePath){
+       if(this.$options._filePath){
          return false;
        }
        if(!this.data && !this.oldData){
@@ -220,7 +234,7 @@ export default {
     },
     saveAndClose(){
       this.$options._isSaveAndClose = true;
-      if(!this.taskWindow.filePath){
+      if(!this.$options._filePath){
         this.isShowBeforeCloseModal = false;
       }
       this.save();
@@ -233,7 +247,8 @@ export default {
     }
   },
   created(){
-    if(this.taskWindow.filePath){
+    const filePath = this.$options._filePath = this.taskWindow.launchOption.filePath;
+    if(filePath){
       this.init();
       this.getData();
     } else {

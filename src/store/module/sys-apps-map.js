@@ -37,12 +37,14 @@ const map = {
 
 const DEF_TASK_WIDTH = 800;
 const DEF_TASK_HEIGHT = 600;
+export const startWindowMap = Object.create(null);
 
 function _init(appId, app){
   app.id = appId;
   app.window = app.window || Object.create(null);
-  const appWindow =  app.window;
-  appWindow.title = app.name;
+  const appWindow =  startWindowMap[appId] = app.window;
+  delete(app.window);
+  appWindow.startTitle = app.name;
   // init width
   if(typeof appWindow.width !== 'number'){
     appWindow.startWidth = DEF_TASK_WIDTH;

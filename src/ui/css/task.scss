@@ -51,6 +51,7 @@
     height: 14px;
     display: block;
     font-family: Arial;
+    flex-shrink: 0;
     line-height: 14px - $boxPadding * 2;
   }
 }
@@ -99,8 +100,28 @@
   font-weight: bold;
   position: relative;
   height: 100%;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  padding-left: 18px;
+  >.lr-icon{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+  }
+  // span{
+  //   flex-grow: 1;
+  //   overflow: hidden;
+  //   white-space: nowrap;
+  //   text-overflow: ellipsis;
+  // }
 }
-
+.lr-title_text{
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
 
 
 .lr-btn-close{

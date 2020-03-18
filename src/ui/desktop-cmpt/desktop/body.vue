@@ -225,7 +225,10 @@ export default {
   },
   mounted(){
     this.$store.commit('setDeskTopWH');
-    this.$store.commit('task/add', {appId: 'sys_app_fs'});
+    setTimeout(() => {
+      this.$store.commit('task/add', {appId: 'sys_app_fs'});
+    }, 200);
+    
   }
 }
 

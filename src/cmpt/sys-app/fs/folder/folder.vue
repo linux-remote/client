@@ -7,7 +7,7 @@
   Selectable.lr-fs-folder-inner(@end='handleSelectEnd', ref='selectable')
     pre.lr-fs-error(v-text='error', v-if='error')
     template(v-else)
-      Item(v-for="(item, i) in info.list", :key="item.name", :item="item", @dblclick="handleItemClick(item)")
+      Item(v-for="(item, i) in info.list", :key="item.name", :item="item", @dblclick="handleItemDblClick(item)")
 
     //-table.lr-fs-table(:class='"lr_file_model_" + model', v-else)
       thead
@@ -50,8 +50,8 @@ import ContextMenu from '__ROOT__/cmpt/global/contextmenu/index.vue';
 import initRelation from './permission-util';
 import Item from './item.vue';
 
-import {encodePath} from '__ROOT__/cmpt/sys-app/util';
-import lsParse from '../../lib/ls-parse';
+// import {encodePath} from '__ROOT__/cmpt/sys-app/util';
+// import lsParse from '../../lib/ls-parse';
 import safeBind from '../../../../lib/mixins/safe-bind';
 import Sync from '../../../../lib/sync';
 import { parseName } from './util';
@@ -76,7 +76,6 @@ function _parseFiles(list){
     if(isFile){
       Object.assign(file, parseName(file.name));
       const openInfo = getOpenInfo(file.suffix);
-      
       Object.assign(file, openInfo);
     }
   });
@@ -179,7 +178,7 @@ export default {
     // handleItemSelecting(){
     //   count = count + 1;
     // },
-    handleItemClick(item){
+    handleItemDblClick(item){
       this.openItem(item);
     },
     getItemAddress(item){
@@ -194,8 +193,14 @@ export default {
 
       if(item.type === 'directory'){
         this.go(address);
-      }else if(item.type === 'regularFile'){
-
+      }else if(item.type === 'file'){
+        if(item.openApp){
+          console.log('item.openApp', item.openApp);
+          this.$store.commit('task/add', {
+            appId: item.openApp.id,
+            filePath: address
+          }); 
+        }
         // if(item.openType === 'image'){
         //   return this.windowOpen(address);
         // }
@@ -293,32 +298,32 @@ export default {
 
       this.isHaveDevice = false;
       this.$store.commit('fs/readdir', this.address);
-      return;
-      this.request({
-        url: '~/fs/' + encodePath(this.address),
-        stateKey: 'isRequest',
-        data: { dir: true },
-        success(stdout){
+      // return;
+      // this.request({
+      //   url: '~/fs/' + encodePath(this.address),
+      //   stateKey: 'isRequest',
+      //   data: { dir: true },
+      //   success(stdout){
           
-          let data = lsParse(stdout);
-          data = this.getDirAndWrapBaseList(data);
-          this.publicEmit({
-            type: 'getList',
-            address: this.address,
-            isHaveDevice: this.isHaveDevice,
-            data
-          })
-          this.$nextTick(() => {
-             this.reActiveNewItems();
-          });
-        },
-        error(xhr){
-          this.error = `${xhr.responseText}`;
-          if(this.$options._shouldActiveNewItemNames){
-            this.$options._shouldActiveNewItemNames = null;
-          }
-        }
-      })
+      //     let data = lsParse(stdout);
+      //     data = this.getDirAndWrapBaseList(data);
+      //     this.publicEmit({
+      //       type: 'getList',
+      //       address: this.address,
+      //       isHaveDevice: this.isHaveDevice,
+      //       data
+      //     })
+      //     this.$nextTick(() => {
+      //        this.reActiveNewItems();
+      //     });
+      //   },
+      //   error(xhr){
+      //     this.error = `${xhr.responseText}`;
+      //     if(this.$options._shouldActiveNewItemNames){
+      //       this.$options._shouldActiveNewItemNames = null;
+      //     }
+      //   }
+      // })
     },
     getDirAndWrapBaseList(list) {
       let arr = [], dir;

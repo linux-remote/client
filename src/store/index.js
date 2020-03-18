@@ -129,8 +129,8 @@ const store = new window.Vuex.Store({
             isCompress: true,
             inflateFn: (data, cb) => {
               var reader = new FileReader();
-              reader.onload = (event) => {
-                  var strData = pako.inflate(event.target.result, { to: 'string' });
+              reader.onload = (e) => {
+                  var strData = pako.inflate(e.target.result, { to: 'string' });
                   cb(strData);
               }
               reader.readAsArrayBuffer(data);
@@ -144,6 +144,7 @@ const store = new window.Vuex.Store({
         }
 
         const handleClose =  (e) => {
+          console.log('e.code', e.code)
           state.wsIsConnected = false;
           
           if(e.code === 1000){

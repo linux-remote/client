@@ -7,8 +7,8 @@
   .lr-title
     .lr-title-content
       .lr-icon(v-open-icon="icon")
+      .lr-title_text {{title}}
       Movable(v-if="movable", v-show="!isMax", @moveStart="handleMoveStart", @moving="handleMoving")
-      span {{title}} {{id}} {{typeof isFocusEnter}}
     .lr-btn_nf(@click="handleMinClick", v-if="minimizable")
       span.lr-icon_min
     .lr-btn_nf(@click="maxToggle", v-if="maximizable")
@@ -53,10 +53,6 @@ export default {
       type: String,
       default: 'img'
     },
-    title: {
-      type: String,
-      default: ''
-    },
     minimizable: {
       type: Boolean,
       default: true
@@ -80,6 +76,10 @@ export default {
     startIsMax: {
       type: Boolean,
       default: false
+    },
+    startTitle: {
+      type: String,
+      default: ''
     },
     startWidth: {
       type: Number,
@@ -109,6 +109,9 @@ export default {
       type: Number,
       default: null
     },
+    app: {
+      type: Object
+    },
     launchOption: {
       type: Object
     }
@@ -121,6 +124,7 @@ export default {
       width: this.startWidth,
       top: this.startTop,
       left: this.startLeft,
+      title: this.startTitle,
       zIndex,
       alertData: null,
       isMin: false,
@@ -270,6 +274,8 @@ export default {
   },
   created(){
     map[this.id] = this;
+    
+  console.log('appWindow.title', this.title)
     this.$store.commit('task/onWindowCreate', this);
   },
   mounted(){
