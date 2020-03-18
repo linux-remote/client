@@ -13,6 +13,7 @@ Contextmenuable.lr-desktop_body(ref="ctx")
                 :key='item.id',
                 :id="item.id",
                 :icon="item.app.iconUrl",
+                :launchOption="item.launchOption",
                 v-bind="item.startWindow")
     component(:is="item.app.id")
   template(v-slot:contextmenu)
@@ -25,10 +26,10 @@ import TaskWindow from '../task/task-window.vue';
 import Icon from './icon.vue';
 import Window from '../window/window.vue';
 
-import sys_app_fs from '../../../cmpt/sys-app/fs/index.vue';
+import sys_app_fs from '../../../cmpt/sys-app/fs/fs.vue';
 import sys_app_recycle_bin from '../../../cmpt/sys-app/recycle-bin/recycle-bin.vue';
 import sys_app_editor from '../../../cmpt/sys-app/editor/editor.vue';
-import sys_app_terminal from '../../../cmpt/sys-app/terminal/index.vue';
+import sys_app_terminal from '../../../cmpt/sys-app/terminal/terminal.vue';
 
 //import Cascade from '../global/cascade.vue';
 const ICON_WIDTH = 80;
@@ -224,7 +225,7 @@ export default {
   },
   mounted(){
     this.$store.commit('setDeskTopWH');
-    // this.$store.commit('task/add', {appId: 'sys_app_settings'});
+    this.$store.commit('task/add', {appId: 'sys_app_fs'});
   }
 }
 

@@ -155,8 +155,7 @@ const webpackConf = {
     host: '127.0.0.1',
     onListening: setup.wsProxyHandle,
     contentBase: path.join(__dirname, conf.indexDir),
-    hot: true,
-    noInfo: true
+    hot: true
   },
   performance: {
     hints: false

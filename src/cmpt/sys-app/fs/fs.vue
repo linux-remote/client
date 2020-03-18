@@ -10,9 +10,10 @@
 
 <script>
 import NavBar from './nav-bar.vue';
-import Folder from './folder/index.vue';
+import Folder from './folder/folder.vue';
 
 export default {
+  inject: ['taskWindow'],
   components:{
     NavBar,
     Folder
@@ -24,12 +25,11 @@ export default {
     }
   },
   computed: {
-
     go(){
-      return this.$refs.navBar.go
+      return this.$refs.navBar.go;
     },
     homedir(){
-      return this.$store.state.homedir
+      return this.$store.state.homedir;
     }
   },
   methods: {
@@ -44,8 +44,8 @@ export default {
     }
   },
   mounted(){
-    const pData = this.$parent;
-    const address = pData.address || this.$store.state.homedir;
+    const opt = this.taskWindow.launchOption;
+    const address = opt.address || this.homedir;
     this.$refs.navBar.setAddress(address);
   }
 }

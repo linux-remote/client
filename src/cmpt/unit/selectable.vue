@@ -11,7 +11,7 @@
 </style>
 <template lang='jade'>
 div(style="position: relative; width: 100%; height: 100%; overflow: auto; ")
-  div(@mousedown='mousedownListener', style="min-width: 100%; min-height: 100%")
+  div(@mousedown.self='mousedownListener', style="min-width: 100%; min-height: 100%")
     .lr-select-area(v-show='isSelect',:style='style')
     //- span X:{{layerX}} Y: {{layerY}} w:{{w}} h:{{h}}
     slot

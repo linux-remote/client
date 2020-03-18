@@ -204,6 +204,14 @@ export default {
 
     getData(){
       this.isHaveDevice = false;
+      this.$store.commit('wsRequest', {
+        method: 'readdir',
+        data: this.address,
+        success: (result) => {
+          console.log('desktop save ok', result);
+        }
+      });
+      return;
       this.request({
         url: '~/fs/' + encodePath(this.address),
         stateKey: 'isRequest',

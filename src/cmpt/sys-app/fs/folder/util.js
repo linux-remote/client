@@ -11,7 +11,7 @@ export const getNameSuffix = (name) => {
 }
 var _map = {
   'image': ['jpg', 'png', 'jpeg', 'webp', 'svg', 'gif','bmp', 'ico'],
-  'text': ['js', 'txt', 'sh', 'vue', 'css', 'html', 'ejs', 'json', 'scss', 'conf']
+  'text': ['js', 'txt', 'sh', 'vue', 'css', 'html', 'ejs', 'json', 'scss', 'conf', 'c', 'cpp', 'h', 'log']
 }
 const openType = Object.create(null);
 
@@ -26,8 +26,8 @@ _map = null;
 export const relationAppMap = {
   text: 'sys_app_editor'
 }
-export const getOpenType = (suffix) => {
-  return openType[suffix] || 'UNKNOWN'
+export function getOpenType(suffix){
+  return openType[suffix] || null;
 }
 
 export function getOpenAppIcon(openType){
@@ -63,7 +63,7 @@ export function parseName(name){
   }
   if(i > 0){
     result.basename = name.substr(0, i);
-    result.suffix = name.substr(i + 1);
+    result.suffix = name.substr(i + 1).toLowerCase();
   } else {
     result.basename = name;
   }
@@ -120,7 +120,7 @@ export function getNewUnSuffixName(list, tailedName){
     let index = v.name.indexOf(tailedName);
     if(index !== -1) {
       let tailNum = v.name.substr(index + tailedName.length);
-      console.log('tailNum', tailNum);
+      // console.log('tailNum', tailNum);
       if(tailNum[0] === connector) {
         tailNum = tailNum.substr(1);
       }

@@ -28,10 +28,10 @@
 </template>
 
 <script>
-import sys_app_fs from '../../../cmpt/sys-app/fs/index.vue';
+import sys_app_fs from '../../../cmpt/sys-app/fs/fs.vue';
 import sys_app_recycle_bin from '../../../cmpt/sys-app/recycle-bin/recycle-bin.vue';
 import sys_app_editor from '../../../cmpt/sys-app/editor/editor.vue';
-import sys_app_terminal from '../../../cmpt/sys-app/terminal/index.vue';
+import sys_app_terminal from '../../../cmpt/sys-app/terminal/terminal.vue';
 
 // import sys_app_disk from '../../sys-app/disk/disk.vue';
 // import sys_app_computer from '../../sys-app/computer-info/computer-info.vue';

@@ -108,6 +108,9 @@ export default {
     parentId: {
       type: Number,
       default: null
+    },
+    launchOption: {
+      type: Object
     }
   },
 

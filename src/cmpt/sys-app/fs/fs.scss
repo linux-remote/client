@@ -3,6 +3,7 @@
 $fsNavBarH: 31px;
 $fsCtrlBarH: 35px;
 $fsStatusBarH: 23px;
+$fsStatusBarH: 0px;
 $fsFontSize: 12px;
 $fsIconW: 16px;
 
@@ -183,9 +184,16 @@ $linkFileColor: violet;
   overflow: hidden;
 }
 .lr-fs-folder-inner{
-  height: 100%;
-  position: relative;
-  overflow: auto;
+  // height: 100%;
+  // position: relative;
+  // overflow: auto;
+  >div{
+    display: flex;
+    flex-wrap: wrap;
+    // https://stackoverflow.com/questions/42613359
+    align-content: flex-start;
+  }
+
 }
 
 .lr-fs-ctrl-bar-mask{
@@ -278,38 +286,75 @@ $fsRowItemH: 50px;
   display: flex;
   align-items: center;
 }
-.lr_file_type_Directory{
-  background-image: url('/public/img/tango/folder.png');
+
+// -----------new -----------
+// .lr-fs_files{
+//   display: flex;
+//   flex-wrap: wrap;
+// }
+.lr-fs_file{
+  width: 80px;
+  height: 100px;
+  margin: 10px;
+
+  .lr-icon{
+    width: 80px;
+    height: 80px;
+    margin: 0;
+    // display: flex;
+    // justify-content: flex-end;
+    // align-items: flex-end;
+    // font-size: 10px;
+    // color: #87CEFA;
+  }
+  &:focus-within{
+    background-color: $color3;
+    .lr-fs_file_name{
+      color: #fff;
+    }
+  }
 }
-.lr_file_type_RegularFile {
-  background-image: url('/public/img/tango/text-x-generic.png');
+.lr-fs_file_name{
+  text-align: center;
+  line-height: 1.2;
+  overflow: hidden;
+  white-space: pre-wrap;
+  word-break: break-all;
+  max-height: 3em;
 }
-.lr_file_type_Socket{
-  background-image: url('/public/img/tango/inode-socket.png');
-}
-.lr_file_type_Unknown{
-background-image: url('/public/img/oxygen/unknown.png');
-}
-.lr_file_type_CharacterDevice{
-background-image: url('/public/img/tango/inode-chardevice.png');
-}
-.lr_file_type_BlockDevice{
-  background-image: url('/public/img/tango/inode-blockdevice.png');
-}
-.lr_file_type_SymbolicLink{
-  background-image: url('/public/img/nuvola/link.png');
-}
-.lr_file_type_NamedPipe{
-  background-size: auto 80%;
-  background-image: url('/public/img/nuvola/pipe.png');
-}
+// ----------- new end -----------
+// .lr_file_type_directory{
+//   background-image: url('/public/img/tango/folder.png');
+// }
+// .lr_file_type_file {
+//   background-image: url('/public/img/tango/text-x-generic.png');
+// }
+// .lr_file_type_socket{
+//   background-image: url('/public/img/tango/inode-socket.png');
+// }
+// .lr_file_type_unknown{
+// background-image: url('/public/img/oxygen/unknown.png');
+// }
+// .lr_file_type_characterDevice{
+// background-image: url('/public/img/tango/inode-chardevice.png');
+// }
+// .lr_file_type_blockDevice{
+//   background-image: url('/public/img/tango/inode-blockdevice.png');
+// }
+// .lr_file_type_symbolicLink{
+//   background-image: url('/public/img/nuvola/link.png');
+// }
+// .lr_file_type_FIFO{
+//   background-size: auto 80%;
+//   background-image: url('/public/img/nuvola/pipe.png');
+// }
 
 // door 类型只存在于 Solaris 系统. 几乎不会遇到
 // https://en.wikipedia.org/wiki/Unix_file_types#Door
-.lr_file_type_Door{
-  background-size: auto 80%;
-  background-image: url('/public/my-img/file-type-door.png');
-}
+// .lr_file_type_Door{
+//   background-size: auto 80%;
+//   background-image: url('/public/my-img/file-type-door.png');
+// }
 
 .lr-error-icon{
   z-index: 20;
@@ -419,13 +464,7 @@ background-image: url('/public/img/tango/inode-chardevice.png');
     background-color: #ddd;
   }
 }
-.lr-fs-new-folder{
-  background-image: url('/public/img/tango/folder-new-5.png');
 
-}
-.lr-fs-new-file{
-  background-image: url('/public/img/tango/document-new-4.png');
-}
 .lr-fs-create-layer{
     background-color: $color3;
   &:hover{

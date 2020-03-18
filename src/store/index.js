@@ -127,8 +127,13 @@ const store = new window.Vuex.Store({
           sr = new SocketRequest(ws, {
             isWs: true, 
             isCompress: true,
-            inflateFn: (data) => {
-              return pako.inflate(data, { to: 'string' });
+            inflateFn: (data, cb) => {
+              var reader = new FileReader();
+              reader.onload = (event) => {
+                  var strData = pako.inflate(event.target.result, { to: 'string' });
+                  cb(strData);
+              }
+              reader.readAsArrayBuffer(data);
             },
             deflateFn: (data) => {
               return pako.deflate(data);
@@ -215,6 +220,7 @@ const store = new window.Vuex.Store({
         }
       }
       sr.request({method: opts.method, data: opts.data}, (resData) => {
+        opts.complete && opts.complete(resData);
         if(resData.status === 200){
           opts.success && opts.success(resData.data);
         } else {
@@ -271,6 +277,9 @@ function getPako(cb){
     return;
   }
   window.require(['pako'], function(pako){
+    const c = pako.deflate('hello');
+    
+    console.log('pako', pako.inflate(c, { to: 'string' }))
     _pako = pako;
     cb(_pako)
   });

@@ -1,39 +1,10 @@
 //let _id = 3; 
-import sysAppsMap from './sys-apps-map';
+import { getApp } from './sys-apps-map';
 import windowMap from '../../ui/desktop-cmpt/window/map.js';
 let id = 1;
-const uniqueMap = Object.create(null);
-const startWindowMap = Object.create(null);
+const uniqueTaskMap = Object.create(null);
 
 const P_OFFSET = 22;
-const DEF_TASK_WIDTH = 800;
-const DEF_TASK_HEIGHT = 600;
-
-function _initApp(appId, app){
-  if(startWindowMap[appId]){
-    return;
-  }
-  app.id = appId;
-  app.window = app.window || Object.create(null);
-  const appWindow = startWindowMap[appId] = app.window;
-  appWindow.title = app.name;
-  delete(app.window);
-  // init width
-  if(typeof appWindow.width !== 'number'){
-    appWindow.startWidth = DEF_TASK_WIDTH;
-  } else {
-    appWindow.startWidth = appWindow.width;
-    delete(appWindow.width);
-  }
-
-  // init height
-  if(typeof appWindow.height !== 'number'){
-    appWindow.startHeight = DEF_TASK_HEIGHT;
-  } else {
-    appWindow.startHeight = appWindow.height;
-    delete(appWindow.height);
-  }
-}
 
 function _initPosition(latest, appWindow){
   var dom = document.getElementById('lr-desktop');
@@ -77,22 +48,29 @@ export default  {
   namespaced: true,
   state: _defState(),
   mutations: {
-    add(state, appId){
-      const app = sysAppsMap[appId];
+    add(state, _opt){
+      let opt = _opt;
+      if(typeof opt === 'string'){
+        opt = {
+          appId: opt
+        }
+      }
+      const appId = opt.appId;
+      const app = getApp(appId);
       if(!app){
         this.commit('error/show', 'Unknown App!');
         return;
       }
-      _initApp(appId, app);
       const task = Object.create(null);
       task.app = app;
-      const startWindow = startWindowMap[appId];
+      task.launchOption = opt;
+      const startWindow = app.window;
       if(app.unique){
-        if(uniqueMap[appId]){
-          this.commit('task/show', uniqueMap[appId]);
+        if(uniqueTaskMap[appId]){
+          this.commit('task/show', uniqueTaskMap[appId]);
           return;
         }else{
-          uniqueMap[appId] = task;
+          uniqueTaskMap[appId] = task;
         }
       }
       
@@ -121,32 +99,32 @@ export default  {
       });
       const item = state.list[index];
       if(item.app.unique){
-        delete(uniqueMap[item.app.id]);
+        delete(uniqueTaskMap[item.app.id]);
       }
       state.list.splice(index, 1);
       this.commit('task/focusNext');
     },
 
-    toggleMinAll(state){
-      if(state._tmpMinAll.length){
-        state._tmpMinAll.forEach(function(v){
-          v.isMin = false;
-        });
-        state.current.isFocus = state._tmpMinAllIsCurrFocus;
-        state._tmpMinAll = [];
+    // toggleMinAll(state){
+    //   if(state._tmpMinAll.length){
+    //     state._tmpMinAll.forEach(function(v){
+    //       v.isMin = false;
+    //     });
+    //     state.current.isFocus = state._tmpMinAllIsCurrFocus;
+    //     state._tmpMinAll = [];
 
-      } else {
-        state._tmpMinAllIsCurrFocus = state.current.isFocus;
-        state.list.forEach(v => {
-          if(!v.isMin){
-            state._tmpMinAll.push(v);
-            v.isMin = true;
-          }
-        });
-        state.current.isFocus = false;
-      }
-      state.isMinAll = state._tmpMinAll.length !== 0;
-    },
+    //   } else {
+    //     state._tmpMinAllIsCurrFocus = state.current.isFocus;
+    //     state.list.forEach(v => {
+    //       if(!v.isMin){
+    //         state._tmpMinAll.push(v);
+    //         v.isMin = true;
+    //       }
+    //     });
+    //     state.current.isFocus = false;
+    //   }
+    //   state.isMinAll = state._tmpMinAll.length !== 0;
+    // },
     // closeAll(state){
     //   Object.assign(state, _defState());
     // },

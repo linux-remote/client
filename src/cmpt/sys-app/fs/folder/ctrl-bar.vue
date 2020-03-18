@@ -3,8 +3,8 @@
   .lr-fs-ctrl-bar-mask(v-if='disabled')
 
   
-  .lr-icon.lr-fs-new-folder(@click='addItem("Directory")')
-  .lr-icon.lr-fs-new-file(@click='addItem("RegularFile")')
+  .lr-icon(@click='addItem("Directory")', v-open-icon="'tango/folder-new-5.png'")
+  .lr-icon(@click='addItem("RegularFile")', v-open-icon="'tango/document-new-4.png'")
    
   button.lr-btn-sm.lr-fs-upload-btn(@click='handleUploadBtnClick')
     span.iconfont.icon-upload
