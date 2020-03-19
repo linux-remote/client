@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import {encodePath, pathJoin, getDirAndBase} from '../util';
+import {pathJoin, getDirAndBase} from '../util';
 import safeBind from '../../../lib/mixins/safe-bind';
 export default {
   inject: ['taskWindow'],
@@ -106,31 +106,52 @@ export default {
       
     },
     create(cb){
-      this.request({
-        stateKey: 'isCreating',
-        type: 'post',
-        url: `~/fs/` + encodePath(this.dir),
-        data: {
-          type: 'createFile',
-          name: this.filename,
-          content: this.data
-        },
-        success(stdout) {
-          this.$options._filePath = pathJoin(this.dir, this.filename);
-          this.chTitle();
-          this.oldData = this.data;
-          cb && cb();
-          if(this.$options._isSaveAndClose) {
-             this.closeTaskWindow();
-          }
-          // console.log('create', stdout);
-          this.$store.commit('fs/publicEmit', {
-            type: 'add',
-            address: this.dir,
-            data: stdout
-          });
+      this.writeFile(true, () => {
+        this.$options._filePath = pathJoin(this.dir, this.filename);
+        this.chTitle();
+        this.oldData = this.data;
+        cb && cb();
+        if(this.$options._isSaveAndClose) {
+            this.closeTaskWindow();
         }
-      })
+      });
+
+      // this.request({
+      //   stateKey: 'isCreating',
+      //   type: 'post',
+      //   url: `~/fs/` + encodePath(this.dir),
+      //   data: {
+      //     type: 'createFile',
+      //     name: this.filename,
+      //     content: this.data
+      //   },
+      //   success(stdout) {
+      //     this.$options._filePath = pathJoin(this.dir, this.filename);
+      //     this.chTitle();
+      //     this.oldData = this.data;
+      //     cb && cb();
+      //     if(this.$options._isSaveAndClose) {
+      //        this.closeTaskWindow();
+      //     }
+      //     // console.log('create', stdout);
+      //     this.$store.commit('fs/publicEmit', {
+      //       type: 'add',
+      //       address: this.dir,
+      //       data: stdout
+      //     });
+      //   }
+      // })
+    },
+    writeFile(isCreate, success){
+      this.$store.commit('wsRequest', {
+        method: 'writeFile',
+        data: {
+          filePath: this.$options._filePath,
+          content: this.data,
+          isCreate
+        },
+        success
+      });
     },
     save(){
       if(this.isSaveDisabled){
@@ -147,29 +168,36 @@ export default {
         });
         return;
       }
+      this.writeFile(false, () => {
+        this.oldData = this.data;
 
-      this.request({
-        url: `~/fs/` + encodePath(filePath),
-        stateKey: 'isSaveing',
-        type: 'put',
-        data: {
-          text: this.data
-        },
-        success(stdout){
-
-          this.$store.commit('fs/publicEmit', {
-            type: 'update',
-            address: this.dir,
-            data: stdout
-          });
-
-          this.oldData = this.data;
-
-          if(this.$options._isSaveAndClose) {
-             this.closeTaskWindow();
-          }
+        if(this.$options._isSaveAndClose) {
+          this.closeTaskWindow();
         }
       });
+
+      // this.request({
+      //   url: `~/fs/` + encodePath(filePath),
+      //   stateKey: 'isSaveing',
+      //   type: 'put',
+      //   data: {
+      //     text: this.data
+      //   },
+      //   success(stdout){
+
+      //     this.$store.commit('fs/publicEmit', {
+      //       type: 'update',
+      //       address: this.dir,
+      //       data: stdout
+      //     });
+
+      //     this.oldData = this.data;
+
+      //     if(this.$options._isSaveAndClose) {
+      //        this.closeTaskWindow();
+      //     }
+      //   }
+      // });
     },
     chTitle(){
       this.taskWindow.title = this.filename + ' - ' + this.taskWindow.startTitle;
@@ -188,22 +216,7 @@ export default {
         error: (err) => {
           this.error = err;
         }
-      })
-      // this.request({
-      //   url:  `~/fs/` + encodePath(this.$options._filePath),
-      //   stateKey: 'isRequest',
-      //   dataType: 'text',
-      //   data: {
-      //     file: true
-      //   },
-      //   success(data){
-      //     this.oldData = data;
-      //     this.data = data;
-      //   },
-      //   error(xhr){
-      //     this.error = xhr.responseText;
-      //   }
-      // })
+      });
     },
     _isFirstCreateEmpty(){
        if(this.$options._filePath){

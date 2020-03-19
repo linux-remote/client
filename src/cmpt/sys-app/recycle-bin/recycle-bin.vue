@@ -150,22 +150,35 @@ export default {
       });
     },
     getData(){
-      this.request({
-        url: '~/recycleBin',
-        stateKey: 'isRequest',
-        success(stdout){
+      this.$store.commit('wsRequest', {
+        method: 'getRecycleBin',
+        success: (stdout) => {
+          this.error = null;
           const result = lsParse(stdout);
           this.totalCount = result.length;
-
           let parsedResult = recycleParse(result);
           this.list = parsedResult.list;
-
-          this.error = null;
         },
-        error(xhr){
-          this.error = xhr.responseText;
+        error: (error) => {
+          this.error = error;
         }
-      })
+      });
+      // this.request({
+      //   url: '~/recycleBin',
+      //   stateKey: 'isRequest',
+      //   success(stdout){
+      //     const result = lsParse(stdout);
+      //     this.totalCount = result.length;
+
+      //     let parsedResult = recycleParse(result);
+      //     this.list = parsedResult.list;
+
+      //     this.error = null;
+      //   },
+      //   error(xhr){
+      //     this.error = xhr.responseText;
+      //   }
+      // })
     }
   },
 
