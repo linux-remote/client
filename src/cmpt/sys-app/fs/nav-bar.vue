@@ -142,7 +142,7 @@ export default {
       }else{ // Array
         this.addressArr = path;
       }
-      console.log(this.address)
+      // console.log(this.address)
     }
   }
 }

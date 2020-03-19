@@ -32,6 +32,8 @@ import LRIcon from '../../cmpt/icon/icon.vue';
 import Resizable from '../../unit/resizable.vue';
 import Movable from '../../unit/movable.vue';
 import MixinFocusable from '__ROOT__/lib/mixins/focusable.js';
+
+import SimpleEvent from '../../../ui/desktop-cmpt/task/window/simple-event';
 export default {
   mixins: [MixinFocusable],
   provide() {
@@ -179,6 +181,11 @@ export default {
     },
 
     close(){
+      const e = new SimpleEvent;
+      this.$emit('close', e);
+      if(e.preventDefaulted){
+        return;
+      }
       this.$store.commit('task/remove', this.id);
     },
 

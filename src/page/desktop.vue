@@ -27,6 +27,7 @@
 <script>
 import safeBind from '../lib/mixins/safe-bind';
 import Contextmenuable from '../ui/desktop-cmpt/global/contextmenuable.vue';
+import termMap from '../cmpt/sys-app/terminal/map';
 // import TasksBar from '__ROOT__/cmpt/task/bar.vue';
 
 import {Start, QuickLaunch, TaskItem, Watch, DeskTopBody} from '../ui/index.js';
@@ -74,6 +75,14 @@ export default {
         method: 'getDesktopBundle',
         success: (data) => {
           this.parseBundle(data);
+          data.createdTerm.forEach(termId => {
+            termMap[termId] = '';
+            this.$store.commit('task/add', {
+              appId: 'sys_app_terminal',
+              id: termId
+            });
+          });
+          
         }
       })
     },

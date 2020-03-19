@@ -33,7 +33,7 @@ window.APP = {
 
 import { TypeOf } from '../lib/util';
 import language from './module/language';
-
+import termMap from '../cmpt/sys-app/terminal/map';
 import upload from './module/upload';
 import error from './module/error';
 import task from './module/task';
@@ -48,6 +48,16 @@ const SocketRequest = require('../../../socket-request/index.js');
 const AFRTimeout = 15 * 60 * 1000;
 let ws, sr, _pako;
 let wsCloseTime = 0;
+let checkSessionAliveTime = 0;
+function _isNeedCheckSessionAlive(){
+  const now = Date.now();
+  if(now - checkSessionAliveTime >= AFRTimeout){
+    checkSessionAliveTime = now;
+    return true;
+  }
+  return false;
+}
+
 const store = new window.Vuex.Store({
   modules: {
     language,
@@ -139,6 +149,25 @@ const store = new window.Vuex.Store({
               return pako.deflate(data);
             }
           });
+          sr.onRequest = function(data){
+            if(data.type === 'term'){
+              const term = termMap[data.id];
+              if(data.data){
+                if(typeof term === 'object'){
+                  term.write(data.data);
+                } else {
+                  if(typeof termMap[data.id] !== 'string'){
+                    termMap[data.id] = '';
+                  }
+                  termMap[data.id] = term + data.data;
+                }
+              } else if(data.method === 'exit'){
+                delete(termMap[data.id]);
+                term.close();
+              }
+
+            }
+          }
           state.wsIsConnected = true;
           callback && callback();
         }
@@ -161,7 +190,7 @@ const store = new window.Vuex.Store({
                 once: true
               });
             } else {
-              if(e.code === 1006){
+              if(e.code === 1006 && _isNeedCheckSessionAlive()){
                 // 1006:
                 // Connection closed before receiving a handshake response
                 // ECONREFUSED 
@@ -175,14 +204,14 @@ const store = new window.Vuex.Store({
                     if(xhr.status !== 403){
                       setTimeout(() => {
                         store.commit('wsConnect');
-                      }, 1500);
+                      }, 2500);
                     }
                   }
                 })
               } else {
                 setTimeout(() => {
                   store.commit('wsConnect');
-                }, 1500);
+                }, 2500);
               }
             }
           }
@@ -219,6 +248,10 @@ const store = new window.Vuex.Store({
           });
           return;
         }
+      }
+      if(opts.noReply){
+        sr.request({method: opts.method, data: opts.data});
+        return;
       }
       sr.request({method: opts.method, data: opts.data}, (resData) => {
         opts.complete && opts.complete(resData);

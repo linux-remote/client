@@ -3,7 +3,8 @@
 </template>
 <script>
 // 742 440
-import { composeUserWsUrl } from '../util';
+// import { composeUserWsUrl } from '../util';
+import map from './map.js';
 import SafeBind from '../../../lib/mixins/safe-bind.js';
 export default {
   mixins: [SafeBind],
@@ -15,7 +16,7 @@ export default {
   },
   methods: {
 
-    create({FemTerminal, FemAttach, FemFit, FemWebLinks}) {
+    create({FemTerminal, FemFit, FemWebLinks}) {
       // Terminal: ƒ, AttachAddon: ƒ, FitAddon: ƒ, WebLinksAddon
       const isWindows = ['Windows', 'Win16', 'Win32', 'WinCE'].indexOf(navigator.platform) >= 0;
       const $opt = this.$options;
@@ -31,12 +32,24 @@ export default {
       $opt.term = term;
 
       term.open(this.$el);
-      this.run();
+      // this.run();
       // resize: 
       term.onResize((size) => {
-        if (!$opt.pid) {
+        if (!$opt._termId) {
           return;
         }
+        const cols = size.cols;
+        const rows = size.rows;
+        console.log('onResize', size);
+        this.$store.commit('wsRequest', {
+          method: 'termResize',
+          data: {
+            id: $opt._termId,
+            cols,
+            rows
+          },
+          noReply: true
+        });
         // return;
         // const cols = size.cols;
         // const rows = size.rows;
@@ -54,28 +67,56 @@ export default {
         term.focus();
       });
       
-      // return;
-      // // fit is called within a setTimeout, cols and rows need this.
-      // setTimeout(() => {
-      //   this.request({
-      //     type: 'post',
-      //     url: `~/terminals?cols=${term.cols}&rows=${term.rows}`,
-
-      //     success: (pid) => {
-      //       $opt.pid = pid;
-      //       const url = composeUserWsUrl(this.$route.params.username, 'terminal?pid=' + pid);
-      //       const socket = new WebSocket(url);
-      //       socket.onopen = this.run;
-      //       socket.onerror = this.termOnError;
-      //       $opt.socket = socket;
-      //     }
-      //   })
-      // }, 0);
+      if(!this.$options._termId){
+        this.createServerTerm();
+      } else {
+        this.attach();
+      }
     },
-    run() {
+    createServerTerm(){
+      const opt = this.$options;
+      this.$store.commit('wsRequest', {
+        method: 'termCreate',
+        data: {
+          cwd: opt._cwd,
+          rows: opt.term.rows,
+          cols: opt.term.cols
+        },
+        success: (id) => {
+          console.log('createServerTerm', id)
+          this.$options._termId = id;
+          this.attach();
+        }
+      });
+    },
+    write(data){
       const term = this.$options.term;
-      term.write('Create success!');
-      // term.attach(this.$options.socket);
+      if(term){
+        term.write(data);
+      }
+    },
+    close(){
+      this.taskWindow.close();
+    },
+    attach(){
+      const {term, _termId} = this.$options;
+      if(typeof map[_termId] === 'string'){
+        term.write(map[_termId]);
+      }
+      if(typeof map[_termId] !== 'object'){
+        map[_termId] = this;
+      }
+
+      term.onData((data) => {
+        this.$store.commit('wsRequest', {
+          method: 'termWrite',
+          noReply: true,
+          data: {
+            id: _termId,
+            data
+          }
+        });
+      });
     },
     termOnError() {
       this.$options.term.write('WebSocket connection error');
@@ -101,13 +142,23 @@ export default {
         // Terminal.loadAddon(zmodem);
         // console.log('FemTerminal', FemTerminal)
         const loaded = this.$options._amdLoaded = {
-          FemTerminal, FemAttach, FemFit, FemWebLinks
+          FemTerminal, FemFit, FemWebLinks
         };
         cb(loaded);
         });
+    },
+    killPty(id){
+      this.$store.commit('wsRequest', {
+        method: 'termKill',
+        data: id,
+        noReply: true
+      });
     }
   },
   mounted(){
+    const opt = this.taskWindow.launchOption;
+    this.$options._termId = opt.id;
+    this.$options._cwd = opt.cwd;
     this.getTerminal((amdLoaded) => {
       this.create(amdLoaded);
     });
@@ -121,6 +172,13 @@ export default {
       const term = this.$options.term;
       if(term){
         term.focus();
+      }
+    });
+    this.safeBind(this.taskWindow, 'close', (e) => {
+      const id = this.$options._termId;
+      if(id && map[id]){
+        e.preventDefault();
+        this.killPty(id);
       }
     });
   },
