@@ -18,10 +18,21 @@ export default {
 
     create({FemTerminal, FemFit, FemWebLinks}) {
       // Terminal: ƒ, AttachAddon: ƒ, FitAddon: ƒ, WebLinksAddon
-      const isWindows = ['Windows', 'Win16', 'Win32', 'WinCE'].indexOf(navigator.platform) >= 0;
+      // const isWindows = ['Windows', 'Win16', 'Win32', 'WinCE'].indexOf(navigator.platform) >= 0;
       const $opt = this.$options;
       const term = new FemTerminal.Terminal({
-        windowsMode: isWindows
+        // windowsMode: isWindows,
+        /**
+         * xtermjs\src\browser\renderer\dom\DomRenderer.ts
+         * A fallback renderer for when canvas is slow. This is not meant to be
+         * particularly fast or feature complete, more just stable and usable for when
+         * canvas is not an option.
+         * 
+         * https://xtermjs.org/docs/guides/security/#3-websockets
+         * anything coming from the terminal might contain malicious data
+         * 
+         */
+        rendererType: 'canvas'
       });
       const fitAddon = new FemFit.FitAddon();
       term.loadAddon(fitAddon);
@@ -111,10 +122,8 @@ export default {
         this.$store.commit('wsRequest', {
           method: 'termWrite',
           noReply: true,
-          data: {
-            id: _termId,
-            data
-          }
+          isArray: true,
+          data: [2, _termId, data]
         });
       });
     },

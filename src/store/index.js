@@ -150,23 +150,44 @@ const store = new window.Vuex.Store({
             }
           });
           sr.onRequest = function(data){
-            if(data.type === 'term'){
-              const term = termMap[data.id];
-              if(data.data){
+            if(Array.isArray(data)){
+              if(data[0] === 2){
+                const pid = data[1];
+                const strData = data[2];
+                const term = termMap[pid];
                 if(typeof term === 'object'){
-                  term.write(data.data);
+                  term.write(strData);
                 } else {
-                  if(typeof termMap[data.id] !== 'string'){
-                    termMap[data.id] = '';
+                  if(typeof term !== 'string'){
+                    termMap[pid] = '';
                   }
-                  termMap[data.id] = term + data.data;
+                  termMap[pid] = termMap[pid] + strData;
                 }
-              } else if(data.method === 'exit'){
+              }
+            } else {
+              if(data.method === 'termExit'){
                 delete(termMap[data.id]);
                 term.close();
               }
-
             }
+
+            // if(data.type === 'term'){
+            //   const term = termMap[data.id];
+            //   if(data.data){
+            //     if(typeof term === 'object'){
+            //       term.write(data.data);
+            //     } else {
+            //       if(typeof termMap[data.id] !== 'string'){
+            //         termMap[data.id] = '';
+            //       }
+            //       termMap[data.id] = term + data.data;
+            //     }
+            //   } else if(data.method === 'exit'){
+            //     delete(termMap[data.id]);
+            //     term.close();
+            //   }
+
+            // }
           }
           state.wsIsConnected = true;
           callback && callback();
@@ -190,10 +211,13 @@ const store = new window.Vuex.Store({
                 once: true
               });
             } else {
-              if(e.code === 1006 && _isNeedCheckSessionAlive()){
+              if(e.code === 1006){
                 // 1006:
                 // Connection closed before receiving a handshake response
                 // ECONREFUSED 
+                if(!_isNeedCheckSessionAlive()){
+                  return;
+                }
                 this.request({
                   type: 'get',
                   url: '~/alive',
@@ -207,7 +231,7 @@ const store = new window.Vuex.Store({
                       }, 2500);
                     }
                   }
-                })
+                });
               } else {
                 setTimeout(() => {
                   store.commit('wsConnect');
@@ -249,11 +273,15 @@ const store = new window.Vuex.Store({
           return;
         }
       }
+      const requestData = opts.isArray ? 
+      opts.data : 
+      {method: opts.method, data: opts.data};
+      
       if(opts.noReply){
-        sr.request({method: opts.method, data: opts.data});
+        sr.request(requestData);
         return;
       }
-      sr.request({method: opts.method, data: opts.data}, (resData) => {
+      sr.request(requestData, (resData) => {
         opts.complete && opts.complete(resData);
         if(resData.status === 200){
           opts.success && opts.success(resData.data);
