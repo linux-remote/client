@@ -107,8 +107,7 @@ const store = new window.Vuex.Store({
     onDustbinRecycle: null,
     sessError: false,
     openWidthData: null,
-    confirmData: null,
-    isShowHomeHidden: false
+    confirmData: null
   },
   mutations: {
     setUsername(state, username){
@@ -269,7 +268,7 @@ const store = new window.Vuex.Store({
 
       if(msg){
         window.alert('exit' + msg);
-        location.href = '/';
+        location.href = '/#u=' + state.username;
       } else {
         // 正常退出.
         location.href = '/';

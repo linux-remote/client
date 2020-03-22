@@ -11,7 +11,7 @@
     span {{$parent.LANG.upload}}
 
   label.lr-label-input.lr-check-box.lr-fs-show-hidden
-    input(type="checkbox", :checked="!isDisableShowHidden || isShowHomeHidden",:disabled="!isDisableShowHidden", @change="handleCheckBoxChange")
+    input(type="checkbox", :checked="isShowHidden", @change="handleCheckBoxChange")
     .lr-box_in
     span Show hidden
   //- button(@click="errDev") errDev
@@ -32,17 +32,14 @@ export default {
     }
   },
   computed: {
-    isShowHomeHidden(){
-      return this.$store.state.isShowHomeHidden
+    isShowHidden(){
+      return this.$parent.info.showHidden
     },
     homedir(){
       return this.$store.state.homedir
     },
     address(){
       return this.$parent.address
-    },
-    isDisableShowHidden(){
-      return this.address === this.homedir;
     }
   },
   methods: {
@@ -51,10 +48,19 @@ export default {
     },
     handleCheckBoxChange(e){
       let checked = e.target.checked;
-      console.log('checked', checked)
-      this.$store.commit('set', {
-        isShowHomeHidden: e.target.checked
-      });
+      const info = this.$parent.info;
+      info.showHidden = checked;
+      if(checked === false){
+        let arr = [];
+        info.list.forEach(v => {
+          if(v.name[0] !== '.'){
+            arr.push(v);
+          }
+        });
+        info.list = arr;
+        return;
+      }
+      this.$parent.getData();
     },
     addItem(type){
       if(this.$parent.preCreateItem){

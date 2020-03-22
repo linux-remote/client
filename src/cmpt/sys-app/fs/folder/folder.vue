@@ -125,7 +125,9 @@ export default {
       preCreateItem: null,
 
       
-      info: null,
+      info: {
+        list: []
+      },
       isRequest: false,
       sortKey: 'name'
     }
@@ -280,8 +282,10 @@ export default {
     initInfo(){
       let info = map[this.address];
       if(!info){
+        let showHidden = !(this.address === this.$store.state.homedir);
         info = map[this.address] = {
           isRequest: false,
+          showHidden,
           error: null,
           list: []
         }
@@ -292,9 +296,16 @@ export default {
       this.initInfo();
       const info = this.info;
       info.isRequest = true;
+      let data = this.address;
+      if(!info.showHidden){
+        data = {
+          address: this.address,
+          all: false
+        }
+      }
       this.$store.commit('wsRequest', {
         method: 'readdir',
-        data: this.address,
+        data,
         success: (result) => {
           info.error = null;
           info.list = _parseFiles(result);
