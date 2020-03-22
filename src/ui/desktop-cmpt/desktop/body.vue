@@ -1,6 +1,6 @@
 <template lang="jade">
-Contextmenuable.lr-desktop_body(ref="ctx")
-  .lr-desktop-icons(@drop.stop='handleDeskDrop',
+.lr-desktop_body(ref="ctx")
+  Contextmenuable.lr-desktop-icons(@drop.stop='handleDeskDrop',
                     @dragenter.stop='handleDragenter',
                     @dragover.stop='handleDragover')
     Icon(v-for="(v,i) in list",
@@ -8,6 +8,9 @@ Contextmenuable.lr-desktop_body(ref="ctx")
         :id="v.id",
         :index="i",
         :item="v")
+    template(v-slot:contextmenu)
+      .lr-cm-item(@click="refresh") {{LANG.ctx.Refresh}}
+      .lr-cm-item(@click="sortIcon") Sort icon
   //- TaskWindow(v-for='(item, index) in tasks', :key='item.id', :index='index')
   Window(v-for='(item, index) in tasks',
                 :key='item.id',
@@ -16,9 +19,7 @@ Contextmenuable.lr-desktop_body(ref="ctx")
                 :launchOption="item.launchOption",
                 v-bind="item.startWindow")
     component(:is="item.app.id")
-  template(v-slot:contextmenu)
-    .lr-cm-item(@click="refresh") {{LANG.ctx.Refresh}}
-    .lr-cm-item(@click="sortIcon") Sort icon
+
 </template>
 <script>
 import Contextmenuable from '../global/contextmenuable.vue';

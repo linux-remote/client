@@ -122,7 +122,6 @@ export default {
       //   groupNames.push(v.name);
       // })
       this.$store.commit('set', {
-        isLogin: true,
         username,
         // group,
         // _groups: groups, // will switch name.

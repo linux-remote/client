@@ -49,6 +49,9 @@ const AFRTimeout = 15 * 60 * 1000;
 let ws, sr, _pako;
 let wsCloseTime = 0;
 let checkSessionAliveTime = 0;
+
+const wsReconnectTime = 3000;
+const termWriteKey = 2;
 function _isNeedCheckSessionAlive(){
   const now = Date.now();
   if(now - checkSessionAliveTime >= AFRTimeout){
@@ -76,18 +79,18 @@ const store = new window.Vuex.Store({
     winH: $win.height(),
     winW: $win.width(),
     // sess
-    
+    isExit: false,
     // desktop
     deskTopW: 0,
     deskTopH: 0,
 
     hostname: '',
-    isLogin: false,
     isOnLine: true,
+    wsIsConnected: false,
 
     username:'',
     homedir: '',
-    wsIsConnected: false,
+    
     // wsCloseCode: -1,
     // wsCloseReason: '',
 
@@ -110,7 +113,6 @@ const store = new window.Vuex.Store({
       state.username = username;
     },
     chOnline(state, bool){
-      console.log('chOnline', bool)
       state.isOnLine = bool;
     },
     wsConnect(state, callback){
@@ -119,13 +121,7 @@ const store = new window.Vuex.Store({
       }
       if(ws){
         if(ws.readyState !== WebSocket.CLOSED){
-          console.log('ws', ws.readyState);
-          return;
-        }
-      }
-      if(wsCloseTime){
-        if((Date.now() - wsCloseTime) >= AFRTimeout){
-          console.log('ex')
+          console.log('wsConnect: ws is not close.', ws.readyState);
           return;
         }
       }
@@ -133,6 +129,7 @@ const store = new window.Vuex.Store({
         const url = composeUserWsUrl(state.username);
         const ws = new WebSocket(url);
         ws.onopen = () => {
+          console.log('WS Connected!');
           wsCloseTime = 0;
           sr = new SocketRequest(ws, {
             isWs: true, 
@@ -149,9 +146,9 @@ const store = new window.Vuex.Store({
               return pako.deflate(data);
             }
           });
-          sr.onRequest = function(data){
+          sr.onRequest = (data) => {
             if(Array.isArray(data)){
-              if(data[0] === 2){
+              if(data[0] === termWriteKey){
                 const pid = data[1];
                 const strData = data[2];
                 const term = termMap[pid];
@@ -166,10 +163,16 @@ const store = new window.Vuex.Store({
               }
             } else {
               if(data.method === 'termExit'){
-                delete(termMap[data.id]);
-                term.close();
+                const pid = data.data;
+                const term = termMap[pid];
+                if(term){
+                  delete(termMap[pid]);
+                  term.close();
+                }
+              }else if(data.method === 'close'){
+                this.commit('onExit', data.data);
               }
-            }
+            } 
 
             // if(data.type === 'term'){
             //   const term = termMap[data.id];
@@ -194,16 +197,23 @@ const store = new window.Vuex.Store({
         }
 
         const handleClose =  (e) => {
-          console.log('e.code', e.code)
           state.wsIsConnected = false;
-          
-          if(e.code === 1000){
-            this.commit('logout');
-          } else {
-            wsCloseTime = Date.now();
-            // state.wsCloseCode = e.code;
-            // state.wsCloseReason = e.reason;
+          if(state.isExit){
+            return;
+          }
+          // if(e.code !== 1000){
             
+            if(wsCloseTime){
+              wsCloseTime = Date.now();
+            }
+            
+            if(wsCloseTime){
+              if((Date.now() - wsCloseTime) >= AFRTimeout){
+                this.commit('onExit', 'clientTimeout');
+                return;
+              }
+            }
+
             if(!state.isOnLine){
               window.addEventListener('online', () => {
                 store.commit('wsConnect');
@@ -211,37 +221,55 @@ const store = new window.Vuex.Store({
                 once: true
               });
             } else {
-              if(e.code === 1006){
-                // 1006:
-                // Connection closed before receiving a handshake response
-                // ECONREFUSED 
-                if(!_isNeedCheckSessionAlive()){
-                  return;
-                }
+              const _reconent = () => {
+                setTimeout(() => {
+                  store.commit('wsConnect');
+                }, wsReconnectTime);
+              }
+
+              if(_isNeedCheckSessionAlive()){
                 this.request({
                   type: 'get',
                   url: '~/alive',
                   success: () => {
-                    store.commit('wsConnect');
+                    _reconent();
                   },
                   error: (xhr) => {
                     if(xhr.status !== 403){
-                      setTimeout(() => {
-                        store.commit('wsConnect');
-                      }, 2500);
+                      _reconent();
                     }
                   }
                 });
-              } else {
-                setTimeout(() => {
-                  store.commit('wsConnect');
-                }, 2500);
+                return;
               }
+              _reconent();
+
+              // if(e.code === 1006){
+              //   // 1006:
+              //   // Connection closed before receiving a handshake response
+              //   // ECONREFUSED 
+
+
+              // } else {
+              //   setTimeout(() => {
+              //     store.commit('wsConnect');
+              //   }, wsReconnectTime);
+              // }
             }
-          }
+          // }
         }
         ws.onclose = handleClose;
       });
+    },
+    onExit(state, data){
+      state.isExit = true;
+
+      if(data.data){
+        
+      } else {
+        // 正常退出.
+        location.href = '/';
+      }
     },
     setDeskTopWH(state){
       var dom = document.getElementById('lr-desktop');
@@ -276,7 +304,7 @@ const store = new window.Vuex.Store({
       const requestData = opts.isArray ? 
       opts.data : 
       {method: opts.method, data: opts.data};
-      
+
       if(opts.noReply){
         sr.request(requestData);
         return;
@@ -297,9 +325,6 @@ const store = new window.Vuex.Store({
       this.commit('sysApps/changeRecycleBinIcon', bool)
     },
 
-    logout(state){
-      state.isLogin = false;
-    },
     needRelogin(state){
       state.sessError = true;
     },

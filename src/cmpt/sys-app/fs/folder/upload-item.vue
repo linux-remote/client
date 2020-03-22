@@ -8,7 +8,7 @@ tr.lr-fs-upload-tr(@mousedown.stop='', v-on="$listeners")
         | Delete
     .lr-name-wrap
       .lr-icon(:class='["lr_file_type_" + item.type, {["lr_fs_open_type_" + item.openType]: item.type === "RegularFile"}]', :style='iconStyle')
-        .lr-icon.lr-error-icon(v-if='item.linkTargetError')
+        .lr-icon.lr-error-icon(v-if='item.linkTargetError', v-open-icon="'nuvola/lockoverlay.png'")
       .lr-fs-item-name {{item.name}}
   td
     span(:class='{lr_per_is_on: item.is_owner}') {{item.owner}}

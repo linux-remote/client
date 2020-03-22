@@ -10,7 +10,7 @@
     span.iconfont.icon-upload
     span {{$parent.LANG.upload}}
   //- button(@click="errDev") errDev
-  .lr-fs-home-mark(@click="$parent.go(homedir)", :class="{lr_bookmark_active: address === homedir}")
+  .lr-fs-home-mark(@click="$parent.go(homedir)", v-open-icon="'tango/user-home.png'", :class="{lr_bookmark_active: address === homedir}")
 </template>
 <script>
   // div(style='flex-grow: 1')

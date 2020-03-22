@@ -323,31 +323,7 @@ $fsRowItemH: 50px;
   max-height: 3em;
 }
 // ----------- new end -----------
-// .lr_file_type_directory{
-//   background-image: url('/public/img/tango/folder.png');
-// }
-// .lr_file_type_file {
-//   background-image: url('/public/img/tango/text-x-generic.png');
-// }
-// .lr_file_type_socket{
-//   background-image: url('/public/img/tango/inode-socket.png');
-// }
-// .lr_file_type_unknown{
-// background-image: url('/public/img/oxygen/unknown.png');
-// }
-// .lr_file_type_characterDevice{
-// background-image: url('/public/img/tango/inode-chardevice.png');
-// }
-// .lr_file_type_blockDevice{
-//   background-image: url('/public/img/tango/inode-blockdevice.png');
-// }
-// .lr_file_type_symbolicLink{
-//   background-image: url('/public/img/nuvola/link.png');
-// }
-// .lr_file_type_FIFO{
-//   background-size: auto 80%;
-//   background-image: url('/public/img/nuvola/pipe.png');
-// }
+
 
 // door 类型只存在于 Solaris 系统. 几乎不会遇到
 // https://en.wikipedia.org/wiki/Unix_file_types#Door
@@ -363,7 +339,6 @@ $fsRowItemH: 50px;
   height: 100%;
   left: 0;
   top: 0;
-  background-image: url('/public/img/nuvola/lockoverlay.png');
 }
 
 // ================== item end ==================
@@ -451,7 +426,6 @@ $fsRowItemH: 50px;
   top: 0;
   bottom: 0;
   margin:auto;
-  background-image: url('/public/img/tango/user-home.png');
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
@@ -472,9 +446,10 @@ $fsRowItemH: 50px;
   }
 }
 
-.lr_fs_open_type_image{
-  background-image: url('/public/img/tango/image-x-generic.png');
-}
+// .lr_fs_open_type_image{
+//   background-image: url('/public/i2mg/tango/image-x-generic.png');
+// }
+
 .lr-fs-table {
   border-collapse: separate;
   font-size: $fsFontSize;
