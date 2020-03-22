@@ -16,16 +16,16 @@
         a.lr-login_powered(href="https://github.com/linux-remote/linux-remote", target="_blank") POWERED BY
         .lr-login_process_wrap
           .lr-login_process
-      form.lr-login_form(@submit.prevent)
+      form.lr-login_form(@submit.prevent="handleSubmit")
         .lr-login_form_mask Logging...
         .lr-login_input_wrap
           label {{LANG.username}}
-          input.lr-input( v-model='username' required="required")
+          input.lr-input(v-model='username', name="username", required="required")
         .lr-login_input_wrap
           label {{LANG.password}}
-          input.lr-input(type='password', v-model='password', autocomplete="off",  required="required")
+          input.lr-input(type='password', name="password", v-model='password', autocomplete="off", required="required")
         .lr-login-box-footer
-          Btn(@click="handleBtnClick", ref="submit") {{LANG.submitBtn}}
+          Btn(ref="submit", type="submit") {{LANG.submitBtn}}
   Alert(v-if="alertOpt",
     :pWidth="width",
     :pHeight="height",
@@ -116,11 +116,13 @@ export default {
         }
       })
     },
-    handleBtnClick(){
+    handleSubmit(){
       // this.alert({
       //   text: 'xhr.responseText',
       //   status: 'warn'
       // });
+      
+      console.log('handleSubmit');
       this.login();
     },
     routeTo(username){

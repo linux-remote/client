@@ -25,7 +25,9 @@
     "node-module-static.js",
     "logo_def.png"
   ],
-  "dependencies": {},
+  "dependencies": {
+    "stat-mode": "^1.0.0"
+  },
   "devDependencies": {
     "@babel/core": "^7.8.4",
     "@babel/plugin-proposal-class-properties": "^7.8.3",

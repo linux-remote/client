@@ -57,6 +57,8 @@ import Sync from '../../../../lib/sync';
 import { parseName } from './util';
 import { getOpenInfo } from './open-register';
 import mixins from './mixins/index';
+import { sortByStrKey } from '../../util';
+
 mixins.push(safeBind);
 const iconTypeMap = {
   file: 'tango/text-x-generic.png',
@@ -69,17 +71,26 @@ const iconTypeMap = {
   unknown: 'oxygen/unknown.png'
 }
 function _parseFiles(list){
+  let folderArr = [];
+  let fileArr = [];
   list.forEach(file => {
     file.icon = iconTypeMap[file.type];
-    // const isFolder = file.type === 'directory';
-    const isFile = file.type === 'file';
-    if(isFile){
-      Object.assign(file, parseName(file.name));
-      const openInfo = getOpenInfo(file.suffix);
-      Object.assign(file, openInfo);
+    const isFolder = file.type === 'directory';
+    if(isFolder){
+      folderArr.push(file);
+    } else {
+      fileArr.push(file);
+      const isFile = file.type === 'file';
+      if(isFile){
+        Object.assign(file, parseName(file.name));
+        const openInfo = getOpenInfo(file.suffix);
+        Object.assign(file, openInfo);
+      }
     }
   });
-  return list;
+  sortByStrKey(folderArr, 'name', true);
+  sortByStrKey(fileArr, 'name', true);
+  return folderArr.concat(fileArr);
 }
 
 export default {
@@ -295,35 +306,6 @@ export default {
           info.error = err;
         }
       });
-
-      this.isHaveDevice = false;
-      this.$store.commit('fs/readdir', this.address);
-      // return;
-      // this.request({
-      //   url: '~/fs/' + encodePath(this.address),
-      //   stateKey: 'isRequest',
-      //   data: { dir: true },
-      //   success(stdout){
-          
-      //     let data = lsParse(stdout);
-      //     data = this.getDirAndWrapBaseList(data);
-      //     this.publicEmit({
-      //       type: 'getList',
-      //       address: this.address,
-      //       isHaveDevice: this.isHaveDevice,
-      //       data
-      //     })
-      //     this.$nextTick(() => {
-      //        this.reActiveNewItems();
-      //     });
-      //   },
-      //   error(xhr){
-      //     this.error = `${xhr.responseText}`;
-      //     if(this.$options._shouldActiveNewItemNames){
-      //       this.$options._shouldActiveNewItemNames = null;
-      //     }
-      //   }
-      // })
     },
     getDirAndWrapBaseList(list) {
       let arr = [], dir;

@@ -420,24 +420,7 @@ $fsRowItemH: 50px;
     }
   }
 }
-.lr-fs-home-mark{
-  position: absolute;
-  right: 30px;
-  top: 0;
-  bottom: 0;
-  margin:auto;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-  background-color: rgba(#fff, 0);
-  border: 0;
-  height: 26px;
-  width: 26px;
-  cursor: pointer;
-  &:hover{
-    background-color: #ddd;
-  }
-}
+
 
 .lr-fs-create-layer{
     background-color: $color3;
@@ -509,6 +492,31 @@ $fsRowItemH: 50px;
   white-space: pre-wrap;
 }
 
+// .lr-fs-home-mark{
+//   position: absolute;
+//   right: 30px;
+//   top: 0;
+//   bottom: 0;
+//   margin:auto;
+//   background-repeat: no-repeat;
+//   background-position: center;
+//   background-size: contain;
+//   background-color: rgba(#fff, 0);
+//   border: 0;
+//   height: 26px;
+//   width: 26px;
+//   cursor: pointer;
+//   &:hover{
+//     background-color: #ddd;
+//   }
+// }
+.lr-fs-show-hidden{
+  position: absolute;
+  right: 20px;
+  top: 0;
+  bottom: 0;
+  margin:auto;
+}
 /*
 .lr_file_model_on{
   background-color: red;

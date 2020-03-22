@@ -9,8 +9,13 @@
   button.lr-btn-sm.lr-fs-upload-btn(@click='handleUploadBtnClick')
     span.iconfont.icon-upload
     span {{$parent.LANG.upload}}
+
+  label.lr-label-input.lr-check-box.lr-fs-show-hidden
+    input(type="checkbox", :checked="!isDisableShowHidden || isShowHomeHidden",:disabled="!isDisableShowHidden", @change="handleCheckBoxChange")
+    .lr-box_in
+    span Show hidden
   //- button(@click="errDev") errDev
-  .lr-fs-home-mark(@click="$parent.go(homedir)", v-open-icon="'tango/user-home.png'", :class="{lr_bookmark_active: address === homedir}")
+  //- .lr-fs-home-mark(@click="$parent.go(homedir)", v-open-icon="'tango/user-home.png'", :class="{lr_bookmark_active: address === homedir}")
 </template>
 <script>
   // div(style='flex-grow: 1')
@@ -27,16 +32,29 @@ export default {
     }
   },
   computed: {
+    isShowHomeHidden(){
+      return this.$store.state.isShowHomeHidden
+    },
     homedir(){
       return this.$store.state.homedir
     },
     address(){
       return this.$parent.address
+    },
+    isDisableShowHidden(){
+      return this.address === this.homedir;
     }
   },
   methods: {
     changeModel(model){
       this.$parent.model = model;
+    },
+    handleCheckBoxChange(e){
+      let checked = e.target.checked;
+      console.log('checked', checked)
+      this.$store.commit('set', {
+        isShowHomeHidden: e.target.checked
+      });
     },
     addItem(type){
       if(this.$parent.preCreateItem){

@@ -39,16 +39,17 @@ export function sortByNumberKey(list, key, isAsc) {
 }
 export function sortByStrKey(list, key, isAsc) {
   // sort by name
+  let les = isAsc ? -1 : 1;
+  let big = isAsc ? 1 : -1;
   list.sort(function(a, b) {
     var nameA = a[key].toUpperCase(); // ignore upper and lowercase
     var nameB = b[key].toUpperCase(); // ignore upper and lowercase
     if (nameA < nameB) {
-      return isAsc ? -1 : 1;
+      return les;
     }
     if (nameA > nameB) {
-      return isAsc ? 1 : -1;
+      return big;
     }
-
     // names must be equal
     return 0;
   });

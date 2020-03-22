@@ -52,6 +52,7 @@ let checkSessionAliveTime = 0;
 
 const wsReconnectTime = 3000;
 const termWriteKey = 2;
+const exitKey = 0;
 function _isNeedCheckSessionAlive(){
   const now = Date.now();
   if(now - checkSessionAliveTime >= AFRTimeout){
@@ -106,7 +107,8 @@ const store = new window.Vuex.Store({
     onDustbinRecycle: null,
     sessError: false,
     openWidthData: null,
-    confirmData: null
+    confirmData: null,
+    isShowHomeHidden: false
   },
   mutations: {
     setUsername(state, username){
@@ -148,7 +150,8 @@ const store = new window.Vuex.Store({
           });
           sr.onRequest = (data) => {
             if(Array.isArray(data)){
-              if(data[0] === termWriteKey){
+              const key = data[0];
+              if(key === termWriteKey){
                 const pid = data[1];
                 const strData = data[2];
                 const term = termMap[pid];
@@ -160,6 +163,8 @@ const store = new window.Vuex.Store({
                   }
                   termMap[pid] = termMap[pid] + strData;
                 }
+              } else if(key === exitKey){
+                this.commit('onExit', data[1]);
               }
             } else {
               if(data.method === 'termExit'){
@@ -169,8 +174,6 @@ const store = new window.Vuex.Store({
                   delete(termMap[pid]);
                   term.close();
                 }
-              }else if(data.method === 'close'){
-                this.commit('onExit', data.data);
               }
             } 
 
@@ -261,11 +264,12 @@ const store = new window.Vuex.Store({
         ws.onclose = handleClose;
       });
     },
-    onExit(state, data){
+    onExit(state, msg){
       state.isExit = true;
 
-      if(data.data){
-        
+      if(msg){
+        window.alert('exit' + msg);
+        location.href = '/';
       } else {
         // 正常退出.
         location.href = '/';

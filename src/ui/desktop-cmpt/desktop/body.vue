@@ -1,8 +1,8 @@
 <template lang="jade">
-.lr-desktop_body(ref="ctx")
-  Contextmenuable.lr-desktop-icons(@drop.stop='handleDeskDrop',
+.lr-desktop_body(@drop.stop='handleDeskDrop',
                     @dragenter.stop='handleDragenter',
                     @dragover.stop='handleDragover')
+  Contextmenuable.lr-desktop-icons
     Icon(v-for="(v,i) in list",
         :key="v.id",
         :id="v.id",
@@ -132,7 +132,7 @@ export default {
 
     },
     handleDeskDrop(e){
-      // console.log('handleDeskDrop');
+      console.log('handleDeskDrop');
       e.preventDefault();
       const data = this._getDragData(e);
       if(!data){
