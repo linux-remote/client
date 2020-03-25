@@ -1,7 +1,7 @@
 // https://developer.mozilla.org/en-US/docs/Web/API/Document/hasFocus
 // Chrome > 45;
 
-import './css/style-new.scss';
+import './css/style.scss';
 // import './ui/css/style.scss';
 // import './css/login.scss';
 import './lib/vue-prototype';
@@ -14,9 +14,9 @@ import Root from './root.vue';
 const dom = document.getElementById('lr-root');
 let preLoadHtml = `<div id="lr-pre-load" class="lr-pre-load">Loading...</div>`;
 dom.innerHTML = preLoadHtml;
-
+const Vue = window.Vue;
 const preLoad = document.getElementById('lr-pre-load');
-var app = new window.Vue({
+var app = new Vue({
   store,
   router,
   render: h => h(Root)

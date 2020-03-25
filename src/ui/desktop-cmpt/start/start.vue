@@ -27,6 +27,7 @@ FocusMenu(cssBase="lr-start")
 import AppItem from './app-item.vue';
 import FocusMenu from '../focus-menu/base.vue';
 import LRIcon from '../../cmpt/icon/icon.vue';
+import sysAppMap from '../../../store/module/sys-apps-map';
 export default {
   components: {
     AppItem,
@@ -34,21 +35,17 @@ export default {
     LRIcon
   },
 
-  // data(){
-  //   return {
-  //     isShowMenu: false,
-  //     appList: []
-  //   }
-  // },
+  data(){
+    return {
+      sysAppMap
+    }
+  },
   computed: {
-    sysAppMap(){
-      return this.$store.state.sysApps.sysMap;
-    },
+    // sysAppMap(){
+    //   return this.$store.state.sysApps.sysMap;
+    // },
     username(){
       return this.$store.state.username;
-    },
-    LANG(){
-      return this.$store.getters['language/currLanguage'].start;
     }
   }, 
   methods: {

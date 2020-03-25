@@ -43,16 +43,18 @@ import sysApps from './module/sys-apps';
 import users from './module/users';
 import fs from './module/fs';
 import desktop from './module/desktop';
-const SocketRequest = require('../../../socket-request/index.js');
+const SocketRequest = require('../../../../socket-request/index.js');
 // let _tmp = null;
 const AFRTimeout = 15 * 60 * 1000;
 let ws, sr, _pako;
 let wsCloseTime = 0;
 let checkSessionAliveTime = 0;
-
+let keepAliveTimer;
+const keepAliveInterval = AFRTimeout - 60 * 1000;
 const wsReconnectTime = 3000;
 const termWriteKey = 2;
 const exitKey = 0;
+const aliveKey = 1;
 function _isNeedCheckSessionAlive(){
   const now = Date.now();
   if(now - checkSessionAliveTime >= AFRTimeout){
@@ -131,6 +133,8 @@ const store = new window.Vuex.Store({
         const ws = new WebSocket(url);
         ws.onopen = () => {
           console.log('WS Connected!');
+
+
           wsCloseTime = 0;
           sr = new SocketRequest(ws, {
             isWs: true, 
@@ -194,11 +198,18 @@ const store = new window.Vuex.Store({
 
             // }
           }
+          keepAliveTimer = setInterval(() => {
+            sr.request([aliveKey]);
+          }, keepAliveInterval);
           state.wsIsConnected = true;
           callback && callback();
         }
 
         const handleClose =  (e) => {
+          if(keepAliveTimer){
+            clearInterval(keepAliveTimer);
+            keepAliveTimer = null;
+          }
           state.wsIsConnected = false;
           if(state.isExit){
             return;
@@ -367,9 +378,6 @@ function getPako(cb){
     return;
   }
   window.require(['pako'], function(pako){
-    const c = pako.deflate('hello');
-    
-    console.log('pako', pako.inflate(c, { to: 'string' }))
     _pako = pako;
     cb(_pako)
   });

@@ -1,7 +1,7 @@
 <template lang="jade">
 .lr-task-item(@click='handleClick',
               @mousedown.prevent,
-              :class='{lr__focus: item.window.isFocusEnter}')
+              :class='{lr__focus: item.window.isFocusenter}')
   //- LRIcon(v-bind="$attrs")
   .lr-icon(v-if="item.app.iconUrl", v-open-icon="item.app.iconUrl")
   .lr-icon(v-else :class="item.app.iconClassName")
@@ -27,18 +27,17 @@ export default {
   },
   methods: {
     close(){
-      this.$store.commit('task/remove', this.index);
+      this.$store.commit('task/remove', this.item.id);
     },
     handleClick(){
       const taskWindow = this.item.window;
       if(taskWindow.isMin){
         taskWindow.show();
-      }else if(taskWindow.isFocusEnter){
+      }else if(taskWindow.isFocusenter){
         taskWindow.hidden();
         // this.$store.commit('task/hidden', task);
       }else{
-        taskWindow.focus();
-        // this.$store.commit('task/focus', task);
+        taskWindow.focusenter();
       }
     }
   }

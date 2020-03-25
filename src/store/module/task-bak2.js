@@ -35,6 +35,7 @@ function _initPosition(latest, appWindow){
 function _defState(){
   return {
     list: [],
+    map: Object.create(null),
 
     current: {}, // focused task
     id: 3,  //zIndex
@@ -80,9 +81,20 @@ export default  {
       id = id + 1;
 
       task.window = Object.create(null);
+      console.log('task', task);
       state.list.push(task);
+      state.map[task.id] = task;
     },
-
+    onWindowCreate(state, vm){
+      const index = state.list.findIndex(v => v.id === vm.id);
+      state.list[index].window = vm;
+    },
+    onWindowResized(state, id){
+      const index = state.list.findIndex(v => v.id === id);
+      const item = state.list[index];
+      item.startWindow.width = item.window.width;
+      item.startWindow.height = item.window.height;
+    },
     remove(state, id){
       let index = state.list.findIndex(function(v){
         return v.id === id;
@@ -119,18 +131,18 @@ export default  {
     //   Object.assign(state, _defState());
     // },
     focusNext(state){
-      // var ptw = {zIndex : -1};
-      // state.list.forEach(task => {
-      //   let tw = task.window;
-      //   if(tw.isMin === false){
-      //     if(ptw.zIndex < tw.zIndex){
-      //       ptw = tw;
-      //     }
-      //   }
-      // });
-      // if(ptw.zIndex !== -1){
-      //   ptw.focus();
-      // }
+      var ptw = {zIndex : -1};
+      state.list.forEach(task => {
+        let tw = task.window;
+        if(tw.isMin === false){
+          if(ptw.zIndex < tw.zIndex){
+            ptw = tw;
+          }
+        }
+      });
+      if(ptw.zIndex !== -1){
+        ptw.focus();
+      }
     }
   }
 }

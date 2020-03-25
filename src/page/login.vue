@@ -2,42 +2,44 @@
 <template lang="jade">
 .lr-page(:class="{lr_login_logging: isRequest}")
   .lr-login_mask(@mousedown.prevent)
-
-  Focusable.lr-window(ref="main", :enterBindBtn="true", :style="{width: width + 'px', height: height + 'px', left: left + 'px', top: top + 'px'}")
-    .lr-title
-      .lr-title-content {{title}}
-    .lr-window-body
-      .lr-login_banner
-        Icon.lr-login_logo(type="css", :size="50", value="iconfont icon-logo_LR")
-        .lr-login_info
-          
-          h1 linux-remote
-          div Linux web remote desktop
-        a.lr-login_powered(href="https://github.com/linux-remote/linux-remote", target="_blank") POWERED BY
-        .lr-login_process_wrap
-          .lr-login_process
-      form.lr-login_form(@submit.prevent="handleSubmit")
-        .lr-login_form_mask Logging...
-        .lr-login_input_wrap
-          label {{LANG.username}}
-          input.lr-input(v-model='username', name="username", required="required")
-        .lr-login_input_wrap
-          label {{LANG.password}}
-          input.lr-input(type='password', name="password", v-model='password', autocomplete="off", required="required")
-        .lr-login-box-footer
-          Btn(ref="submit", type="submit") {{LANG.submitBtn}}
+  Window(:title="title",
+         :left="left",
+         :top="top",
+         :height="height",
+         :width="width",
+         :enterBindBtn="true"
+         ref="main")
+    .lr-login_banner
+      Icon.lr-login_logo(type="css", :size="50", value="iconfont icon-logo_LR")
+      .lr-login_info
+        
+        h1 linux-remote
+        div Linux web remote desktop
+      a.lr-login_powered(href="https://github.com/linux-remote/linux-remote", target="_blank") POWERED BY
+      .lr-login_process_wrap
+        .lr-login_process
+    form.lr-login_form(@submit.prevent)
+      .lr-login_form_mask Logging...
+      .lr-login_input_wrap
+        label {{LANG.username}}
+        input.lr-input(v-model='username', name="username", ref="username", required="required")
+      .lr-login_input_wrap
+        label {{LANG.password}}
+        input.lr-input(type='password', name="password", v-model='password', autocomplete="off", required="required")
+      .lr-login-box-footer
+        Btn(ref="submit", @click="handleSubmit") {{LANG.submitBtn}}
   Alert(v-if="alertOpt",
-    :pWidth="width",
-    :pHeight="height",
     :close="closeAlert",
     v-bind="alertOpt")
 </template>
 
 <script>
-import { Icon,  Btn, Focusable, Alert } from '../ui/index.js';
+import { Icon,  Btn, Window, Alert } from '../ui/index.js';
+// import FocusableMixin from '../lib/mixins/focusable';
 export default {
+  // mixins: [FocusableMixin],
   components: {
-    Focusable,
+    Window,
     Icon,
     Alert,
     Btn
@@ -55,7 +57,7 @@ export default {
       top: 200,
       height: 230,
       alertOpt: null,
-      currLangIndex: this.$store.state.language.currIndex,
+      // currLangIndex: this.$store.state.language.currIndex,
       isRequest: false,
       username: this.$route.query.user || '',
       password: '',
@@ -65,6 +67,12 @@ export default {
   computed: {
     language(){
       return this.$store.state.language;
+    },
+    winH(){
+      return this.$store.state.winH;
+    },
+    winW(){
+      return this.$store.state.winW;
     },
     LANG(){
       return this.$store.getters['language/currLanguage'].loginPage;
@@ -85,12 +93,12 @@ export default {
     closeAlert(){
       this.alertOpt = null;
       this.$nextTick(() => {
-        this.$refs.main.$el.focus();
+        this.$refs.main.focusenter();
       });
     },
-    handleChange(){
-      this.$store.commit('language/set', this.currLangIndex);
-    },
+    // handleChange(){
+    //   this.$store.commit('language/set', this.currLangIndex);
+    // },
     login(){
       const {username, password} = this;
       this.request({
@@ -111,18 +119,14 @@ export default {
           this.alert({
             title: 'Logon Message',
             text: xhr.responseText,
-            status: 'warn'
+            status: 'warn',
+            // mode: 'wide',
+            pid: this.$refs.main.id
           });
         }
       })
     },
     handleSubmit(){
-      // this.alert({
-      //   text: 'xhr.responseText',
-      //   status: 'warn'
-      // });
-      
-      console.log('handleSubmit');
       this.login();
     },
     routeTo(username){
@@ -130,9 +134,8 @@ export default {
     }
   },
   mounted(){
-    this.$nextTick(() => {
-      this.$refs.submit.$el.focus();
-    });
+    this.$refs.username.focus()
+    this.$refs.main.setEnterBindBtn(this.$refs.submit.$el);
   }
 }
 </script>

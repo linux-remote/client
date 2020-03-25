@@ -4,31 +4,35 @@ div(:tabindex="tabindex", @focusout="handleFocusout", @focusin="handleFocusin", 
 </template>
 
 <script>
-import MixinEnterBindBtn from '__ROOT__/lib/mixins/enter-bind-last-focused-btn.js';
+import FocusableMixin from '../../lib/mixins/focusable';
 export default {
-  mixins: [ MixinEnterBindBtn ],
-  props: {
-    tabindex: {
-      type: Number,
-      default: -1
-    }
-  },
-  methods:{
-    handleFocusin(e){
-      if(!this.$options._is_focusenter){
-        this.$options._is_focusenter = true;
-        this.$emit('focusenter', e);
-      }
-    },
-    handleFocusout(e){
-      if(!document.hasFocus()){
-        return;
-      }
-      if(!e.relatedTarget || !this.$el.contains(e.relatedTarget)){
-        this.$options._is_focusenter = false;
-        this.$emit('focusleave', e);
-      }
-    }
-  }
+  mixins: [ FocusableMixin ],
+  // props: {
+  //   tabindex: {
+  //     type: Number,
+  //     default: -1
+  //   },
+  //   bakLastFocusEl: {
+  //     type: Boolean,
+  //     default: false
+  //   }
+  // },
+  // methods:{
+  //   handleFocusin(e){
+  //     if(!this.$options._is_focusenter){
+  //       this.$options._is_focusenter = true;
+  //       this.$emit('focusenter', e);
+  //     }
+  //   },
+  //   handleFocusout(e){
+  //     if(!document.hasFocus()){
+  //       return;
+  //     }
+  //     if(!e.relatedTarget || !this.$el.contains(e.relatedTarget)){
+  //       this.$options._is_focusenter = false;
+  //       this.$emit('focusleave', e);
+  //     }
+  //   }
+  // }
 }
 </script>

@@ -3,7 +3,7 @@ div(draggable="true",
     @dragstart.stop='handleDragStart',
     @click='handleCLick')
   .lr-icon(v-open-icon="item.iconUrl")
-  .lr-sys-app-title {{LANG.title}}
+  .lr-sys-app-title {{item.name}}
 </template>
 
 <script>
@@ -17,14 +17,6 @@ export default {
     item: {
       type: Object,
       required: true
-    }
-  },
-  computed: {
-    app(){
-      return this.$store.getters['sysApps/getById'](this.item.id)
-    },
-    LANG(){
-      return this.$store.getters['language/currLanguage'][this.id]
     }
   },
   methods: {

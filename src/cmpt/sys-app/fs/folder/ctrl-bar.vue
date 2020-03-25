@@ -50,16 +50,17 @@ export default {
       let checked = e.target.checked;
       const info = this.$parent.info;
       info.showHidden = checked;
-      if(checked === false){
-        let arr = [];
-        info.list.forEach(v => {
-          if(v.name[0] !== '.'){
-            arr.push(v);
-          }
-        });
-        info.list = arr;
-        return;
-      }
+      // if(checked === false){
+      //   this.$parent.hiddenHidden();
+      //   let arr = [];
+      //   this.$parent.list.forEach(v => {
+      //     if(v.name[0] !== '.'){
+      //       arr.push(v);
+      //     }
+      //   });
+      //   info.list = arr;
+      //   return;
+      // }
       this.$parent.getData();
     },
     addItem(type){

@@ -3,10 +3,9 @@ const map = {
       name: "FS Manager",
       iconUrl: 'tango/user-home.png',
       // unique: false,
-      // window: {
-      //   width: ,
-      //   height: ,
-      // }
+      window: {
+        isBakLastFocus: true
+      }
     },
     sys_app_recycle_bin : {
       name: "Recycle Bin",
@@ -23,7 +22,12 @@ const map = {
     sys_app_image_viewer: {
       name: "Image Viewer",
       handleFileCategory: 'image',
-      iconUrl: 'tango/image-x-generic.png'
+      iconUrl: 'tango/image-x-generic.png',
+      hidden: true,
+      window: {
+        top: 0,
+        left: 0
+      }
     },
     sys_app_terminal: {
       name: "Terminal",
@@ -35,31 +39,37 @@ const map = {
     }
 }
 
-const DEF_TASK_WIDTH = 800;
-const DEF_TASK_HEIGHT = 600;
-export const startWindowMap = Object.create(null);
+const DEF_TASK_WIDTH = 600;
+const DEF_TASK_HEIGHT = 480;
 
+function def(obj, k, v){
+  if(obj[k] === undefined){
+    obj[k] = v;
+  }
+}
 function _init(appId, app){
   app.id = appId;
-  app.window = app.window || Object.create(null);
-  const appWindow =  startWindowMap[appId] = app.window;
-  delete(app.window);
-  appWindow.startTitle = app.name;
+  if(!app.window){
+    app.window =  Object.create(null);
+  }
+  
+  const appWindow = app.window;
   // init width
-  if(typeof appWindow.width !== 'number'){
-    appWindow.startWidth = DEF_TASK_WIDTH;
-  } else {
-    appWindow.startWidth = appWindow.width;
-    delete(appWindow.width);
-  }
-
-  // init height
-  if(typeof appWindow.height !== 'number'){
-    appWindow.startHeight = DEF_TASK_HEIGHT;
-  } else {
-    appWindow.startHeight = appWindow.height;
-    delete(appWindow.height);
-  }
+  def(appWindow, 'width', DEF_TASK_WIDTH);
+  def(appWindow, 'height', DEF_TASK_HEIGHT);
+  def(appWindow, 'movable', true);
+  def(appWindow, 'resizable', true);
+  def(appWindow, 'maximizable', true);
+  def(appWindow, 'minimizable', true);
+  // def(appWindow, 'autoFocus', true);
+  // appWindow.title = app.name;
+  // if(typeof appWindow.width !== 'number'){
+  //   appWindow.width = DEF_TASK_WIDTH;
+  // }
+  // // init height
+  // if(typeof appWindow.height !== 'number'){
+  //   appWindow.height = DEF_TASK_HEIGHT;
+  // }
 }
 
 

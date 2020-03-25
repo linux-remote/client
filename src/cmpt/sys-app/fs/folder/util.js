@@ -144,3 +144,39 @@ export function getNewUnSuffixName(list, tailedName){
   }
   return num === 1 ? tailedName : tailedName + connector + num;
 }
+
+
+export function getFileType(permission){
+  const t = permission[0];
+  //https://en.wikipedia.org/wiki/Unix_file_types
+  let type;
+  switch(t){
+    case '-':
+      type = 'regularFile'
+      break;
+    case 'd':
+      type = 'directory'
+      break;
+    case 'l':
+      type = 'symbolicLink'
+      break;
+    case 'p':
+      type = 'namedPipe'
+      break;
+    case 's':
+      type = 'socket'
+      break;
+    case 'c':
+      type = 'characterDevice'
+      break;
+    case 'b':
+      type = 'blockDevice'
+      break;
+    // case 'D':
+    //   type = 'Door'
+    //   break;
+    default:
+      type = 'unknown'
+  }
+  return type;
+}

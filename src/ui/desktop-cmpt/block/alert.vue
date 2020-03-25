@@ -1,5 +1,5 @@
 <template lang="jade">
-BaseBlock(:close="close", v-bind="$attrs", :status="status", :class="'lr-alert lr-alert-' + status")
+BaseBlock(:close="close", :width="width", :height="height", v-bind="$attrs", :status="status", :class="'lr-alert lr-alert-' + status")
   Btn(@click="handleBtnClick") {{okText}}
 </template>
 <script>
@@ -15,6 +15,10 @@ export default {
       type: String,
       default: 'error'
     },
+    mode: {
+      type: String,
+      default: 'small'
+    },
     okText: {
       type: String,
       default: 'OK'
@@ -24,16 +28,27 @@ export default {
       required: true
     }
   },
+  data(){
+    let width, height;
+    if(this.status === 'error'){
+      width = 495;
+      height = 119;
+    } else if(this.status === 'warn'){
+      width = 365;
+      height = 126;
+      if(this.mode === 'wide'){
+        width = 494;
+      }
+    }
+    return {
+      width,
+      height
+    }
+  },
   methods: {
     handleBtnClick(){
       this.close();
     }
   }
-  // computed: {
-  //   icon(){
-  //     let cls = 'lr-alert-icon-' + this.status;
-  //     return this.status === 'warn' ? 'iconfont icon-ps_fillet_triangle ' + cls : cls;
-  //   }
-  // }
 }
 </script>

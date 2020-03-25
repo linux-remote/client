@@ -223,7 +223,13 @@ $linkFileColor: violet;
 .lr-fs-dir-sticky{
   background-color: burlywood
 }
-
+.lr-fs-sym-link{
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
 .lr-fs-dir-unreadable{
   background-color: black;
   color:#fff;
@@ -258,15 +264,15 @@ $linkFileColor: violet;
 // ================== item ==================
 $fsRowItemH: 50px;
 
-.lr-fs-folder .lr-icon{
-  width: $fsIconW;
-  height: $fsIconW;
-  margin-bottom: 2px;
-  margin-top: 2px;
-  margin-right: 4px;
-  margin-left: -2px;
-  position: relative;
-}
+// .lr-fs-folder .lr-icon{
+//   width: $fsIconW;
+//   height: $fsIconW;
+//   margin-bottom: 2px;
+//   margin-top: 2px;
+//   margin-right: 4px;
+//   margin-left: -2px;
+//   position: relative;
+// }
 
 .lr_file_hidden{
   .lr-icon {
@@ -296,7 +302,6 @@ $fsRowItemH: 50px;
   width: 80px;
   height: 100px;
   margin: 10px;
-
   .lr-icon{
     width: 80px;
     height: 80px;
@@ -313,6 +318,14 @@ $fsRowItemH: 50px;
       color: #fff;
     }
   }
+  &.lr__last_focused_bak{
+    background-color: $color2;
+  }
+}
+.lr-fs_file_icon_wrap{
+  width: 80px;
+  height: 80px;
+  position: relative;
 }
 .lr-fs_file_name{
   text-align: center;

@@ -10,12 +10,31 @@ import Confirm from './desktop-cmpt/block/confirm.vue';
 import Triple from './desktop-cmpt/block/triple.vue';
 import FocusMenu from './desktop-cmpt/focus-menu/base.vue';
 import Window from './desktop-cmpt/window/window.vue';
-import TaskItem from './desktop-cmpt/task/item.vue';
+import TaskItem from './desktop-cmpt/task/task-item.vue';
+import TaskWindow from './desktop-cmpt/task/task-window.vue';
 import Watch from './desktop-cmpt/watch/watch.vue';
 import DeskTopBody from './desktop-cmpt/desktop/body.vue';
 import Focusable from './unit/focusable.vue';
 import Movable from './unit/movable.vue';
 import Resizable from './unit/resizable.vue';
 
-export {Btn, Icon, Table, Start, QuickLaunch, TabPanel, Alert, Confirm, Triple, 
-  Watch, FocusMenu, Window, TaskItem, Focusable, Movable, Resizable, DeskTopBody};
+export {
+  Btn, 
+  Icon, 
+  Table, 
+  Start, 
+  QuickLaunch, 
+  TabPanel, 
+  Alert, 
+  Confirm, 
+  Triple, 
+  Watch,
+  FocusMenu, 
+  Window, 
+  TaskItem, 
+  TaskWindow, 
+  Focusable, 
+  Movable, 
+  Resizable, 
+  DeskTopBody
+};

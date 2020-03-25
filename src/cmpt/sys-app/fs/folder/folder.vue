@@ -1,13 +1,14 @@
 <template lang="jade">
 .lr-fs-folder(@mousedown='handleFsBodyMousedown',
               :class='bodyClass')
-  .lr-hourglass(v-if='isRequest')
+  .lr-hourglass(v-if='info.isRequest') Loading...
   CtrlBar
 
   Selectable.lr-fs-folder-inner(@end='handleSelectEnd', ref='selectable')
-    pre.lr-fs-error(v-text='error', v-if='error')
+    pre.lr-fs-error(v-text='info.error', v-if='info.error')
     template(v-else)
-      Item(v-for="(item, i) in info.list", :key="item.name", :item="item", @dblclick="handleItemDblClick(item)")
+      Item(v-for="(item, i) in list", :key="item.name", :v="item",
+      @dblclick.prevent="handleItemDblClick(item)")
 
     //-table.lr-fs-table(:class='"lr_file_model_" + model', v-else)
       thead
@@ -33,7 +34,7 @@
                 @contextmenu="handleItemContentmenu(item)"
                 :selectedLen="$options._selectedItems.size"
                 :class='{lr_file_hidden: item.isHidden, lr_file_be_selected: item.isBeSelected, lr_file_focus: item.focus, lr_file_cut: item.isCut}')
-    .lr-fs-empty(v-if='!info.list.length') This folder is empty.
+    .lr-fs-empty(v-if='!list.length') This folder is empty.
     div(style="height: 1px")
   ContextMenu
     .lr-ctx-item(v-if="fsClipBoard", @click='paste') {{LANG.ctx.paste}}
@@ -51,17 +52,19 @@ import initRelation from './permission-util';
 import Item from './item.vue';
 
 // import {encodePath} from '__ROOT__/cmpt/sys-app/util';
-// import lsParse from '../../lib/ls-parse';
+import lsParse from '../../lib/ls-parse';
+import { parseName, getFileType } from './util';
+
 import safeBind from '../../../../lib/mixins/safe-bind';
 import Sync from '../../../../lib/sync';
-import { parseName } from './util';
+
 import { getOpenInfo } from './open-register';
 import mixins from './mixins/index';
 import { sortByStrKey } from '../../util';
 
 mixins.push(safeBind);
 const iconTypeMap = {
-  file: 'tango/text-x-generic.png',
+  regularFile: 'tango/text-x-generic.png',
   directory: 'tango/folder.png',
   symbolicLink: 'nuvola/link.png',
   socket: 'tango/inode-socket.png',
@@ -70,27 +73,34 @@ const iconTypeMap = {
   FIFO: 'nuvola/pipe.png',
   unknown: 'oxygen/unknown.png'
 }
-function _parseFiles(list){
-  let folderArr = [];
-  let fileArr = [];
+function _parseList(list){
+  // let folderArr = [];
+  // let fileArr = [];
+  let sysLinkArr = [];
+  // const map = Object.create(null);
   list.forEach(file => {
+    file.type = getFileType(file.permission);
     file.icon = iconTypeMap[file.type];
     const isFolder = file.type === 'directory';
-    if(isFolder){
-      folderArr.push(file);
+    file.isFolder = isFolder;
+    const isFile = file.type === 'regularFile';
+    file.isFile = isFile;
+    file.isSymLink = file.type === 'symbolicLink';
+    file.linkTarget = null;
+    if(isFile){
+      Object.assign(file, parseName(file.name));
+      const openInfo = getOpenInfo(file.suffix);
+      Object.assign(file, openInfo);
     } else {
-      fileArr.push(file);
-      const isFile = file.type === 'file';
-      if(isFile){
-        Object.assign(file, parseName(file.name));
-        const openInfo = getOpenInfo(file.suffix);
-        Object.assign(file, openInfo);
+      if(file.isSymLink){
+        sysLinkArr.push(file);
       }
     }
   });
-  sortByStrKey(folderArr, 'name', true);
-  sortByStrKey(fileArr, 'name', true);
-  return folderArr.concat(fileArr);
+  return {
+    list,
+    sysLinkArr
+  };
 }
 
 export default {
@@ -118,16 +128,14 @@ export default {
       model: 'list',
       theads: ['name',  'owner', 'group' ,'permission', 'mtime'],
       dir: null,
-      list: [],
+      folderArr: [],
+      fileArr: [],
       isHaveDevice: false,
       error: null,
 
       preCreateItem: null,
 
-      
-      info: {
-        list: []
-      },
+      info: this.getOrInitInfo(this.address),
       isRequest: false,
       sortKey: 'name'
     }
@@ -135,6 +143,9 @@ export default {
   computed: {
     self(){
       return this;
+    },
+    list(){
+      return this.folderArr.concat(this.fileArr);
     },
     username(){
       return this.$store.state.username
@@ -163,27 +174,34 @@ export default {
       }
     },
     LANG(){
-      return this.$store.getters['language/currLanguage'].sys_app_fs
+      return this.$store.getters['language/currLanguage'].sys_app_fs;
     },
     go(){
-      return this.$parent.$refs.navBar.go
+      return this.$parent.$refs.navBar.go;
     }
   },
   watch: {
     triggerContainSame(newVal, oldVal){
+      
       if(newVal.address !== oldVal.address){
-
+        
         // Fixed: FS: 父级目录名一样会focus. https://github.com/linux-remote/linux-remote/issues/184
         this.clearSelected();
         this.unFocusCurrItem();
-
+        this.handleLeaveDir(oldVal.address);
+        this.info = this.getOrInitInfo(newVal.address);
+        this.handleEnterDir(newVal.address);
+        this.taskWindow.focus();
       }
       this.getData();
     }
   },
 
   methods: {
-
+    sort(folderArr, fileArr){
+      sortByStrKey(folderArr, 'name', true);
+      sortByStrKey(fileArr, 'name', true);
+    },
     // ******************* select handler start *******************
     // handleSelectStart(){
     //   count = 0;
@@ -192,27 +210,41 @@ export default {
     //   count = count + 1;
     // },
     handleItemDblClick(item){
-      this.openItem(item);
+      if(item.isSymLink){
+        if(item.linkTarget){
+          const address = this.getLinkAddress(item);
+          this.openItem(item.linkTarget, address);
+        }
+      } else {
+        this.openItem(item);
+      }
+      
     },
-    getItemAddress(item){
-      if(item.type === 'symbolicLink'){
-        return;
-      } 
-      return this.getItemPath(item.name);
+    getLinkAddress(item){
+      const link = item.symbolicLink;
+      if(link[0] === '/'){
+        return link;
+      }
+      return this.getItemPath(link);
     },
-    openItem(item){
-
-      const address = this.getItemAddress(item);
+    // getItemAddress(item){
+    //   if(item.type === 'symbolicLink'){
+    //     return;
+    //   }
+    //   return this.getItemPath(item.name);
+    // },
+    openItem(item, address){
+      
+      const itemAddress = address || this.getItemPath(item.name);
 
       if(item.type === 'directory'){
-        this.go(address);
-      }else if(item.type === 'file'){
+        this.go(itemAddress);
+      }else if(item.isFile){
         if(item.openApp){
-          console.log('item.openApp', item.openApp);
           this.$store.commit('task/add', {
             appId: item.openApp.id,
-            filePath: address
-          }); 
+            filePath: itemAddress
+          });
         }
         // if(item.openType === 'image'){
         //   return this.windowOpen(address);
@@ -279,36 +311,58 @@ export default {
       })
       this.$options._selectedItems = new Set(arr);
     },
-    initInfo(){
-      let info = map[this.address];
+    handleEnterDir(address){
+      let data = map[address];
+      data.link = data.link + 1;
+    },
+    handleLeaveDir(address){
+      let data = map[address];
+      data.link = data.link - 1;
+      if(data.link === 0){
+        delete(map[address]);
+      }
+    },
+    getOrInitInfo(address){
+      let info = map[address];
       if(!info){
-        let showHidden = !(this.address === this.$store.state.homedir);
-        info = map[this.address] = {
+        let showHidden = !(address === this.$store.state.homedir);
+        info = map[address] = {
           isRequest: false,
           showHidden,
           error: null,
-          list: []
+          link: 0,
+          map: Object.create(null)
         }
       }
-      this.info = info;
+      return info;
     },
+
     getData(){
-      this.initInfo();
       const info = this.info;
       info.isRequest = true;
-      let data = this.address;
-      if(!info.showHidden){
-        data = {
-          address: this.address,
-          all: false
-        }
-      }
+      let cwd = this.address;
+      let data = {
+        cwd,
+        all: info.showHidden
+      };
       this.$store.commit('wsRequest', {
-        method: 'readdir',
+        method: 'ls',
         data,
-        success: (result) => {
+        success: (stdout) => {
+          if(cwd !== this.address){
+            return;
+          }
           info.error = null;
-          info.list = _parseFiles(result);
+          const list = lsParse(stdout);
+          const data = _parseList(list);
+          this.sync(data.list);
+          // this.folderArr = data.folderArr;
+          // this.fileArr = data.fileArr;
+          // info.map = data.map;
+          if(data.sysLinkArr.length){
+            this.getSysLinkInfo(data.sysLinkArr);
+          }
+          //  
         },
         complete: () => {
           info.isRequest = false;
@@ -317,6 +371,71 @@ export default {
           info.error = err;
         }
       });
+    },
+    getSysLinkInfo(arr){
+      let filename = [];
+      arr.forEach(file => {
+        filename.push(file.symbolicLink);
+      });
+      this.$store.commit('wsRequest', {
+        method: 'ls',
+        data: {
+          cwd: this.address,
+          filename,
+        },
+        success: (stdout) => {
+          let list = lsParse(stdout, true);
+          const data = _parseList(list);
+          list = data.list;
+          let updateArr = [];
+          filename.forEach((k, i) => {
+            updateArr.push({
+              name: arr[i].name,
+              linkTarget: list[i]
+            });
+          });
+          this.update(updateArr);
+        },
+        // complete: () => {
+        //   info.isRequest = false;
+        // },
+        // error: (err) => {
+        //   info.error = err;
+        // }
+      });
+    },
+    update(updateArr){
+      const map = this.info.map;
+      updateArr.forEach(obj => {
+        if(map[obj.name]){
+          Object.assign(map[obj.name], obj);
+        }
+      })
+    },
+    sync(list){
+      const map = this.info.map;
+      const newMap = Object.create(null);
+      const folderArr = [];
+      const fileArr = [];
+      list.forEach(item => {
+        let key = item.name;
+        let v = map[key];
+        if(v){
+          Object.assign(v, item);
+        } else {
+          v = item;
+        }
+        newMap[key] = v;
+        if(v.isFolder){
+          folderArr.push(v);
+        }else {
+          fileArr.push(v);
+        }
+      });
+      this.sort(folderArr, fileArr);
+      this.folderArr = folderArr;
+      this.fileArr = fileArr;
+      this.info.map = newMap;
     },
     getDirAndWrapBaseList(list) {
       let arr = [], dir;
@@ -373,6 +492,7 @@ export default {
       // }
     });
     this.$options._selectedItems = new Set;
+    this.handleEnterDir(this.address);
     this.getData();
   },
   mounted(){
@@ -381,6 +501,9 @@ export default {
       this.handleKeydown(e);
     });
     // console.log('folder', this.$options._safeBindedList);
+  },
+  destroyed(){
+    this.handleLeaveDir(this.address);
   }
 }
 //- th {{LANG.th.owner}}

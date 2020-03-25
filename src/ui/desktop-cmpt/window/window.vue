@@ -1,46 +1,43 @@
 <template lang="jade">
-.lr-window(:style="{top: top + 'px', left: left + 'px', width: width + 'px',   height: height + 'px', zIndex: zIndex}",
-                    :tabindex="tabindex",
-                    :enterBindBtn="enterBindBtn",
-                    :class="{lr_window_resizable: resizable, lr_window_maximized: isMax}",
-                    v-show="!isMin")
-  .lr-title
+.lr-window(:tabindex="tabindex",
+  :class="{lr_window_maximized: isMax, lr_window_resizable: resizable}",
+  :style="{top: y + 'px', left: x + 'px', width: w + 'px',   height: h + 'px', zIndex: zIndex}",
+  v-show="!isMin")
+  .lr-title(:class="{lr_title_shine: isShine}")
     .lr-title-content
-      .lr-icon(v-open-icon="icon")
+      //- .lr-icon(v-open-icon="icon")
       .lr-title_text {{title}}
       Movable(v-if="movable", v-show="!isMax", @moveStart="handleMoveStart", @moving="handleMoving")
-    .lr-btn_nf(@click="handleMinClick", v-if="minimizable")
+    .lr-btn_nf(@click="hidden", v-if="minimizable")
       span.lr-icon_min
     .lr-btn_nf(@click="maxToggle", v-if="maximizable")
       span.lr-icon_unmax(v-if="isMax")
       span.lr-icon_max(v-else)
-    .lr-btn_nf.lr-btn-close(@click="close")
+    .lr-btn_nf.lr-btn-close(@click="close", v-if="close")
       span.lr-icon_close
-  slot
+  .lr-window-body
+    slot
   Resizable(v-if="resizable",
     v-show="!isMax", 
     :direction="resizeDirection",  
     @resizeStart="handleResizeStart",
     @resizing="handleResizing",
     @resized="handleResized")
-  .lr-mask(@mousedown.prevent="handleMaskMousedown", v-if="childId")
+  .lr-window_mask(v-if="isBlock", @mousedown.prevent="handleMaskMousedown")
 </template>
 <script>
-import map from './map.js';
-let zIndex = 3;
+const map = Object.create(null);
 import LRIcon from '../../cmpt/icon/icon.vue';
 import Resizable from '../../unit/resizable.vue';
 import Movable from '../../unit/movable.vue';
-import MixinFocusable from '__ROOT__/lib/mixins/focusable.js';
+// import Focusable from '../../unit/focusable.vue';
+import MixinFocusable from '../../../lib/mixins/focusable';
+import MixinSafeBind from '../../../lib/mixins/safe-bind';
+let zIndex = 3;
+let id = 0;
 
-import SimpleEvent from '../../../ui/desktop-cmpt/task/window/simple-event';
 export default {
-  mixins: [MixinFocusable],
-  provide() {
-    return {
-      taskWindow: this
-    }
-  },
+  mixins: [MixinSafeBind, MixinFocusable],
   components: {
     LRIcon,
     Resizable,
@@ -57,247 +54,240 @@ export default {
     },
     minimizable: {
       type: Boolean,
-      default: true
+      default: false
     },
     maximizable: {
       type: Boolean,
-      default: true
+      default: false
     },
     resizable: {
       type: Boolean,
-      default: true
+      default: false
     },
     movable: {
       type: Boolean,
-      default: true
+      default: false
     },
     resizeDirection: {
       type: String,
       default: 'all'
     },
+
     startIsMax: {
       type: Boolean,
       default: false
     },
-    startTitle: {
+    title: {
       type: String,
       default: ''
     },
-    startWidth: {
-      type: Number,
-      default: 600
-    },
-    startHeight: {
-      type: Number,
-      default: 480
-    },
-    startTop: {
+    width: {
       type: Number,
       default: 0
     },
-    startLeft: {
+    height: {
       type: Number,
       default: 0
     },
-    id: {
+    top: {
       type: Number,
-      required: true
+      default: 0
     },
-    index: {
+    left: {
       type: Number,
-      required: true
+      default: 0
     },
-    parentId: {
-      type: Number,
-      default: null
+    close: {
+      type: Function
     },
-    app: {
-      type: Object
+    pid: {
+      type: Number
     },
-    launchOption: {
-      type: Object
+    autoFocus: {
+      type: Boolean,
+      default: true
     }
   },
 
   data(){
+    id = id + 1;
+    map[id] = this;
     return {
+      id,
       isMax: this.startIsMax,
-      height: this.startHeight,
-      width: this.startWidth,
-      top: this.startTop,
-      left: this.startLeft,
-      title: this.startTitle,
-      zIndex,
-      alertData: null,
+      h: this.height,
+      w: this.width,
+      y: this.top,
+      x: this.left,
       isMin: false,
-      childId: null,
-      isBlock: false
+      zIndex,
+      isBlock: false,
+      isBlockFocusenter: false,
+      isShine: false
     }
   },
   methods: {
+    handleMoveStart(virtual){
+      virtual.top = this.y;
+      virtual.left = this.x;
+    },
+    handleMoving(virtual){
+      this.y = virtual.top;
+      this.x = virtual.left;
+    },
+    handleResizeStart(virtual){
+      virtual.top = this.y;
+      virtual.left = this.x;
+      virtual.width = this.w;
+      virtual.height = this.h;
+    },
+    handleResizing(virtual){
+      this.y = virtual.top;
+      this.x = virtual.left;
+      this.w = virtual.width;
+      this.h = virtual.height;
+    },
+    handleResized(){
+      this.$emit('resized');
+    },
+
     show(){
       this.isMin = false;
       this.$nextTick(() => {
-        this.focus();
+        this.focusenter();
+        this.$emit('show');
       });
+      
     },
+
     hidden(){
-      this.blur();
+      this.focusleave();
       this.isMin = true;
-      this.$store.commit('task/focusNext');
+      this.$emit('hidden');
     },
-    focus(){
-      this.$el.focus();
-      // Chrome overflow:hidden, focus bug
-      // https://codepen.io/mediadivisiongmbh/pen/pJWmxp
-      const dom = document.getElementById('lr-desktop');
-      if(dom.scrollTop !== 0){
-        dom.scrollTop = 0;
-      }
-      if(dom.scrollLeft !== 0){
-        dom.scrollLeft = 0;
-      }
-      this.$emit('focus');
-    },
-    blur(){
-      this.$el.blur();
-      this.$emit('blur');
-    },
+
     keepTop(){
       zIndex = zIndex + 1;
       this.zIndex = zIndex;
     },
-    onFocusenter(){
-      map.latestFocusEnter = this;
-      this.keepTop();
-      if(this.childId){
-        map[this.childId].fcous();
-      }
-    },
-    onFocusleave(){
-      if(this.parentId){
-        map[this.parentId].focus();
-      }
-    },
-
-    close(){
-      const e = new SimpleEvent;
-      this.$emit('close', e);
-      if(e.preventDefaulted){
-        return;
-      }
-      this.$store.commit('task/remove', this.id);
-    },
-
-    handleMaskMousedown(){
-      map[this.childId].shine();
-    },
-    shine(){
-      if(this.childId){
-        return;
-      }
-      if(!this.isFocusEnter){
-        this.focus();
-        return;
-      }
-      if(this.isMaskClick){
-        this.isMaskClick = false;
-          if(this.$options._t){
-            clearTimeout(this.$options._t);
-          }
-          this.$options._t = setTimeout(() => {
-            this.isMaskClick = true;
-          }, 100);
-      } else {
-          this.isMaskClick = true;
-      }
-    },
-    handleMaskMouseDown(){
-      map[this.childId].shine();
-    },
-    alert(data){
-      this.alertData = data;
-    },
-    closeAlert(){
-      this.alertData = null;
-      this.$nextTick(() => {
-        this.focus();
-      });
-    },
-
-    handleMoveStart(virtual){
-      virtual.top = this.top;
-      virtual.left = this.left;
-    },
-    handleMoving(virtual){
-      this.top = virtual.top;
-      this.left = virtual.left;
-    },
-    handleResizeStart(virtual){
-      virtual.top = this.top;
-      virtual.left = this.left;
-      virtual.width = this.width;
-      virtual.height = this.height;
-    },
-    handleResizing(virtual){
-      this.top = virtual.top;
-      this.left = virtual.left;
-      this.width = virtual.width;
-      this.height = virtual.height;
-    },
-    handleResized(){
-      this.$emit('resized');
-      this.$store.commit('task/onWindowResized', this.id);
-    },
+    // focusenter(){
+    //   let out = this.$slots.out;
+    //   if(out && out.length){
+    //     let len = out.length;
+    //     for(let i = 0; i < len; i++){
+    //       if(out[i].focusenter){
+    //         out[i].focusenter();
+    //         return;
+    //       }
+    //     }
+    //   }
+    //   this.$refs.main.focusenter();
+    // },
     maxToggle(){
       let bak;
       if(this.isMax){
         this.isMax = false;
         bak = this.$options._bakMaxPre;
-        this.left = bak.left;
-        this.top = bak.top;
-        this.width = bak.width;
-        this.height = bak.height;
+        this.x = bak.x;
+        this.y = bak.y;
+        this.w = bak.w;
+        this.h = bak.h;
       } else {
         bak = this.$options._bakMaxPre = {
-          top: this.top,
-          left: this.left,
-          width: this.width,
-          height: this.height
+          y: this.y,
+          x: this.x,
+          w: this.w,
+          h: this.h
         }
         this.isMax = true;
-        this.top = 0;
-        this.left = 0;
-        this.width = this.$el.parentElement.clientWidth;
-        this.height = this.$el.parentElement.clientHeight;
+        this.y = 0;
+        this.x = 0;
+        this.w = this.$el.parentElement.clientWidth;
+        this.h = this.$el.parentElement.clientHeight;
       }
-      if(bak.width !== this.width || bak.height !== this.height){
+      if(bak.w !== this.w || bak.h !== this.h){
         this.$emit('resized');
       }
     },
-    handleMinClick(){
-      this.hidden();
+    block(){
+      this.isBlock = true;
+    },
+    unblock(){
+      this.isBlock = false;
+    },
+    handleMaskMousedown(){
+      this.$emit('maskMouseDown');
+    },
+    shine(){
+      // if(!this.isFocusenter){
+      //   return;
+      // }
+      if(this.isShine){
+        this.isShine = false;
+          if(this.$options._shineTimer){
+            clearTimeout(this.$options._shineTimer);
+          }
+          this.$options._shineTimer = setTimeout(() => {
+            this.isShine = true;
+          }, 100);
+      } else {
+          this.isShine = true;
+      }
+      this.$emit('shine');
+    },
+    handleCreatedWithParent(){
+      const parentWindow = map[this.pid];
+      
+      parentWindow.block();
+      this.safeBind(parentWindow, 'focusenter', () => {
+        this.focusenter();
+      });
+      this.safeBind(parentWindow, 'maskMouseDown', () => {
+        this.shine();
+      });
+      this.safeBind(parentWindow, 'shine', () => {
+        this.shine();
+      });
+      this.$on('focusenter', () => {
+        console.log(' this focusenter ')
+        parentWindow.isBlockFocusenter = true;
+      });
+      this.$on('focusleave', () => {
+        parentWindow.isBlockFocusenter = false;
+      });
+    },
+    handleDestroyedWithParent(){
+      const parentWindow = map[this.pid];
+      parentWindow.unblock();
+      parentWindow.isBlockFocusenter = false;
+      parentWindow.focusenter();
     }
   },
+  get(id){
+    return map[id];
+  },
   created(){
-    map[this.id] = this;
-    
-  console.log('appWindow.title', this.title)
-    this.$store.commit('task/onWindowCreate', this);
+    // id = id + 1;
+    // map[id] = this;
+    // this.$options._id = id;
+    if(this.pid){
+      this.handleCreatedWithParent();
+    }
   },
   mounted(){
     if(this.startIsMax){
       this.maxToggle();
     }
-    this.$nextTick(() => {
-      this.focus();
-    })
+    this.focusenter();
+    if(this.autoFocus){
+      this.focusenter();
+    }
+
   },
   destroyed(){
-    if(map.latestFocusEnter === this){
-      map.latestFocusEnter = null;
+    if(this.pid){
+      this.handleDestroyedWithParent();
     }
-    delete(map[this.id]);
   }
 }
 </script>

@@ -27,37 +27,73 @@ body, button{
   padding: 1px;
 }
 
-// 外下右，外上左，内下右，内上左
-
-// common end
 .lr-title{
-  height: 18px;
-  line-height: 18px;
-  background-color: $color2;
+  background-color: $taskTitleColor;
   color: $color1;
-  padding: 0 2px;
+  height: $taskTitleH;
+  line-height: $taskTitleH;
+  position: absolute;
+  top: $titlePadding;
+  left: $titlePadding;
+  right: $titlePadding;
+  padding-left: 2px;
+  padding-right: 2px;
   display: flex;
   align-items: center;
-
+  overflow: hidden;
+  
+  .lr-btn_nf{
+    width: 16px;
+    height: 14px;
+    display: block;
+    font-family: Arial;
+    flex-shrink: 0;
+    line-height: 14px - $boxPadding * 2;
+  }
 }
-.lr-title-name{
+
+.lr-title-content{
   flex-grow: 1;
   font-weight: bold;
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  padding-left: 18px;
+  >.lr-icon{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+  }
 }
 
+.lr-title_text{
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
 
+.lr_title_shine{
+  animation-name: titleShine;
+  animation-duration: .1s;
+  animation-timing-function: linear;
+  animation-iteration-count: 2;
+}
 
+@keyframes titleShine
+{
+  50%  {
+    background: $color2;
+    color: $color1;
+    opacity: .8;
+  }
+}
 
-
-
-
-// input[type="checkbox"]{
-//   background: #fff;
-//   border: 0;
-//   padding: 0;
-//   color: #fff;
-// }
-
+.lr-btn-close{
+  margin-left: 2px;
+}
 
 
 // 外下右，外上左，内下右，内上左
@@ -76,21 +112,21 @@ body, button{
     left: 4px;
   }
 }
-.lr-err-color{
-  color: red;
-  user-select: text;
-}
+
 .lr-pre-load{
   background-color: $deskTopColor;
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 36px;
-  
+  font-size: 32px;
+  color: rgba(#fff, .4);
   // cursor: wait;
 }
-
+.lr-err-color{
+  color: red;
+  user-select: text;
+}
 .lr-contextmenuable{
   width: 100%;
   height: 100%;
@@ -128,6 +164,8 @@ body, button{
     pointer-events: none;
   }
 }
+
+
 // .test{
 //   // position: absolute;
 //   // top: -80px;

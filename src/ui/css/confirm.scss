@@ -1,27 +1,3 @@
-.lr-confirm-wrap{
-  height: 100%;
-  width: 100%;
-  top: 0;
-  left: 0;
-  position: absolute;
-  outline: none;
-}
-.lr-confirm-mask{
-  height: 100%;
-  width: 100%;
-}
-.lr-confirm{
-  // @extend .lr-box;
-  // width: 419px;
-  // height: 133px;
-  z-index: 2;
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0; 
-  bottom: 0;
-}
-
 
 .lr-confirm-body{
   height: 64px;
@@ -52,10 +28,6 @@
   }
 }
 .lr-alert-error{
-  .lr-confirm{
-    height: 119px;
-    width: 495px;
-  }
   .lr-confirm-body{
     height: 61px;
     padding-top: 12px;
@@ -65,12 +37,8 @@
   }
 }
 .lr-alert-warn{
-  .lr-confirm{
-    width: 365px;
-    height: 126px;
-  }
   .lr-confirm-body{
-    height: 68px;
+    height: 67px;
   }
 }
 .lr-alert-icon-error{

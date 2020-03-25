@@ -1,7 +1,7 @@
 <template lang="jade">
 .lr-tab-panel
   .lr-title.lr__focus
-    .lr-title-name Hello
+    .lr-title-content Hello
   .lr-tab-panel-inner
     .lr-tabs
       .lr-tab(v-for="(v,i) in tabs", 

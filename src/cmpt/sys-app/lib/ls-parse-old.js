@@ -12,6 +12,7 @@ function parse(result, isSelf) {
     v = v.replace(/\\"/g, INTERVAL);
     v = v.split('"'); 
     // var name;
+    // if(!isSelf){
     let name = v[1];
     name = name.replace(INTERVAL_REG, '"');
     name = name.replace(/\\\\|\\n|\\t|\\r|\\f|\\v/g, function(mstr){
@@ -67,6 +68,6 @@ function parse(result, isSelf) {
     // name, permission, owner, group, size, mtime, ?device_type, ?symbolicLink
     return data;
   });
-  return result;
+  return isSelf ? result[0] : result;
 }
 export default parse;

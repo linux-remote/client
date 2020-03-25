@@ -1,4 +1,5 @@
 
+const Vue = window.Vue;
 
 export default {
   methods: {
@@ -7,7 +8,7 @@ export default {
       const index = this.$options._safeBindIndex;
       this.$options._safeBindIndex = index + 1;
 
-      if(dom instanceof window.Vue) {
+      if(dom instanceof Vue) {
         // Vue Simple event
         dom.$on(key, fn);
         _map[index] = () => {

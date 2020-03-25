@@ -1,0 +1,286 @@
+<template lang="jade">
+TaskWindow(:task="task")
+  h1 hello
+//- .lr-window-body
+//-   .lr-hourglass(v-show='isRequest || isSaveing || isCreating')
+//-   h2(v-text='error' style='color:red' v-if='error')
+//-   .lr-editor-body(v-else @keydown='handleKeyDown')
+//-     .lr-editor-bar
+//-       button.lr-btn-sm.lr-editor-btn(@click='save', :disabled='isSaveDisabled') save
+//-     textarea.lr_editor_textarea(v-model='data')
+//-   .lr-modal(v-if='isShowModal')
+//-     form(@submit.prevent="saveAsSubmit")
+//-       .lr-modal-box
+//-         .lr-modal-title {{LANG.saveAs}}
+//-         .lr-modal-body
+//-           .lr-modal-item
+//-             | {{LANG.folder}}:
+//-             input(required='required', v-model='dir')
+//-           .lr-modal-item
+//-             | {{LANG.fileName}}:
+//-             input(required='required', v-model='filename')
+//-         .lr-modal-footer
+//-           button(type="submit") {{LANG.ok}}
+//-           button(@click='hiddenModal') {{LANG.cancel}}
+//-   .lr-modal(v-if='isShowBeforeCloseModal')
+//-     .lr-modal-box
+//-       .lr-modal-title {{taskWindow.app.name}}
+//-       .lr-modal-body
+//-         div Do you want to save changes to
+//-         div {{taskWindow.filePath || 'Untitled'}}?
+//-       .lr-modal-footer
+//-         button(@click="saveAndClose") Save
+//-         button(@click="donotSaveAndClose") Don't Save
+//-         button(@click="cannelBeforeCloseModal") {{LANG.cancel}}
+</template>
+
+<script>
+import { TaskWindow } from '../../../ui/index';
+
+import {pathJoin, getDirAndBase} from '../util';
+import safeBind from '../../../lib/mixins/safe-bind';
+export default {
+  inject: ['taskWindow'],
+  props: ['task'],
+  components: {
+    TaskWindow
+  },
+  mixins: [safeBind],
+  data(){
+
+    return {
+      isRequest: false,
+      isCreating: false,
+      isSaveing: false,
+
+      filename: '',
+      dir: '',
+
+
+      oldData: '',
+      data: '',
+      error: '',
+      isShowModal: false,
+      isShowBeforeCloseModal: false
+    }
+  },
+
+  computed: {
+    isSaveDisabled(){
+      // $优化: this.oldData.length === this.data.length  性能测试: 看浏览器有没有优化.
+      return this.oldData === this.data ;
+    },
+    LANG(){
+      return this.$store.getters['language/currLanguage'].global
+    }
+  },
+  methods: {
+    hiddenModal(e){
+      if(e){
+        e.preventDefault();
+      }
+      
+      this.$nextTick(() => { // bug: 在第二个输入框输入后, 点关闭不消失.
+        
+        this.isShowModal = false;
+      });
+    },
+    handleKeyDown(e){
+      if(e.ctrlKey && e.which === 83){
+        this.save();
+        e.preventDefault();
+      }
+    },
+    init(){
+      const option = this.taskWindow.launchOption;
+      const filePath = option.filePath;
+
+      const dirAndBase = getDirAndBase(filePath);
+      this.filename = dirAndBase.base;
+      this.dir = dirAndBase.dir;
+      this.chTitle();
+    },
+    saveAsSubmit(){
+
+      // console.log('folderPath', this.folderPath, 'filename',this.filename )
+      // console.log('pathJoin', pathJoin(this.folderPath , this.filename) )
+      // return;
+
+      // this.taskWindow.dir = this.folderPath;
+      // const address = pathJoin(this.folderPath , this.filename);
+      // this.taskWindow.address = '~/fs/' + encodePath(address)
+      this.hiddenModal();
+      this.create();
+      
+    },
+    create(cb){
+      this.writeFile(true, () => {
+        this.$options._filePath = pathJoin(this.dir, this.filename);
+        this.chTitle();
+        this.oldData = this.data;
+        cb && cb();
+        if(this.$options._isSaveAndClose) {
+            this.closeTaskWindow();
+        }
+      });
+
+      // this.request({
+      //   stateKey: 'isCreating',
+      //   type: 'post',
+      //   url: `~/fs/` + encodePath(this.dir),
+      //   data: {
+      //     type: 'createFile',
+      //     name: this.filename,
+      //     content: this.data
+      //   },
+      //   success(stdout) {
+      //     this.$options._filePath = pathJoin(this.dir, this.filename);
+      //     this.chTitle();
+      //     this.oldData = this.data;
+      //     cb && cb();
+      //     if(this.$options._isSaveAndClose) {
+      //        this.closeTaskWindow();
+      //     }
+      //     // console.log('create', stdout);
+      //     this.$store.commit('fs/publicEmit', {
+      //       type: 'add',
+      //       address: this.dir,
+      //       data: stdout
+      //     });
+      //   }
+      // })
+    },
+    writeFile(isCreate, success){
+      this.$store.commit('wsRequest', {
+        method: 'writeFile',
+        data: {
+          filePath: this.$options._filePath,
+          content: this.data,
+          isCreate
+        },
+        success
+      });
+    },
+    save(){
+      if(this.isSaveDisabled){
+        return;
+      }
+      let filePath = this.$options._filePath;
+      if(!filePath) {
+        this.isShowModal = true;
+        this.$nextTick(() => {
+          let dom = this.$refs.modalFolderInput;
+          if(dom){
+            dom.focus();
+          }
+        });
+        return;
+      }
+      this.writeFile(false, () => {
+        this.oldData = this.data;
+
+        if(this.$options._isSaveAndClose) {
+          this.closeTaskWindow();
+        }
+      });
+
+      // this.request({
+      //   url: `~/fs/` + encodePath(filePath),
+      //   stateKey: 'isSaveing',
+      //   type: 'put',
+      //   data: {
+      //     text: this.data
+      //   },
+      //   success(stdout){
+
+      //     this.$store.commit('fs/publicEmit', {
+      //       type: 'update',
+      //       address: this.dir,
+      //       data: stdout
+      //     });
+
+      //     this.oldData = this.data;
+
+      //     if(this.$options._isSaveAndClose) {
+      //        this.closeTaskWindow();
+      //     }
+      //   }
+      // });
+    },
+    chTitle(){
+      // this.taskWindow.title = this.filename + ' - ' + this.taskWindow.startTitle;
+    },
+    getData(){
+      if(this.error) {
+        this.error = '';
+      }
+      this.$store.commit('wsRequest', {
+        method: 'readFile',
+        data: this.$options._filePath,
+        success: (data) => {
+          this.oldData = data;
+          this.data = data;
+        },
+        error: (err) => {
+          this.error = err;
+        }
+      });
+    },
+    _isFirstCreateEmpty(){
+       if(this.$options._filePath){
+         return false;
+       }
+       if(!this.data && !this.oldData){
+         return true;
+       }
+       return false;
+    },
+    handleTaskWindowClose(e){
+      if(this._isFirstCreateEmpty()){
+        return;
+      }
+      if(!this.isSaveDisabled && !this.$options._isDonotSaveAndClose){
+        this.isShowBeforeCloseModal = true;
+        e.preventDefault();
+      }
+    },
+    donotSaveAndClose(){
+      this.$options._isDonotSaveAndClose = true;
+      this.closeTaskWindow();
+    },
+    closeTaskWindow(){
+      this.$nextTick(() => {
+        this.taskWindow.close();
+      });
+    },
+    saveAndClose(){
+      this.$options._isSaveAndClose = true;
+      if(!this.$options._filePath){
+        this.isShowBeforeCloseModal = false;
+      }
+      this.save();
+    },
+    cannelBeforeCloseModal(){
+      if(this.$options._isSaveAndClose) { // 无法保存的情况.
+        this.$options._isSaveAndClose = false;
+      }
+      this.isShowBeforeCloseModal = false;
+    }
+  },
+  created(){
+    const filePath = this.$options._filePath = this.taskWindow.launchOption.filePath;
+    if(filePath){
+      this.init();
+      this.getData();
+    } else {
+      this.dir = this.$store.state.homedir;
+    }
+    
+  },
+  mounted(){
+    this.safeBind(this.taskWindow, 'close', (e) => {
+      this.handleTaskWindowClose(e);
+    })
+  }
+}
+</script>
