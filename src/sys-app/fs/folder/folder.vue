@@ -51,18 +51,18 @@ import ContextMenu from '__ROOT__/cmpt/global/contextmenu/index.vue';
 import initRelation from './permission-util';
 import Item from './item.vue';
 
-// import {encodePath} from '__ROOT__/cmpt/sys-app/util';
+// import {encodePath} from '__ROOT__/sys-app/util';
 import lsParse from '../../lib/ls-parse';
 import { parseName, getFileType } from './util';
 
-import safeBind from '../../../../lib/mixins/safe-bind';
-import Sync from '../../../../lib/sync';
+import safeBind from '../../../lib/mixins/safe-bind';
+import Sync from '../../../lib/sync';
 
 import { getOpenInfo } from './open-register';
-import mixins from './mixins/index';
-import { sortByStrKey } from '../../util';
 
-mixins.push(safeBind);
+import { sortByStrKey } from '../../util';
+// import mixins from './mixins/index';
+// mixins.push(safeBind);
 const iconTypeMap = {
   regularFile: 'tango/text-x-generic.png',
   directory: 'tango/folder.png',
@@ -105,7 +105,7 @@ function _parseList(list){
 
 export default {
   inject: ['taskWindow'],
-  mixins: mixins,
+  mixins: [safeBind],
   components:{
     CtrlBar,
     PreCreate,

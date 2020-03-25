@@ -1,5 +1,5 @@
 <template lang="jade">
-.lr-window-body.lr-computer-wrap
+.lr-window_body.lr-computer-wrap
   .lr-hourglass(v-show='isRequest')
 
   table.lr-computer-table(v-if='platform')

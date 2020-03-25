@@ -1,5 +1,5 @@
 <template lang="jade">
-.lr-window-body.lr-rb-wrap
+.lr-window_body.lr-rb-wrap
   
   .lr-hourglass(v-show='isRequest || isDeling')
   .lr-rb-ctrl-bar

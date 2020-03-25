@@ -1,5 +1,5 @@
 <template lang="jade">
-.lr-window-body(style="user-select: text;")
+.lr-window_body(style="user-select: text;")
   div(style="border-top: 1px solid #f0f0f0;")
   table
 

@@ -1,7 +1,7 @@
 <template lang="jade">
 TaskWindow(:task="task")
   h1 hello
-//- .lr-window-body
+//- .lr-window_body
 //-   .lr-hourglass(v-show='isRequest || isSaveing || isCreating')
 //-   h2(v-text='error' style='color:red' v-if='error')
 //-   .lr-editor-body(v-else @keydown='handleKeyDown')

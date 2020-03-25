@@ -2,19 +2,30 @@
 Window(:title="title",
         :movable="true",
         :enterBindBtn="true",
-        :width="width",
-        :height="height",
+        :width="w",
+        :height="h",
         :top="top",
         :left="left",
         :pid="pid",
         :autoFocus="true",
         :close="close",
+        :class="cls",
         ref="window")
-  .lr-confirm-body
-    .lr-block-icon(v-if="cIcon", :class="cIcon")
-    | {{text}}
-  .lr-confirm-footer(ref="footer")
-    slot
+  
+  .lr-window_body
+    .lr-confirm-body
+      .lr-block-icon(v-if="cIcon", :class="cIcon")
+      | {{text}}
+    .lr-confirm-footer(ref="footer")
+      Btn(@click="handleOkBtnClick", v-if="type==='alert'") {{okText}}
+      template(v-else-if="type === 'confirm'")
+        Btn(@click="handleOkBtnClick") {{okText}}
+        Btn(@click="close") {{cancelText}}
+      template(v-else-if="type === 'triple'")
+        Btn(@click="handleYesBtnClick") {{yesText}}
+        Btn(@click="handleNoClick") {{noText}}
+        Btn(@click="close") {{cancelText}}
+
 //- .lr-confirm-wrap(:class="{lr_task_focus: isTaskFocus}", 
 //-                   @focusin="handleFocusin",
 //-                   @focusout="handleFocusout",
@@ -27,21 +38,26 @@ Window(:title="title",
 //-         | {{title}}
 //-       .lr-btn_nf.lr-btn-close(@click="close")
 //-         span.lr-icon_close
-//-     .lr-window-body.lr-confirm-body
+//-     .lr-window_body.lr-confirm-body
 //-       .lr-block-icon(v-if="cIcon", :class="cIcon")
 //-       | {{text}}
 //-     .lr-confirm-footer(ref="footer")
 //-       slot
 </template>
 <script>
-import Movable from '../../unit/movable.vue';
+import Btn from '../../cmpt/button/btn.vue';
 import Window from '../window/window.vue';
+
 export default { // 0.356 
   components: {
-    Movable,
-    Window
+    Window,
+    Btn
   },
   props: {
+    type: {
+      type: String,
+      default: 'alert'
+    },
     status: {
       type: String,
       default: ''
@@ -53,6 +69,22 @@ export default { // 0.356
     text: {
       type: String,
       required: true
+    },
+    okText: {
+      type: String,
+      default: 'Yes',
+    },
+    cancelText: {
+      type: String,
+      default: 'Cancel',
+    },
+    yesText: {
+      type: String,
+      default: 'Yes'
+    },
+    noText: {
+      type: String,
+      default: 'No'
     },
     pid: {
       type: Number
@@ -75,13 +107,7 @@ export default { // 0.356
     }
   },
   data(){
-    const pWindow = Window.get(this.pid);
-    const top = pWindow.y + ((pWindow.height - this.height) / 2);
-    const left = pWindow.x + ((pWindow.width - this.width) / 2);
-    return {
-      top,
-      left
-    }
+    return this.init();
   },
   
   computed: {
@@ -97,14 +123,46 @@ export default { // 0.356
     }
   },
   methods: {
-    // bakFocusBtn(e){
-    //   this.$options._focusBakBtn = e.currentTarget;
-    // },
-    focusenter(){
-      this.$refs.window.focusenter();
+        init(){
+      let width = this.width, height = this.height, cls = '';
+      if(this.type === 'alert'){
+        cls = 'lr-alert lr-alert-' + this.status;
+        if(this.status === 'error'){
+          width = 495;
+          height = 119;
+        } else if(this.status === 'warn'){
+          width = 365;
+          height = 126;
+          if(this.mode === 'wide'){
+            width = 494;
+          }
+        }
+      } else if(this.type === 'triple'){
+        width = 479;
+        height = 139;
+        cls = 'lr-block-triple';
+      }
+    const pWindow = Window.get(this.pid);
+    const top = pWindow.y + ((pWindow.height - height) / 2);
+    const left = pWindow.x + ((pWindow.width - width) / 2);
+      return {
+        w: width,
+        h: height,
+        top,
+        left,
+        cls
+      }
     },
-    handleOkClick(){
+    handleOkBtnClick(){
       this.$emit('ok');
+      this.close();
+    },
+    handleYesClick(){
+      this.$emit('yes');
+      this.close();
+    },
+    handleNoClick(){
+      this.$emit('no');
       this.close();
     }
   },

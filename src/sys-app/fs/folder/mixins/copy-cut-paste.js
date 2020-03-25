@@ -1,5 +1,5 @@
 import {getNewName} from '../util';
-import {encodePath} from '__ROOT__/cmpt/sys-app/util';
+import {encodePath} from '__ROOT__/sys-app/util';
 export default  {
   methods: {
     copy() {

@@ -28,20 +28,20 @@
         input.lr-input(type='password', name="password", v-model='password', autocomplete="off", required="required")
       .lr-login-box-footer
         Btn(ref="submit", @click="handleSubmit") {{LANG.submitBtn}}
-  Alert(v-if="alertOpt",
+  Block(v-if="alertOpt",
     :close="closeAlert",
     v-bind="alertOpt")
 </template>
 
 <script>
-import { Icon,  Btn, Window, Alert } from '../ui/index.js';
+import { Icon,  Btn, Window, Block } from '../ui/index.js';
 // import FocusableMixin from '../lib/mixins/focusable';
 export default {
   // mixins: [FocusableMixin],
   components: {
     Window,
     Icon,
-    Alert,
+    Block,
     Btn
   },
   data(){
@@ -117,6 +117,7 @@ export default {
         },
         error(xhr){
           this.alert({
+            type: 'alert',
             title: 'Logon Message',
             text: xhr.responseText,
             status: 'warn',
@@ -134,7 +135,7 @@ export default {
     }
   },
   mounted(){
-    this.$refs.username.focus()
+    this.$refs.username.focus();
     this.$refs.main.setEnterBindBtn(this.$refs.submit.$el);
   }
 }

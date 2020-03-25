@@ -119,18 +119,18 @@ export default  {
     //   Object.assign(state, _defState());
     // },
     focusNext(state){
-      // var ptw = {zIndex : -1};
-      // state.list.forEach(task => {
-      //   let tw = task.window;
-      //   if(tw.isMin === false){
-      //     if(ptw.zIndex < tw.zIndex){
-      //       ptw = tw;
-      //     }
-      //   }
-      // });
-      // if(ptw.zIndex !== -1){
-      //   ptw.focus();
-      // }
+      var ptw = {zIndex : -1};
+      state.list.forEach(task => {
+        let tw = task.window;
+        if(tw.isMin === false){
+          if(ptw.zIndex < tw.zIndex){
+            ptw = tw;
+          }
+        }
+      });
+      if(ptw.zIndex !== -1){
+        ptw.focusenter();
+      }
     }
   }
 }

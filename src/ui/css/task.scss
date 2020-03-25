@@ -15,11 +15,12 @@
   }
   &.lr__focus{
   // https://www.jianshu.com/p/d81cbc10ee83
-    background-image: 
-    linear-gradient(135deg, #fff 25%, transparent 0, transparent 75%, #fff 0),
-    linear-gradient(135deg, #fff 25%, transparent 0, transparent 75%, #fff 0);
-    background-position: 0 0, 1px 1px;
-    background-size: 2px 2px;
+    // background-image: 
+    // linear-gradient(135deg, #fff 25%, transparent 0, transparent 75%, #fff 0),
+    // linear-gradient(135deg, #fff 25%, transparent 0, transparent 75%, #fff 0);
+    // background-position: 0 0, 1px 1px;
+    // background-size: 2px 2px;
+    background-color: rgba(#fff, .5);
   }
   >.lr-icon{
     flex-shrink: 0;

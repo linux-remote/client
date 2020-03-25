@@ -35,6 +35,7 @@ export default {
 
         if(!this.isFocusenter){
           this.isFocusenter = true;
+          this.onFocusenter();
           this.$emit('focusenter', e);
           if(this.isBakLastFocus){
             this.bakLastFocusElFocusEnter(oldEl);

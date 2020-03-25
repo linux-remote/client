@@ -1,4 +1,4 @@
-import { composeUserWsUrl } from '../cmpt/sys-app/util';
+import { composeUserWsUrl } from '../sys-app/util';
 
 const $ = window.$;
 const $win = $(window);
@@ -33,7 +33,8 @@ window.APP = {
 
 import { TypeOf } from '../lib/util';
 import language from './module/language';
-import termMap from '../cmpt/sys-app/terminal/map';
+import termMap from '../sys-app/terminal/map';
+import block from './module/block';
 import upload from './module/upload';
 import error from './module/error';
 import task from './module/task';
@@ -55,6 +56,7 @@ const wsReconnectTime = 3000;
 const termWriteKey = 2;
 const exitKey = 0;
 const aliveKey = 1;
+
 function _isNeedCheckSessionAlive(){
   const now = Date.now();
   if(now - checkSessionAliveTime >= AFRTimeout){
@@ -75,7 +77,8 @@ const store = new window.Vuex.Store({
     sysApps,
     fsClipBoard,
     fs,
-    desktop
+    desktop,
+    block
   },
   state: {
     // global

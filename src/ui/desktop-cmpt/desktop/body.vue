@@ -11,27 +11,21 @@
     template(v-slot:contextmenu)
       .lr-cm-item(@click="refresh") {{LANG.ctx.Refresh}}
       .lr-cm-item(@click="sortIcon") Sort icon
-  component(v-for='(task, index) in tasks',
-                  :is="task.app.id",
+  TaskWindow(v-for='(task, index) in tasks',
                   :task="task",
                   :key="task.id")
-  //- Window(v-for='(item, index) in tasks',
-  //-               :key='item.id',
-  //-               :id="item.id",
-  //-               :icon="item.app.iconUrl",
-  //-               :launchOption="item.launchOption",
-  //-               v-bind="item.startWindow")
-    
+  Block(v-for="item in blocks", :key="item.id", v-bind="item.opt")
 
 </template>
 <script>
 import Contextmenuable from '../global/contextmenuable.vue';
 import Icon from './icon.vue';
-
-import sys_app_fs from '../../../cmpt/sys-app/fs/fs.vue';
-import sys_app_recycle_bin from '../../../cmpt/sys-app/recycle-bin/recycle-bin.vue';
-import sys_app_editor from '../../../cmpt/sys-app/editor/editor.vue';
-import sys_app_terminal from '../../../cmpt/sys-app/terminal/terminal.vue';
+import Block from '../block/block.vue';
+import TaskWindow from '../task/task-window.vue';
+import sys_app_fs from '../../../sys-app/fs/fs.vue';
+import sys_app_recycle_bin from '../../../sys-app/recycle-bin/recycle-bin.vue';
+import sys_app_editor from '../../../sys-app/editor/editor.vue';
+import sys_app_terminal from '../../../sys-app/terminal/terminal.vue';
 // import sys_app_disk from '../../sys-app/disk/disk.vue';
 // import sys_app_computer from '../../sys-app/computer-info/computer-info.vue';
 // import sys_app_task_manager from '../../sys-app/task-manager/task-manager.vue';
@@ -43,16 +37,21 @@ const ICON_WIDTH = 80;
 const ICON_HEIGHT = 80;
 export default {
   components: {
-    Contextmenuable,
-    Icon,
     sys_app_fs,
-    sys_app_recycle_bin,
+    sys_app_terminal,
     sys_app_editor,
-    sys_app_terminal
+    sys_app_recycle_bin,
+    Contextmenuable,
+    Block,
+    TaskWindow,
+    Icon
   },
   computed:{
     tasks(){
       return this.$store.state.task.list;
+    },
+    blocks(){
+      return this.$store.state.block.list;
     },
     list(){
       return this.$store.state.desktop.icons;

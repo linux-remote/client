@@ -453,14 +453,14 @@ button.lr-desktop-icon{
 @import '../cmpt/watch/watch.scss';
 @import '../cmpt/task/task.scss';
 @import '../cmpt/start/start.scss';
-@import '../cmpt/sys-app/disk/disk.scss';
-@import '../cmpt/sys-app/fs/fs.scss';
-@import '../cmpt/sys-app/editor/editor.scss';
-@import '../cmpt/sys-app/task-manager/task-manager.scss';
-@import '../cmpt/sys-app/recycle-bin/recycle-bin.scss';
+@import '../sys-app/disk/disk.scss';
+@import '../sys-app/fs/fs.scss';
+@import '../sys-app/editor/editor.scss';
+@import '../sys-app/task-manager/task-manager.scss';
+@import '../sys-app/recycle-bin/recycle-bin.scss';
 @import '../cmpt/global/upload/upload.scss';
-@import '../cmpt/sys-app/computer-info/computer-info.scss';
-// @import '../cmpt/sys-app/settings/ui.scss';
+@import '../sys-app/computer-info/computer-info.scss';
+// @import '../sys-app/settings/ui.scss';
 //************* app start *************
 .lr-sys-app-icon{
   width: 30px;

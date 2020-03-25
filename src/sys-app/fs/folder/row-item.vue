@@ -56,7 +56,7 @@ tr(@dblclick='open',
 import ContextMenu from '__ROOT__/cmpt/global/contextmenu/index.vue';
 import ItemName from './item-name.vue';
 import { getNewUnSuffixName } from './util';
-import {encodePath, basename} from '__ROOT__/cmpt/sys-app/util';
+import {encodePath, basename} from '__ROOT__/sys-app/util';
 
 export default {
   beSelectable : true,

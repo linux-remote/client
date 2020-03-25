@@ -1,5 +1,5 @@
 <template lang="jade">
-.lr-window-body.lr-tm-wrap
+.lr-window_body.lr-tm-wrap
   .lr-hourglass(v-if='isDeling')
   table.lr-tm-table(v-if="total")
     tbody

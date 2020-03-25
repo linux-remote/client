@@ -48,7 +48,7 @@ import Selectable from '__ROOT__/cmpt/unit/selectable.vue';
 import ContextMenu from '__ROOT__/cmpt/global/contextmenu/index.vue';
 import initRelation from './permission-util';
 
-import {encodePath} from '__ROOT__/cmpt/sys-app/util';
+import {encodePath} from '__ROOT__/sys-app/util';
 import lsParse from '../../lib/ls-parse';
 import safeBind from '../../../../lib/mixins/safe-bind';
 import Sync from '../../../../lib/sync';

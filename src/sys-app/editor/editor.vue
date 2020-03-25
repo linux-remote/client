@@ -1,8 +1,9 @@
 <template lang="jade">
-TaskWindow(:task="task")
+.lr-window_body
+  button.lr-btn(@click="alert") alert
   h1 Hello
 
-//- .lr-window-body
+//- .lr-window_body
 //-   .lr-hourglass(v-show='isRequest || isSaveing || isCreating')
 //-   h2(v-text='error' style='color:red' v-if='error')
 //-   .lr-editor-body(v-else @keydown='handleKeyDown')
@@ -36,17 +37,33 @@ TaskWindow(:task="task")
 </template>
 
 <script>
-import { TaskWindow } from '../../../ui/index';
 
 // import {pathJoin, getDirAndBase} from '../util';
 // import safeBind from '../../../lib/mixins/safe-bind';
 export default {
-  components: {
-    TaskWindow
-  },
   props: {
     task: {
       type: Object
+    },
+    filePath: {
+      type: String
+    }
+  },
+  methods: {
+    alert(){
+      // console.log('$parent', this.$parent)
+      // this.$parent.alert({
+      //   status: 'warn',
+      //   text: 'haha',
+      //   title: 'hello'
+      // })
+      this.$store.commit('block/add', {
+        type: 'alert',
+        status: 'warn',
+        text: 'haha',
+        title: 'hello',
+        pid: this.$parent.id
+      })
     }
   },
   created(){

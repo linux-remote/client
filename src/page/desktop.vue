@@ -27,7 +27,7 @@
 <script>
 import safeBind from '../lib/mixins/safe-bind';
 import Contextmenuable from '../ui/desktop-cmpt/global/contextmenuable.vue';
-import termMap from '../cmpt/sys-app/terminal/map';
+import termMap from '../sys-app/terminal/map';
 // import TasksBar from '__ROOT__/cmpt/task/bar.vue';
 
 import {Start, QuickLaunch, TaskItem, Watch, DeskTopBody} from '../ui/index.js';

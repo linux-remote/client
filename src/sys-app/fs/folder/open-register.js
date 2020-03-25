@@ -1,4 +1,4 @@
-import { handleFileAppMap, getApp } from '../../../../store/module/sys-apps-map.js';
+import { handleFileAppMap, getApp } from '../../../store/module/sys-apps-map.js';
 
 
 let categoryMap = {

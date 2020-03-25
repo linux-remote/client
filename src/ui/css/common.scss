@@ -165,7 +165,9 @@ body, button{
   }
 }
 
-
+.lr__disabled{
+  pointer-events: none;
+}
 // .test{
 //   // position: absolute;
 //   // top: -80px;

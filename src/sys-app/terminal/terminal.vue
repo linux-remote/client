@@ -1,11 +1,11 @@
 <template lang="jade">
-.lr-window-body
+.lr-window_body
 </template>
 <script>
 // 742 440
 // import { composeUserWsUrl } from '../util';
 import map from './map.js';
-import SafeBind from '../../../lib/mixins/safe-bind.js';
+import SafeBind from '../../lib/mixins/safe-bind.js';
 export default {
   mixins: [SafeBind],
   inject: ['taskWindow'],
