@@ -12,7 +12,7 @@
       @mousedown.stop="handleItemMousedown(item, i, $event)",
       :key="item.name", 
       :v="item",
-      :class='{lr_file_be_selected: selectedMap[item.name]}',
+      :class='{lr_file_be_selected: selectedMap[item.name], lr_file_cut: cutMap[item.name]}',
       @dblclick.prevent="handleItemDblClick(item)")
 
     //-table.lr-fs-table(:class='"lr_file_model_" + model', v-else)
@@ -144,7 +144,6 @@ export default {
 
       info: this.getOrInitInfo(this.address),
       selectedMap: Object.create(null),
-      cutedMap: Object.create(null),
       isRequest: false,
 
       sortKey: 'name'
@@ -162,9 +161,6 @@ export default {
     },
     groups(){
       return this.$store.state.groups;
-    },
-    fsClipBoard() {
-      return this.$store.state.fsClipBoard;
     },
     bodyClass(){
       var dir = this.dir;

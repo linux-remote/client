@@ -642,8 +642,10 @@ $fsRowItemH: 50px;
 }
 */
 
-.lr_file_cut td{
-  color: red
+.lr_file_cut{
+  .lr-icon{
+    opacity: .5;
+  }
 }
 
 // .lr-fs-upload-tr{

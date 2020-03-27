@@ -1,35 +1,39 @@
 
 const defState = () => {
   return {
-    type: null,
     address: null,
     files: [],
-    filenames: []
+    cutMap: null
   }
 }
 export default {
   namespaced: true,
   state: defState(),
   mutations: {
-    set (state, data) {
-      _controlCutStatus(state, data);
-
-      Object.assign(state, data);
-    },
     clear(state){
       Object.assign(state, defState());
+    },
+    setCut(state, data){
+      if(state.cutMap !== data.cutMap){
+        _clearCutMap(state.cutMap);
+      }
+      state.files = data.files;
+      state.address = data.address;
+      state.cutMap = data.cutMap;
+    },
+    setCopy(state, data){
+      _clearCutMap(state.cutMap);
+      state.files = data.files;
+      state.address = data.address;
+      state.cutMap = null;
     }
   }
 }
 
-function _controlCutStatus(state, data){
-  const files = state.files;
-  const newFiles = data.files;
-  const type = data.type;
-  if(files.length && files[0].isCut){
-    files.forEach(v => v.isCut = false);
-  }
-  if(type === 'cut') {
-    newFiles.forEach(v => v.isCut = true);
+function _clearCutMap(map){
+  if(map){
+    for(let i in map){
+      window.Vue.delete(map, i);
+    }
   }
 }

@@ -1,29 +1,54 @@
 import {getNewName} from '../util';
 import {encodePath} from '__ROOT__/sys-app/util';
 export default  {
+  data() {
+    return {
+      cutMap: Object.create(null)
+    }
+  },
+  computed: {
+    fsClipBoard() {
+      return this.$store.state.fsClipBoard;
+    }
+  },
   methods: {
-    copy() {
-      this._cutAndCopy('copy');
-    },
     cut() {
-      this._cutAndCopy('cut');
+      
+      const selectedArr = Object.keys(this.selectedMap);
+      if(!selectedArr.length){
+        return;
+      }
+      _clearCutMap(this.cutMap);
+      selectedArr.forEach(name => {
+        this.$set(this.cutMap, name, true);
+      });
+      
+      this.$store.commit('fsClipBoard/setCut', {
+        address: this.address,
+        files: selectedArr,
+        cutMap: this.cutMap
+      });
+    },
+    copy() {
+      const selectedArr = Object.keys(this.selectedMap);
+      if(!selectedArr.length){
+        return;
+      }
+      this.$store.commit('fsClipBoard/setCopy', {
+        address: this.address,
+        files: selectedArr
+      })
     },
 
     paste(){
-      const {type, files, address, filenames} = this.fsClipBoard;
+      const clip = this.fsClipBoard;
+      if(clip.cutMap){
+        console.log('cut');
+      }
+      
+      const {type, files, address} = this.fsClipBoard;
       if(!files.length || !address){
         return;
-      }
-      let _files = [];
-      let fileIndex = 0, fileLen = filenames.length;
-      for(; fileIndex < fileLen; fileIndex ++){
-        let v = files[fileIndex];
-        let filename = filenames[fileIndex];
-        if(v.name !== filename){
-          return this.$store.commit('error/show', `Paste error: ${filename} has renamed`); // win 10是 : 只认名字.
-        }
-        _files.push(filename);
-
       }
 
       if(address === this.address){
@@ -36,7 +61,7 @@ export default  {
               data: {
                 type: 'copy',
                 isCopyOneOnSameDir: true,
-                srcFile: _files[0],
+                srcFile: files[0],
                 destFile: newFileName
               },
               success(){
@@ -65,14 +90,14 @@ export default  {
           data: {
             type,
             srcDir: address,
-            files: _files
+            files: files
           },
           success(){
-            this.shouldActiveNewItems(_files);
+            this.shouldActiveNewItems(files);
             this.publicEmit({
               type: type + '_in',
               address: this.address,
-              files: _files
+              files: files
             });
 
 
@@ -81,7 +106,7 @@ export default  {
                 this.publicEmit({
                   type: type + '_out',
                   address,
-                  files: _files
+                  files: files
                 });
               });
 
@@ -95,22 +120,37 @@ export default  {
 
     },
 
-    _cutAndCopy(type){
-      if(!this.$options._selectedItems.size){
-        return;
-      }
-      const files = [], filenames = [];
-      this.$options._selectedItems.forEach(v => {
-        files.push(v);
-        filenames.push(v.name);
-      });
-      this.$store.commit('fsClipBoard/set', {
-        type,
-        address: this.address,
-        files,
-        filenames
-      });
-    },
+    // _cutAndCopy(type){
+    //   const selectedArr = Object.keys(this.selectedMap);
+  
+    //   if(!selectedArr.length){
+    //     return;
+    //   }
+
+    //   const files = [], filename$s = [];
+    //   selectedArr.forEach(name => {
+    //     files.push(this.selectedMap[name]);
+    //     filename$s.push(name);
+    //     if(type === 'cut'){
+    //       this.$set(this.cutMap, name, true);
+    //     }
+    //   });
+
+    //   this.$store.commit('fsClipBoard/set', {
+    //     type,
+    //     address: this.address,
+    //     files,
+    //     filename$s
+    //   });
+    // },
   }
 
+}
+
+function _clearCutMap(map){
+  if(map){
+    for(let i in map){
+      window.Vue.delete(map, i);
+    }
+  }
 }
