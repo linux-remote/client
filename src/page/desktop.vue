@@ -129,6 +129,7 @@ export default {
         homedir: data.homedir,
         hostname: data.hostname
       });
+      window.APP.RECYCLE_BIN_PATH = data.homedir + '.linux-remote/recycle-bin';
     },
   },
 

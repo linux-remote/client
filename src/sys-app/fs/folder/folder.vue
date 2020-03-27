@@ -7,7 +7,12 @@
   Selectable.lr-fs-folder-inner(@end='handleSelectEnd', ref='selectable')
     pre.lr-fs-error(v-text='info.error', v-if='info.error')
     template(v-else)
-      Item(v-for="(item, i) in list", :key="item.name", :v="item",
+      Item(v-for="(item, i) in list",
+      @focus="handleItemFocus(item)",
+      @mousedown.stop="handleItemMousedown(item, i, $event)",
+      :key="item.name", 
+      :v="item",
+      :class='{lr_file_be_selected: selectedMap[item.name]}',
       @dblclick.prevent="handleItemDblClick(item)")
 
     //-table.lr-fs-table(:class='"lr_file_model_" + model', v-else)
@@ -41,7 +46,7 @@
 </template>
 
 <script>
-import map from './map';
+import map, {getOrInit} from '../../lib/folder-map';
 import CtrlBar from './ctrl-bar.vue';
 import PreCreate from './pre-create.vue';
 import RowItem from './row-item.vue';
@@ -55,13 +60,15 @@ import Item from './item.vue';
 import lsParse from '../../lib/ls-parse';
 import { parseName, getFileType } from './util';
 
-import safeBind from '../../../lib/mixins/safe-bind';
+
 import Sync from '../../../lib/sync';
 
 import { getOpenInfo } from './open-register';
 
 import { sortByStrKey } from '../../util';
 // import mixins from './mixins/index';
+import SafeBind from '../../../lib/mixins/safe-bind';
+import CopyCutPasteMixin from './mixins/copy-cut-paste';
 // mixins.push(safeBind);
 const iconTypeMap = {
   regularFile: 'tango/text-x-generic.png',
@@ -105,7 +112,7 @@ function _parseList(list){
 
 export default {
   inject: ['taskWindow'],
-  mixins: [safeBind],
+  mixins: [CopyCutPasteMixin, SafeBind],
   components:{
     CtrlBar,
     PreCreate,
@@ -136,7 +143,10 @@ export default {
       preCreateItem: null,
 
       info: this.getOrInitInfo(this.address),
+      selectedMap: Object.create(null),
+      cutedMap: Object.create(null),
       isRequest: false,
+
       sortKey: 'name'
     }
   },
@@ -148,13 +158,13 @@ export default {
       return this.folderArr.concat(this.fileArr);
     },
     username(){
-      return this.$store.state.username
+      return this.$store.state.username;
     },
     groups(){
-      return this.$store.state.groups
+      return this.$store.state.groups;
     },
     fsClipBoard() {
-      return this.$store.state.fsClipBoard
+      return this.$store.state.fsClipBoard;
     },
     bodyClass(){
       var dir = this.dir;
@@ -187,7 +197,6 @@ export default {
         
         // Fixed: FS: 父级目录名一样会focus. https://github.com/linux-remote/linux-remote/issues/184
         this.clearSelected();
-        this.unFocusCurrItem();
         this.handleLeaveDir(oldVal.address);
         this.info = this.getOrInitInfo(newVal.address);
         this.handleEnterDir(newVal.address);
@@ -262,8 +271,8 @@ export default {
       }
     },
     handleSelectEnd(){
-      const selectedItems = this.list.filter(item => item.isBeSelected);
-      this.$options._selectedItems = new Set(selectedItems);
+      // const selectedItems = this.info.list.filter(item => item.isBeSelected);
+      // this.$options._selectedItems = new Set(selectedItems);
     },
 
     // ******************* select handler end *******************
@@ -291,25 +300,78 @@ export default {
     },
 
 
-
+    handleItemFocus(item){
+      this.$options._tmp_curr_focus_item = item;
+    },
     clearSelected(){
-      const _set = this.$options._selectedItems;
-      if(_set.size){
-        _set.forEach(item => {
-          item.isBeSelected = false;
-        });
-        _set.clear();
+      this.selectedMap = Object.create(null);
+    },
+    handleItemMousedown(item, i, e){
+      if(e.shiftKey){
+          const pre_focus_item = this.$options._tmp_curr_focus_item;
+          if(!pre_focus_item || pre_focus_item === item){
+            this.selectItem(item);
+            return;
+          }
+          let index = this.$options._tmp_shift_selected;
+          if(typeof index !== 'number'){
+            index = this.list.findIndex(v => v === pre_focus_item);
+            if(index === -1){
+              index = i;
+            }
+            this.$options._tmp_shift_selected = index;
+          }
+          if(index === i){
+            this.selectItem(item);
+            return;
+          }
+
+          let startIndex;
+          let endIndex;
+          if(i < index){
+            startIndex = i;
+            endIndex = index;
+          } else {
+            startIndex = index;
+            endIndex = i;
+          }
+          this.clearSelected();
+          for(;startIndex <= endIndex; startIndex++){
+            this.selectItem(this.list[startIndex]);
+          }
+      } else {
+        this.$options._tmp_shift_selected = null;
+        if(e.ctrlKey){
+          if(this.isItemSelected(item)){
+            this.unSelectItem(item);
+          } else {
+            this.selectItem(item);
+          }
+        } else {
+          this.clearSelected();
+          this.selectItem(item);
+        }
       }
+
+
+    },
+    isItemSelected(item){
+      return this.selectedMap[item.name] !== undefined;
+    },
+    selectItem(item){
+      this.$set(this.selectedMap, item.name, true);
+    },
+    unSelectItem(item){
+      this.$delete(this.selectedMap, item.name);
     },
     selectAll(){
-      if(this.currItem) {
-        this.currItem.focus = 0;
-      }
-      const arr = this.list;
-      arr.forEach(item => {
-        item.isBeSelected = true;
+      this.list.forEach(item => {
+        this.selectItem(item);
       })
-      this.$options._selectedItems = new Set(arr);
+    },
+    handleFsBodyMousedown(e){
+      e.preventDefault();
+      this.clearSelected();
     },
     handleEnterDir(address){
       let data = map[address];
@@ -323,22 +385,16 @@ export default {
       }
     },
     getOrInitInfo(address){
-      let info = map[address];
-      if(!info){
-        let showHidden = !(address === this.$store.state.homedir);
-        info = map[address] = {
-          isRequest: false,
-          showHidden,
-          error: null,
-          link: 0,
-          map: Object.create(null)
-        }
-      }
+      let info = getOrInit(address);
+      info.showHidden = (address !== this.$store.state.homedir);
       return info;
     },
 
     getData(){
       const info = this.info;
+      if(info.isRequest){
+        return;
+      }
       info.isRequest = true;
       let cwd = this.address;
       let data = {
@@ -474,10 +530,7 @@ export default {
       
     },
 
-    handleFsBodyMousedown(){
-      this.clearSelected();
-      this.unFocusCurrItem();
-    },
+
 
   },
   created(){
@@ -496,7 +549,6 @@ export default {
     this.getData();
   },
   mounted(){
-    
     this.safeBind(this.taskWindow.$el, 'keydown', (e) => {
       this.handleKeydown(e);
     });

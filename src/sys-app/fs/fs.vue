@@ -13,7 +13,12 @@ import NavBar from './nav-bar.vue';
 import Folder from './folder/folder.vue';
 
 export default {
-  inject: ['taskWindow'],
+  provide(){
+    return {
+      taskWindow: this.$parent
+    }
+  },
+  props: ['task'],
   components:{
     NavBar,
     Folder
@@ -44,7 +49,7 @@ export default {
     }
   },
   mounted(){
-    const opt = this.taskWindow.launchOption;
+    const opt = this.task.launchOption;
     const address = opt.address || this.homedir;
     this.$refs.navBar.setAddress(address);
   }

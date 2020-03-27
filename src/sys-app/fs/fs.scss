@@ -301,7 +301,8 @@ $fsRowItemH: 50px;
 .lr-fs_file{
   width: 80px;
   height: 100px;
-  margin: 10px;
+  margin: 9px;
+  padding: 1px;
   .lr-icon{
     width: 80px;
     height: 80px;
@@ -312,16 +313,28 @@ $fsRowItemH: 50px;
     // font-size: 10px;
     // color: #87CEFA;
   }
+  // &:focus-within{
+  //   background-color: $color3;
+  //   .lr-fs_file_name{
+  //     color: #fff;
+  //   }
+  // }
   &:focus-within{
-    background-color: $color3;
-    .lr-fs_file_name{
-      color: #fff;
-    }
+    border: 1px dotted #ffff00;
+    padding: 0;
   }
-  &.lr__last_focused_bak{
+  &.lr_file_be_selected{
     background-color: $color2;
   }
 }
+
+.lr-window:focus-within .lr-fs_file.lr_file_be_selected{
+  background-color: $color3;
+  .lr-fs_file_name{
+    color: #fff;
+  }
+}
+
 .lr-fs_file_icon_wrap{
   width: 80px;
   height: 80px;

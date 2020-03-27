@@ -34,7 +34,7 @@ export default {
           this.onFocusenter();
           this.$emit('focusenter', e);
           // if(this.isBakLastFocus){
-          this.bakLastFocusElFocusEnter(oldEl);
+          // this.bakLastFocusElFocusEnter(oldEl);
           // }
         }
 
@@ -47,7 +47,7 @@ export default {
           this.isFocusenter = false;
           this.$emit('focusleave', e);
           // if(this.isBakLastFocus){
-          this.bakLastFocusElFocusLeave();
+          // this.bakLastFocusElFocusLeave();
           // }
         }
       },
@@ -67,9 +67,8 @@ export default {
           this.$el.blur();
         }
       },
-      // onFocusenter(){
-
-      // },
+      onFocusenter(){
+      },
       // onFocusleave(){
 
       // },
@@ -109,15 +108,15 @@ export default {
         }
     },
 
-    bakLastFocusElFocusEnter(oldEl){
-      window.$(oldEl).removeClass('lr__last_focused_bak');
-    },
-    bakLastFocusElFocusLeave(){
-      const lastFocusedEl = this.$options._last_focused_el;
-      if(lastFocusedEl){
-        window.$(lastFocusedEl).addClass('lr__last_focused_bak');
-      }
-    }
+    // bakLastFocusElFocusEnter(oldEl){
+    //   window.$(oldEl).removeClass('lr__last_focused_bak');
+    // },
+    // bakLastFocusElFocusLeave(){
+    //   const lastFocusedEl = this.$options._last_focused_el;
+    //   if(lastFocusedEl){
+    //     window.$(lastFocusedEl).addClass('lr__last_focused_bak');
+    //   }
+    // }
   },
   mounted() {
     const $el = this.$el;

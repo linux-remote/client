@@ -3,10 +3,10 @@
   
   .lr-hourglass(v-show='isRequest || isDeling')
   .lr-rb-ctrl-bar
-    button(@click='clearAll', :disabled='isEmpty') Delete All
+    button.lr-btn_nf(@click='clearAll', :disabled='isEmpty', style="margin-right: 10px") Delete All
     //- div(style="color: red") {{(totalCount / maxLen) * 100}} %
 
-    button(@click='getData') Reload
+    button.lr-btn_nf(@click='getData', :disabled="isRequest") Reload
   
   h2(v-text='error' style='color:red' v-if='error')
   h2(v-else-if='list.length === 0' style='color:gray') Empty
@@ -31,10 +31,13 @@
 </template>
 
 <script>
+import { getOrInit } from '../lib/folder-map';
 import lsParse from '../lib/ls-parse';
 import recycleParse from './parse';
 import RowItem from './row-item.vue';
 export default {
+  props: ['task'],
+
   components: {
     RowItem
   },
@@ -43,6 +46,7 @@ export default {
       isRequest: false,
       isDeling: false,
       list: [],
+      info: getOrInit(window.APP.RECYCLE_BIN_PATH),
       maxLen: 100,
       totalCount: 0,
       isShowPreDelModal: false,
@@ -52,13 +56,13 @@ export default {
   },
   computed: {
     isEmpty(){
-      return this.$store.state.sysApps.sysMap.sys_app_recycle_bin.isEmpty
+      return this.$store.state.sysApps.sysMap.sys_app_recycle_bin.isEmpty;
     },
     recycleBinEvent(){
-      return this.$store.state.recycleBinEvent
+      return this.$store.state.recycleBinEvent;
     },
     isError(){
-      return !this.list && this.error
+      return !this.list && this.error;
     }
   },
   watch: {
@@ -150,36 +154,56 @@ export default {
       });
     },
     getData(){
+      const info = this.info;
+      if(info.isRequest){
+        return;
+      }
+      info.isRequest = true;
+      let cwd = window.APP.RECYCLE_BIN_PATH;
+      let data = {
+        cwd,
+        all: false
+      };
       this.$store.commit('wsRequest', {
-        method: 'getRecycleBin',
+        method: 'ls',
+        data,
         success: (stdout) => {
-          this.error = null;
+          info.error = null;
           const result = lsParse(stdout);
           this.totalCount = result.length;
           let parsedResult = recycleParse(result);
           this.list = parsedResult.list;
+          //  
         },
-        error: (error) => {
-          this.error = error;
+        complete: () => {
+          info.isRequest = false;
+        },
+        error: (err) => {
+          info.error = err;
         }
       });
-      // this.request({
-      //   url: '~/recycleBin',
-      //   stateKey: 'isRequest',
-      //   success(stdout){
-      //     const result = lsParse(stdout);
-      //     this.totalCount = result.length;
-
-      //     let parsedResult = recycleParse(result);
-      //     this.list = parsedResult.list;
-
-      //     this.error = null;
-      //   },
-      //   error(xhr){
-      //     this.error = xhr.responseText;
-      //   }
-      // })
     }
+    // ,
+    // getData(){
+    //   const info = this.info;
+    //   if(info.isRequest){
+    //     return;
+    //   }
+    //   info.isRequest = true;
+    //   this.$store.commit('wsRequest', {
+    //     method: 'getRecycleBin',
+    //     success: (stdout) => {
+    //       this.error = null;
+    //       const result = lsParse(stdout);
+    //       this.totalCount = result.length;
+    //       let parsedResult = recycleParse(result);
+    //       this.list = parsedResult.list;
+    //     },
+    //     error: (error) => {
+    //       this.error = error;
+    //     },
+    //   });
+    // }
   },
 
   created(){
