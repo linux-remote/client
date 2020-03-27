@@ -8,7 +8,7 @@ import map from './map.js';
 import SafeBind from '../../lib/mixins/safe-bind.js';
 export default {
   mixins: [SafeBind],
-  inject: ['taskWindow'],
+  props: ['task'],
   data(){
     return {
       isRequest: false
@@ -107,7 +107,7 @@ export default {
       }
     },
     close(){
-      this.taskWindow.close();
+      this.$parent.close();
     },
     attach(){
       const {term, _termId} = this.$options;
@@ -165,25 +165,25 @@ export default {
     }
   },
   mounted(){
-    const opt = this.taskWindow.launchOption;
+    const opt = this.task.launchOption;
     this.$options._termId = opt.id;
     this.$options._cwd = opt.cwd;
     this.getTerminal((amdLoaded) => {
       this.create(amdLoaded);
     });
-    this.safeBind(this.taskWindow, 'resized', () => {
+    this.safeBind(this.$parent, 'resized', () => {
       const term = this.$options.term;
       if(term){
         term._fit();
       }
     });
-    this.safeBind(this.taskWindow, 'focus', () => {
+    this.safeBind(this.$parent, 'focus', () => {
       const term = this.$options.term;
       if(term){
         term.focus();
       }
     });
-    this.safeBind(this.taskWindow, 'close', (e) => {
+    this.safeBind(this.$parent, 'close', (e) => {
       const id = this.$options._termId;
       if(id && map[id]){
         e.preventDefault();
