@@ -11,7 +11,12 @@
 }
 .lr-editor-btn{
   height: 18px;
-  margin-left: 10px;
+  line-height: 1;
+  margin-left: 4px;
+  vertical-align: middle;
+
+  width: auto;
+  min-width: 50px;
 }
 .lr_editor_textarea{
   padding: 0 4px;

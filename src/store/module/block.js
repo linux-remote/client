@@ -8,7 +8,7 @@ export default  {
     add(state, opt) {
       id = id + 1;
       // 同一容器里, 会跟 task 搞乱, 加个前缀.
-      let blockId = 'block' + blockId;
+      let blockId = 'block' + id;
       opt.close = () => {
         this.commit('block/remove', blockId);
       }

@@ -3,9 +3,6 @@ const map = {
       name: "FS Manager",
       iconUrl: 'tango/user-home.png',
       // unique: false,
-      window: {
-        isBakLastFocus: true
-      }
     },
     sys_app_recycle_bin : {
       name: "Recycle Bin",

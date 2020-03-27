@@ -7,27 +7,29 @@
          :top="top",
          :height="height",
          :width="width",
+         :autoFocus="true",
          :enterBindBtn="true"
          ref="main")
-    .lr-login_banner
-      Icon.lr-login_logo(type="css", :size="50", value="iconfont icon-logo_LR")
-      .lr-login_info
-        
-        h1 linux-remote
-        div Linux web remote desktop
-      a.lr-login_powered(href="https://github.com/linux-remote/linux-remote", target="_blank") POWERED BY
-      .lr-login_process_wrap
-        .lr-login_process
-    form.lr-login_form(@submit.prevent)
-      .lr-login_form_mask Logging...
-      .lr-login_input_wrap
-        label {{LANG.username}}
-        input.lr-input(v-model='username', name="username", ref="username", required="required")
-      .lr-login_input_wrap
-        label {{LANG.password}}
-        input.lr-input(type='password', name="password", v-model='password', autocomplete="off", required="required")
-      .lr-login-box-footer
-        Btn(ref="submit", @click="handleSubmit") {{LANG.submitBtn}}
+    .lr-window_body
+      .lr-login_banner
+        Icon.lr-login_logo(type="css", :size="50", value="iconfont icon-logo_LR")
+        .lr-login_info
+          
+          h1 linux-remote
+          div Linux web remote desktop
+        a.lr-login_powered(href="https://github.com/linux-remote/linux-remote", target="_blank") POWERED BY
+        .lr-login_process_wrap
+          .lr-login_process
+      form.lr-login_form(@submit.prevent="handleSubmit", @keydown.enter.prevent)
+        .lr-login_form_mask Logging...
+        .lr-login_input_wrap
+          label {{LANG.username}}
+          input.lr-input(v-model='username', name="username", ref="username", required="required")
+        .lr-login_input_wrap
+          label {{LANG.password}}
+          input.lr-input(type='password', name="password", v-model='password', autocomplete="off", required="required")
+        .lr-login-box-footer
+          Btn(ref="submit", type="submit") {{LANG.submitBtn}}
   Block(v-if="alertOpt",
     :close="closeAlert",
     v-bind="alertOpt")
@@ -135,7 +137,7 @@ export default {
     }
   },
   mounted(){
-    this.$refs.username.focus();
+    // this.$refs.username.focus();
     this.$refs.main.setEnterBindBtn(this.$refs.submit.$el);
   }
 }

@@ -2,8 +2,10 @@
 Window(:title="task.app.name",
        :icon="task.app.iconUrl",
        v-bind="task.app.window",
-       :close="handleClose", ref="window")
-  component(:is="task.app.id", :task="task", v-bind="task.launchOption")
+       :close="handleClose",
+       @hidden="handleHidden",
+       ref="window")
+  component(:is="task.app.id", :task="task")
 </template>
 
 <script>
@@ -26,12 +28,11 @@ export default {
     Window
   },
   methods:{
-    handleClose(e){
-      this.$emit('close', e);
-      if(e.preventDefaulted){
-        return;
-      }
+    handleClose(){
       this.$store.commit('task/remove', this.task.id);
+    },
+    handleHidden(){
+      this.$store.commit('task/focusNext');
     }
   },
   mounted(){

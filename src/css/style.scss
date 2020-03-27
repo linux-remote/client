@@ -43,3 +43,23 @@
   justify-content: center;
   cursor: wait;
 }
+
+.lr-modal-body{
+  padding: 20px 10px;
+}
+.lr-modal-footer{
+  border-top: 2px solid $color2;
+  padding: 10px;
+  text-align: right;
+  button{
+    margin: 0 5px;
+  }
+}
+.lr-modal-label{
+  white-space: nowrap;
+}
+.lr-modal-item{
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}

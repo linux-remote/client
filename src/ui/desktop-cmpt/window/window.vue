@@ -1,7 +1,7 @@
 <template lang="jade">
 .lr-window(:tabindex="tabindex",
   :class="{lr_window_maximized: isMax, lr_window_resizable: resizable}",
-  :style="{top: y + 'px', left: x + 'px', width: w + 'px',   height: h + 'px', zIndex: zIndex}",
+  :style="{top: top + 'px', left: left + 'px', width: width + 'px',   height: height + 'px', zIndex: zIndex}",
   v-show="!isMin")
   .lr-title(:class="{lr_title_shine: isShine}")
     .lr-title-content
@@ -13,7 +13,7 @@
     .lr-btn_nf(@click="maxToggle", v-if="maximizable")
       span.lr-icon_unmax(v-if="isMax")
       span.lr-icon_max(v-else)
-    .lr-btn_nf.lr-btn-close(@click="close", v-if="close")
+    .lr-btn_nf.lr-btn-close(@click="handleClose", v-if="close")
       span.lr-icon_close
   slot
   Resizable(v-if="resizable",
@@ -35,7 +35,7 @@ import MixinSafeBind from '../../../lib/mixins/safe-bind';
 let zIndex = 3;
 let id = 0;
 
-export default {
+const Window = {
   mixins: [MixinSafeBind, MixinFocusable],
   components: {
     LRIcon,
@@ -76,26 +76,27 @@ export default {
       type: Boolean,
       default: false
     },
-    title: {
-      type: String,
-      default: ''
-    },
-    width: {
-      type: Number,
-      default: 0
-    },
-    height: {
-      type: Number,
-      default: 0
-    },
-    top: {
-      type: Number,
-      default: 0
-    },
-    left: {
-      type: Number,
-      default: 0
-    },
+    // ----------- get from $attrs: -----------
+    // title: {
+    //   type: String,
+    //   default: ''
+    // },
+    // width: {
+    //   type: Number,
+    //   default: 0
+    // },
+    // height: {
+    //   type: Number,
+    //   default: 0
+    // },
+    // top: {
+    //   type: Number,
+    //   default: 0
+    // },
+    // left: {
+    //   type: Number,
+    //   default: 0
+    // },
     close: {
       type: Function
     },
@@ -114,10 +115,11 @@ export default {
     return {
       id,
       isMax: this.startIsMax,
-      h: this.height,
-      w: this.width,
-      y: this.top,
-      x: this.left,
+      title: this.$attrs.title,
+      height: this.$attrs.height,
+      width: this.$attrs.width,
+      top: this.$attrs.top,
+      left: this.$attrs.left,
       isMin: false,
       zIndex,
       isBlock: false,
@@ -127,24 +129,24 @@ export default {
   },
   methods: {
     handleMoveStart(virtual){
-      virtual.top = this.y;
-      virtual.left = this.x;
+      virtual.top = this.top;
+      virtual.left = this.left;
     },
     handleMoving(virtual){
-      this.y = virtual.top;
-      this.x = virtual.left;
+      this.top = virtual.top;
+      this.left = virtual.left;
     },
     handleResizeStart(virtual){
-      virtual.top = this.y;
-      virtual.left = this.x;
-      virtual.width = this.w;
-      virtual.height = this.h;
+      virtual.top = this.top;
+      virtual.left = this.left;
+      virtual.width = this.width;
+      virtual.height = this.height;
     },
     handleResizing(virtual){
-      this.y = virtual.top;
-      this.x = virtual.left;
-      this.w = virtual.width;
-      this.h = virtual.height;
+      this.top = virtual.top;
+      this.left = virtual.left;
+      this.width = virtual.width;
+      this.height = virtual.height;
     },
     handleResized(){
       this.$emit('resized');
@@ -158,13 +160,20 @@ export default {
       });
       
     },
-
+    
     hidden(){
       this.focusleave();
       this.isMin = true;
       this.$emit('hidden');
     },
-
+    handleClose(e){
+      this.$emit('close', e);
+      
+      if(e.defaultPrevented){
+        return;
+      }
+      this.close(e);
+    },
     keepTop(){
       zIndex = zIndex + 1;
       this.zIndex = zIndex;
@@ -199,24 +208,24 @@ export default {
       if(this.isMax){
         this.isMax = false;
         bak = this.$options._bakMaxPre;
-        this.x = bak.x;
-        this.y = bak.y;
-        this.w = bak.w;
-        this.h = bak.h;
+        this.left = bak.left;
+        this.top = bak.top;
+        this.width = bak.width;
+        this.height = bak.height;
       } else {
         bak = this.$options._bakMaxPre = {
-          y: this.y,
-          x: this.x,
-          w: this.w,
-          h: this.h
+          top: this.top,
+          left: this.left,
+          width: this.width,
+          height: this.height
         }
         this.isMax = true;
-        this.y = 0;
-        this.x = 0;
-        this.w = this.$el.parentElement.clientWidth;
-        this.h = this.$el.parentElement.clientHeight;
+        this.top = 0;
+        this.left = 0;
+        this.width = this.$el.parentElement.clientWidth;
+        this.height = this.$el.parentElement.clientHeight;
       }
-      if(bak.w !== this.w || bak.h !== this.h){
+      if(bak.width !== this.width || bak.height !== this.height){
         this.$emit('resized');
       }
     },
@@ -271,7 +280,18 @@ export default {
       parentWindow.unblock();
       parentWindow.isBlockFocusenter = false;
       parentWindow.focusenter();
-    }
+    },
+
+    // openBlock(){
+    //   const dom = this.$el.parentElement;
+    //   const NewWindow = window.Vue.extend(Window);
+    //   // width: 300,
+    //   //   height: 300,
+    //   //   top: 0,
+    //   //   left: 0,
+    //   //   title: 'openBlock'
+    //   NewWindow().$mount(dom)
+    // }
   },
   get(id){
     return map[id];
@@ -300,4 +320,6 @@ export default {
     }
   }
 }
+
+export default Window;
 </script>

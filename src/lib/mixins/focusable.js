@@ -10,10 +10,10 @@ export default {
       type: Boolean,
       default: false
     },
-    isBakLastFocus: {
-      type: Boolean,
-      default: true
-    }
+    // isBakLastFocus: {
+    //   type: Boolean,
+    //   default: true
+    // }
   },
   data(){
     return {
@@ -24,22 +24,18 @@ export default {
       handleFocusin(e){
 
         // senior
-        const lastFocused = this.$options._last_focused;
-        const oldEl = lastFocused.el;
+        const oldEl = this.$options._last_focused_el;
         if(oldEl !== e.target){
-          lastFocused.el = e.target;
-          if(this.enterBindBtn){
-            this.enterBindHandleFocusIn(e, lastFocused);
-          }
+          this.$options._last_focused_el = e.target;
         }
 
         if(!this.isFocusenter){
           this.isFocusenter = true;
           this.onFocusenter();
           this.$emit('focusenter', e);
-          if(this.isBakLastFocus){
-            this.bakLastFocusElFocusEnter(oldEl);
-          }
+          // if(this.isBakLastFocus){
+          this.bakLastFocusElFocusEnter(oldEl);
+          // }
         }
 
       },
@@ -50,23 +46,23 @@ export default {
         if(!e.relatedTarget || !this.$el.contains(e.relatedTarget)){
           this.isFocusenter = false;
           this.$emit('focusleave', e);
-          if(this.isBakLastFocus){
-            this.bakLastFocusElFocusLeave();
-          }
+          // if(this.isBakLastFocus){
+          this.bakLastFocusElFocusLeave();
+          // }
         }
       },
       focusenter(){
-        const lastFocused = this.$options._last_focused;
-        if(lastFocused && lastFocused.el){
-          lastFocused.el.focus();
+        const lastFocusedEl = this.$options._last_focused_el;
+        if(lastFocusedEl){
+          lastFocusedEl.focus();
         } else {
           this.$el.focus();
         }
       },
       focusleave(){
-        const lastFocused = this.$options._last_focused;
-        if(lastFocused.el){
-          lastFocused.el.blur();
+        const lastFocusedEl = this.$options._last_focused_el;
+        if(lastFocusedEl){
+          lastFocusedEl.blur();
         } else {
           this.$el.blur();
         }
@@ -77,54 +73,39 @@ export default {
       // onFocusleave(){
 
       // },
-      setEnterBindBtn(btnEl){
-        this.$options._last_focused.btnEl = btnEl;
-        this._setEnterBindBtn();
-      },
-      _setEnterBindBtn(){
-        const lastFocused = this.$options._last_focused;
-        if(!lastFocused.btnEl){
-          lastFocused.btnEl = lastFocused.el;
-        }
-        let btn = lastFocused.btn;
-        if(btn && btn[0] === lastFocused.btnEl){
-          return;
-        }
-        if(btn){
-          btn.removeClass('lr__focus');
-        }
-        btn = window.$(lastFocused.btnEl);
-        btn.addClass('lr__focus');
-        lastFocused.btn = btn;
-      },
-    // removeEnterBindBtn(){
-    //   const lastFocused = this.$options._last_focused;
-    //   if(lastFocused.btn){
-    //     lastFocused.btn.removeClass('lr__focus');
-    //     lastFocused.btn = null;
-    //   }
-    // },
+    setEnterBindBtn(btnEl){
+      const oldBtnEl = this.$options._enter_bind_btn_el;
+      if(oldBtnEl === btnEl){
+        return;
+      }
+      window.$(oldBtnEl).removeClass('lr__focus');
+      window.$(btnEl).addClass('lr__focus');
+      this.$options._enter_bind_btn_el = btnEl;
+    },
+
     enterBindHandleKeydown(){
-      const lastFocused = this.$options._last_focused;
-        if(lastFocused.btn && lastFocused.btn.hasClass('lr__focus')){
-          setTimeout(() => {
-            lastFocused.btn.click();
-          });
-          // e.stopPropagation();
+      const btnEl = this.$options._enter_bind_btn_el;
+        if(btnEl){
+          const $btnEl = window.$(btnEl);
+          if($btnEl.hasClass('lr__focus')){
+            setTimeout(() => {
+              window.$(btnEl).click();
+            });
+          }
         }
     },
-    enterBindHandleFocusIn(e, lastFocused){
+    enterBindHandleFocusIn(e){
         if(e.target.tagName === 'BUTTON'){
-          this._setEnterBindBtn();
+          this.setEnterBindBtn(e.target);
         } else {
-          if(lastFocused.btn){
+          let btnEl = this.$options._enter_bind_btn_el;
+          if(btnEl){
             if(e.target.tagName !== 'TEXTAREA' && e.target.contentEditable !== 'true'){
-              lastFocused.btn.addClass('lr__focus');
+              window.$(btnEl).addClass('lr__focus');
             } else {
-              lastFocused.btn.removeClass('lr__focus');
+              window.$(btnEl).removeClass('lr__focus');
             }
           }
-          
         }
     },
 
@@ -132,15 +113,15 @@ export default {
       window.$(oldEl).removeClass('lr__last_focused_bak');
     },
     bakLastFocusElFocusLeave(){
-      const lastFocused = this.$options._last_focused;
-      window.$(lastFocused.el).addClass('lr__last_focused_bak');
-
+      const lastFocusedEl = this.$options._last_focused_el;
+      if(lastFocusedEl){
+        window.$(lastFocusedEl).addClass('lr__last_focused_bak');
+      }
     }
   },
   mounted() {
     const $el = this.$el;
     $el.tabindex = this.tabindex;
-    this.$options._last_focused = Object.create(null);
 
     $el.addEventListener('focusin', (e) => {
       this.handleFocusin(e);
@@ -150,17 +131,22 @@ export default {
     });
 
     if(this.enterBindBtn){
+      $el.addEventListener('focusin', (e) => {
+        this.enterBindHandleFocusIn(e);
+      });
       $el.addEventListener('keydown', (e) => {
         if(e.key === 'Enter'){
           this.enterBindHandleKeydown(e);
         }
       });
     }
-
   },
   destroyed() {
-    if(this.$options._last_focused){
-      this.$options._last_focused = null;
+    if(this.$options._last_focused_el){
+      this.$options._last_focused_el = null;
     }
-  },
+    if(this.$options._enter_bind_btn_el){
+      this.$options._enter_bind_btn_el = null;
+    }
+  }
 };
