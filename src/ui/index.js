@@ -14,7 +14,7 @@ import DeskTopBody from './desktop-cmpt/desktop/body.vue';
 import Focusable from './unit/focusable.vue';
 import Movable from './unit/movable.vue';
 import Resizable from './unit/resizable.vue';
-
+import Contextmenuable from './desktop-cmpt/global/contextmenuable.vue';
 export {
   Btn, 
   Icon, 
@@ -31,5 +31,6 @@ export {
   Focusable, 
   Movable, 
   Resizable, 
-  DeskTopBody
+  DeskTopBody,
+  Contextmenuable
 };

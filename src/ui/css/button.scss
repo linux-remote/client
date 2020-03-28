@@ -37,7 +37,7 @@
 }
 
 .lr-btn:focus:not(:active),
-.lr-window:focus-within .lr-btn.lr__focus:not(:active){
+.lr-window:focus-within .lr-btn:not(:disabled).lr__focus:not(:active){
   box-shadow: 1px 1px  #000 inset,
   -2px -2px  #000 inset,
   2px 2px #fff inset,

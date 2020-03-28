@@ -15,8 +15,7 @@ import Window from '../window/window.vue';
 
 export default { // 0.356 
   components: {
-    Window,
-    
+    Window
   },
   props: {
     width: {

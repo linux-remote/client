@@ -152,31 +152,31 @@ export function getFileType(permission){
   let type;
   switch(t){
     case '-':
-      type = 'regularFile'
+      type = 'regularFile';
       break;
     case 'd':
-      type = 'directory'
+      type = 'directory';
       break;
     case 'l':
-      type = 'symbolicLink'
+      type = 'symbolicLink';
       break;
     case 'p':
-      type = 'namedPipe'
+      type = 'namedPipe';
       break;
     case 's':
-      type = 'socket'
+      type = 'socket';
       break;
     case 'c':
-      type = 'characterDevice'
+      type = 'characterDevice';
       break;
     case 'b':
-      type = 'blockDevice'
+      type = 'blockDevice';
       break;
     // case 'D':
     //   type = 'Door'
     //   break;
     default:
-      type = 'unknown'
+      type = 'unknown';
   }
   return type;
 }

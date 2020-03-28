@@ -2,7 +2,7 @@
 .lr-desktop_body(@drop.stop='handleDeskDrop',
                     @dragenter.stop='handleDragenter',
                     @dragover.stop='handleDragover')
-  Contextmenuable.lr-desktop-icons
+  Contextmenuable.lr-desktop-icons(ref="ctx")
     Icon(v-for="(v,i) in list",
         :key="v.id",
         :id="v.id",

@@ -9,6 +9,7 @@ import './lib/vue-filter';
 
 import store from './store/index.js';
 import router from './router';
+
 import Root from './root.vue';
 
 const dom = document.getElementById('lr-root');

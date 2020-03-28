@@ -1,14 +1,17 @@
 <template lang="jade">
-button.lr-desktop-icon(draggable="true",
+button.lr-desktop-icon(
+              draggable="true",
               @dblclick="handleDblclick",
               @dragstart.stop='handleDragStart(item, $event)',
               @dragend.stop='handleDragEnd',
               :style='{left: item.x + "px", top: item.y + "px"}',
               :class='{lr_draging: isDraging}')
-  .lr-desktop-icon-img(v-if="iconUrl", v-open-icon="iconUrl")
-  .lr-desktop-icon-cls(v-else, :class="app.iconClassName")
-  .lr-desktop-icon-text {{name}}
-
+  Contextmenuable(ref="ctx")
+    .lr-desktop-icon-img(v-if="iconUrl", v-open-icon="iconUrl")
+    .lr-desktop-icon-cls(v-else, :class="app.iconClassName")
+    .lr-desktop-icon-text {{name}}
+    template(v-slot:contextmenu)
+      .lr-cm-item(@click="remove") Remove
   //- ContextMenu(ref='ctx')
     
   //-   .lr-ctx-item(@click="remove")
@@ -17,8 +20,11 @@ button.lr-desktop-icon(draggable="true",
   //-     .lr-ctx-item(v-for="name in app.ctx", @click="handleSpecialCtxClick(item.id, name)") {{name}}
 </template>
 <script>
-
+import Contextmenuable from '../global/contextmenuable.vue';
 export default {
+  components: {
+    Contextmenuable
+  },
   props: {
     item: {
       type: Object,
@@ -77,8 +83,8 @@ export default {
       this.$store.dispatch(`sysApps/${id}_${name}`);
     },
     remove(){
-      this.$refs.ctx.hidden();
       this.$store.commit('desktop/removeIcon', this.index);
+      this.$refs.ctx.close();
     },
     handleDblclick(){
       this.launch();

@@ -6,6 +6,8 @@ export default {
       if(!this.$el.contains(e.target)){
         this.$emit('outMousedown', e);
       }
+    }, {
+      capture: true
     })
   }
 };

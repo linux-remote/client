@@ -1,5 +1,5 @@
 <template lang="jade">
-.lr-contextmenuable(@contextmenu.prevent.self="handleContextmenu")
+.lr-contextmenuable(@contextmenu.prevent.stop="handleContextmenu")
   slot
   Contextmenu(v-if="isShow", :clientX="clientX", :clientY="clientY", :close="close")
     slot(name="contextmenu")

@@ -6,7 +6,7 @@
   .lr-fs-home-margin
   .lr-btn_3(@click='addItem("directory")')
     .lr-icon(v-open-icon="'tango/folder-new-5.png'")
-  .lr-btn_3(@click='addItem("regularFile")')
+  .lr-btn_3(@click='addItem("file")')
     .lr-icon(v-open-icon="'tango/document-new-4.png'")
   
   button.lr-btn_3.lr-fs-upload-btn(@click='handleUploadBtnClick')
@@ -67,15 +67,7 @@ export default {
       this.$parent.getData();
     },
     addItem(type){
-      if(this.$parent.preCreateItem){
-        return;
-      }
-      this.$parent.preCreateItem = {
-        name: '',
-        type,
-        size: 10
-      }
-      this.$parent.selectAndFocusItem(this.$parent.preCreateItem);
+      this.$parent.openCreateModal(type);
     },
     handleUploadBtnClick(){
       this.$store.commit('upload/start', this.$parent.address);

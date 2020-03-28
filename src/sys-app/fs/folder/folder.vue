@@ -13,7 +13,9 @@
         :key="item.name", 
         :v="item",
         :class='{lr_file_be_selected: selectedMap[item.name], lr_file_cut: cutMap[item.name]}',
-        @dblclick.prevent="handleItemDblClick(item)")
+        @dblclick.prevent="handleItemDblClick(item)",
+        @remove="removeItem(item)",
+        @rename="openRenameModal(item, $event)")
   StatusBar(:item="currFocusItem")
     //-table.lr-fs-table(:class='"lr_file_model_" + model', v-else)
       thead
@@ -60,9 +62,6 @@ import Item from './item.vue';
 import lsParse from '../../lib/ls-parse';
 import { parseName, getFileType } from './util';
 
-
-import Sync from '../../../lib/sync';
-
 import { getOpenInfo } from './open-register';
 
 import { sortByStrKey } from '../../util';
@@ -70,6 +69,8 @@ import { sortByStrKey } from '../../util';
 import SafeBind from '../../../lib/mixins/safe-bind';
 import CopyCutPasteMixin from './mixins/copy-cut-paste';
 import StatusBar from './status-bar.vue';
+import RenameModal from './rename-modal.vue';
+import CreateModal from './create-modal.vue';
 // mixins.push(safeBind);
 const iconTypeMap = {
   regularFile: 'tango/text-x-generic.png',
@@ -78,7 +79,7 @@ const iconTypeMap = {
   socket: 'tango/inode-socket.png',
   blockDevice: 'tango/inode-blockdevice.png',
   characterDevice: 'tango/inode-chardevice.png',
-  FIFO: 'nuvola/pipe.png',
+  namedPipe: 'nuvola/pipe.png',
   unknown: 'oxygen/unknown.png'
 }
 function _parseList(list){
@@ -113,6 +114,11 @@ function _parseList(list){
 
 export default {
   inject: ['taskWindow'],
+  provide () {
+    return {
+      folder: this
+    }
+  },
   mixins: [CopyCutPasteMixin, SafeBind],
   components:{
     CtrlBar,
@@ -203,6 +209,9 @@ export default {
         this.taskWindow.focusenter();
       }
       this.getData();
+    },
+    'info.map': function(){
+      this.genTwoArr();
     }
   },
 
@@ -309,13 +318,21 @@ export default {
       this.currFocusItem = item;
     },
     clearSelected(){
-      const map = this.selectedMap;
-      for(let i in map){
-        this.unSelectItem(map[i]);
-      }
-      
+      this.selectedMap = Object.create(null);
+      this.selectCount = 0;
     },
     handleItemMousedown(item, i, e){
+      if(e.button === 2){ // right
+        if(e.shiftKey || e.ctrlKey){
+          return;
+        }
+        if(this.isItemSelected(item)){
+          return;
+        }
+        this.clearSelected();
+        this.selectItem(item);
+        return;
+      }
       if(e.shiftKey){
           const pre_focus_item = this.currFocusItem;
           if(!pre_focus_item || pre_focus_item === item){
@@ -440,22 +457,22 @@ export default {
       });
     },
     getSysLinkInfo(arr){
-      let filename = [];
+      let filenames = [];
       arr.forEach(file => {
-        filename.push(file.symbolicLink);
+        filenames.push(file.symbolicLink);
       });
       this.$store.commit('wsRequest', {
         method: 'ls',
         data: {
           cwd: this.address,
-          filename,
+          filenames,
         },
         success: (stdout) => {
           let list = lsParse(stdout, true);
           const data = _parseList(list);
           list = data.list;
           let updateArr = [];
-          filename.forEach((k, i) => {
+          filenames.forEach((k, i) => {
             updateArr.push({
               name: arr[i].name,
               linkTarget: list[i]
@@ -482,8 +499,6 @@ export default {
     sync(list){
       const map = this.info.map;
       const newMap = Object.create(null);
-      const folderArr = [];
-      const fileArr = [];
       list.forEach(item => {
         let key = item.name;
         let v = map[key];
@@ -493,16 +508,25 @@ export default {
           v = item;
         }
         newMap[key] = v;
-        if(v.isFolder){
-          folderArr.push(v);
-        }else {
-          fileArr.push(v);
-        }
       });
+      this.info.map = newMap;
+    },
+    genTwoArr(){
+      const folderArr = [];
+      const fileArr = [];
+      const map = this.info.map;
+      let file;
+      for(let i in map){
+        file = map[i];
+        if(file.isFolder){
+          folderArr.push(file);
+        } else {
+          fileArr.push(file);
+        }
+      }
       this.sort(folderArr, fileArr);
       this.folderArr = folderArr;
       this.fileArr = fileArr;
-      this.info.map = newMap;
     },
     getDirAndWrapBaseList(list) {
       let arr = [], dir;
@@ -540,21 +564,96 @@ export default {
       })
       
     },
-
+    removeItem(){
+      const files = Object.keys(this.selectedMap);
+      this.$store.commit('wsRequest', {
+        method: 'mvToRecycleBin',
+        data: {
+          cwd: this.address,
+          files
+        },
+        success: () => {
+          const info = this.info;
+          files.forEach((filename) => {
+            this.clearSelected();
+            this.$delete(info.map, filename);
+          })
+          
+        }
+      });
+    },
+    openRenameModal(item, itemEl){
+      this.$store.commit('block/add', {
+        title: 'Rname - ' + item.name,
+        pid: this.taskWindow.id,
+        
+        width: 340,
+        height: 150,
+        enterBindBtn: true,
+        cmpt: RenameModal,
+        propsData: {
+          address: this.address,
+          currFilename: item.name,
+          success: (newName) => {
+            this.handleRenamed(newName, item, itemEl);
+          }
+        }
+      });
+    },
+    handleRenamed(newName, item){
+      const oldName = item.name;
+      const map = this.info.map;
+      this.$delete(map, oldName);
+      this.$delete(this.selectedMap, oldName);
+      item.name = newName;
+      this.$set(map, newName, item);
+      this.selectItem(item);
+      // itemEl.focus();
+    },
+    openCreateModal(type){
+      this.$store.commit('block/add', {
+        title: 'Create ' + type,
+        pid: this.taskWindow.id,
+        
+        width: 340,
+        height: 150,
+        enterBindBtn: true,
+        cmpt: CreateModal,
+        propsData: {
+          type,
+          address: this.address,
+          folder: this
+        }
+      });
+    },
+    getNewItemInfo(newName){
+      this.$store.commit('wsRequest', {
+        method: 'ls',
+        data: {
+          cwd: this.address,
+          filenames: [newName],
+        },
+        success: (stdout) => {
+          let list = lsParse(stdout, true);
+          const data = _parseList(list);
+          list = data.list;
+          const newItem = list[0];
+          this.currFocusItem = newItem;
+          this.$set(this.info.map, newName, newItem);
+          this.selectItem(newItem);
+        },
+        // complete: () => {
+        //   info.isRequest = false;
+        // },
+        // error: (err) => {
+        //   info.error = err;
+        // }
+      });
+    }
 
 
   },
   created(){
-
-    this.$options._sync = new Sync({
-      key: 'name',
-      onAdd: (v) => {
-        this.initItemStatus(v);
-      },
-      // onGetList: (list) => {
-      //   this.list = list;
-      // }
-    });
     this.$options._selectedItems = new Set;
     this.handleEnterDir(this.address);
     this.getData();
