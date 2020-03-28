@@ -15,6 +15,7 @@
         :class='{lr_file_be_selected: selectedMap[item.name], lr_file_cut: cutMap[item.name]}',
         @dblclick.prevent="handleItemDblClick(item)",
         @remove="removeItem(item)",
+        @open="openRealItem(item)",
         @rename="openRenameModal(item, $event)")
   StatusBar(:item="currFocusItem")
     //-table.lr-fs-table(:class='"lr_file_model_" + model', v-else)
@@ -228,6 +229,9 @@ export default {
     //   count = count + 1;
     // },
     handleItemDblClick(item){
+      this.openRealItem(item);
+    },
+    openRealItem(item){
       if(item.isSymLink){
         if(item.linkTarget){
           const address = this.getLinkAddress(item);
@@ -299,15 +303,15 @@ export default {
           case 'a':
             this.selectAll();
             break;
-          case 'c':
-            this.copy();
-            break;
-          case 'x':
-            this.cut();
-            break;
-          case 'v':
-            this.paste();
-            break;
+          // case 'c':
+          //   this.copy();
+          //   break;
+          // case 'x':
+          //   this.cut();
+          //   break;
+          // case 'v':
+          //   this.paste();
+          //   break;
         }
         e.preventDefault();
       }

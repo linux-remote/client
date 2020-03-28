@@ -4,8 +4,7 @@
   h2(v-text='error' style='color:red' v-if='error')
   .lr-editor-body(v-else @keydown.s='handleKeyDown')
     .lr-editor-bar
-      button.lr-btn_nf.lr-editor-btn(@click='save', :disabled='isSaveDisabled') save
-      button.lr-btn_nf.lr-editor-btn(@click='openSaveAs') openSaveAs
+      button.lr-btn_nf.lr-editor-btn(@click='save', :disabled='isSaveDisabled') Save
     textarea.lr_editor_textarea(v-model='data')
 
 </template>

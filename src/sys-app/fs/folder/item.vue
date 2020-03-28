@@ -8,7 +8,7 @@
       .lr-icon.lr-fs-sym-link(v-if="v.isSymLink", v-open-icon="v.icon")
     .lr-fs_file_name {{v.name}}
     template(v-slot:contextmenu)
-      .lr-cm-item(@click="open")
+      .lr-cm-item(@click="open", v-if="folder.selectCount === 1")
         b Open
       .lr-cm-item(@click="rename") Rename
       hr
@@ -31,6 +31,7 @@ export default {
   },
   methods: {
     open(){
+      // win2000 是打开所有选中的文件
       this.$emit('open');
       this.$refs.ctx.close();
     },
