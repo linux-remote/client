@@ -18,7 +18,7 @@
                   v-if='v')
         span.lr-fs-crumb-name {{v}}
         span /
-    input(v-model='inputAddress', 
+    input.lr-input(v-model='inputAddress', 
           @focus="handleInputFocus",
           ref='input',
           @blur="handleInputBlur",

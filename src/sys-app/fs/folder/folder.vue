@@ -3,18 +3,18 @@
               :class='bodyClass')
   .lr-hourglass(v-if='info.isRequest') Loading...
   CtrlBar
-
-  Selectable.lr-fs-folder-inner(@end='handleSelectEnd', ref='selectable')
-    pre.lr-fs-error(v-text='info.error', v-if='info.error')
-    template(v-else)
-      Item(v-for="(item, i) in list",
-      @focus="handleItemFocus(item)",
-      @mousedown.stop="handleItemMousedown(item, i, $event)",
-      :key="item.name", 
-      :v="item",
-      :class='{lr_file_be_selected: selectedMap[item.name], lr_file_cut: cutMap[item.name]}',
-      @dblclick.prevent="handleItemDblClick(item)")
-
+  .lr-fs-folder_body
+    Selectable.lr-fs-folder-inner(@end='handleSelectEnd', ref='selectable')
+      pre.lr-fs-error(v-text='info.error', v-if='info.error')
+      template(v-else)
+        Item(v-for="(item, i) in list",
+        @focus="handleItemFocus(item)",
+        @mousedown.stop="handleItemMousedown(item, i, $event)",
+        :key="item.name", 
+        :v="item",
+        :class='{lr_file_be_selected: selectedMap[item.name], lr_file_cut: cutMap[item.name]}',
+        @dblclick.prevent="handleItemDblClick(item)")
+  StatusBar(:item="currFocusItem")
     //-table.lr-fs-table(:class='"lr_file_model_" + model', v-else)
       thead
         tr
@@ -69,6 +69,7 @@ import { sortByStrKey } from '../../util';
 // import mixins from './mixins/index';
 import SafeBind from '../../../lib/mixins/safe-bind';
 import CopyCutPasteMixin from './mixins/copy-cut-paste';
+import StatusBar from './status-bar.vue';
 // mixins.push(safeBind);
 const iconTypeMap = {
   regularFile: 'tango/text-x-generic.png',
@@ -120,7 +121,8 @@ export default {
     UploadItem,
     Selectable,
     ContextMenu,
-    Item
+    Item,
+    StatusBar
   },
   props: {
     address: {
@@ -144,6 +146,8 @@ export default {
 
       info: this.getOrInitInfo(this.address),
       selectedMap: Object.create(null),
+      selectCount: 0,
+      currFocusItem: null,
       isRequest: false,
 
       sortKey: 'name'
@@ -196,7 +200,7 @@ export default {
         this.handleLeaveDir(oldVal.address);
         this.info = this.getOrInitInfo(newVal.address);
         this.handleEnterDir(newVal.address);
-        this.taskWindow.focus();
+        this.taskWindow.focusenter();
       }
       this.getData();
     }
@@ -238,6 +242,11 @@ export default {
     //   }
     //   return this.getItemPath(item.name);
     // },
+    getItemPath(name){
+      let address = this.address;
+      const a = address === '/' ? address : address + '/';
+      return a + name;
+    },
     openItem(item, address){
       
       const itemAddress = address || this.getItemPath(item.name);
@@ -297,14 +306,18 @@ export default {
 
 
     handleItemFocus(item){
-      this.$options._tmp_curr_focus_item = item;
+      this.currFocusItem = item;
     },
     clearSelected(){
-      this.selectedMap = Object.create(null);
+      const map = this.selectedMap;
+      for(let i in map){
+        this.unSelectItem(map[i]);
+      }
+      
     },
     handleItemMousedown(item, i, e){
       if(e.shiftKey){
-          const pre_focus_item = this.$options._tmp_curr_focus_item;
+          const pre_focus_item = this.currFocusItem;
           if(!pre_focus_item || pre_focus_item === item){
             this.selectItem(item);
             return;
@@ -355,9 +368,11 @@ export default {
       return this.selectedMap[item.name] !== undefined;
     },
     selectItem(item){
-      this.$set(this.selectedMap, item.name, true);
+      this.selectCount = this.selectCount + 1;
+      this.$set(this.selectedMap, item.name, item);
     },
     unSelectItem(item){
+      this.selectCount = this.selectCount - 1;
       this.$delete(this.selectedMap, item.name);
     },
     selectAll(){
@@ -365,9 +380,9 @@ export default {
         this.selectItem(item);
       })
     },
-    handleFsBodyMousedown(e){
-      e.preventDefault();
+    handleFsBodyMousedown(){
       this.clearSelected();
+      this.currFocusItem = null;
     },
     handleEnterDir(address){
       let data = map[address];

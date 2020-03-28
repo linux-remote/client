@@ -36,6 +36,16 @@ $boxBorderBoxPadding:2px;
   background-color: $boxInsetBoxBg;
 }
 
+// inset  示例：FS Manager ctrl bar.
+// 外右下，外上左，内右下，内上左
+// .lr-box_groove{
+//   box-shadow: -1px -1px #fff inset,
+//   1px 1px  $color2 inset,
+//   -2px -2px $color2 inset,
+//   2px 2px  #fff inset;
+//   padding: $boxShadowBoxPadding;
+// }
+
 // 使用 shadow 的方形跟原型一模一样。但圆型, 圆角不可用 shadow.
 // .lr-box_radius 示例：radio
 // .lr-box_radius_out 示例：tab panel 的 tab

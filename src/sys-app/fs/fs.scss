@@ -1,9 +1,9 @@
 
 //************* 文件管理器 *************
 $fsNavBarH: 31px;
-$fsCtrlBarH: 35px;
-$fsStatusBarH: 23px;
-$fsStatusBarH: 0px;
+$fsCtrlBarH: 28px;
+// $fsStatusBarH: 23px;
+$fsStatusBarH: 20px;
 $fsFontSize: 12px;
 $fsIconW: 16px;
 
@@ -134,7 +134,6 @@ $fsIconW: 16px;
   font-size: 12px;
   >input{
     flex-grow: 1;
-    border: 1px solid #d9d9d9;
   }
 }
 .lr-fs-address-inner{
@@ -142,10 +141,9 @@ $fsIconW: 16px;
   max-width: 90%;
   display: flex;
   background-color: #fff;
-  
-  height: 18px;
+  height: 16px;
   line-height: 15px;
-  margin: 1px;
+  margin: 2px;
 }
 .lr-fs-crumb{
   color: #000;
@@ -171,17 +169,21 @@ $fsIconW: 16px;
   border: 1px solid #cce8ff;
 }
 
-$linkFileColor: violet;
+// $linkFileColor: violet;
 
 
 .lr-fs-folder{ // 多层 flex 嵌套会导致 overflow-y: auto; 不起作用. 2018/6/8
   height: 100%;
   padding-top: $fsCtrlBarH;
   padding-bottom: $fsStatusBarH;
-  padding-left: 2px;
-  padding-right: 2px;
+  // padding-left: 2px;
+  // padding-right: 2px;
   position: relative;
   overflow: hidden;
+}
+.lr-fs-folder_body{
+  @extend .lr-box_in;
+  height: 100%;
 }
 .lr-fs-folder-inner{
   // height: 100%;
@@ -196,7 +198,7 @@ $linkFileColor: violet;
 
 }
 
-.lr-fs-ctrl-bar-mask{
+.lr-fs-ctrl-bar_mask{
   position: absolute;
   width: 100%;
   height: 100%;
@@ -242,23 +244,51 @@ $linkFileColor: violet;
   left: 0;
   bottom: 0;
   width:100%;
-  height: $fsStatusBarH; 
-  line-height: $fsStatusBarH;
+  padding-top: 2px;
+  height: $fsStatusBarH;
+  line-height: 1;
   font-size: 12px;
-  span{
-    margin: 0 2px; padding: 0 2px;
+  display: flex;
+  overflow: hidden;
+  >div{
+    margin-right: 2px;
+    display: flex;
+    align-items: center;
+    &:last-child{
+      margin-right: 0;
+    }
   }
-  b{
-    margin-left: 2px;
+}
+.lr-fs-status-type{
+  min-width: 100px;
+  flex-shrink: 0;
+  text-transform:capitalize;
+}
+.lr-fs-status-target-type{
+  text-transform:capitalize;
+}
+
+
+.lr-fs-status-size{
+  min-width: 100px;
+  flex-shrink: 0;
+}
+.lr-fs-status-mid{
+  flex-grow: 1;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  >span {
+    margin: 2px;
   }
 }
 .lr-fs-status{
   width: 100%;
   height: 100%;
 }
-.lr-fs-status-link{
-  color: $linkFileColor;
-}
+// .lr-fs-status-link{
+//   color: $linkFileColor;
+// }
 
 
 // ================== item ==================
@@ -424,6 +454,7 @@ $fsRowItemH: 50px;
 }
 
 .lr-fs-ctrl-bar{
+  // @extend .lr-box_groove;
   position: absolute;
   width: 100%; 
   height: $fsCtrlBarH;
@@ -431,23 +462,28 @@ $fsRowItemH: 50px;
   color:#000;
   display: flex;
   align-items: center;
+  padding: 0 2px;
   top: 0;
   left: 0;
-  background-color: #eee;
-  .btn {
-    margin-top: 0;
-  }
-  .lr-icon{
-    width: 28px;
-    height: 28px;
-    margin-right: 5px;
-    &:hover{
-      background-color: #fff;
+  .lr-btn_3{
+    width: 24px;
+    height: 24px;
+    >.lr-icon{
+      width: 100%;
+      height: 100%;
+      margin: 0;
     }
   }
+  .lr-fs-upload-btn{
+    width: auto;
+    height: 22px;
+  }
+
 }
 
-
+.lr-fs-home-margin{
+  width: 20px;
+}
 .lr-fs-create-layer{
     background-color: $color3;
   &:hover{
@@ -693,22 +729,14 @@ $fsRowItemH: 50px;
   text-align: center;
 }
 .lr-fs-upload-btn{
-  // background-color: #ddd;
-  // color: #000;
-  // border: 0;
-  // padding: 0 10px;
-  // display: flex;
-  // justify-content: center;
-  // align-items: center;
-  // &:hover{
-  //   background-color: #fff;
-  // }
   &:focus{
     outline: none;
   }
+  >span{
+    padding: 0 3px;
+  }
   .iconfont{
     font-size: 1.5em;
-    padding-right: 3px;
   }
 }
 .lr_bookmark_active{

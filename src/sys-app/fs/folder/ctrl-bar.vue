@@ -1,17 +1,20 @@
 <template lang="jade">
 .lr-fs-ctrl-bar
-  .lr-fs-ctrl-bar-mask(v-if='disabled')
-
+  .lr-fs-ctrl-bar_mask(v-if='disabled')
+  .lr-btn_3(@click="$parent.go(homedir)", :class="{lr_bookmark_active: address === homedir}")
+    .lr-icon(v-open-icon="'tango/user-home.png'")
+  .lr-fs-home-margin
+  .lr-btn_3(@click='addItem("directory")')
+    .lr-icon(v-open-icon="'tango/folder-new-5.png'")
+  .lr-btn_3(@click='addItem("regularFile")')
+    .lr-icon(v-open-icon="'tango/document-new-4.png'")
   
-  .lr-icon(@click='addItem("Directory")', v-open-icon="'tango/folder-new-5.png'")
-  .lr-icon(@click='addItem("RegularFile")', v-open-icon="'tango/document-new-4.png'")
-   
-  button.lr-btn-sm.lr-fs-upload-btn(@click='handleUploadBtnClick')
+  button.lr-btn_3.lr-fs-upload-btn(@click='handleUploadBtnClick')
     span.iconfont.icon-upload
     span {{$parent.LANG.upload}}
 
   label.lr-label-input.lr-check-box.lr-fs-show-hidden
-    input(type="checkbox", :checked="isShowHidden", @change="handleCheckBoxChange")
+    input(type="checkbox", :checked="isShowHidden",  @change="handleCheckBoxChange")
     .lr-box_in
     span Show hidden
   //- button(@click="errDev") errDev

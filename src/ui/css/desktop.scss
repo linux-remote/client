@@ -86,6 +86,7 @@
 
 // hoverable: 
 .lr-quick-item,
+.lr-btn_3,
 .lr-more-btn{
   padding-left: 0px;
   padding-right: 2px;
@@ -96,19 +97,23 @@
   align-items: center;
   box-sizing: content-box;
   margin: 0 1px;
+  border-left: 1px solid transparent;
+  border-right: 1px solid transparent;
+
   &:not(.lr__focus):hover:not(:active){
-    margin: 0;
+    border: 0;
     box-shadow: -1px -1px $color2 inset,
     1px 1px  #fff inset;
   }
   &:active, &.lr__focus{
-    margin: 0;
+    border: 0;
     box-shadow: -1px -1px #fff inset,
     1px 1px   $color2 inset;
   }
 }
 
 // left 1px;
+.lr-btn_3,
 .lr-quick-item{
   padding-left: 0px;
   padding-right: 2px;
@@ -125,6 +130,12 @@
     padding-bottom: 0;
   }
 }
+// .lr-btn_3{
+//   margin: 0;
+//   box-sizing: content-box;
+//   border-left: 1px solid transparent;
+//   border-right: 1px solid transparent;
+// }
 // center
 .lr-more-btn{
   padding: 1px;
