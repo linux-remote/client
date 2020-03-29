@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import map, {getOrInit} from '../../lib/folder-map';
+import map, {getOrInit, syncFolderMap} from '../../lib/folder-map';
 import CtrlBar from './ctrl-bar.vue';
 import PreCreate from './pre-create.vue';
 import RowItem from './row-item.vue';
@@ -61,57 +61,16 @@ import Item from './item.vue';
 
 // import {encodePath} from '__ROOT__/sys-app/util';
 import lsParse from '../../lib/ls-parse';
-import { parseName, getFileType } from './util';
-
-import { getOpenInfo } from './open-register';
-
 import { sortByStrKey } from '../../util';
+import {cwdPathJoin} from '../../lib/util';
 // import mixins from './mixins/index';
 import SafeBind from '../../../lib/mixins/safe-bind';
 import CopyCutPasteMixin from './mixins/copy-cut-paste';
 import StatusBar from './status-bar.vue';
 import RenameModal from './rename-modal.vue';
 import CreateModal from './create-modal.vue';
-// mixins.push(safeBind);
-const iconTypeMap = {
-  regularFile: 'tango/text-x-generic.png',
-  directory: 'tango/folder.png',
-  symbolicLink: 'nuvola/link.png',
-  socket: 'tango/inode-socket.png',
-  blockDevice: 'tango/inode-blockdevice.png',
-  characterDevice: 'tango/inode-chardevice.png',
-  namedPipe: 'nuvola/pipe.png',
-  unknown: 'oxygen/unknown.png'
-}
-function _parseList(list){
-  // let folderArr = [];
-  // let fileArr = [];
-  let sysLinkArr = [];
-  // const map = Object.create(null);
-  list.forEach(file => {
-    file.type = getFileType(file.permission);
-    file.icon = iconTypeMap[file.type];
-    const isFolder = file.type === 'directory';
-    file.isFolder = isFolder;
-    const isFile = file.type === 'regularFile';
-    file.isFile = isFile;
-    file.isSymLink = file.type === 'symbolicLink';
-    file.linkTarget = null;
-    if(isFile){
-      Object.assign(file, parseName(file.name));
-      const openInfo = getOpenInfo(file.suffix);
-      Object.assign(file, openInfo);
-    } else {
-      if(file.isSymLink){
-        sysLinkArr.push(file);
-      }
-    }
-  });
-  return {
-    list,
-    sysLinkArr
-  };
-}
+import parseList from './fs-list-parse';
+
 
 export default {
   inject: ['taskWindow'],
@@ -213,6 +172,11 @@ export default {
     },
     'info.map': function(){
       this.genTwoArr();
+      this.taskWindow.focusenter();
+      // this.$nextTick(() => {
+      //   console.log('re focusenter');
+      //   this.taskWindow.focusenter();
+      // })
     }
   },
 
@@ -243,11 +207,7 @@ export default {
       
     },
     getLinkAddress(item){
-      const link = item.symbolicLink;
-      if(link[0] === '/'){
-        return link;
-      }
-      return this.getItemPath(link);
+      return cwdPathJoin(this.address, item.symbolicLink);
     },
     // getItemAddress(item){
     //   if(item.type === 'symbolicLink'){
@@ -442,8 +402,9 @@ export default {
           }
           info.error = null;
           const list = lsParse(stdout);
-          const data = _parseList(list);
-          this.sync(data.list);
+          const data = parseList(list);
+          
+          this.info.map = syncFolderMap(data.list, this.info.map);
           // this.folderArr = data.folderArr;
           // this.fileArr = data.fileArr;
           // info.map = data.map;
@@ -473,7 +434,7 @@ export default {
         },
         success: (stdout) => {
           let list = lsParse(stdout, true);
-          const data = _parseList(list);
+          const data = parseList(list);
           list = data.list;
           let updateArr = [];
           filenames.forEach((k, i) => {
@@ -500,21 +461,7 @@ export default {
         }
       })
     },
-    sync(list){
-      const map = this.info.map;
-      const newMap = Object.create(null);
-      list.forEach(item => {
-        let key = item.name;
-        let v = map[key];
-        if(v){
-          Object.assign(v, item);
-        } else {
-          v = item;
-        }
-        newMap[key] = v;
-      });
-      this.info.map = newMap;
-    },
+
     genTwoArr(){
       const folderArr = [];
       const fileArr = [];
@@ -576,13 +523,13 @@ export default {
           cwd: this.address,
           files
         },
-        success: () => {
+        success: (ids) => {
           const info = this.info;
           files.forEach((filename) => {
             this.clearSelected();
             this.$delete(info.map, filename);
-          })
-          
+          });// $REVIEW: false data, no request backend.
+          this.$root.$emit('delFiles', ids);
         }
       });
     },
@@ -639,7 +586,7 @@ export default {
         },
         success: (stdout) => {
           let list = lsParse(stdout, true);
-          const data = _parseList(list);
+          const data = parseList(list);
           list = data.list;
           const newItem = list[0];
           this.currFocusItem = newItem;

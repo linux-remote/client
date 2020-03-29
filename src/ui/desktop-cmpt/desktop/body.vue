@@ -9,8 +9,8 @@
         :index="i",
         :item="v")
     template(v-slot:contextmenu)
-      .lr-cm-item(@click="refresh") {{LANG.ctx.Refresh}}
-      .lr-cm-item(@click="sortIcon") Sort icon
+      .lr-ctx-item(@click="refresh") {{LANG.ctx.Refresh}}
+      .lr-ctx-item(@click="sortIcon") Sort icon
   TaskWindow(v-for='(task, index) in tasks',
                   :task="task",
                   :key="task.id")

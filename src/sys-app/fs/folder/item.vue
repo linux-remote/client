@@ -1,18 +1,17 @@
 <template lang="jade">
-.lr-fs_file(tabindex="-1", v-on="$listeners")
-  Contextmenuable(ref="ctx")
-    .lr-fs_file_icon_wrap
-      template(v-if="item")
-        .lr-icon(v-if="item.openApp", v-open-icon="item.openApp.iconUrl")
-        .lr-icon(v-open-icon="item.icon", v-else)
-      .lr-icon.lr-fs-sym-link(v-if="v.isSymLink", v-open-icon="v.icon")
-    .lr-fs_file_name {{v.name}}
-    template(v-slot:contextmenu)
-      .lr-cm-item(@click="open", v-if="folder.selectCount === 1")
-        b Open
-      .lr-cm-item(@click="rename") Rename
-      hr
-      .lr-cm-item(@click="remove") Delete
+Contextmenuable.lr-fs_file(tabindex="-1", v-on="$listeners", ref="ctx")
+  .lr-fs_file_icon_wrap
+    template(v-if="item")
+      .lr-icon(v-if="item.openApp", v-open-icon="item.openApp.iconUrl")
+      .lr-icon(v-open-icon="item.icon", v-else)
+    .lr-icon.lr-fs-sym-link(v-if="v.isSymLink", v-open-icon="v.icon")
+  .lr-fs_file_name {{v.name}}
+  template(v-slot:contextmenu="ctx")
+    .lr-ctx-item(@click="open", v-if="folder.selectCount === 1")
+      b Open
+    .lr-ctx-item(@click="rename") Rename
+    .lr-hr
+    .lr-ctx-item(@click="remove") Delete
 </template>
 
 <script>

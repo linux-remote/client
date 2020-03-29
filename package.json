@@ -26,6 +26,7 @@
     "logo_def.png"
   ],
   "dependencies": {
+    "path-browserify": "^1.0.1",
     "stat-mode": "^1.0.0"
   },
   "devDependencies": {

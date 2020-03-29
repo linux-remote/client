@@ -1,5 +1,6 @@
+$RBCtrlBarH: 28px;
 .lr-rb-wrap{
-  padding-top: 35px;
+  padding-top: $RBCtrlBarH;
   button{
     height: 25px;
     border-width: 2px;
@@ -7,9 +8,8 @@
   }
 }
 .lr-rb-ctrl-bar{
-  height: 35px;
+  height: $RBCtrlBarH;
   padding: 0 10px;
-  background-color: #eee;
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -39,4 +39,19 @@
   td{
     padding: 2px 5px;
   }
+}
+.lr-rb-folder_body{
+  @extend .lr-box_in;
+  height: 100%;
+}
+.lr-rb-folder_inner{
+  height: 100%;
+}
+.lr_rb_err{
+  // background-color: red;
+  color: red;
+}
+.lr-rb_btn_empty{
+  width: auto;
+  padding: 0 5px;
 }

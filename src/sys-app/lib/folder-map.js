@@ -14,4 +14,19 @@ export function getOrInit(address){
   return info;
 }
 
+export function syncFolderMap(list, map){
+  const newMap = Object.create(null);
+  list.forEach(item => {
+    let key = item.name;
+    let v = map[key];
+    if(v){
+      Object.assign(v, item);
+    } else {
+      v = item;
+    }
+    newMap[key] = v;
+  });
+  return newMap;
+}
+
 export default map;

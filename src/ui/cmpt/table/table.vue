@@ -1,25 +1,17 @@
 <template lang="jade">
 .lr-table(@scroll="handleScroll")
-  div
-    .lr-table-head(ref="head")
-      .lr-table-h(v-for="v in thead", :style="{width: v.width + 'px'}")
-        .lr-table-h-inner(@click="sortBy(v.name)") {{v.name}}
-          .lr-table-sort(v-if="v.name === currSortKey", :class="{lr__def: sortDef}")
-        Resizeable(direction="r", :proxy="v", :minWidth="v.minWidth", :maxWidth="v.maxWidth")
-
-      //- .lr-table-h
-    div(ref="table")
-      .lr-table-tr(v-for="(v,i) in tbody",  @mousedown="handleTrMousedown(v)", :class="{lr__focus: v === focusItem}")
-        .lr-table-td(:style="{width: thead[0].width + 'px'}") {{v.name}}
-        .lr-table-td(:style="{width: thead[1].width + 'px'}") {{v.size}}
-      //- table
-      //-   thead
-      //-     tr
-      //-       th(v-for="v in thead", :style="{minWidth: v.width + 'px', width: v.width + 'px'}")
-      //-   tbody
-      //-     tr(v-for="v in tbody", @click="handleTrClick(v)", :class="{lr__focus: v === focusItem}")
-      //-       td {{v.name}}
-      //-       td {{v.size}}
+  .lr-table-head(ref="head")
+    .lr-table-h(v-for="(v, index) in thead", :style="{width: v.width + 'px'}")
+      .lr-table-h-inner(@click="sortBy(v)") {{v.name}}
+        .lr-table-sort(v-if="v.sortKey === currSortKey", :class="{lr__def: sortDef}")
+      Resizeable(direction="r", 
+                @resizeStart="handleThReszieStart(v, $event)",
+                @resizing="handleThResizing(v, $event)",
+                @resized="handleThResized(index, $event)",
+                :minWidth="v.minWidth",
+                :maxWidth="v.maxWidth")
+  .lr-table_body(ref="tbody")
+    slot(:cols="widths")
 </template>
 <script>
 import Resizeable from '../../unit/resizable.vue';
@@ -28,54 +20,54 @@ export default {
   components: {
     Resizeable
   },
+  props: {
+    thead: Array
+  },
   data(){
-    let tbody = [];
-    for(let i = 0; i < 100; i++){
-      tbody.push({
-        name: 'hello' + i,
-        size: i + '2kb'
-      })
-    }
+    const widths = Object.create(null);
+    this.thead.forEach((v, i) => {
+      widths[i] = v.width;
+    })
     return {
-      focusItem: null,
-      currSortKey: 'name',
-      sortDef: true,
-      thead: [{
-        name: 'name',
-        minWidth: 0,
-        width: 300
-      },
-      {
-        name: 'size',
-        minWidth: 0,
-        width: 200
-      }],
-      tbody
+      currSortKey: null,
+      widths,
     }
   },
   methods: {
-    sortBy(key){
-      if(this.currSortKey === key){
-        this.sortDef = !this.sortDef;
+    sortBy(th){
+      if(!th.sortKey){
+        return;
       }
+      let isDesc;
+      if(this.currSortKey === th.sortKey){
+        isDesc = true;
+      } else {
+        this.currSortKey = th.sortKey;
+        isDesc = false;
+      }
+      this.$emit('sortBy', {
+        key: th.sortKey,
+        isDesc
+      });
     },
-    handleTrMousedown(v){
-      this.focusItem = v;
+    handleThReszieStart(th, virtual){
+      virtual.width = th.width;
+    },
+    handleThResizing(th, virtual){
+      th.width = virtual.width;
+    },
+    handleThResized(index, virtual){
+      this.widths[index] = virtual.width;
     },
     handleScroll(e){
-      if(this.$options._scrollTop !== e.target.scrollTop){
-        this.$options._scrollTop = e.target.scrollTop;
+      if(this.$options._tmp_scroll_top !== e.target.scrollTop){
+        this.$options._tmp_scroll_top = e.target.scrollTop;
         this.$refs.head.style.top = e.target.scrollTop + 'px';
-        // console.log('scrollY')
       }
-    },
-    // eqWidth(){
-    //   console.log(this.$refs.table.clientWidth)
-    //   // this.$refs.head.style.width = this.$refs.table.clientWidth + 'px';
-    // }
+    }
   },
   mounted(){
-    this.$options._scrollTop = this.$el.scrollTop;
+    this.$options._tmp_scroll_top = this.$el.scrollTop;
   }
 }
 </script>

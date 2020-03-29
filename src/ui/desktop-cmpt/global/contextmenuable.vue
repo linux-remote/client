@@ -1,8 +1,8 @@
 <template lang="jade">
-.lr-contextmenuable(@contextmenu.prevent.stop="handleContextmenu")
+.lr-contextmenuable(@contextmenu.prevent.stop="handleContextmenu", v-on="$listeners")
   slot
   Contextmenu(v-if="isShow", :clientX="clientX", :clientY="clientY", :close="close")
-    slot(name="contextmenu")
+    slot(name="contextmenu", :close="close")
 </template>
 
 <script>
@@ -26,6 +26,13 @@ export default {
     },
     close(){
       this.isShow = false;
+    }
+  },
+  created(){
+    this.$options._tmp_slot_props = {
+      close: () => {
+        this.close();
+      }
     }
   }
 }

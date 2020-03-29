@@ -26,7 +26,6 @@
 </template>
 <script>
 import safeBind from '../lib/mixins/safe-bind';
-import Contextmenuable from '../ui/desktop-cmpt/global/contextmenuable.vue';
 import termMap from '../sys-app/terminal/map';
 // import TasksBar from '__ROOT__/cmpt/task/bar.vue';
 
@@ -37,7 +36,6 @@ export default {
     // TasksBar,
     // DeskTop,
     DeskTopBody,
-    Contextmenuable,
     Start,
     QuickLaunch,
     TaskItem,
@@ -129,7 +127,7 @@ export default {
         homedir: data.homedir,
         hostname: data.hostname
       });
-      window.APP.RECYCLE_BIN_PATH = data.homedir + '.linux-remote/recycle-bin';
+      window.APP.RECYCLE_BIN_PATH = data.homedir + '/.linux-remote/recycle-bin';
     },
   },
 

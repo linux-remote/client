@@ -3,7 +3,7 @@ Contextmenuable(@click="handleClick")
   .lr-icon(v-open-icon="app.iconUrl")
   span(v-if="isShowName") {{app.title}}
   template(v-slot:contextmenu)
-    .lr-cm-item(@click="remove") Remove
+    .lr-ctx-item(@click="remove") Remove
 </template>
 
 <script>

@@ -11,7 +11,7 @@ button.lr-desktop-icon(
     .lr-desktop-icon-cls(v-else, :class="app.iconClassName")
     .lr-desktop-icon-text {{name}}
     template(v-slot:contextmenu)
-      .lr-cm-item(@click="remove") Remove
+      .lr-ctx-item(@click="remove") Remove
   //- ContextMenu(ref='ctx')
     
   //-   .lr-ctx-item(@click="remove")

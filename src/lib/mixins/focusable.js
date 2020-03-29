@@ -54,7 +54,13 @@ export default {
       focusenter(){
         const lastFocusedEl = this.$options._last_focused_el;
         if(lastFocusedEl){
-          lastFocusedEl.focus();
+          if(this.$el.contains(lastFocusedEl)){
+            lastFocusedEl.focus();
+          } else {
+            this.$options._last_focused_el = null;
+            this.$el.focus();
+          }
+          
         } else {
           this.$el.focus();
         }
