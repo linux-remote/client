@@ -9,9 +9,9 @@
   .lr-btn_3(@click='addItem("file")')
     .lr-icon(v-open-icon="'tango/document-new-4.png'")
   
-  button.lr-btn_3.lr-fs-upload-btn(@click='handleUploadBtnClick')
-    span.iconfont.icon-upload
-    span {{$parent.LANG.upload}}
+  //- button.lr-btn_3.lr-fs-upload-btn(@click='handleUploadBtnClick')
+  //-   span.iconfont.icon-upload
+  //-   span Upload
 
   label.lr-label-input.lr-check-box.lr-fs-show-hidden
     input(type="checkbox", :checked="isShowHidden",  @change="handleCheckBoxChange")

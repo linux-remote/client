@@ -3,28 +3,30 @@
   .lr-desktop-wrap
     router-view
   .lr-global#lr-global
-    FlyTextarea
-    UploadInput
-    UploadBox
+    //- FlyTextarea
+    //- UploadInput
+    //- UploadBox
     //- Error
-    OpenWith
-    Confirm
+    //- OpenWith
+    //- Confirm
 </template>
 <script>
-import UploadInput from '__ROOT__/cmpt/global/upload/input.vue';
-import UploadBox from '__ROOT__/cmpt/global/upload/box.vue';
-import FlyTextarea from '__ROOT__/cmpt/global/fly-textarea.vue';
-import Error from '__ROOT__/cmpt/global/toust/error.vue';
-import OpenWith from '__ROOT__/cmpt/global/open-with.vue';
-import Confirm from '__ROOT__/cmpt/global/confirm.vue';
+// import UploadInput from '__ROOT__/cmpt/global/upload/input.vue';
+// import UploadBox from '__ROOT__/cmpt/global/upload/box.vue';
+// import FlyTextarea from '__ROOT__/cmpt/global/fly-textarea.vue';
+// import OpenWith from '__ROOT__/cmpt/global/open-with.vue';
+// import Confirm from '__ROOT__/cmpt/global/confirm.vue';
+import Error from './cmpt/global/toust/error.vue';
+
 export default {
   components:{
-    UploadInput,
-    UploadBox,
     Error,
-    FlyTextarea,
-    OpenWith,
-    Confirm
+    // UploadInput,
+    // UploadBox,
+    
+    // FlyTextarea,
+    // OpenWith,
+    // Confirm
   },
   data(){
     return {
