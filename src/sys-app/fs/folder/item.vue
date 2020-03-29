@@ -43,6 +43,17 @@ export default {
     remove(){
       this.$emit('remove');
       this.$refs.ctx.close();
+    },
+    onBeSelecting(isSelected){
+      if(isSelected){
+        if(!this.folder.isItemSelected(this.v)){
+          this.folder.selectItem(this.v);
+        }
+      } else {
+        if(this.folder.isItemSelected(this.v)){
+          this.folder.unSelectItem(this.v);
+        }
+      }
     }
   },
   mounted(){

@@ -18,34 +18,8 @@
         @open="openRealItem(item)",
         @rename="openRenameModal(item, $event)")
   StatusBar(:item="currFocusItem")
-    //-table.lr-fs-table(:class='"lr_file_model_" + model', v-else)
-      thead
-        tr
-          //- th(v-for="key in theads", :key="key", :class="{active: key === sortKey, ['lr_fs_th_' + key]: true}", @mousedown="sortBy(key)") {{LANG.th[key]}}
-          th(v-for="key in theads", :key="key") {{LANG.th[key]}}
-          th {{LANG.th.size}}
-            span.lr_is_device_type(v-if="isHaveDevice") /{{LANG.th.deviceType}}
-              
-      tbody.lr-fs-tbody
-        tr(v-if='preCreateItem', class='lr-fs-create-layer', @mousedown.stop='')
-          td(colspan='7')
-            PreCreate(:p='self', @success="handleCreateSuccess")
-
-        component(v-for='(item, i) in list',
-                :is='item.isUploading ? "UploadItem" : "RowItem"',
-                :p='self',
-                :key='item.name',
-                :index='i',
-                :item='item',
-                @del="handleItemDel",
-                @click='handleItemClick(item, $event)',
-                @contextmenu="handleItemContentmenu(item)"
-                :selectedLen="$options._selectedItems.size"
-                :class='{lr_file_hidden: item.isHidden, lr_file_be_selected: item.isBeSelected, lr_file_focus: item.focus, lr_file_cut: item.isCut}')
     .lr-fs-empty(v-if='!list.length') This folder is empty.
     div(style="height: 1px")
-  ContextMenu
-    .lr-ctx-item(v-if="fsClipBoard", @click='paste') {{LANG.ctx.paste}}
 </template>
 
 <script>
@@ -55,7 +29,6 @@ import PreCreate from './pre-create.vue';
 import RowItem from './row-item.vue';
 import UploadItem from './upload-item.vue';
 import Selectable from '__ROOT__/cmpt/unit/selectable.vue';
-import ContextMenu from '__ROOT__/cmpt/global/contextmenu/index.vue';
 import initRelation from './permission-util';
 import Item from './item.vue';
 
@@ -86,7 +59,6 @@ export default {
     RowItem,
     UploadItem,
     Selectable,
-    ContextMenu,
     Item,
     StatusBar
   },
