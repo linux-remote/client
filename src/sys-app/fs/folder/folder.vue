@@ -138,13 +138,18 @@ export default {
         this.handleLeaveDir(oldVal.address);
         this.info = this.getOrInitInfo(newVal.address);
         this.handleEnterDir(newVal.address);
-        this.taskWindow.focusenter();
+        // this.taskWindow.focusenter();
       }
       this.getData();
     },
     'info.map': function(){
       this.genTwoArr();
-      this.taskWindow.focusenter();
+      if(this.isNeedReFocusenter()){
+        this.$nextTick(() => {
+          this.taskWindow.focusenter();
+        })
+      }
+      
       // this.$nextTick(() => {
       //   console.log('re focusenter');
       //   this.taskWindow.focusenter();
@@ -153,6 +158,13 @@ export default {
   },
 
   methods: {
+    isNeedReFocusenter(){
+      if(this.info._requestWindowId === this.taskWindow.id){
+        this.info._requestWindowId = null;
+        return true;
+      }
+      return false;
+    },
     sort(folderArr, fileArr){
       sortByStrKey(folderArr, 'name', true);
       sortByStrKey(fileArr, 'name', true);
@@ -360,6 +372,7 @@ export default {
         return;
       }
       info.isRequest = true;
+      info._requestWindowId = this.taskWindow.id;
       let cwd = this.address;
       let data = {
         cwd,

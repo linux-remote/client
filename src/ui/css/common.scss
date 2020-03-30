@@ -68,7 +68,9 @@ body, button{
     left: 0;
   }
 }
-
+.lr_title_no_icon{
+  padding-left: 0;
+}
 .lr-title_text{
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -167,6 +169,21 @@ body, button{
 
 .lr__disabled{
   pointer-events: none;
+}
+.lr-notice{
+  background-color: #ffffe1;
+  border: 1px solid #000;
+  border-radius: 6px;
+  
+  width: 320px;
+  position: fixed;
+  z-index: 2;
+  bottom: 42px;
+  right: 20px;
+  color: red;
+  font-weight: bold;
+  padding: 10px;
+  font-size: 14px;
 }
 // .test{
 //   // position: absolute;

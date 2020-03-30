@@ -129,15 +129,29 @@ export default { // 0.356
         cls = 'lr-block-triple';
       }
     const pWindow = Window.get(this.pid);
-    const top = pWindow.top + ((pWindow.height - height) / 2);
-    const left = pWindow.left + ((pWindow.width - width) / 2);
+    if(pWindow){
+      const top = pWindow.top + ((pWindow.height - height) / 2);
+      const left = pWindow.left + ((pWindow.width - width) / 2);
+        return {
+          w: width,
+          h: height,
+          top,
+          left,
+          cls
+        }
+    } else {
+      const dom = document.documentElement;
+      const top = (dom.clientHeight - height) / 2;
+      const left = (dom.clientWidth - width) / 2;
       return {
-        w: width,
-        h: height,
-        top,
-        left,
-        cls
+          w: width,
+          h: height,
+          top,
+          left,
+          cls
       }
+    }
+
     },
     handleOkBtnClick(){
       this.close();

@@ -61,10 +61,11 @@ export default {
     
     if(currFocus){
       if(currFocus.name === this.v.name){
-        this.$nextTick(() => {
-          this.$el.focus();
-        })
-        
+        if(this.folder.isNeedReFocusenter()){
+          this.$nextTick(() => {
+            this.$el.focus();
+          })
+        }
       }
     }
   }

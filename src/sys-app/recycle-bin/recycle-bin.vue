@@ -18,7 +18,9 @@
                     :key='item.id', 
                     tabindex="-1",
                     @mousedown="handleItemMousedown(item)")
-          div(:style="{width: tbody.cols[0] + 'px'}") {{item.source.base}}
+          .lr-rb_item_name(:style="{width: tbody.cols[0] + 'px'}")
+            .lr-icon(v-open-icon="item.icon")
+            span {{item.source.base}}
           div(:style="{width: tbody.cols[1] + 'px'}") {{item.source.dir}}
           div(:style="{width: tbody.cols[2] + 'px'}") {{item.delTime}}
           div(:style="{width: tbody.cols[3] + 'px'}") {{item.size | wellSize}}

@@ -110,7 +110,7 @@ const store = new window.Vuex.Store({
 
 
     onDustbinRecycle: null,
-    sessError: false,
+    sessError: null,
     openWidthData: null,
     confirmData: null
   },
@@ -204,7 +204,9 @@ const store = new window.Vuex.Store({
           keepAliveTimer = setInterval(() => {
             sr.request([aliveKey]);
           }, keepAliveInterval);
-          state.wsIsConnected = true;
+          this.commit('set', {
+            wsIsConnected: true
+          });
           callback && callback();
         }
 
@@ -213,7 +215,9 @@ const store = new window.Vuex.Store({
             clearInterval(keepAliveTimer);
             keepAliveTimer = null;
           }
-          state.wsIsConnected = false;
+          this.commit('set', {
+            wsIsConnected: false
+          });
           if(state.isExit){
             return;
           }
@@ -252,6 +256,7 @@ const store = new window.Vuex.Store({
                   },
                   error: (xhr) => {
                     if(xhr.status !== 403){
+                      checkSessionAliveTime = 0;
                       _reconent();
                     }
                   }
@@ -281,8 +286,9 @@ const store = new window.Vuex.Store({
       state.isExit = true;
 
       if(msg){
-        window.alert('exit' + msg);
-        location.href = '/#u=' + state.username;
+        // window.alert('exit' + msg);
+        // location.href = '/#u=' + state.username;
+        this.commit('needRelogin', msg);
       } else {
         // 正常退出.
         location.href = '/';
@@ -342,8 +348,11 @@ const store = new window.Vuex.Store({
       this.commit('sysApps/changeRecycleBinIcon', bool)
     },
 
-    needRelogin(state){
-      state.sessError = true;
+    needRelogin(state, msg){
+      console.log('needRelogin');
+      state.sessError = {
+        message: msg || ''
+      };
     },
     set (state, data) {
       if(TypeOf(data)  !== 'Object'){

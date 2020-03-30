@@ -1,16 +1,22 @@
 <template lang="jade">
-.lr-desktop(v-if="isConnected")
-  .lr-bar
-    Start
-    QuickLaunch
-    .lr-task-bar
-      TaskItem(v-for='(item, index) in tasks', 
-      :key='item.id',
-      :index='index',
-      :item='item')
-    .lr-inner.lr-clock-area
-      Watch
-  DeskTopBody#lr-desktop
+.lr-desktop
+  template(v-if="isFirstConnected")
+    .lr-bar
+      Start
+      QuickLaunch
+      .lr-task-bar
+        TaskItem(v-for='(item, index) in tasks', 
+        :key='item.id',
+        :index='index',
+        :item='item')
+      .lr-inner.lr-clock-area
+        Watch
+    DeskTopBody#lr-desktop
+    | {{sessError}}
+  template(v-if="sessError")
+    .lr-window_mask(@mousedown.prevent, style="z-index: 3")
+    Block(type="confirm", ref="confirm", title="Invalid session", :text="'Invalid session, Please login again. ' + sessError.message", :okFn="afterLogout", :close="closeSessErrorModal")
+  .lr-notice(v-if="isFirstConnected && !wsIsConnected") Websoket Disconnected, Reconnecting...
     
   //- h2.lr-err-color(v-if="error") {{error}}
   //- DeskTop(:icons='icons', v-else)
@@ -27,6 +33,7 @@
 <script>
 import safeBind from '../lib/mixins/safe-bind';
 import termMap from '../sys-app/terminal/map';
+import Block from '../ui/desktop-cmpt/block/base.vue';
 // import TasksBar from '__ROOT__/cmpt/task/bar.vue';
 
 import {Start, QuickLaunch, TaskItem, Watch, DeskTopBody} from '../ui/index.js';
@@ -35,6 +42,7 @@ export default {
   components: {
     // TasksBar,
     // DeskTop,
+    Block,
     DeskTopBody,
     Start,
     QuickLaunch,
@@ -45,7 +53,7 @@ export default {
   data(){
     return {
       icons: null,
-      isConnected: false,
+      isFirstConnected: false,
       error: null
     }
   },
@@ -55,6 +63,9 @@ export default {
     },
     sessError(){
       return this.$store.state.sessError
+    },
+    wsIsConnected(){
+      return this.$store.state.wsIsConnected;
     },
     username(){
       return this.$store.state.username
@@ -84,9 +95,12 @@ export default {
         }
       })
     },
+    afterLogout(){
+      location.href = '/#user=' + this.$store.state.username;
+    },
     closeSessErrorModal(){
       this.$store.commit('set', {
-        sessError: false
+        sessError: null
       })
     },
     parseBundle(data){
@@ -142,7 +156,7 @@ export default {
     const username = this.$route.params.username;
     this.$store.commit('setUsername', username);
     this.$store.commit('wsConnect', () => {
-      this.isConnected = true;
+      this.isFirstConnected = true;
       this.getData();
     });
     

@@ -16,8 +16,8 @@ FocusMenu(cssBase="lr-start")
                                 :key="k")
     .lr-hr
     .lr-start_bottom
-      .lr-btn_nf(@click="handleSettingsClick")
-        span.iconfont.icon-info(title="About")
+      //- .lr-btn_nf(@click="handleSettingsClick")
+      //-   span.iconfont.icon-info(title="About")
       router-link.lr-btn_nf(to='/' target='_blank')
         span.iconfont.icon-accountmultiple(title="Login with other account")
       .lr-btn_nf(@click="logout", style="color: red")
@@ -56,7 +56,7 @@ export default {
       });
     },
     handleAccountClick(){
-      this.$store.commit('task/add', 'sys_app_account');
+      // this.$store.commit('task/add', 'sys_app_account');
     },
     handleSettingsClick(){
       this.$store.commit('task/add', 'sys_app_settings');

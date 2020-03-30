@@ -4,8 +4,8 @@
   :style="{top: top + 'px', left: left + 'px', width: width + 'px',   height: height + 'px', zIndex: zIndex}",
   v-show="!isMin")
   .lr-title(:class="{lr_title_shine: isShine}")
-    .lr-title-content
-      //- .lr-icon(v-open-icon="icon")
+    .lr-title-content(:class='{lr_title_no_icon: !icon}')
+      .lr-icon(v-open-icon="icon", v-if="icon")
       .lr-title_text {{title}}
       Movable(v-if="movable", v-show="!isMax", @moveStart="handleMoveStart", @moving="handleMoving")
     .lr-btn_nf(@click="hidden", v-if="minimizable")
