@@ -5,12 +5,9 @@ function vRequest(opts){
   opts.context = this;
   return request(opts);
 }
-Vue.directive('open-icon', {
-  // 当被绑定的元素插入到 DOM 中时……
-  inserted: function (el, binding) {
-    // 聚焦元素
-    el.style.backgroundImage = `url("${getOpenIconUrl(binding.value)}")`;
-  }
+Vue.directive('open-icon', function (el, binding) {
+  // 聚焦元素
+  el.style.backgroundImage = `url("${getOpenIconUrl(binding.value)}")`;
 });
 
 vRequest.wrapUrl = wrapUrl;

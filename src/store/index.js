@@ -41,6 +41,7 @@ import task from './module/task';
 import fsClipBoard from './module/fs-clip-board';
 import flyTextarea from './module/fly-textarea';
 import sysApps from './module/sys-apps';
+import sysAppMap from './module/sys-apps-map';
 import users from './module/users';
 import fs from './module/fs';
 import desktop from './module/desktop';
@@ -112,7 +113,8 @@ const store = new window.Vuex.Store({
     onDustbinRecycle: null,
     sessError: null,
     openWidthData: null,
-    confirmData: null
+    confirmData: null,
+    sysAppMap
   },
   mutations: {
     setUsername(state, username){
@@ -343,6 +345,11 @@ const store = new window.Vuex.Store({
       });
     },
 
+    recycleBinChange(state, len){
+      const app = state.sysAppMap['sys_app_recycle_bin'];
+      app.iconUrl = len === 0 ? 'tango/user-trash.png' : 'tango/user-trash-full-2.png';
+
+    },
     recycleBinTrigger(state, bool){
       state.recycleBinEvent = Date.now();
       this.commit('sysApps/changeRecycleBinIcon', bool)

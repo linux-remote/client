@@ -540,13 +540,14 @@ export default {
           cwd: this.address,
           files
         },
-        success: (ids) => {
+        success: (idsAndLen) => {
           const info = this.info;
           files.forEach((filename) => {
             this.clearSelected();
             this.$delete(info.map, filename);
           });// $REVIEW: false data, no request backend.
-          this.$root.$emit('delFiles', ids);
+          this.$root.$emit('delFiles', idsAndLen);
+          this.$store.commit('recycleBinChange', idsAndLen.len);
         }
       });
     },

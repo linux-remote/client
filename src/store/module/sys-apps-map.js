@@ -10,7 +10,7 @@ const map = {
       iconUrl: 'tango/user-trash.png',
       unique: true,
       isEmpty: true,
-      ctx: ['empty']
+      ctx: 'Empty Recycle Bin'
     },
     sys_app_editor: {
       name: "Notepad",

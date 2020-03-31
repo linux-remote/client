@@ -16,8 +16,7 @@
         Contextmenuable.lr-table-tr(v-for='(item,i) in list', 
                     :class="{lr_rb_err: item.isError}", 
                     :key='item.id', 
-                    tabindex="-1",
-                    @mousedown="handleItemMousedown(item)")
+                    tabindex="-1")
           .lr-rb_item_name(:style="{width: tbody.cols[0] + 'px'}")
             .lr-icon(v-open-icon="item.icon")
             span {{item.source.base}}
@@ -128,7 +127,7 @@ export default {
           id: item.id,
           sourcePath: item.source.path
         },
-        success: () => {
+        success: (len) => {
           const infoMap = this.info.map;
           const sourceInfo = folderMap[item.source.dir];
           if(sourceInfo){
@@ -138,6 +137,11 @@ export default {
           }
           this.$delete(infoMap, item.id);
           this.$delete(infoMap, item.id + '.lnk');
+          this.$store.commit('recycleBinChange', len);
+
+          this.$nextTick(() => {
+            this.$parent.focusenter();
+          });
         },
         error: (err) => {
           this.alert(err);
@@ -156,66 +160,12 @@ export default {
       }
       ctx.close();
     },
-    handleItemMousedown(){
-
-    },
-    restore(item){
-      this.request({
-        url: '~/recycleBin/restore',
-        data: {
-          id: item.id,
-          sourcePath: item.source.path
-        },
-        type: 'post',
-        success(){
-
-          this.removeItem(item);
-
-          let address = item.source.dir;
-          this.$store.commit('fs/publicEmit', {
-            type: 'restore',
-            address,
-            // item: item.source
-          });
-        }
-      })
-    },
     genList(){
       let parsedResult = recycleParse(this.info.map);
       sortByStrKey(parsedResult, 'delTime', true);
       this.list = parsedResult;
     },
-    removeItem(){
-      return this.getData();
-      // const i = this.list.findIndex(v => v === item);
-      // this.list.splice(i, 1);
-    },
-    showPreDelModal(msg, cb){
-      this.isShowPreDelModal = true;
-      this.preDelMsg = msg;
-      this._preDelYes = cb;
-    },
-    closePreDelModal(){
-      this.isShowPreDelModal = false;
-      this.preDelMsg = '';
-      this._preDelYes = null;
-    },
-    PreDelYes(){
-      this._preDelYes();
-      this.closePreDelModal();
-    },
-    del(item){
-      this.showPreDelModal('Are you sure you want to permanently delete "' + item.source.base + '" ?', () => {
-        this.request({
-          url: '~/recycleBin/' + item.id,
-          type: 'delete',
-          success(){
-            this.removeItem(item);
-          }
-        })
-      })
 
-    },
     openDelItemConfirm(item){
       this.$store.commit('block/add', {
         type: 'confirm',
@@ -241,8 +191,14 @@ export default {
         data: {
           filenames
         },
-        success: () => {
-
+        success: (len) => {
+          filenames.forEach(name => {
+            this.$delete(this.info.map, name);
+          });
+          this.$store.commit('recycleBinChange', len);
+          this.$nextTick(() => {
+            this.$parent.focusenter();
+          });
         },
         error: (err) => {
           this.alert(err);
@@ -262,20 +218,6 @@ export default {
           this.empty();
         }
       });
-      // this.showPreDelModal('Are you sure to permanently delete All ?', () => {
-      //   this.request({
-      //     url: '~/recycleBin',
-      //     type: 'delete',
-      //     stateKey: 'isDeling',
-      //     success(){
-      //       this.list = [];
-      //       this.error = null;
-      //     },
-      //     error(xhr){
-      //       this.error = xhr.responseText;
-      //     }
-      //   })
-      // });
     },
     empty(){
       if(this.isDeling){
@@ -284,9 +226,9 @@ export default {
       this.isDeling = true;
       this.$store.commit('wsRequest', {
         method: 'emptyRecycleBin',
-        success: () => {
-          this.info.map = Object.create(null);
-          this.list = [];
+        success: (len) => {
+          this.$store.commit('recycleBinChange', len);
+          this.emptySuccessed();
         },
         error: (err) => {
           this.alert(err);
@@ -295,6 +237,10 @@ export default {
           this.isDeling = false;
         }
       })
+    },
+    emptySuccessed(){
+      this.info.map = Object.create(null);
+      this.list = [];
     },
     alert(error){
       this.$store.commit('block/add', {
@@ -334,7 +280,6 @@ export default {
       });
     },
     handleDelFiles(ids){
-      console.log('handleDelFiles', ids);
       let filenames = [];
       ids.forEach(fileId => {
         filenames.push(fileId);
@@ -345,7 +290,7 @@ export default {
         return;
       }
       info.isRequest = true;
-      console.log('filenames', filenames)
+      // console.log('filenames', filenames)
       this.$store.commit('wsRequest', {
         method: 'ls',
         data: {
@@ -396,8 +341,11 @@ export default {
     this.getData();
   },
   mounted(){
-    this.safeBind(this.$root, 'delFiles', (ids) => {
+    this.safeBind(this.$root, 'delFiles', ({ids}) => {
       this.handleDelFiles(ids);
+    })
+    this.safeBind(this.$root, 'emptyRecycleBined', () => {
+      this.emptySuccessed();
     })
   }
 }

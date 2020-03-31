@@ -11,12 +11,11 @@
 
 <script>
 // false
-import {getApp} from '../../../store/module/sys-apps-map';
 export default {
   props: ['ok'],
-  data(){
-    return {
-      app: getApp('sys_app_editor')
+  computed: {
+    app(){
+      return this.$store.state.sysAppMap['sys_app_editor'];
     }
   },
   methods: {

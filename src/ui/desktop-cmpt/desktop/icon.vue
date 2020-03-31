@@ -7,10 +7,15 @@ button.lr-desktop-icon(
               :style='{left: item.x + "px", top: item.y + "px"}',
               :class='{lr_draging: isDraging}')
   Contextmenuable(ref="ctx")
-    .lr-desktop-icon-img(v-if="iconUrl", v-open-icon="iconUrl")
-    .lr-desktop-icon-cls(v-else, :class="app.iconClassName")
-    .lr-desktop-icon-text {{name}}
+    .lr-desktop-icon-img(v-open-icon="app.iconUrl")
+    .lr-desktop-icon-text {{app.name}}
+    //- .lr-desktop-icon-img(v-if="iconUrl", v-open-icon="iconUrl")
+    //- .lr-desktop-icon-cls(v-else, :class="app.iconClassName")
+    //- .lr-desktop-icon-text {{app.name}}
     template(v-slot:contextmenu)
+      template(v-if="app.ctx")
+        .lr-ctx-item(@click="handleSpecialCtxClick(app)") {{app.ctx}}
+        .lr-hr
       .lr-ctx-item(@click="remove") Remove
   //- ContextMenu(ref='ctx')
     
@@ -42,45 +47,46 @@ export default {
   },
   computed: {
     app(){
-      return this.$store.getters['sysApps/getById'](this.item.id)
-    },
-
-    LANG(){
-      return this.$store.getters['language/currLanguage'][this.item.id] || {
-        title: 'Unknown'
-      }
-    },
-    iconUrl(){
-      const type = this.item.type;
-      if(!type){
-        return this.app.iconUrl;
-      }
-      switch(type){
-        case 'folder':
-          return 'tango/folder.png';
-        case 'file':
-          return 'nuvola/accessories-text-editor-6.png'
-      }
-    },
-    name(){
-      const type = this.item.type;
-      if(!type){
-        return this.LANG.title;
-      }
-      switch(type){
-        case 'folder':
-        case 'file':
-          return this.item.name;
-      }
+      return this.$store.state.sysAppMap[this.item.id];
     }
+    // LANG(){
+    //   return this.$store.getters['language/currLanguage'][this.item.id] || {
+    //     title: 'Unknown'
+    //   }
+    // },
+    // iconUrl(){
+    //   const type = this.item.type;
+    //   if(!type){
+    //     return this.app.iconUrl;
+    //   }
+    //   switch(type){
+    //     case 'folder':
+    //       return 'tango/folder.png';
+    //     case 'file':
+    //       return 'nuvola/accessories-text-editor-6.png'
+    //   }
+    // },
+    // name(){
+    //   const type = this.item.type;
+    //   if(!type){
+    //     return this.LANG.title;
+    //   }
+    //   switch(type){
+    //     case 'folder':
+    //     case 'file':
+    //       return this.item.name;
+    //   }
+    // }
   },
   methods: {
     onBeSelecting(isBelectSelected){
       this.isBelectSelected = isBelectSelected;
     },
-    handleSpecialCtxClick(id, name) {
-      this.$refs.ctx.hidden();
-      this.$store.dispatch(`sysApps/${id}_${name}`);
+    handleSpecialCtxClick(app) {
+      this.$root.$emit(app.id + '_ctx', app);
+      this.$refs.ctx.close();
+      // this.$refs.ctx.hidden();
+      // this.$store.dispatch(`sysApps/${id}_${name}`);
     },
     remove(){
       this.$store.commit('desktop/removeIcon', this.index);

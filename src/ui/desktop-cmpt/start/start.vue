@@ -27,23 +27,16 @@ FocusMenu(cssBase="lr-start")
 import AppItem from './app-item.vue';
 import FocusMenu from '../focus-menu/base.vue';
 import LRIcon from '../../cmpt/icon/icon.vue';
-import sysAppMap from '../../../store/module/sys-apps-map';
 export default {
   components: {
     AppItem,
     FocusMenu,
     LRIcon
   },
-
-  data(){
-    return {
-      sysAppMap
-    }
-  },
   computed: {
-    // sysAppMap(){
-    //   return this.$store.state.sysApps.sysMap;
-    // },
+    sysAppMap(){
+      return this.$store.state.sysAppMap;
+    },
     username(){
       return this.$store.state.username;
     }

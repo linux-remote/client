@@ -1,7 +1,7 @@
 <template lang="jade">
 Contextmenuable(@click="handleClick")
   .lr-icon(v-open-icon="app.iconUrl")
-  span(v-if="isShowName") {{app.title}}
+  span(v-if="isShowName") {{app.name}}
   template(v-slot:contextmenu)
     .lr-ctx-item(@click="remove") Remove
 </template>
@@ -30,7 +30,7 @@ export default {
   },
   computed: {
     app(){
-      return this.$store.getters['sysApps/getById'](this.item.id)
+      return this.$store.state.sysAppMap[this.item.id];
     }
   },
   methods: {

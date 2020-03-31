@@ -102,7 +102,12 @@ export default {
             }
             _processReLaunch();
           }
-          
+          this.$store.commit('wsRequest', {
+            method: 'getRecycleBinLen',
+            success: (len) => {
+              this.$store.commit('recycleBinChange', len);
+            }
+          })
         }
       })
     },
@@ -153,11 +158,20 @@ export default {
         hostname: data.hostname
       });
       window.APP.RECYCLE_BIN_PATH = data.homedir + '/.linux-remote/recycle-bin';
-    },
+    }
   },
 
   mounted(){
     this.$store.commit('setDeskTopWH');
+    this.safeBind(this.$root, 'sys_app_recycle_bin_ctx', () => {
+      this.$store.commit('wsRequest', {
+        method: 'emptyRecycleBin',
+        success: (len) => {
+          this.$root.$emit('emptyRecycleBined');
+          this.$store.commit('recycleBinChange', len);
+        }
+      });
+    });
   },
 
   destroyed(){
