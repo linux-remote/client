@@ -1,16 +1,16 @@
 <template lang="jade">
 .lr-window_body
   .lr-hourglass(v-show='isRequest && !$parent.isBlock')
-  h2(v-text='error' style='color:red' v-if='error')
+  h2(style='color:red' v-if='error') {{error}}
   .lr-editor-body(v-else @keydown.s='handleKeyDown')
     .lr-editor-bar
       button.lr-btn_nf.lr-editor-btn(@click='save', :disabled='isSaveDisabled') Save
-    textarea.lr_editor_textarea(v-model='data')
+    textarea.lr_editor_textarea(v-model='data', ref="textarea")
 
 </template>
 
 <script>
-
+const sizeMax = 1024 * 100;
 import {pathJoin, getDirAndBase} from '../util';
 import safeBind from '../../lib/mixins/safe-bind';
 import Modal from './modal.vue';
@@ -111,6 +111,15 @@ export default {
         }
       });
     },
+    alert(text){
+      this.$store.commit('block/add', {
+        type: 'alert',
+        status: 'error',
+        text: text,
+        title: 'Error',
+        pid: this.$parent.id
+      });
+    },
     handleKeyDown(e){
       if(e.ctrlKey){
         this.save();
@@ -119,6 +128,10 @@ export default {
     },
     save(){
       if(this.isSaveDisabled){
+        return;
+      }
+      if(this.data.length > sizeMax){
+        this.alert(this.errTooLarge());
         return;
       }
       let filePath = this.$options._filePath;
@@ -198,23 +211,38 @@ export default {
       this.filename = dirAndBase.base;
       this.dir = dirAndBase.dir;
       this.chTitle();
+    },
+    errTooLarge(){
+      return 'Error: File size too large. Only support no more than ' + (sizeMax / 1024) + 'KB.';
     }
   },
   created(){
-    const filePath = this.$options._filePath = this.task.launchOption.filePath;
+    const opt = this.task.launchOption;
+
+    const filePath = this.$options._filePath = opt.filePath;
+    
     if(filePath){
+      if(opt.size > sizeMax){
+        this.error = this.errTooLarge();
+        return;
+      }
       this.init();
       this.getData();
     } else {
       this.filename = 'Untitled';
       this.chTitle();
     }
-    
   },
   mounted(){
     this.safeBind(this.$parent, 'close', (e) => {
       this.handleWindowClose(e);
     });
+    if(!this.error){
+      this.$nextTick(() => {
+        this.$refs.textarea.focus();
+      });
+    }
+
   }
 }
 </script>

@@ -36,7 +36,25 @@ export default {
     }
   },
   mounted(){
-    this.task.window = this.$refs.window;
+    const win = this.task.window = this.$refs.window;
+    const app = this.task.app;
+
+    win.$on('resized', (virtual) => {
+      if(win.isMax){
+        return;
+      }
+      if(!app.notFollowWH){
+        app.window.width = virtual.width;
+        app.window.height = virtual.height;
+      }
+      app.window.top = virtual.top;
+      app.window.left = virtual.left;
+    });
+    win.$on('moved', (virtual) => {
+      app.window.top = virtual.top;
+      app.window.left = virtual.left;
+    });
+ 
   }
 
 }

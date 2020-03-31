@@ -3,11 +3,12 @@ import { handleFileAppMap, getApp } from '../../../store/module/sys-apps-map.js'
 
 let categoryMap = {
   'image': ['jpg', 'png', 'jpeg', 'webp', 'svg', 'gif','bmp', 'ico'],
-  'text': ['js', 'txt', 'sh', 'vue', 'css', 'html', 'ejs', 'json', 'scss', 'conf', 'c', 'cpp', 'h', 'log']
+  'text': ['js', 'txt', 'sh', 'vue', 'css', 'html', 'ejs', 'json', 'scss', 'conf', 'c', 'cpp', 'h', 'log', 'md']
 }
 
 const defOpenAppMap = {
-  text: 'sys_app_editor'
+  text: 'sys_app_editor',
+  image: 'sys_app_image_viewer'
 }
 
 const suffixMap = Object.create(null);

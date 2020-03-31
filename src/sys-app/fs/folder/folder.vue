@@ -42,6 +42,7 @@ import CopyCutPasteMixin from './mixins/copy-cut-paste';
 import StatusBar from './status-bar.vue';
 import RenameModal from './rename-modal.vue';
 import CreateModal from './create-modal.vue';
+import OpenWithModal from './open-with-modal.vue';
 import parseList from './fs-list-parse';
 
 
@@ -212,10 +213,19 @@ export default {
         this.go(itemAddress);
       }else if(item.isFile){
         if(item.openApp){
-          this.$store.commit('task/add', {
-            appId: item.openApp.id,
-            filePath: itemAddress
-          });
+          if(item.category === 'text'){
+            this.openByTextApp(item, itemAddress);
+          } else {
+            this.$store.commit('block/add', {
+              type: 'alert',
+              status: 'warn',
+              title: 'Not supported temporarily',
+              text: 'Opening ' + item.category + ' file is not supported temporarily.',
+              pid: this.taskWindow.id
+            });
+          }
+        } else {
+          this.showOpenWidthModal(item, itemAddress);
         }
         // if(item.openType === 'image'){
         //   return this.windowOpen(address);
@@ -231,6 +241,28 @@ export default {
         //   });
         // }
       }
+    },
+    openByTextApp(item, itemAddress, appId){
+      this.$store.commit('task/add', {
+        appId: appId || item.openApp.id,
+        filePath: itemAddress,
+        size: item.size
+      });
+    },
+    showOpenWidthModal(item, itemAddress){
+      this.$store.commit('block/add', {
+        title: 'Open with',
+        width: 300,
+        height: 100,
+        // enterBindBtn: true,
+        cmpt: OpenWithModal,
+        pid: this.taskWindow.id,
+        propsData: {
+          ok : (appId) => {
+            this.openByTextApp(item, itemAddress, appId);
+          }
+        }
+      });
     },
     handleSelectEnd(){
       // const selectedItems = this.info.list.filter(item => item.isBeSelected);

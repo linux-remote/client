@@ -70,6 +70,7 @@
 .lr-task-bar{
   flex-grow: 1;
   height: 100%;
+  padding-right: 15px;
   display: flex;
   align-items: center;
   overflow-x: hidden;
@@ -78,7 +79,8 @@
 .lr-clock-area{
   height: 22px;
   min-width:  71px;
-  width: 71px;
+  padding: 0 4px;
+  // width: 71px;
   flex-shrink: 0;
   display: flex;
   align-items: center;

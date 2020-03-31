@@ -7,7 +7,7 @@
     .lr-title-content(:class='{lr_title_no_icon: !icon}')
       .lr-icon(v-open-icon="icon", v-if="icon")
       .lr-title_text {{title}}
-      Movable(v-if="movable", v-show="!isMax", @moveStart="handleMoveStart", @moving="handleMoving")
+      Movable(v-if="movable", v-show="!isMax", @moveStart="handleMoveStart", @moving="handleMoving", @moved="handleMoved")
     .lr-btn_nf(@click="hidden", v-if="minimizable")
       span.lr-icon_min
     .lr-btn_nf(@click="maxToggle", v-if="maximizable")
@@ -136,6 +136,12 @@ const Window = {
       this.top = virtual.top;
       this.left = virtual.left;
     },
+    handleMoved(virtual){
+      if(virtual.top < 0){
+        this.top = virtual.top = 0;
+      }
+      this.$emit('moved', virtual);
+    },
     handleResizeStart(virtual){
       virtual.top = this.top;
       virtual.left = this.left;
@@ -148,8 +154,8 @@ const Window = {
       this.width = virtual.width;
       this.height = virtual.height;
     },
-    handleResized(){
-      this.$emit('resized');
+    handleResized(virtual){
+      this.$emit('resized', virtual);
     },
 
     show(){
@@ -309,9 +315,9 @@ const Window = {
       this.maxToggle();
     }
     this.focusenter();
-    if(this.autoFocus){
-      this.focusenter();
-    }
+    // if(this.autoFocus){
+    //   this.$el.focus();
+    // }
 
   },
   destroyed(){

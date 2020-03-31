@@ -40,7 +40,7 @@ export default {
     mouseupListener(){
       this.$options._startData = null;
       window.removeEventListener('mousemove', this.mousemoveListener);
-      this.$emit('moveEnd', this.$options._virtual);
+      this.$emit('moved', this.$options._virtual);
       this.$options._virtual = null;
     }
   }

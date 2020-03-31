@@ -2,6 +2,7 @@ const map = {
     sys_app_fs: {
       name: "FS Manager",
       iconUrl: 'tango/user-home.png',
+      
       // unique: false,
     },
     sys_app_recycle_bin : {
@@ -14,7 +15,12 @@ const map = {
     sys_app_editor: {
       name: "Notepad",
       handleFileCategory: 'text',
-      iconUrl: 'nuvola/accessories-text-editor-6.png'
+      iconUrl: 'nuvola/accessories-text-editor-6.png',
+      window: {
+        autoFocus: false,
+        top: 0.6,
+        left: 0.6
+      }
     },
     sys_app_image_viewer: {
       name: "Image Viewer",
@@ -29,7 +35,10 @@ const map = {
     sys_app_terminal: {
       name: "Terminal",
       iconUrl: 'nuvola/utilities-terminal-6.png',
+      notFollowWH: true,
       window: {
+        top: 100,
+        left: 100,
         width: 742,
         height: 440
       }

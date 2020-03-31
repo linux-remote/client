@@ -6,29 +6,28 @@ const uniqueTaskMap = Object.create(null);
 
 const P_OFFSET = 22;
 
-function _initPosition(latest, appWindow){
-  var dom = document.getElementById('lr-desktop');
-  var desktopH = dom.clientHeight;
+function _initPosition(appWindow){
+  const dom = document.getElementById('lr-desktop');
+  const desktopH = dom.clientHeight;
   const desktopW = dom.clientWidth;
-  if(!latest){ // Appear on center
-    appWindow.top = (desktopH - appWindow.height) / 2;
-    appWindow.left = (desktopW - appWindow.width) / 2;
+  let top, left;
+  if(appWindow.top === undefined){ // Appear on center
+    top = (desktopH - appWindow.height) / 2;
+    left = (desktopW - appWindow.width) / 2;
   }else{
+    top = appWindow.top + P_OFFSET;
+    left = appWindow.left + P_OFFSET;
+  }
+  if(top + appWindow.height >= desktopH){
+    appWindow.top = 0;
+  }else{
+    appWindow.top = top;
+  }
 
-    const top = latest.top + P_OFFSET;
-    const left = latest.left + P_OFFSET;
-
-    if(top + appWindow.height >= desktopH){
-      appWindow.top = 0;
-    }else{
-      appWindow.top = top;
-    }
-
-    if(left + appWindow.width >= desktopW){
-      appWindow.left = 0;
-    }else{
-      appWindow.left = left;
-    }
+  if(left + appWindow.width >= desktopW){
+    appWindow.left = 0;
+  }else{
+    appWindow.left = left;
   }
 }
 
@@ -75,7 +74,7 @@ export default  {
         }
       }
       
-      _initPosition(null, app.window);
+      _initPosition(app.window);
 
       task.id = id;
       id = id + 1;

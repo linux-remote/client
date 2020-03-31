@@ -579,6 +579,28 @@ $fsRowItemH: 50px;
   bottom: 0;
   margin:auto;
 }
+.lr-fs_ow_wrap{
+  padding: 10px;
+}
+.lr-fs_ow-item{
+  display: flex;
+  background-color: $color3;
+  color: #fff;
+  height: 50px;
+  align-items: center;
+  font-size: 16px;
+  .lr-icon{
+    width: 50px;
+    height: 50px;
+    margin: 0;
+    margin-right: 10px;
+  }
+}
+.lr-fs_ow_footer{
+  padding-top: 5px;
+  padding-right: 10px;
+  text-align: right;
+}
 /*
 .lr_file_model_on{
   background-color: red;

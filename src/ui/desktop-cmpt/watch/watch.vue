@@ -1,7 +1,8 @@
 
 <template lang="jade">
 .lr-watch(v-if='clientDate', :title="title")
-  | {{watch.hours}}:{{watch.minutes}}
+  span {{watch.hours}}:{{watch.minutes}}
+  span.lr-watch_timezone {{hourTimeZone}}
   //- .lr-watch-detail 
   //-   p {{watch.year}}/{{watch.mounth}}/{{watch.day}} 
   //-   p {{hourTimeZone}}
@@ -31,7 +32,7 @@ export default {
     hourTimeZone(){
       let t = -this.timeZoneOffset;
       let suffix = t > 0 ? '+' : '-';
-      return `${suffix}${t / 60}00`
+      return `${suffix}${t / 60}:00`
     },
     watch(){
       const d = new Date(this.now - this.timeDiff);
@@ -49,7 +50,7 @@ export default {
       }
     },
     title(){
-      return `${this.watch.year}/${this.watch.mounth}/${this.watch.day} ${this.hourTimeZone}`
+      return `${this.watch.year}/${this.watch.mounth}/${this.watch.day}`
     },
   },
   methods:{

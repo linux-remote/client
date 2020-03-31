@@ -10,10 +10,11 @@
 }
 </style>
 <template lang='jade'>
-div(style="position: relative; width: 100%; height: 100%; overflow: auto; ")
-  div(@mousedown.self='mousedownListener', style="min-width: 100%; min-height: 100%")
-    .lr-select-area(v-show='isSelect',:style='style')
-    //- span X:{{layerX}} Y: {{layerY}} w:{{w}} h:{{h}}
+div(style=" width: 100%; height: 100%; overflow: auto; ")
+  //- span(style="position: absolute; left: 40%; top: 0") X:{{layerX}} Y: {{layerY}} w:{{w}} h:{{h}}
+  div(@mousedown.self='mousedownListener', style="position: relative;min-width: 100%; min-height: 100%")
+    .lr-select-area(v-show='isSelect',
+    :style="{top: layerY + 'px', left: layerX + 'px', width: w + 'px', height: h + 'px'}")
     slot
 </template>
 
@@ -34,12 +35,6 @@ export default {
       h: 0
     }
   },
-  computed: {
-    style(){
-      const {layerX, layerY, w, h} = this;
-      return `top:${layerY}px; left:${layerX}px; width:${w}px; height:${h}px;`
-    }
-  },
   methods: {
     // clearSelected(){
     //   if(!this.isSelect){
@@ -53,8 +48,10 @@ export default {
     selectStart (e) {
       this.isSelect = true;
       const el = this.$el;
-      const x = e.layerX + el.scrollLeft;
-      const y = e.layerY + el.scrollTop;
+      // firefox layerX always relative to parent.
+      // firefox  no support for offsetX: always 0.
+      const x = e.layerX;
+      const y = e.layerY;
       Object.assign(this, {
         layerX :x,
         layerY: y,

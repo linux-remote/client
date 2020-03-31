@@ -6,29 +6,36 @@ const uniqueTaskMap = Object.create(null);
 
 const P_OFFSET = 22;
 
-function _initPosition(latest, appWindow){
-  var dom = document.getElementById('lr-desktop');
-  var desktopH = dom.clientHeight;
+function _initPosition(appWindow){
+  const dom = document.getElementById('lr-desktop');
+  const desktopH = dom.clientHeight;
   const desktopW = dom.clientWidth;
-  if(!latest){ // Appear on center
-    appWindow.top = (desktopH - appWindow.height) / 2;
-    appWindow.left = (desktopW - appWindow.width) / 2;
+  let top, left;
+  if(appWindow.top === undefined){
+    top = (desktopH - appWindow.height) / 2;
+  } else if(appWindow.top > 0 && appWindow.top < 1){
+    top = Math.ceil((desktopH - appWindow.height) * appWindow.top);
+  } else {
+    top = appWindow.top + P_OFFSET;
+  }
+  if(appWindow.left === undefined){
+    left = (desktopW - appWindow.width) / 2;
+  } else if(appWindow.left > 0 && appWindow.left < 1){
+    left = Math.ceil((desktopW - appWindow.width) * appWindow.left);
+  } else {
+    left = appWindow.left + P_OFFSET;
+  }
+
+  if(top + appWindow.height >= desktopH){
+    appWindow.top = 0;
   }else{
+    appWindow.top = top;
+  }
 
-    const top = latest.top + P_OFFSET;
-    const left = latest.left + P_OFFSET;
-
-    if(top + appWindow.height >= desktopH){
-      appWindow.top = 0;
-    }else{
-      appWindow.top = top;
-    }
-
-    if(left + appWindow.width >= desktopW){
-      appWindow.left = 0;
-    }else{
-      appWindow.left = left;
-    }
+  if(left + appWindow.width >= desktopW){
+    appWindow.left = 0;
+  }else{
+    appWindow.left = left;
   }
 }
 
@@ -67,14 +74,15 @@ export default  {
       task.launchOption = opt;
       if(app.unique){
         if(uniqueTaskMap[appId]){
-          this.commit('task/show', uniqueTaskMap[appId]);
+          uniqueTaskMap[appId].window.show();
+          // this.commit('task/show', uniqueTaskMap[appId]);
           return;
         }else{
           uniqueTaskMap[appId] = task;
         }
       }
       
-      _initPosition(null, app.window);
+      _initPosition(app.window);
 
       task.id = id;
       id = id + 1;
@@ -90,6 +98,11 @@ export default  {
       const item = state.list[index];
       if(item.app.unique){
         delete(uniqueTaskMap[item.app.id]);
+      }
+      if(!item.window.isMax){
+        const aw = item.app.window;
+        aw.top = aw.top - P_OFFSET;
+        aw.left = aw.left - P_OFFSET;
       }
       state.list.splice(index, 1);
       this.commit('task/focusNext');

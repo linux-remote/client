@@ -84,13 +84,24 @@ export default {
         method: 'getDesktopBundle',
         success: (data) => {
           this.parseBundle(data);
-          data.createdTerm.forEach(termId => {
-            termMap[termId] = '';
-            this.$store.commit('task/add', {
-              appId: 'sys_app_terminal',
-              id: termId
-            });
-          });
+          if(data.createdTerm.length){
+            const reloadNotice = '\n--------- Reloaded ---------\n\r';
+            const _processReLaunch = () => {
+              let termId = data.createdTerm[0];
+              termMap[termId] = reloadNotice;
+              this.$store.commit('task/add', {
+                appId: 'sys_app_terminal',
+                id: termId
+              });
+              data.createdTerm.shift();
+              if(data.createdTerm.length){
+                this.$nextTick(() => {
+                  _processReLaunch();
+                });
+              }
+            }
+            _processReLaunch();
+          }
           
         }
       })

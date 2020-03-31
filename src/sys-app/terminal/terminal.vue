@@ -16,7 +16,7 @@ export default {
   },
   methods: {
 
-    create({FemTerminal, FemFit, FemWebLinks}) {
+    create({FemTerminal, FemFit}) {
       // Terminal: ƒ, AttachAddon: ƒ, FitAddon: ƒ, WebLinksAddon
       // const isWindows = ['Windows', 'Win16', 'Win32', 'WinCE'].indexOf(navigator.platform) >= 0;
       const $opt = this.$options;
@@ -36,7 +36,7 @@ export default {
       });
       const fitAddon = new FemFit.FitAddon();
       term.loadAddon(fitAddon);
-      term.loadAddon(new FemWebLinks.WebLinksAddon());
+      // term.loadAddon(new FemWebLinks.WebLinksAddon());
       term._fit = () => {
         fitAddon.fit();
       };
@@ -140,9 +140,9 @@ export default {
       span.innerText = 'Loading xterm.js static resources...';
       this.$el.appendChild(span);
       window.require(['xterm', 
-      'xterm-addon-attach', 
       'xterm-addon-fit',
-      'xterm-addon-web-links', 'xterm.css'], (FemTerminal, FemAttach, FemFit, FemWebLinks) => {
+      // 'xterm-addon-web-links', 
+      'xterm.css'], (FemTerminal, FemFit) => {
         this.$el.removeChild(span);
         // Terminal.loadAddon(attach);
         // Terminal.loadAddon(fit);
@@ -151,7 +151,7 @@ export default {
         // Terminal.loadAddon(zmodem);
         // console.log('FemTerminal', FemTerminal)
         const loaded = this.$options._amdLoaded = {
-          FemTerminal, FemFit, FemWebLinks
+          FemTerminal, FemFit
         };
         cb(loaded);
         });
