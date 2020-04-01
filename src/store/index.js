@@ -45,7 +45,7 @@ import sysAppMap from './module/sys-apps-map';
 import users from './module/users';
 import fs from './module/fs';
 import desktop from './module/desktop';
-const SocketRequest = require('../../../../socket-request/index.js');
+const SocketRequest = require('@hezedu/socket-request');
 // let _tmp = null;
 const AFRTimeout = 15 * 60 * 1000;
 let ws, sr, _pako;
