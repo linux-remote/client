@@ -165,7 +165,7 @@ button.lr-desktop-icon{
   border: 0;
   cursor: default;
   &:focus{
-    background-color: rgba(#fff, .1);
+    background-color: rgba($color3, .1);
     border: 1px solid rgba(#fff, .5);
     // box-shadow: -1px -1px #fff;
     padding: 0;
