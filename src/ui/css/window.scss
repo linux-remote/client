@@ -1,0 +1,55 @@
+.lr-window-wrap{
+  position: absolute;
+}
+.lr-window{
+  position: absolute;
+  @extend .lr-box;
+  padding: $taskTitleH + 4px 3px 3px;
+  height: 100%;
+  overflow: hidden;
+}
+
+.lr_window_resizable{
+  padding: $taskTitleH + 5px 4px 4px;
+  >.lr-title{
+    top: $titlePadding + 1;
+    left: $titlePadding + 1;
+    right: $titlePadding + 1;
+  }
+}
+
+.lr_window_maximized{ // 最大化窗口
+  box-shadow: none; 
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  padding-top: $taskTitleH + 1px;
+  >.lr-title{
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+}
+
+.lr-window{
+  &:focus-within{
+      >.lr-title{
+        color: #fff;
+        background-color: $taskActiveTitleColor;
+      }
+  }
+}
+
+.lr-window_body{
+  height: 100%;
+  position: relative;
+}
+.lr-window_mask{
+  position: absolute;
+  z-index: 5;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(#000, .5);
+}

@@ -1,57 +1,35 @@
+const path = require('path');
+
 const favicon = require('serve-favicon');
 const eStatic = require('express').static;
+const localUnpkg = require('../local-unpkg/index.js');
+const clientMount = require('../client-mount/index.js');
 
+const faviconPath = path.join(__dirname,  'logo_def.png');
 
-const DAY_TIME = 1000 * 60 * 60 * 24 //一天
-const MONTH_TIME  = DAY_TIME * 30 //一月
-const HALF_YEAR_TIME  = MONTH_TIME * 6; //半年
-const IS_PRO = process.env.NODE_ENV === 'production';
-const  {nodeModuleStaticMap, faviconPath, publicPath} = require('./index');
-const map = nodeModuleStaticMap;
+function setup(app /*, webpackDevServer */){
+  
 
-var indexJsPathArr = [];
-var indexCssPathArr = [];
-function pushIndexPath(_path) {
-  if(/\.css$/.test(_path)){
-    indexCssPathArr.push(_path);
-  }else {
-    indexJsPathArr.push(_path);
-  }
-}
-for(let name in map){
-  var v = map[name];
-  if(v.files) {
-    v.files.forEach(_name => {
-      pushIndexPath(v.url + '/' + _name);
-    });
-  } else {
-    if (/\.js$/.test(name)) {
-      name = name.replace(/\.js$/, '');
-    }
-    var distName = IS_PRO ? name + '.min' : name;
-    distName = distName + '.js';
-    v.distName = distName;
-    var jsPath = v.url + '/' + distName;
-    // v.jsPath = jsPath;
-    indexJsPathArr.push(jsPath);
-  }
+  clientMount(app, 
+              eStatic, 
+              {
+                cdn: false,
+                clientVersion: 'dev',
+                CORS: 'http://192.168.56.101:3000',
+                _devlrClientJs: '/dist/lr-client.js',
+                localunpkgdir: localUnpkg.pkgDir,
+                localunpkgVersion: localUnpkg.version
+              });
 
-}
-
-function setup(app){
-  app.use('/public', eStatic(publicPath));
+  // setTimeout(function(){
+  //   // server.listeningApp eq http server.
+  //   wsHandle(webpackDevServer.listeningApp);
+  // });
+  
   app.use(favicon(faviconPath));
-  const maxAge = IS_PRO ? HALF_YEAR_TIME : 0;
-  for(let i in map){
-    let v = map[i];
-    // const filePath = path.join(v.fsDir, v.distName);
-    app.use(v.url, eStatic(v.fsDir, {maxAge}));
-  }
+  // dev
+  app.use('/dist', eStatic(path.join(__dirname, 'dist')));
 };
 
-setup.nodeModuleStatic = {
-  cssArr: indexCssPathArr,
-  jsArr: indexJsPathArr
-};
 
 module.exports = setup;

@@ -5,18 +5,22 @@ import store from '__ROOT__/store/index.js';
 import router from '../router';
 const $ = window.$;
 
-const API_ROOT = window.SERVER_CONFIG.API_ROOT;
 export const JSON_CONTENT_TYPE = 'application/json; charset=utf-8';
-//const POOL = {};
+let _apiHost = window.CLIENT_CONFIG.CORS || '';
+
 //跨站ajax请求初始化.
-if(API_ROOT.indexOf('http') === 0){
-  $.ajaxSetup({
-    xhrFields: {
-      withCredentials: true
-    },
-    headers: {'X-Requested-With': 'XMLHttpRequest'}
-  });
+const ajaxGlobalOption = {
+  beforeSend: function( xhr ) {
+    xhr.overrideMimeType( "text/plain");
+  }
+} 
+if(_apiHost){
+  ajaxGlobalOption.xhrFields = {
+    withCredentials: true
+  };
 }
+
+$.ajaxSetup(ajaxGlobalOption);
 
 const POOL = Object.create(null);
 var poolIndex = 0;
@@ -42,7 +46,7 @@ const omitKeyMap = {
 
 const globalConfig = {
   repeatSubmitMode: undefined,
-  rootUrl: API_ROOT
+  rootUrl: _apiHost + '/api'
 }
 
 function getUserUrl(url){

@@ -1,11 +1,48 @@
 //let _id = 3; 
-const uniqueMap = Object.create(null);
-const TASK_WIDTH = 800;
-const TASK_HEIGHT = 600;
+import { getApp } from './sys-apps-map';
+
+let id = 1;
+const uniqueTaskMap = Object.create(null);
+
+const P_OFFSET = 22;
+
+function _initPosition(appWindow){
+  const dom = document.getElementById('lr-desktop');
+  const desktopH = dom.clientHeight;
+  const desktopW = dom.clientWidth;
+  let top, left;
+  if(appWindow.top === undefined){
+    top = (desktopH - appWindow.height) / 2;
+  } else if(appWindow.top > 0 && appWindow.top < 1){
+    top = Math.ceil((desktopH - appWindow.height) * appWindow.top);
+  } else {
+    top = appWindow.top + P_OFFSET;
+  }
+  if(appWindow.left === undefined){
+    left = (desktopW - appWindow.width) / 2;
+  } else if(appWindow.left > 0 && appWindow.left < 1){
+    left = Math.ceil((desktopW - appWindow.width) * appWindow.left);
+  } else {
+    left = appWindow.left + P_OFFSET;
+  }
+
+  if(top + appWindow.height >= desktopH){
+    appWindow.top = 0;
+  }else{
+    appWindow.top = top;
+  }
+
+  if(left + appWindow.width >= desktopW){
+    appWindow.left = 0;
+  }else{
+    appWindow.left = left;
+  }
+}
+
 function _defState(){
   return {
     list: [],
-    latest: {}, // last created task
+
     current: {}, // focused task
     id: 3,  //zIndex
     
@@ -14,186 +51,98 @@ function _defState(){
     _tmpMinAllIsCurrFocus: false
   }
 }
+
 export default  {
   namespaced: true,
   state: _defState(),
   mutations: {
-    add(state, opts){
-      var appId;
-      if(typeof opts === 'string'){
-        appId = opts;
-        opts = {appId}
-      } else {
-         // opts 是一个对象.
-        appId = opts.appId;
+    add(state, _opt){
+      let opt = _opt;
+      if(typeof opt === 'string'){
+        opt = {
+          appId: opt
+        };
       }
-      const APP = this.getters['sysApps/getById'](appId);
-
-      if(APP.IS_UNKNOWN_APP){
-        return this.commit('error/show', 'Unknown App!');
+      const appId = opt.appId;
+      const app = getApp(appId);
+      if(!app){
+        this.commit('error/show', 'Unknown App!');
+        return;
       }
-
-      const data = {
-        ...opts,
-        APP
-      }
-      data.title = data.title || null;
-      data.unique = APP.unique || false;
-      data.width = APP.width || TASK_WIDTH;
-      data.height = APP.height || TASK_HEIGHT;
-
-      if(data.unique){
-        if(uniqueMap[appId]){
-          return this.commit('task/show', uniqueMap[appId]);
+      const task = Object.create(null);
+      task.app = app;
+      task.launchOption = opt;
+      if(app.unique){
+        if(uniqueTaskMap[appId]){
+          uniqueTaskMap[appId].window.show();
+          // this.commit('task/show', uniqueTaskMap[appId]);
+          return;
         }else{
-
-          uniqueMap[appId] = data;
+          uniqueTaskMap[appId] = task;
         }
-      } else {
-        let preSameTask = {zIndex: -1, width: data.width, height: data.height};
-        state.list.forEach(v => {
-          if(v.appId === appId){
-            if(preSameTask.zIndex < v.zIndex){
-              preSameTask = v;
-            }
-          }
-        });
-  
-        const isMax = preSameTask.isMax;
-        data.width = isMax ? data.width : preSameTask.width;
-        data.height = isMax ? data.height : preSameTask.height;
-        
       }
-      const rootState = this._modules.root.state;
-      if(data.width > rootState.deskTopW){
-        data.width = rootState.deskTopW;
-      }
-      if(data.height > rootState.deskTopH){
-        data.height = rootState.deskTopH;
-      }
-      data.draggable = false;
-      data.isMin = false;
-      data.isMax = false;
-      data.resizeStartData = null;
+      
+      _initPosition(app.window);
 
-      this.commit('task/_initPosition', data); // init: positionTop, positionLeft
-      this.commit('task/focus', data); // init: isFocus, id.
+      task.id = id;
+      id = id + 1;
 
-      data.id = state.id;
-      state.latest = data;
-      state.list.push(data);
-    },
-    focus(state, task){
-      if(task.isFocus === true){
-        return;
-      } 
-      if(state._tmpMinAll.length){
-        state._tmpMinAll = [];
-        state.isMinAll = false;
-      }
-      if(state.current === task){
-        task.isFocus = true;
-        return;
-      }
-      state.current.isFocus = false;
-      task.isFocus = true;
-      state.id = state.id + 1; //z-index 最前.
-      task.zIndex = state.id;
-      state.current = task;
+      task.window = Object.create(null);
+      state.list.push(task);
     },
 
-    show(state, task){
-      task.isMin = false;
-      if(task !== state.current && !state.current.isMax && task.positionLeft === state.current.positionLeft && task.positionTop === state.current.positionTop){
-        this.commit('task/_initPosition', task);
-      }
-      this.commit('task/focus', task);
-    },
-
-    hidden(state, task){
-      task.isMin = true;
-      task.isFocus = false;
-      this.commit('task/_focusNext');
-    },
-
-    remove(state, index){
+    remove(state, id){
+      let index = state.list.findIndex(function(v){
+        return v.id === id;
+      });
       const item = state.list[index];
-      if(item.unique){
-        delete(uniqueMap[item.appId]);
+      if(item.app.unique){
+        delete(uniqueTaskMap[item.app.id]);
+      }
+      if(!item.window.isMax){
+        const aw = item.app.window;
+        aw.top = aw.top - P_OFFSET;
+        aw.left = aw.left - P_OFFSET;
       }
       state.list.splice(index, 1);
-      this.commit('task/_focusNext');
+      this.commit('task/focusNext');
     },
 
-    currentUnFocus(state){
-      state.current.isFocus = false;
-    },
-    
-    // copy(state, task){
-    //   const cloneTask = cloneDeep(task);
-    //   cloneTask.isFocus = false;
-    //   this.commit('task/add', cloneTask);
+    // toggleMinAll(state){
+    //   if(state._tmpMinAll.length){
+    //     state._tmpMinAll.forEach(function(v){
+    //       v.isMin = false;
+    //     });
+    //     state.current.isFocus = state._tmpMinAllIsCurrFocus;
+    //     state._tmpMinAll = [];
+
+    //   } else {
+    //     state._tmpMinAllIsCurrFocus = state.current.isFocus;
+    //     state.list.forEach(v => {
+    //       if(!v.isMin){
+    //         state._tmpMinAll.push(v);
+    //         v.isMin = true;
+    //       }
+    //     });
+    //     state.current.isFocus = false;
+    //   }
+    //   state.isMinAll = state._tmpMinAll.length !== 0;
     // },
-
-    toggleMinAll(state){
-      if(state._tmpMinAll.length){
-        state._tmpMinAll.forEach(function(v){
-          v.isMin = false;
-        });
-        state.current.isFocus = state._tmpMinAllIsCurrFocus;
-        state._tmpMinAll = [];
-
-      } else {
-        state._tmpMinAllIsCurrFocus = state.current.isFocus;
-        state.list.forEach(v => {
-          if(!v.isMin){
-            state._tmpMinAll.push(v);
-            v.isMin = true;
-          }
-        });
-        state.current.isFocus = false;
-      }
-      state.isMinAll = state._tmpMinAll.length !== 0;
-    },
-    closeAll(state){
-      Object.assign(state, _defState());
-    },
-    _focusNext(state){
-      var preTask = {zIndex : -1};
-      state.list.forEach(v => {
-        if(v.isMin === false){
-          if(preTask.zIndex < v.zIndex){
-            preTask = v;
+    // closeAll(state){
+    //   Object.assign(state, _defState());
+    // },
+    focusNext(state){
+      var ptw = {zIndex : -1};
+      state.list.forEach(task => {
+        let tw = task.window;
+        if(tw.isMin === false){
+          if(ptw.zIndex < tw.zIndex){
+            ptw = tw;
           }
         }
-      })
-      if(preTask.zIndex !== -1){
-        this.commit('task/focus', preTask);
-      }
-    },
-    _initPosition(state, data){
-      let parentH = this.state.winH;
-      let parentW = this.state.winW;
-      if(!state.list.length){ // Appear on center
-        data.positionTop = (parentH - data.height) / 2;
-        data.positionLeft = (parentW - data.width) / 2;
-      }else{
-        let current = state.current;
-
-        const top = current.positionTop + 50;
-        const left = current.positionLeft + 50;
-  
-        if(top + data.height >= parentH){
-          data.positionTop = 0;
-        }else{
-          data.positionTop = top;
-        }
-  
-        if(left + data.width >= parentW){
-          data.positionLeft = 0;
-        }else{
-          data.positionLeft = left;
-        }
+      });
+      if(ptw.zIndex !== -1){
+        ptw.focusenter();
       }
     }
   }

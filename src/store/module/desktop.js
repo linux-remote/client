@@ -1,5 +1,5 @@
 // import alwaysLeftTop from '__ROOT__/lib/always-left-top';
-// import {getDirAndBase} from '__ROOT__/cmpt/sys-app/util';
+// import {getDirAndBase} from '__ROOT__/sys-app/util';
 export default  {
   namespaced: true,
   state: {

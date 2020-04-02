@@ -1,0 +1,37 @@
+.lr-editor-body{
+  display: flex; 
+  height: 100%;
+  flex-direction: column;
+}
+.lr-editor-bar{
+  height: 20px; 
+  line-height: 20px;
+  display: flex;
+  align-items: center;
+}
+.lr-editor-btn{
+  height: 18px;
+  line-height: 1;
+  margin-left: 4px;
+  vertical-align: middle;
+
+  width: auto;
+  min-width: 50px;
+}
+.lr_editor_textarea{
+  padding: 0 4px;
+  height: 100%; 
+  width: 100%; 
+  display: block;
+  flex-grow: 1;
+  outline: none;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 1.2;
+  resize: none;
+  color: #000;
+  font-family: Consolas, "Courier New", monospace;
+  overflow-y: scroll;
+  border: 0;
+  border-top: 2px solid #f0f0f0;
+}

@@ -1,0 +1,60 @@
+$RBCtrlBarH: 28px;
+.lr-rb-wrap{
+  padding-top: $RBCtrlBarH;
+  button{
+    height: 25px;
+    border-width: 2px;
+    line-height: 21px;
+  }
+}
+.lr-rb-ctrl-bar{
+  height: $RBCtrlBarH;
+  padding: 0 10px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.lr-rb-body{
+  height: 100%;
+  overflow: auto;
+}
+.lr-rb-table{
+  tr:hover{
+    background-color: #eee;
+  }
+}
+.lr-rm-table{
+  th{
+    color: #484848;
+    text-align: left;
+    font-weight: normal;
+  }
+  tr:nth-child(even){
+    background-color: #eee;
+  }
+  td{
+    padding: 2px 5px;
+  }
+}
+.lr-rb-folder_body{
+  @extend .lr-box_in;
+  height: 100%;
+}
+.lr-rb-folder_inner{
+  height: 100%;
+}
+.lr_rb_err{
+  // background-color: red;
+  color: red;
+}
+.lr-rb_btn_empty{
+  width: auto;
+  padding: 0 5px;
+}
+.lr-rb_item_name{
+  display: flex;
+}

@@ -1,0 +1,86 @@
+.lr-disk-fieldset-body{
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+.lr-disk-item{
+  flex-shrink: 0;
+  margin-right: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  //cursor: pointer;
+  // &:hover{
+  //   background-color: rgba($bg, .5);
+  // }
+}
+.lr-disk-icon{
+  width: 50px;
+  height: 50px;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  
+}
+
+.lr-disk-item-right{
+  width: 220px;
+}
+.lr-disk-process-wrap{
+  height: 18px;
+  background-color: #eee;
+  border: 1px solid #ddd;
+  width: 96%;
+  position: relative;
+}
+.lr-disk-process{
+  height: 100%;
+  background-color: #00CED1;
+}
+.lr-disk-left{
+  width: 50px;
+  margin-right: 10px;
+  position: relative;
+}
+.lr-disk-type{
+  font-size: 12px;
+  text-align: center;
+  color:#fff;
+  position: absolute;
+  top: 0;
+  left: -10px;
+  background-color: violet;
+  padding: 0 3px;
+
+}
+.lr-disk-i-process-wrap{ 
+  width: 96%;
+  background-color: #ddd;
+  z-index: 2;
+  top: 100%;
+  left: 0;
+  height: 3px;
+  margin-bottom: 2px;
+}
+.lr-disk-i-process{
+  height: 100%;
+  background-color: darkmagenta;
+  width: 0;
+}
+
+.lr-disk-info{
+  font-size: 13px;
+  color: #444;
+}
+.lr-disk-link{
+  text-decoration: none;
+  color: blue;
+  cursor: pointer;
+  width: 96%;
+  margin-bottom:5px;
+  line-height: 1.2;
+  border-bottom: 1px solid #ccc;
+}
+.lr-disk-link:hover{
+  color: green;
+  border-color: green;
+}

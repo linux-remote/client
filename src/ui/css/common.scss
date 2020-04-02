@@ -1,0 +1,203 @@
+body, button{
+  font-size: 12px;
+  font-family:Tahoma , Arial, sans-serif, SimSun;
+  color: #000;
+}
+// common
+// padding
+
+// color
+.lr-bar{
+  background-color: $color1;
+}
+
+// 外右下，外上左，内右下，内上左
+// 上下
+.lr-table-head{
+  box-shadow: 0 -1px #000 inset,
+  1px 1px  #fff inset,
+  0 -2px $color2 inset;
+  //2px 2px  $color1 inset;
+  background-color: $color1;
+}
+
+.lr-inner{
+  box-shadow: -1px -1px #fff inset,
+  1px 1px  $color2 inset;
+  padding: 2px;
+}
+
+.lr-title{
+  background-color: $taskTitleColor;
+  color: $color1;
+  height: $taskTitleH;
+  line-height: $taskTitleH;
+  position: absolute;
+  top: $titlePadding;
+  left: $titlePadding;
+  right: $titlePadding;
+  padding-left: 2px;
+  padding-right: 2px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  
+  .lr-btn_nf{
+    width: 16px;
+    height: 14px;
+    display: block;
+    font-family: Arial;
+    flex-shrink: 0;
+    line-height: 14px - $boxPadding * 2;
+  }
+}
+
+.lr-title-content{
+  flex-grow: 1;
+  font-weight: bold;
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  padding-left: 18px;
+  >.lr-icon{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+  }
+}
+.lr_title_no_icon{
+  padding-left: 0;
+}
+.lr-title_text{
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.lr_title_shine{
+  animation-name: titleShine;
+  animation-duration: .1s;
+  animation-timing-function: linear;
+  animation-iteration-count: 2;
+}
+
+@keyframes titleShine
+{
+  50%  {
+    background: $color2;
+    color: $color1;
+    opacity: .8;
+  }
+}
+
+.lr-btn-close{
+  margin-left: 2px;
+}
+
+
+// 外下右，外上左，内下右，内上左
+.lr-fieldset{
+  border: 0;
+  box-shadow: -1px -1px #fff inset,
+  1px 1px  $color2 inset,
+  -2px -2px $color2 inset,
+  2px 2px  #fff inset;
+  background-color: $color1;
+  padding: 3px;
+  >legend{
+    padding: 0 3px;
+    background-color: inherit;
+    position: relative;
+    left: 4px;
+  }
+}
+
+.lr-pre-load{
+  background-color: $deskTopColor;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 32px;
+  color: rgba(#fff, .4);
+  // cursor: wait;
+}
+.lr-err-color{
+  color: red;
+  user-select: text;
+}
+
+.lr-contextmenu{
+  @extend .lr-box;
+  position: absolute; 
+  z-index: $maxZindex; 
+  top:0;
+  left:0;
+
+  visibility: hidden;
+  overflow: hidden;
+  &:empty{
+    display: none;
+  }
+}
+.lr-ctx-item{
+  min-width: 110px;
+  max-width: 173px;
+  height: 17px;
+  line-height: 17px;
+  padding-right: 6px;
+  padding-left: 17px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  &:hover{
+    background-color: $color3;
+    color: #fff;
+  }
+}
+
+.lr_dragenter_self{
+  background-color: #000;
+  &> *{
+    // https://stackoverflow.com/a/18582960/4790016
+    pointer-events: none;
+  }
+}
+
+.lr__disabled{
+  pointer-events: none;
+}
+.lr-notice{
+  background-color: #ffffe1;
+  border: 1px solid #000;
+  border-radius: 6px;
+  
+  width: 320px;
+  position: fixed;
+  z-index: 2;
+  bottom: 42px;
+  right: 20px;
+  color: red;
+  font-weight: bold;
+  padding: 10px;
+  font-size: 14px;
+}
+// .test{
+//   // position: absolute;
+//   // top: -80px;
+//   // left: 50px;
+//   background-color: red;
+//   width: 50px;
+//   height: 100%;
+// }
+
+// ∇ &Delta; 
+// ≡ &equiv;
+// 	» &raquo;
+// ! &excl;
+// ░, △, ▽, ⧍, ★, ✓ ↺ ?
+// ⧫ ⩟ 𝕎
+

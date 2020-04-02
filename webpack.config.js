@@ -1,8 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const NODE_ENV = process.env.NODE_ENV || 'development';
@@ -11,17 +10,20 @@ const isPro = NODE_ENV === 'production';
 const confName = process.env.NODE_BUILD_CONF_NAME || 'dev';
 
 const conf = require('./config/' + confName);
-const package = require('./package.json');
 const setup = require('./setup');
-
-var bundleName = conf.bundleName;
-var chunkName = conf.chunkName;
+const sortDistName = 'lr-client';
+var bundleName = sortDistName + '.js';
+if(isPro){
+  bundleName = sortDistName + '.min.js';
+}
 var optimization;
 
-var outputPath, publicPath, cssRule;
+
+const  outputPath = path.join(__dirname, conf.indexDir, '/dist/');
+const publicPath = conf.baseUrl + '/dist/';
+
+var cssRule;
 if(confName === 'dev' && !isPro){ //使用 命令weblack
-  outputPath = path.join(__dirname, conf.indexDir, '/dist/dev/build');
-  publicPath = conf.baseUrl + '/dist/dev/build/';
   cssRule = {
     test: /(\.scss$)|(\.css$)/,
     use: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader'],
@@ -29,8 +31,6 @@ if(confName === 'dev' && !isPro){ //使用 命令weblack
   }
 
 }else{
-  outputPath = path.join(__dirname, conf.indexDir, '/build');
-  publicPath = conf.baseUrl + '/build/';
   cssRule = {
     test: /(\.scss$)|(\.css$)/,
     //use: ["css-loader", "postcss-loader", "sass-loader"]
@@ -45,9 +45,9 @@ if(confName === 'dev' && !isPro){ //使用 命令weblack
 
 }
 
-var indexData = conf.indexData || {};
-indexData.BASE_URL = conf.baseUrl;
-indexData.VERSION = package.version;
+// var indexData = conf.indexData || {};
+// indexData.BASE_URL = conf.baseUrl;
+// indexData.VERSION = package.version;
 
 // ***************************** plugins *****************************
 var plugins = [
@@ -59,13 +59,13 @@ var plugins = [
   }),
 
   // create index.html
-  new HtmlWebpackPlugin({
-    chunksSortMode: 'dependency',
-    filename: path.join(__dirname, conf.indexDir + '/index.html'),
-    template: path.join(__dirname, '/src/index.ejs'),
-    nodeModuleStatic : setup.nodeModuleStatic,
-    indexData
-  })
+  // new HtmlWebpackPlugin({
+  //   chunksSortMode: 'dependency',
+  //   filename: path.join(__dirname, conf.indexDir + '/index.html'),
+  //   template: path.join(__dirname, '/src/index.ejs'),
+  //   nodeModuleStatic : setup.nodeModuleStatic,
+  //   indexData
+  // })
 ]
 var rules = [
   {
@@ -87,7 +87,7 @@ var rules = [
 if (isPro) {
   optimization = {
     minimizer: [
-      new UglifyJsPlugin(),
+      new TerserPlugin(),
       new OptimizeCSSAssetsPlugin({})
     ]
   }
@@ -96,11 +96,11 @@ if (isPro) {
     new MiniCssExtractPlugin({
       // Options similar to the same options in webpackOptions.output
       // both options are optional
-      filename: "styles_[name]_[contenthash].css",
-      chunkFilename: "chunk_[id]_[contenthash].css"
+      filename: sortDistName + ".min.css",
+      // chunkFilename: "chunk_[id]_[contenthash].css"
     }),
 
-    // new webpack.optimize.UglifyJsPlugin({
+    // new webpack.optimize.TerserPlugin({
     //   compress: {
     //     warnings: false,
     //   },
@@ -138,7 +138,7 @@ const webpackConf = {
     path: outputPath,
     publicPath,
     filename: bundleName,
-    chunkFilename: chunkName
+    // chunkFilename: chunkName
   },
   module: {
     rules
@@ -152,9 +152,10 @@ const webpackConf = {
   plugins: plugins,
   devServer: {
     before: setup,
+    host: '127.0.0.1',
+    onListening: setup.wsProxyHandle,
     contentBase: path.join(__dirname, conf.indexDir),
-    hot: true,
-    noInfo: true
+    hot: true
   },
   performance: {
     hints: false

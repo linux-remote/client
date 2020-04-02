@@ -1,0 +1,25 @@
+.lr-more{
+  height: 100%;
+  flex-shrink: 0;
+  margin-right: -3px;
+  display: flex;
+  align-items: center;
+}
+.lr-more-btn{
+  height: 20px;
+  width: 10px;
+  line-height: 1;
+  text-align: center;
+  .iconfont{
+    font-size: 20px;
+    font-weight: bold;
+  }
+}
+
+.lr-more-menu{
+  @extend .lr-box;
+  position: absolute;
+  bottom: 24px;
+  width: 194px;
+  z-index: 2;
+}

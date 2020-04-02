@@ -1,6 +1,4 @@
-export function noop(){
-
-}
+export function noop(){}
 
 export const timeFormat = (date, fmt) => {
   date = date ? new Date(date) : new Date();
@@ -56,4 +54,8 @@ export const wellSize = (size, startUnit, fix) => {
 
 export const TypeOf = function(v){
   return Object.prototype.toString.call(v).slice(8, -1);
+}
+
+export function getOpenIconUrl(subPath){
+  return `${window.CLIENT_CONFIG.OPEN_ICON_URL}${subPath}`
 }

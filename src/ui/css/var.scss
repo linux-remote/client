@@ -1,0 +1,17 @@
+$color1: #c0c7c8;
+$color2: #87888f; // rgb(124,125,133)
+$color3: #0000a8;
+$deskTopColor:rgb(44, 161, 159);
+
+$boxPadding: 2px;
+$titlePadding: $boxPadding + 1px;
+
+$disabledTextShadow: 1px 1px #fff;
+
+$taskTitleH: 18px;
+$taskBarH: 28px;
+$taskTitleColor:$color2;
+$taskActiveTitleColor: $color3;
+
+// $color2: red;
+$maxZindex : 2147483647; // https://stackoverflow.com/questions/491052/minimum-and-maximum-value-of-z-index

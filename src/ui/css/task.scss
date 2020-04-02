@@ -1,0 +1,49 @@
+
+
+.lr-task-item{
+  @extend .lr-box;
+  height: 22px;
+  line-height: 18px;
+  width: 160px;
+  text-align: left;
+  margin-left: 3px;
+  display: flex;
+  align-items: center;
+
+  &:active, &.lr__focus{
+    font-weight: bold;
+  }
+  &.lr__focus{
+  // https://www.jianshu.com/p/d81cbc10ee83
+    // background-image: 
+    // linear-gradient(135deg, #fff 25%, transparent 0, transparent 75%, #fff 0),
+    // linear-gradient(135deg, #fff 25%, transparent 0, transparent 75%, #fff 0);
+    // background-position: 0 0, 1px 1px;
+    // background-size: 2px 2px;
+    background-color: rgba(#fff, .5);
+  }
+  >.lr-icon{
+    flex-shrink: 0;
+  }
+}
+
+.lr-task-item.lr__focus{
+  box-shadow: -1px -1px #fff inset,
+  1px 1px  #000 inset,
+  -2px -2px $color1 inset, 
+  2px 2px  $color2 inset;
+}
+
+.lr-task-item:active:not(.lr__focus){
+  padding-left: 3px;
+  padding-right: 1px;
+  padding-top: 3px;
+  padding-bottom: 1px;
+}
+
+.lr-task-item:active{
+  box-shadow: 1px 1px  #000 inset,
+  -1px -1px  #fff inset,
+  -2px -2px $color1 inset,
+  2px 2px $color2 inset;
+}

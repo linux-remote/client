@@ -1,23 +1,18 @@
-const { getUrlAndDir } = require('./node-module-static');
-const map = Object.create(null);
-const path = require('path');
-let publicPath = require('lr-public');
-if(process.env.NODE_ENV !== 'production') {
-  publicPath = path.join(__dirname, '../lr-public/public');
-  
-} else {
+const localUnpkg = require('@linux-remote/local-unpkg');
+const clientMount = require('@linux-remote/client-mount');
 
-}
+function mountByServer(app, eStatic, opt){
 
-map['jquery'] = getUrlAndDir('jquery');
+  clientMount(app,
+              eStatic, 
+              {
+                cdn: false,
+                clientVersion: opt.clientVersion,
+                CORS: opt.CORS,
+                localunpkgdir: localUnpkg.pkgDir,
+                localunpkgVersion: localUnpkg.version
+              });
+};
 
 
-
-map['vue.runtime'] = getUrlAndDir('vue');
-map['vuex'] = getUrlAndDir('vuex');
-map['vue-router'] = getUrlAndDir('vue-router');
-
-exports.publicPath = publicPath;
-exports.faviconPath = path.join(__dirname,  'logo_def.png');
-exports.dir = __dirname;
-exports.nodeModuleStaticMap = map;
+module.exports = mountByServer;
