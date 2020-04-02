@@ -1,6 +1,6 @@
 {
-  "name": "linux-remote-client",
-  "version": "2.0.4",
+  "name": "@linux-remote/client",
+  "version": "4.0.0",
   "author": {
     "name": "Du Wei",
     "email": "hezedu@hotmail.com"
@@ -22,10 +22,9 @@
   "files": [
     "dist",
     "index.js",
-    "node-module-static.js",
     "logo_def.png"
   ],
-  "_lrClientCache": "0.01",
+  "license": "MPL-2.0",
   "dependencies": {},
   "devDependencies": {
     "@babel/core": "^7.9.0",

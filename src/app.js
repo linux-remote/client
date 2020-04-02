@@ -27,7 +27,12 @@ router.onReady(() => {
 
   app.request({
     url: '/loggedInList',
-    success(){
+    success(data){
+      data = JSON.parse(data);
+      if(data.v !== window.CLIENT_CONFIG.VERSION){
+        preLoad.innerHTML = `<span class="lr-err-color">Error#<br>Client version: "${window.CLIENT_CONFIG.VERSION}"<br>unmatch server required version: "${data.v}" <br>update please.</span>`;
+        return;
+      }
       preLoad.remove(); // Fixed: store 未知数据。o k #/issues/194
       app.$mount(dom);
     },
