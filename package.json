@@ -25,7 +25,10 @@
     "logo_def.png"
   ],
   "license": "MPL-2.0",
-  "dependencies": {},
+  "dependencies": {
+    "@linux-remote/client-mount": "4.0.2",
+    "@linux-remote/local-unpkg": "0.0.2"
+  },
   "devDependencies": {
     "@babel/core": "^7.9.0",
     "@babel/plugin-proposal-class-properties": "^7.8.3",

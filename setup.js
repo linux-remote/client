@@ -10,8 +10,8 @@ const faviconPath = path.join(__dirname,  'logo_def.png');
 function setup(app /*, webpackDevServer */){
   
 
-  clientMount(app, 
-              eStatic, 
+  clientMount(app,
+              eStatic,
               {
                 cdn: false,
                 clientVersion: 'dev',
