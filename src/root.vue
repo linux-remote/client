@@ -14,7 +14,6 @@
 // import UploadInput from '__ROOT__/cmpt/global/upload/input.vue';
 // import UploadBox from '__ROOT__/cmpt/global/upload/box.vue';
 // import FlyTextarea from '__ROOT__/cmpt/global/fly-textarea.vue';
-// import OpenWith from '__ROOT__/cmpt/global/open-with.vue';
 // import Confirm from '__ROOT__/cmpt/global/confirm.vue';
 import Error from './cmpt/global/toust/error.vue';
 

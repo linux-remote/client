@@ -43,8 +43,8 @@ export default {
     return {
       isRequest: false,
       iconMap: {
-        cd: 'oxygen/drive-harddisk-8.png',
-        hd: 'oxygen/drive-harddisk-8.png',
+        // cd: 'oxygen/drive-harddisk-8.png',
+        // hd: 'oxygen/drive-harddisk-8.png',
         memory: 'nuvola/memory.png'
       },
       map: {

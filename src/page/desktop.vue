@@ -16,7 +16,7 @@
   template(v-if="sessError")
     .lr-window_mask(@mousedown.prevent, style="z-index: 3")
     Block(type="confirm", ref="confirm", title="Invalid session", :text="'Invalid session, Please login again. ' + sessError.message", :okFn="afterLogout", :close="closeSessErrorModal")
-  .lr-notice(v-if="isFirstConnected && !wsIsConnected") Websoket Disconnected, Reconnecting...
+  .lr-notice(v-if="isFirstConnected && !wsIsConnected && !isExit") Websoket Disconnected, Reconnecting...
     
   //- h2.lr-err-color(v-if="error") {{error}}
   //- DeskTop(:icons='icons', v-else)
@@ -66,6 +66,9 @@ export default {
     },
     wsIsConnected(){
       return this.$store.state.wsIsConnected;
+    },
+    isExit(){
+      return this.$store.state.isExit;
     },
     username(){
       return this.$store.state.username

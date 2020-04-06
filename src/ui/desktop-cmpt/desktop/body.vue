@@ -237,8 +237,6 @@ export default {
 }
 
 
-// this.$store.commit('sysApps/changeRecycleBinIcon', data.recycebinIsEmpty);
-// this.$store.commit('desktop/setIcons', _initIcons(data.icons));
 
     // Cascade.lr-ctx-item
     //   | 设置桌面壁纸

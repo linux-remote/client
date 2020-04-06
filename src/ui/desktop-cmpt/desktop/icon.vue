@@ -85,8 +85,6 @@ export default {
     handleSpecialCtxClick(app) {
       this.$root.$emit(app.id + '_ctx', app);
       this.$refs.ctx.close();
-      // this.$refs.ctx.hidden();
-      // this.$store.dispatch(`sysApps/${id}_${name}`);
     },
     remove(){
       this.$store.commit('desktop/removeIcon', this.index);

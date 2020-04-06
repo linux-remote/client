@@ -99,19 +99,6 @@ export default {
     },
     'info.map' : function(){
       this.genList();
-    },
-    list(newVal, oldVal){
-      var isEmpty;
-      if(!newVal.length){
-        isEmpty = true;
-      } else {
-        if(!oldVal){
-          isEmpty = false;
-        } else {
-          return;
-        }
-      }
-      this.$store.commit('sysApps/changeRecycleBinIcon', isEmpty);
     }
   },
 
