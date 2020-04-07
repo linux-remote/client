@@ -2,12 +2,12 @@
 .lr-fs-ctrl-bar
   .lr-fs-ctrl-bar_mask(v-if='disabled')
   .lr-btn_3(@click="$parent.go(homedir)", :class="{lr_bookmark_active: address === homedir}")
-    .lr-icon(v-open-icon="'tango/user-home.png'")
+    .lr-icon(v-open-icon="homeIcon")
   .lr-fs-home-margin
   .lr-btn_3(@click='addItem("directory")')
-    .lr-icon(v-open-icon="'tango/folder-new-5.png'")
+    .lr-icon.lr_fs_create_new(v-open-icon="'nuvola/folder-blue_open.png'")
   .lr-btn_3(@click='addItem("file")')
-    .lr-icon(v-open-icon="'tango/document-new-4.png'")
+    .lr-icon.lr_fs_create_new(v-open-icon="'nuvola/unknown.png'")
   
   //- button.lr-btn_3.lr-fs-upload-btn(@click='handleUploadBtnClick')
   //-   span.iconfont.icon-upload
@@ -17,8 +17,6 @@
     input(type="checkbox", :checked="isShowHidden",  @change="handleCheckBoxChange")
     .lr-box_in
     span Show hidden
-  //- button(@click="errDev") errDev
-  //- .lr-fs-home-mark(@click="$parent.go(homedir)", v-open-icon="'tango/user-home.png'", :class="{lr_bookmark_active: address === homedir}")
 </template>
 <script>
   // div(style='flex-grow: 1')
@@ -29,6 +27,7 @@
 
 export default {
   props: {
+    homeIcon: String,
     disabled: {
       type: Boolean,
       default: false
@@ -71,11 +70,7 @@ export default {
     },
     handleUploadBtnClick(){
       this.$store.commit('upload/start', this.$parent.address);
-    },
-    // errDev() {
-      
-    // this.$store.commit('error/show', `Error: ${Date.now()}`);
-    // }
+    }
   }
 }
 </script>

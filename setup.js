@@ -18,7 +18,12 @@ function setup(app /*, webpackDevServer */){
                 CORS: 'http://192.168.56.101:3000',
                 _devlrClientJs: '/dist/lr-client.js',
                 localunpkgdir: localUnpkg.pkgDir,
-                localunpkgVersion: localUnpkg.version
+                localunpkgVersion: localUnpkg.version,
+                _devFilePkgMask: {
+                  "@linux-remote/open-icon": {
+                    filePath: path.join('../open-icon/icons/')
+                  }
+                }
               });
 
   // setTimeout(function(){

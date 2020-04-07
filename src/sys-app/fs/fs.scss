@@ -491,9 +491,6 @@ $fsRowItemH: 50px;
   }
 }
 
-// .lr_fs_open_type_image{
-//   background-image: url('/public/i2mg/tango/image-x-generic.png');
-// }
 
 .lr-fs-table {
   border-collapse: separate;
@@ -600,6 +597,28 @@ $fsRowItemH: 50px;
   padding-top: 5px;
   padding-right: 10px;
   text-align: right;
+}
+.lr_fs_create_new{
+  position: relative;
+  &::after{
+    position: absolute;
+    content: '';
+    font-weight: bold;
+    font-size:15px;
+    box-shadow: yellow 0px 0px 5px 4px;
+    border-radius: 50%;
+    background-color: yellow;
+    font-family: Arial, Helvetica, sans-serif;
+    width: 3px;
+    height: 3px;
+    line-height: 1;
+    top: 3px;
+    right: 3px;
+    z-index: 2;
+  }
+  // &.lr__fs_t_t::after{
+  //   top: -4px;
+  // }
 }
 /*
 .lr_file_model_on{

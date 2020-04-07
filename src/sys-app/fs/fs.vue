@@ -5,7 +5,7 @@
     .lr-fs-index(v-if='address === ""')
       div(@click='go("/")') /
       div(@click='go(homedir)') Home
-    Folder(v-else-if='address', :address='address',:triggerContainSame='triggerContainSame')
+    Folder(v-else-if='address', :address='address', :app="task.app", :triggerContainSame='triggerContainSame')
 </template>
 
 <script>

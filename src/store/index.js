@@ -347,7 +347,7 @@ const store = new window.Vuex.Store({
 
     recycleBinChange(state, len){
       const app = state.sysAppMap['sys_app_recycle_bin'];
-      app.iconUrl = len === 0 ? 'tango/user-trash.png' : 'tango/user-trash-full-2.png';
+      app.iconUrl = len === 0 ? 'nuvola/user-trash.png' : 'nuvola/user-trash-full.png';
 
     },
 

@@ -1,6 +1,6 @@
 
 <template lang="jade">
-.lr-quick-item.lr-show-desktop(@click="handleClick" v-open-icon="'tango/user-desktop.png'")
+.lr-quick-item.lr-show-desktop(@click="handleClick" v-open-icon="'nuvola/user-desktop.png'")
 </template>
 <script>
 export default {

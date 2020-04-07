@@ -1,13 +1,13 @@
 const map = {
     sys_app_fs: {
       name: "FS Manager",
-      iconUrl: 'tango/user-home.png',
+      iconUrl: 'nuvola/user-home.png',
       
       // unique: false,
     },
     sys_app_recycle_bin : {
       name: "Recycle Bin",
-      iconUrl: 'tango/user-trash.png',
+      iconUrl: 'nuvola/user-trash.png',
       unique: true,
       isEmpty: true,
       ctx: 'Empty Recycle Bin'
@@ -25,7 +25,7 @@ const map = {
     sys_app_image_viewer: {
       name: "Image Viewer",
       handleFileCategory: 'image',
-      iconUrl: 'tango/image-x-generic.png',
+      iconUrl: 'nuvola/image-x-generic.png',
       hidden: true,
       window: {
         top: 0,

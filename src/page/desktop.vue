@@ -12,7 +12,6 @@
       .lr-inner.lr-clock-area
         Watch
     DeskTopBody#lr-desktop
-    | {{sessError}}
   template(v-if="sessError")
     .lr-window_mask(@mousedown.prevent, style="z-index: 3")
     Block(type="confirm", ref="confirm", title="Invalid session", :text="'Invalid session, Please login again. ' + sessError.message", :okFn="afterLogout", :close="closeSessErrorModal")

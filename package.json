@@ -27,7 +27,7 @@
   "license": "MPL-2.0",
   "dependencies": {
     "@linux-remote/client-mount": "4.0.2",
-    "@linux-remote/local-unpkg": "0.0.2"
+    "@linux-remote/local-unpkg": "0.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",

@@ -61,7 +61,7 @@ export default {
     //   }
     //   switch(type){
     //     case 'folder':
-    //       return 'tango/folder.png';
+    //       return 'tan2go/folder.png';
     //     case 'file':
     //       return 'nuvola/accessories-text-editor-6.png'
     //   }

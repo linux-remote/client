@@ -3,14 +3,14 @@ import { parseName, getFileType } from './util';
 
 import { getOpenInfo } from './open-register';
 const iconTypeMap = {
-  regularFile: 'tango/text-x-generic.png',
-  directory: 'tango/folder.png',
+  regularFile: 'nuvola/unknown.png',
+  directory: 'nuvola/folder-blue_open.png',
   symbolicLink: 'nuvola/link.png',
-  socket: 'tango/inode-socket.png',
-  blockDevice: 'tango/inode-blockdevice.png',
-  characterDevice: 'tango/inode-chardevice.png',
+  socket: 'nuvola/socket.png',
+  blockDevice: 'nuvola/blockdevice-3.png',
+  characterDevice: 'nuvola/chardevice.png',
   namedPipe: 'nuvola/pipe.png',
-  unknown: 'oxygen/unknown.png'
+  unknown: 'nuvola/unknown.png'
 }
 
 function parseList(list){

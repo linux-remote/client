@@ -2,7 +2,7 @@
 .lr-fs-folder(@mousedown='handleFsBodyMousedown',
               :class='bodyClass')
   .lr-hourglass(v-if='info.isRequest') Loading...
-  CtrlBar
+  CtrlBar(:homeIcon="app.iconUrl")
   .lr-fs-folder_body
     Selectable.lr-fs-folder-inner(@end='handleSelectEnd', ref='selectable')
       pre.lr-fs-error(v-text='info.error', v-if='info.error')
@@ -64,6 +64,7 @@ export default {
     StatusBar
   },
   props: {
+    app: Object,
     address: {
       type: String,
       required: true
