@@ -11,8 +11,8 @@
     //- Confirm
 </template>
 <script>
-// import UploadInput from '__ROOT__/cmpt/global/upload/input.vue';
-// import UploadBox from '__ROOT__/cmpt/global/upload/box.vue';
+// import UploadInput from './ui/desktop-cmpt/global/upload/input.vue';
+// import UploadBox from './ui/desktop-cmpt/global/upload/box.vue';
 // import FlyTextarea from '__ROOT__/cmpt/global/fly-textarea.vue';
 // import Confirm from '__ROOT__/cmpt/global/confirm.vue';
 import Error from './cmpt/global/toust/error.vue';
@@ -21,6 +21,7 @@ export default {
   components:{
     Error,
     // UploadInput,
+    // UploadBox
     // UploadBox,
     
     // FlyTextarea,

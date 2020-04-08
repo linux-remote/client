@@ -96,16 +96,13 @@ export default {
         });
         fileNameList.push(rawFile.name);
       });
-      
-      this.request({
-        url: '~/fs/' + encodePath(this.address),
-        type: 'post',
+      this.$store.commit('wsRequest', {
+        method: 'fsCheckCover',
         data: {
-          type: 'checkCover',
-          fileList: fileNameList
+          cwd: this.address,
+          filenames: fileNameList
         },
-        success(covered){
-          
+        success: (covered) => {
           if(covered.length){
             this.$options._selectedFile = selectedFile;
             this.coveredList = covered;
@@ -113,8 +110,7 @@ export default {
             this.$store.commit('upload/addSelectedFile', selectedFile);
           }
         }
-      })
-      
+      });
 
       this.$refs.uploadBtn.value = '';
     }

@@ -7,8 +7,10 @@ export default  {
   mutations: {
     start(state, address){
       //console.log(address);
-      state.address = address;
-      document.getElementById('lr-upload-input').click();
+      console.log(address);
+      return;
+      // state.address = address;
+      // document.getElementById('lr-upload-input').click();
     },
     removeItemByPath(state, {srcTaskId, path}){
       const index = state.selectedFiles.findIndex(v => v.fullPath === path);

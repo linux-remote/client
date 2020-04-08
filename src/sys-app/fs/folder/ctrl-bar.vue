@@ -9,9 +9,9 @@
   .lr-btn_3(@click='addItem("file")')
     .lr-icon.lr_fs_create_new(v-open-icon="'nuvola/unknown.png'")
   
-  //- button.lr-btn_3.lr-fs-upload-btn(@click='handleUploadBtnClick')
+  //- button.lr-btn_3.lr-fs-upload-btn(@click='handleUploadBtnClick', :disabled="selectedFiles.length !== 0")
   //-   span.iconfont.icon-upload
-  //-   span Upload
+  //-   span Upload Files
 
   label.lr-label-input.lr-check-box.lr-fs-show-hidden
     input(type="checkbox", :checked="isShowHidden",  @change="handleCheckBoxChange")
@@ -26,6 +26,7 @@
   // button(:class='{lr_file_model_on: $parent.model === "list"}', @click='changeModel("list")') 列表格式
 
 export default {
+  inject: ['taskWindow'],
   props: {
     homeIcon: String,
     disabled: {
@@ -34,6 +35,9 @@ export default {
     }
   },
   computed: {
+    selectedFiles(){
+      return this.$store.state.upload.selectedFiles;
+    },
     isShowHidden(){
       return this.$parent.info.showHidden
     },
@@ -69,7 +73,10 @@ export default {
       this.$parent.openCreateModal(type);
     },
     handleUploadBtnClick(){
-      this.$store.commit('upload/start', this.$parent.address);
+      this.$store.commit('upload/start', {
+        address: this.$parent.address,
+        pid: this.taskWindow.id
+      });
     }
   }
 }
