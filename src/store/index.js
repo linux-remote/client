@@ -50,12 +50,12 @@ const AFRTimeout = 15 * 60 * 1000;
 let ws, sr, _pako;
 let wsCloseTime = 0;
 let checkSessionAliveTime = 0;
-let keepAliveTimer;
-const keepAliveInterval = AFRTimeout - 60 * 1000;
+// let keepAliveTimer;
+// const keepAliveInterval = AFRTimeout - 60 * 1000;
 const wsReconnectTime = 3000;
 const termWriteKey = 2;
 const exitKey = 0;
-const aliveKey = 1;
+// const aliveKey = 1;
 
 function _isNeedCheckSessionAlive(){
   const now = Date.now();
@@ -201,9 +201,9 @@ const store = new window.Vuex.Store({
 
             // }
           }
-          keepAliveTimer = setInterval(() => {
-            sr.request([aliveKey]);
-          }, keepAliveInterval);
+          // keepAliveTimer = setInterval(() => {
+          //   sr.request([aliveKey]);
+          // }, keepAliveInterval);
           this.commit('set', {
             wsIsConnected: true
           });
@@ -211,10 +211,10 @@ const store = new window.Vuex.Store({
         }
 
         const handleClose =  (e) => {
-          if(keepAliveTimer){
-            clearInterval(keepAliveTimer);
-            keepAliveTimer = null;
-          }
+          // if(keepAliveTimer){
+          //   clearInterval(keepAliveTimer);
+          //   keepAliveTimer = null;
+          // }
           this.commit('set', {
             wsIsConnected: false
           });

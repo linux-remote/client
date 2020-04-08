@@ -1,6 +1,6 @@
 {
   "name": "@linux-remote/client",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "author": {
     "name": "Du Wei",
     "email": "hezedu@hotmail.com"
@@ -17,7 +17,8 @@
     "build": "webpack --colors --hide-modules",
     "_pro_build": "webpack --colors",
     "pro": "node script/pro",
-    "installPreView": "npm i lr-public jquery vue vue-router vuex --no-bin-links"
+    "prepublishOnly": "node script/pro",
+    "publish": "node ../linux-remote/up-version-map.js"
   },
   "files": [
     "dist",
@@ -25,10 +26,7 @@
     "logo_def.png"
   ],
   "license": "MPL-2.0",
-  "dependencies": {
-    "@linux-remote/client-mount": "4.0.2",
-    "@linux-remote/local-unpkg": "0.0.3"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@babel/core": "^7.9.0",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
@@ -50,6 +48,7 @@
     "@babel/plugin-transform-runtime": "^7.9.0",
     "@babel/preset-env": "^7.9.0",
     "@babel/runtime": "^7.9.2",
+    "@hezedu/amd": "0.0.2",
     "@hezedu/socket-request": "0.0.1",
     "autoprefixer": "^9.7.5",
     "babel-eslint": "^10.1.0",
@@ -62,9 +61,11 @@
     "express": "^4.17.1",
     "fuckwinfsdel": "^2.1.0",
     "html-loader": "^0.5.5",
+    "jquery": "3.4.1",
     "mini-css-extract-plugin": "^0.5.0",
     "node-sass": "4.13.1",
     "optimize-css-assets-webpack-plugin": "^5.0.3",
+    "pako": "1.0.10",
     "postcss-loader": "^3.0.0",
     "pug": "^2.0.4",
     "pug-plain-loader": "^1.0.0",
@@ -74,10 +75,14 @@
     "terser-webpack-plugin": "^2.3.5",
     "vue": "2.6.11",
     "vue-loader": "^15.9.1",
+    "vue-router": "3.0.1",
     "vue-template-compiler": "2.6.11",
+    "vuex": "3.0.1",
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11",
-    "webpack-dev-server": "^3.10.3"
+    "webpack-dev-server": "^3.10.3",
+    "xterm": "4.3.0",
+    "xterm-addon-fit": "0.3.0"
   },
   "browserslist": [
     "defaults",
