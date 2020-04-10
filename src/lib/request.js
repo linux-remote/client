@@ -60,7 +60,6 @@ export function wrapUrl(url){
 }
 
 function request(opts){
-  console.log('request', opts)
   var {
     stateKey,
     success = noop,
