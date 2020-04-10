@@ -1,6 +1,7 @@
 //修改自: https://github.com/hezedu/dwlib/blob/master/request.js
 // 去掉 omitEmpty, 修改了:opts.url
 import {noop} from './util';
+import { API_PATH } from './constant';
 import store from '__ROOT__/store/index.js';
 import router from '../router';
 const $ = window.$;
@@ -43,10 +44,9 @@ const omitKeyMap = {
   error: true,
   rootUrl: true
 };
-
 const globalConfig = {
   repeatSubmitMode: undefined,
-  rootUrl: _apiHost + '/api'
+  rootUrl: _apiHost + API_PATH
 }
 
 function getUserUrl(url){
@@ -60,6 +60,7 @@ export function wrapUrl(url){
 }
 
 function request(opts){
+  console.log('request', opts)
   var {
     stateKey,
     success = noop,

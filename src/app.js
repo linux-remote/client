@@ -1,6 +1,5 @@
 // https://developer.mozilla.org/en-US/docs/Web/API/Document/hasFocus
 // Chrome > 45;
-
 import './css/style.scss';
 // import './ui/css/style.scss';
 // import './css/login.scss';

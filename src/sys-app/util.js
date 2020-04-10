@@ -1,3 +1,4 @@
+import { API_PATH } from '../lib/constant';
 export function getWsOrigin() {
   
   const CORS = window.CLIENT_CONFIG.CORS;
@@ -21,7 +22,7 @@ export function getWsOrigin() {
 export const wsOrigin = getWsOrigin();
 
 export function composeUserWsUrl(username, subPath) {
-  return `${wsOrigin}/api/user/${username}${subPath ? '/' + subPath : ''}`;
+  return `${wsOrigin}${API_PATH}/user/${username}${subPath ? '/' + subPath : ''}`;
 }
 
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort

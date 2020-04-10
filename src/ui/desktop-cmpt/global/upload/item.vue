@@ -34,7 +34,6 @@ export default {
 
       this.$options.xhr = this.request({
         type: 'put',
-        // rootUrl: 'http://192.168.56.101:3001', 
         url: '~/upload/' + encodePath(item.address + '/' + item.rawFile.name),
         data: item.rawFile,
         stateKey: 'isRequest',
