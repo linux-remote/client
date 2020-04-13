@@ -7,10 +7,11 @@ Contextmenuable.lr-fs_file(tabindex="-1", v-on="$listeners", ref="ctx")
     .lr-icon.lr-fs-sym-link(v-if="v.isSymLink", v-open-icon="v.icon")
   .lr-fs_file_name {{v.name}}
   template(v-slot:contextmenu="ctx")
-    .lr-ctx-item(@click="open", v-if="folder.selectCount === 1")
-      b Open
-    .lr-ctx-item(@click="rename") Rename
-    .lr-hr
+    template(v-if="folder.selectCount === 1")
+      .lr-ctx-item(@click="open")
+        b Open
+      .lr-ctx-item(@click="rename") Rename
+      .lr-hr
     .lr-ctx-item(@click="remove") Delete
 </template>
 

@@ -1,6 +1,6 @@
 {
   "name": "@linux-remote/client",
-  "version": "4.0.4",
+  "version": "4.0.5",
   "author": {
     "name": "Du Wei",
     "email": "hezedu@hotmail.com"
@@ -17,7 +17,7 @@
     "build": "webpack --colors --hide-modules",
     "_pro_build": "webpack --colors",
     "pro": "node script/pro",
-    "prepublishOnly": "node script/pro",
+    "prepublishOnly": "echo 'prepublishOnly'",
     "publish": "node ../linux-remote/up-version-map.js"
   },
   "files": [

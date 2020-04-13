@@ -12,6 +12,9 @@
       .lr-inner.lr-clock-area
         Watch
     DeskTopBody#lr-desktop
+  .lr-desktop-load(v-else)
+    span(v-if="isAMDRequest") Loading static resource...
+    span(v-else) Connecting user server...
   template(v-if="sessError")
     .lr-window_mask(@mousedown.prevent, style="z-index: 3")
     Block(type="confirm", ref="confirm", title="Invalid session", :text="'Server: ' + sessError.message + '. Invalid session, Please login again. '", status="warn", :okFn="afterLogout", :close="closeSessErrorModal")
@@ -53,6 +56,7 @@ export default {
     return {
       icons: null,
       isFirstConnected: false,
+      isAMDRequest: false,
       error: null
     }
   },
@@ -160,6 +164,21 @@ export default {
         hostname: data.hostname
       });
       window.APP.RECYCLE_BIN_PATH = data.homedir + '/.linux-remote/recycle-bin';
+    },
+    getPako(cb){
+      if(window.APP._staticPako){
+        cb(window.APP._staticPako);
+        return;
+      }
+      // if(this.isAMDRequest){
+      //   return;
+      // }
+      this.isAMDRequest = true;
+      window.require(['pako'], (pako) => {
+        this.isAMDRequest = false;
+        window.APP._staticPako = pako;
+        cb(pako)
+      });
     }
   },
 
@@ -182,10 +201,13 @@ export default {
   created(){
     const username = this.$route.params.username;
     this.$store.commit('setUsername', username);
-    this.$store.commit('wsConnect', () => {
-      this.isFirstConnected = true;
-      this.getData();
-    });
+    this.getPako(() => {
+      this.$store.commit('wsConnect', () => {
+        this.isFirstConnected = true;
+        this.getData();
+      });
+    })
+
     
   }
 }

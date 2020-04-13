@@ -47,7 +47,7 @@ import desktop from './module/desktop';
 const SocketRequest = require('@hezedu/socket-request');
 // let _tmp = null;
 const AFRTimeout = 15 * 60 * 1000;
-let ws, sr, _pako;
+let ws, sr;
 let wsCloseTime = 0;
 let checkSessionAliveTime = 0;
 // let keepAliveTimer;
@@ -131,13 +131,14 @@ const store = new window.Vuex.Store({
           return;
         }
       }
-      getPako((pako) => {
+      // getPako((pako) => {
         const url = composeUserWsUrl(state.username);
         const ws = new WebSocket(url);
+        
         ws.onopen = () => {
           console.log('WS Connected!');
 
-
+          const pako = window.APP._staticPako;
           wsCloseTime = 0;
           sr = new SocketRequest(ws, {
             isWs: true, 
@@ -280,7 +281,7 @@ const store = new window.Vuex.Store({
           // }
         }
         ws.onclose = handleClose;
-      });
+      // });
     },
     onExit(state, msg){
       this.commit('set', {
@@ -387,16 +388,7 @@ const store = new window.Vuex.Store({
   }
 });
 
-function getPako(cb){
-  if(_pako){
-    cb(_pako);
-    return;
-  }
-  window.require(['pako'], function(pako){
-    _pako = pako;
-    cb(_pako)
-  });
-}
+
 
 function globalWsErrorHandle({status, method, message}){
   console.error(method, status, message);

@@ -1,9 +1,11 @@
 <template lang="jade">
 .lr-fs-folder(@mousedown='handleFsBodyMousedown',
               :class='bodyClass')
-  .lr-hourglass(v-if='info.isRequest') Loading...
+  
   CtrlBar(:homeIcon="app.iconUrl")
   .lr-fs-folder_body
+    .lr-hourglass(v-if='info.isRequest') Loading...
+    .lr-fs-empty(v-else-if='!list.length') This folder is empty.
     Selectable.lr-fs-folder-inner(@end='handleSelectEnd', ref='selectable')
       pre.lr-fs-error(v-text='info.error', v-if='info.error')
       template(v-else)
@@ -18,8 +20,6 @@
         @open="openRealItem(item)",
         @rename="openRenameModal(item, $event)")
   StatusBar(:item="currFocusItem")
-    .lr-fs-empty(v-if='!list.length') This folder is empty.
-    div(style="height: 1px")
 </template>
 
 <script>
