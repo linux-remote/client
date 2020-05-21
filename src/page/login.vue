@@ -52,6 +52,13 @@ export default {
     title = CORS ? title + ' - ' + CORS : title;
     const width = 417;
     const left = (document.body.clientWidth - width) / 2;
+    console.log('this.$route', this.$route)
+    const hash = this.$route.hash;
+    let username = '';
+    const hashI = hash.indexOf('#user=');
+    if(hashI !== -1){
+      username = hash.split('=')[1];
+    }
     return {
       title,
       width: 417,
@@ -61,7 +68,7 @@ export default {
       alertOpt: null,
       // currLangIndex: this.$store.state.language.currIndex,
       isRequest: false,
-      username: this.$route.query.user || '',
+      username,
       password: '',
       loggedInList: []
     }
