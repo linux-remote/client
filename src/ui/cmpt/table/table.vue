@@ -1,6 +1,6 @@
 <template lang="jade">
-.lr-table(@scroll="handleScroll")
-  .lr-table-head(ref="head")
+.lr-table
+  .lr-table-head
     .lr-table-h(v-for="(v, index) in thead", :style="{width: v.width + 'px'}")
       .lr-table-h-inner(@click="sortBy(v)") {{v.name}}
         .lr-table-sort(v-if="v.sortKey === currSortKey", :class="{lr__def: sortDef}")
@@ -59,15 +59,15 @@ export default {
     handleThResized(index, virtual){
       this.widths[index] = virtual.width;
     },
-    handleScroll(e){
-      if(this.$options._tmp_scroll_top !== e.target.scrollTop){
-        this.$options._tmp_scroll_top = e.target.scrollTop;
-        this.$refs.head.style.top = e.target.scrollTop + 'px';
-      }
-    }
+    // handleScroll(e){
+    //   if(this.$options._tmp_scroll_top !== e.target.scrollTop){
+    //     this.$options._tmp_scroll_top = e.target.scrollTop;
+    //     this.$refs.head.style.top = e.target.scrollTop + 'px';
+    //   }
+    // }
   },
   mounted(){
-    this.$options._tmp_scroll_top = this.$el.scrollTop;
+    // this.$options._tmp_scroll_top = this.$el.scrollTop;
   }
 }
 </script>

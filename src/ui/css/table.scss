@@ -7,7 +7,6 @@ $tableHeadH: 17px;
   // margin-left: 100px;
   overflow: auto;
   position: relative;
-  padding-top: $tableHeadH;
   height: 100%;
 }
 .lr-table-head{
@@ -15,7 +14,7 @@ $tableHeadH: 17px;
   align-items: center;
   width: 100%;
   height: $tableHeadH;
-  position: absolute;
+  position: sticky;
   top: 0;
   left: 0;
   font-size: 11px;
