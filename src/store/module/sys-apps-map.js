@@ -1,7 +1,7 @@
 const map = {
     sys_app_fs: {
       name: "FS Manager",
-      iconUrl: 'nuvola/user-home.png',
+      iconUrl: 'nuvola/system-file-manager-5.png',
       
       // unique: false,
     },

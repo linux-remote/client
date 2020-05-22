@@ -2,12 +2,13 @@
 .lr-fs-folder(@mousedown='handleFsBodyMousedown',
               :class='bodyClass')
   
-  CtrlBar(:homeIcon="app.iconUrl")
+  CtrlBar
   .lr-fs-folder_body
     .lr-hourglass(v-if='info.isRequest') Loading...
-    .lr-fs-empty(v-else-if='!list.length') This folder is empty.
+    
     Selectable.lr-fs-folder-inner(@end='handleSelectEnd', ref='selectable')
       pre.lr-fs-error(v-text='info.error', v-if='info.error')
+      .lr-fs-empty(v-else-if='!list.length') This folder is empty.
       template(v-else)
         Item(v-for="(item, i) in list",
         @focus="handleItemFocus(item)",

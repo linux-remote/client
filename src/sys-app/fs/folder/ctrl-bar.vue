@@ -2,7 +2,7 @@
 .lr-fs-ctrl-bar
   .lr-fs-ctrl-bar_mask(v-if='disabled')
   .lr-btn_3(@click="$parent.go(homedir)", :class="{lr_bookmark_active: address === homedir}")
-    .lr-icon(v-open-icon="homeIcon")
+    .lr-icon(v-open-icon="'nuvola/user-home.png'")
   .lr-fs-home-margin
   .lr-btn_3(@click='addItem("directory")')
     .lr-icon.lr_fs_create_new(v-open-icon="'nuvola/folder-blue_open.png'")
@@ -28,7 +28,6 @@
 export default {
   inject: ['taskWindow'],
   props: {
-    homeIcon: String,
     disabled: {
       type: Boolean,
       default: false
