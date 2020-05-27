@@ -27,7 +27,7 @@
           input.lr-input(v-model='username', name="username", ref="username", required="required")
         .lr-login_input_wrap
           label {{LANG.password}}
-          input.lr-input(type='password', name="password", v-model='password', autocomplete="off", required="required")
+          input.lr-input(type='password', name="password", v-model='password', autocomplete="username", required="required")
         .lr-login-box-footer
           Btn(ref="submit", type="submit") {{LANG.submitBtn}}
   Block(v-if="alertOpt",
@@ -52,7 +52,7 @@ export default {
     title = CORS ? title + ' - ' + CORS : title;
     const width = 417;
     const left = (document.body.clientWidth - width) / 2;
-    console.log('this.$route', this.$route)
+    // console.log('this.$route', this.$route)
     const hash = this.$route.hash;
     let username = '';
     const hashI = hash.indexOf('#user=');
