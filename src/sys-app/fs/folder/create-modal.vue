@@ -33,7 +33,8 @@ export default {
           filePath
         }
         let method;
-        if(this.type === 'file'){
+        const isFile = this.type === 'file';
+        if(isFile){
           method = 'writeFile';
           data.isCreate = true;
           data.content = '';
@@ -49,7 +50,7 @@ export default {
           data,
           success: () => {
             this.close();
-            this.folder.getNewItemInfo(newName);
+            this.folder.afterCreate(newName, isFile);
           },
           error: (err) => {
             this.alert(err.message);

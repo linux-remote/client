@@ -35,10 +35,12 @@
 import {Table} from '../../ui/index';
 import folderMap , { getOrInit , syncFolderMap} from '../lib/folder-map';
 import lsParse from '../lib/ls-parse';
+import parseList from '../fs/folder/fs-list-parse';
+import parseList2 from '../fs/folder/fs-list-parse2';
 import recycleParse from './parse';
 import RowItem from './row-item.vue';
 import Contextmenuable from '../../ui/desktop-cmpt/global/contextmenuable.vue';
-import parseList from '../fs/folder/fs-list-parse';
+
 import { sortByStrKey } from '../util';
 import SafeBind from '../../lib/mixins/safe-bind';
 export default {

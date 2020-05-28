@@ -26,15 +26,16 @@
 <script>
 import map, {getOrInit, syncFolderMap} from '../../lib/folder-map';
 import CtrlBar from './ctrl-bar.vue';
-import PreCreate from './pre-create.vue';
-import RowItem from './row-item.vue';
-import UploadItem from './upload-item.vue';
+// import PreCreate from './pre-create.vue';
+// import RowItem from './row-item.vue';
+// import UploadItem from './upload-item.vue';
+// import initRelation from './permission-util';
 import Selectable from '__ROOT__/cmpt/unit/selectable.vue';
-import initRelation from './permission-util';
+
 import Item from './item.vue';
 
 // import {encodePath} from '__ROOT__/sys-app/util';
-import lsParse from '../../lib/ls-parse';
+// import lsParse from '../../lib/ls-parse';
 import { sortByStrKey } from '../../util';
 import {cwdPathJoin} from '../../lib/util';
 // import mixins from './mixins/index';
@@ -44,7 +45,7 @@ import StatusBar from './status-bar.vue';
 import RenameModal from './rename-modal.vue';
 import CreateModal from './create-modal.vue';
 import OpenWithModal from './open-with-modal.vue';
-import parseList from './fs-list-parse';
+import parseList from './fs-list-parse2';
 
 
 export default {
@@ -57,9 +58,9 @@ export default {
   mixins: [CopyCutPasteMixin, SafeBind],
   components:{
     CtrlBar,
-    PreCreate,
-    RowItem,
-    UploadItem,
+    // PreCreate,
+    // RowItem,
+    // UploadItem,
     Selectable,
     Item,
     StatusBar
@@ -76,7 +77,7 @@ export default {
   data(){
     return {
       model: 'list',
-      theads: ['name',  'owner', 'group' ,'permission', 'mtime'],
+      // theads: ['name',  'owner', 'group' ,'permission', 'mtime'],
       dir: null,
       folderArr: [],
       fileArr: [],
@@ -412,24 +413,31 @@ export default {
         cwd,
         all: info.showHidden
       };
+      // this.$store.commit('wsRequest', {
+      //   method: 'openLoopDir',
+      //   data,
+      //   success: (result) => {
+      //     console.log('openLoopDir result', result)
+      //   }
+      // });
       this.$store.commit('wsRequest', {
-        method: 'ls',
+        method: 'openLoopDir',
         data,
-        success: (stdout) => {
+        success: (result) => {
           if(cwd !== this.address){
             return;
           }
           info.error = null;
-          const list = lsParse(stdout);
-          const data = parseList(list);
-          
-          this.info.map = syncFolderMap(data.list, this.info.map);
+          const list = parseList(result);
+          this.info.map = syncFolderMap(list, this.info.map);
           // this.folderArr = data.folderArr;
           // this.fileArr = data.fileArr;
           // info.map = data.map;
-          if(data.sysLinkArr.length){
-            this.getSysLinkInfo(data.sysLinkArr);
-          }
+
+          // if(data.sysLinkArr.length){
+          //   this.getSysLinkInfo(data.sysLinkArr);
+          // }
+
           //  
         },
         complete: () => {
@@ -440,6 +448,7 @@ export default {
         }
       });
     },
+    /*
     getSysLinkInfo(arr){
       let filenames = [];
       arr.forEach(file => {
@@ -472,6 +481,7 @@ export default {
         // }
       });
     },
+    */
     update(updateArr){
       const map = this.info.map;
       updateArr.forEach(obj => {
@@ -498,6 +508,7 @@ export default {
       this.folderArr = folderArr;
       this.fileArr = fileArr;
     },
+    /*
     getDirAndWrapBaseList(list) {
       let arr = [], dir;
       list.forEach( v => {
@@ -520,6 +531,7 @@ export default {
         dir
       };
     },
+    */
     handleCreateSuccess(name, stdout){
 
       this.publicEmit({
@@ -597,6 +609,15 @@ export default {
         }
       });
     },
+    afterCreate(newName, isFile){
+      let line = [newName, isFile ? 0 : 1];
+      let list = parseList([line]);
+      const newItem = list[0];
+      this.currFocusItem = newItem;
+      this.$set(this.info.map, newName, newItem);
+      this.selectItem(newItem);
+    },
+    /*
     getNewItemInfo(newName){
       this.$store.commit('wsRequest', {
         method: 'ls',
@@ -620,7 +641,7 @@ export default {
         //   info.error = err;
         // }
       });
-    }
+    }*/
 
 
   },

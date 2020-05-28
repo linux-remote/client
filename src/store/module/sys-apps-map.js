@@ -2,7 +2,10 @@ const map = {
     sys_app_fs: {
       name: "FS Manager",
       iconUrl: 'nuvola/system-file-manager-5.png',
-      
+      window: {
+        width: 730,
+        height: 610
+      }
       // unique: false,
     },
     sys_app_recycle_bin : {
