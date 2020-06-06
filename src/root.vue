@@ -15,11 +15,11 @@
 // import UploadBox from './ui/desktop-cmpt/global/upload/box.vue';
 // import FlyTextarea from '__ROOT__/cmpt/global/fly-textarea.vue';
 // import Confirm from '__ROOT__/cmpt/global/confirm.vue';
-import Error from './cmpt/global/toust/error.vue';
+// import Error from './cmpt/global/toust/error.vue';
 
 export default {
   components:{
-    Error,
+    // Error,
     // UploadInput,
     // UploadBox
     // UploadBox,

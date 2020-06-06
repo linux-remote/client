@@ -30,7 +30,7 @@ import CtrlBar from './ctrl-bar.vue';
 // import RowItem from './row-item.vue';
 // import UploadItem from './upload-item.vue';
 // import initRelation from './permission-util';
-import Selectable from '__ROOT__/cmpt/unit/selectable.vue';
+import Selectable from '../../../ui/unit/selectable.vue';
 
 import Item from './item.vue';
 
