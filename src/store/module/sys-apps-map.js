@@ -8,13 +8,6 @@ const map = {
       }
       // unique: false,
     },
-    sys_app_recycle_bin : {
-      name: "Recycle Bin",
-      iconUrl: 'nuvola/user-trash.png',
-      unique: true,
-      isEmpty: true,
-      ctx: 'Empty Recycle Bin'
-    },
     sys_app_editor: {
       name: "Notepad",
       handleFileCategory: 'text',
@@ -23,16 +16,6 @@ const map = {
         autoFocus: false,
         top: 0.6,
         left: 0.6
-      }
-    },
-    sys_app_image_viewer: {
-      name: "Image Viewer",
-      handleFileCategory: 'image',
-      iconUrl: 'nuvola/image-x-generic.png',
-      hidden: true,
-      window: {
-        top: 0,
-        left: 0
       }
     },
     sys_app_terminal: {
@@ -45,7 +28,32 @@ const map = {
         width: 742,
         height: 440
       }
-    }
+    },
+    sys_app_users: {
+      name: "Users Manager",
+      iconUrl: 'nuvola/Nuvola_apps_kdmconfig.png',
+      window: {
+        autoFocus: false
+      }
+    },
+    sys_app_image_viewer: {
+      name: "Image Viewer",
+      handleFileCategory: 'image',
+      iconUrl: 'nuvola/image-x-generic.png',
+      hidden: true,
+      window: {
+        top: 0,
+        left: 0
+      }
+    },
+
+    sys_app_recycle_bin : {
+      name: "Recycle Bin",
+      iconUrl: 'nuvola/user-trash.png',
+      unique: true,
+      isEmpty: true,
+      ctx: 'Empty Recycle Bin'
+    },
 }
 
 const DEF_TASK_WIDTH = 600;

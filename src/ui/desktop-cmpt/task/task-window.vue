@@ -14,6 +14,7 @@ import sys_app_fs from '../../../sys-app/fs/fs.vue';
 import sys_app_recycle_bin from '../../../sys-app/recycle-bin/recycle-bin.vue';
 import sys_app_editor from '../../../sys-app/editor/editor.vue';
 import sys_app_terminal from '../../../sys-app/terminal/terminal.vue';
+import sys_app_users from '../../../sys-app/users/users.vue';
 export default {
   props: {
     task: {
@@ -25,6 +26,7 @@ export default {
     sys_app_terminal,
     sys_app_editor,
     sys_app_recycle_bin,
+    sys_app_users,
     Window
   },
   methods:{

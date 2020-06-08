@@ -88,6 +88,7 @@ export default  {
       id = id + 1;
 
       task.window = Object.create(null);
+      console.log('added')
       state.list.push(task);
     },
 
