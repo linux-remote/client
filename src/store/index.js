@@ -49,7 +49,7 @@ const SocketRequest = require('@hezedu/socket-request');
 const AFRTimeout = 15 * 60 * 1000;
 let ws, sr;
 let wsCloseTime = 0;
-let checkSessionAliveTime = 0;
+
 // let keepAliveTimer;
 // const keepAliveInterval = AFRTimeout - 60 * 1000;
 const wsReconnectTime = 3000;
@@ -57,6 +57,8 @@ const termWriteKey = 2;
 const exitKey = 0;
 // const aliveKey = 1;
 
+/*
+let checkSessionAliveTime = 0;
 function _isNeedCheckSessionAlive(){
   const now = Date.now();
   if(now - checkSessionAliveTime >= AFRTimeout){
@@ -65,6 +67,7 @@ function _isNeedCheckSessionAlive(){
   }
   return false;
 }
+*/
 
 const store = new window.Vuex.Store({
   modules: {
@@ -222,6 +225,7 @@ const store = new window.Vuex.Store({
           if(state.isExit){
             return;
           }
+ 
           // if(e.code !== 1000){
             
             if(wsCloseTime){
@@ -247,24 +251,36 @@ const store = new window.Vuex.Store({
                   store.commit('wsConnect');
                 }, wsReconnectTime);
               }
-
-              if(_isNeedCheckSessionAlive()){
-                this.request({
-                  type: 'get',
-                  url: '~/alive',
-                  success: () => {
+              this.request({
+                type: 'get',
+                url: '~/alive',
+                success: () => {
+                  _reconent();
+                },
+                error: (xhr) => {
+                  if(xhr.status !== 403){
+                    // checkSessionAliveTime = 0;
                     _reconent();
-                  },
-                  error: (xhr) => {
-                    if(xhr.status !== 403){
-                      checkSessionAliveTime = 0;
-                      _reconent();
-                    }
                   }
-                });
-                return;
-              }
-              _reconent();
+                }
+              });
+              // if(_isNeedCheckSessionAlive()){
+              //   this.request({
+              //     type: 'get',
+              //     url: '~/alive',
+              //     success: () => {
+              //       _reconent();
+              //     },
+              //     error: (xhr) => {
+              //       if(xhr.status !== 403){
+              //         checkSessionAliveTime = 0;
+              //         _reconent();
+              //       }
+              //     }
+              //   });
+              //   return;
+              // }
+              // _reconent();
 
               // if(e.code === 1006){
               //   // 1006:
@@ -282,6 +298,12 @@ const store = new window.Vuex.Store({
         }
         ws.onclose = handleClose;
       // });
+    },
+    logout(state){
+      if(ws){
+        ws.close(1000);
+        this.commit('onExit');
+      }
     },
     onExit(state, msg){
       this.commit('set', {

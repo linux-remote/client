@@ -19,10 +19,12 @@ export default { // 0.356
   },
   props: {
     width: {
-      type: Number
+      type: Number,
+      default: 400
     },
     height: {
-      type: Number
+      type: Number,
+      default: 200
     },
     pid: {
       type: Number,

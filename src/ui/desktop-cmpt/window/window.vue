@@ -287,7 +287,35 @@ const Window = {
       parentWindow.isBlockFocusenter = false;
       parentWindow.focusenter();
     },
-
+    alert(opt){
+      this.$store.commit('block/add', {
+        ...opt,
+        type: 'alert',
+        pid: this.id
+              
+      })
+    },
+    confirm(opt){
+      this.$store.commit('block/add', {
+        ...opt,
+        type: 'confirm',
+        pid: this.id
+              
+      })
+    },
+    triple(opt){
+      this.$store.commit('block/add', {
+        ...opt,
+        type: 'triple',
+        pid: this.id     
+      })
+    },
+    openBlock(opt){
+      this.$store.commit('block/add', {
+        ...opt,
+        pid: this.id     
+      })
+    },
     // openBlock(){
     //   const dom = this.$el.parentElement;
     //   const NewWindow = window.Vue.extend(Window);

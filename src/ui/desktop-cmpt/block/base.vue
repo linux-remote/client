@@ -1,5 +1,5 @@
 <template lang="jade">
-Window(:title="title",
+Window(:title="title || type",
         :movable="true",
         :enterBindBtn="true",
         :width="w",
@@ -42,11 +42,16 @@ export default { // 0.356
     },
     status: {
       type: String,
-      default: ''
+      default: 'warn'
     },
     title: {
       type: String,
-      default: ''
+      default(){
+        let type = this.type;
+        let first = type[0];
+        first = first.toUpperCase();
+        return first + type.substr(1);
+      }
     },
     text: {
       type: String,
