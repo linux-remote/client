@@ -54,7 +54,7 @@ let wsCloseTime = 0;
 // const keepAliveInterval = AFRTimeout - 60 * 1000;
 const wsReconnectTime = 3000;
 const termWriteKey = 2;
-const exitKey = 0;
+// const exitKey = 0;
 // const aliveKey = 1;
 
 /*
@@ -173,8 +173,6 @@ const store = new window.Vuex.Store({
                   }
                   termMap[pid] = termMap[pid] + strData;
                 }
-              } else if(key === exitKey){
-                this.commit('onExit', data[1]);
               }
             } else {
               if(data.method === 'termExit'){
@@ -225,7 +223,7 @@ const store = new window.Vuex.Store({
           if(state.isExit){
             return;
           }
- 
+          
           // if(e.code !== 1000){
             
             if(wsCloseTime){
@@ -298,12 +296,6 @@ const store = new window.Vuex.Store({
         }
         ws.onclose = handleClose;
       // });
-    },
-    logout(state){
-      if(ws){
-        ws.close(1000);
-        this.commit('onExit');
-      }
     },
     onExit(state, msg){
       this.commit('set', {

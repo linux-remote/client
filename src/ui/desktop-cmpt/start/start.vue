@@ -43,10 +43,20 @@ export default {
   }, 
   methods: {
     logout(){
-      this.$store.commit('wsRequest', {
-        method: 'logout',
-        noReply: true
+      this.request({
+        url: '/logout',
+        type: 'post',
+        data: {
+          username: this.username
+        },
+        success: () => {
+          this.$store.commit('onExit');
+        }
       });
+      // this.$store.commit('wsRequest', {
+      //   method: 'logout',
+      //   noReply: true
+      // });
     },
     handleAccountClick(){
       // this.$store.commit('task/add', 'sys_app_account');
