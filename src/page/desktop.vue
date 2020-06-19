@@ -193,6 +193,19 @@ export default {
         }
       });
     });
+    this.safeBind(window, 'unload', () => {
+
+      if(navigator.sendBeacon){
+        navigator.sendBeacon(this.request.wrapUrl('~/pageUnload'));
+      } else {
+        // $compatible
+        this.request({
+          url: '~/pageUnload',
+          type: 'post',
+          sync: true
+        })
+      }
+    })
   },
 
   destroyed(){

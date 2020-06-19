@@ -21,6 +21,7 @@ export default {
       // const isWindows = ['Windows', 'Win16', 'Win32', 'WinCE'].indexOf(navigator.platform) >= 0;
       const $opt = this.$options;
       const term = new FemTerminal.Terminal({
+        // rightClickSelectsWord: true,
         // windowsMode: isWindows,
         /**
          * xtermjs\src\browser\renderer\dom\DomRenderer.ts
