@@ -128,38 +128,9 @@ export default {
     parseBundle(data){
       const username = this.$route.params.username;
       document.title = username + '@' + data.hostname;
-      // id
-      // uid=1000(dw) gid=2004(dw) groups=2004(dw),4(adm),24(cdrom),27(sudo),30(dip),46(plugdev),113(lpadmin),128(sambashare)
 
-      // let id = data.id.trim();
-      // id = id.split(' ');
-      // function parseItem(str){
-      //   str = str.substr(str.indexOf('=') + 1);
-      //   let i1 = str.indexOf('(');
-      //   let id = str.substr(0, i1);
-      //   let name = str.substring(i1 + 1, str.length - 1);
-      //   return  {
-      //     id,
-      //     name
-      //   }
-      // }
-      // let group = parseItem(id[1]);
-      // let groups = id[2];
-      // groups = groups.split(',');
-      
-      // groups = groups.map(item => {
-      //   return parseItem(item)
-      // });
-
-      // let groupNames = [];
-      // groups.forEach(v => {
-      //   groupNames.push(v.name);
-      // })
       this.$store.commit('set', {
         username,
-        // group,
-        // _groups: groups, // will switch name.
-        // groups: groupNames,
         homedir: data.homedir,
         hostname: data.hostname
       });
@@ -212,12 +183,16 @@ export default {
   },
 
   created(){
+    
     const username = this.$route.params.username;
     this.$store.commit('setUsername', username);
     this.getPako(() => {
       this.$store.commit('wsConnect', () => {
-        this.isFirstConnected = true;
-        this.getData();
+        this.safeBind(this.$root, 'nsConnected', () => {
+          this.isFirstConnected = true;
+          console.log('-------------[desktop.vue]: nsConnected---------------------')
+          this.getData();
+        }, 'once');
       });
     })
 

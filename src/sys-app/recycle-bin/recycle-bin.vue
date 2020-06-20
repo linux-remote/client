@@ -86,17 +86,11 @@ export default {
     }
   },
   computed: {
-    recycleBinEvent(){
-      return this.$store.state.recycleBinEvent;
-    },
     isError(){
       return !this.list && this.error;
     }
   },
   watch: {
-    recycleBinEvent(){
-      this.getData();
-    },
     'info.map' : function(){
       this.genList();
     }

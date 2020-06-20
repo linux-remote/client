@@ -38,6 +38,12 @@ export default {
   created(){
     const language = localStorage.language || navigator.language;
     this.$store.commit('language/set', language);
+    this.$store.commit('setRootEmit', (key, data) => {
+      this.$root.$emit(key, data);
+    });
+  },
+  destroyed(){
+    this.$store.commit('removeRootEmit');
   }
 }
 </script>

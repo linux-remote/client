@@ -1,7 +1,6 @@
 import { composeUserWsUrl } from '../sys-app/util';
 
-const $ = window.$;
-const $win = $(window);
+const $win = window.$(window);
 $win.on('resize', function(){
   store.commit('set', {
     winW: $win.width(),
@@ -15,7 +14,7 @@ $win.on('online', function(){
 });
 $win.on('offline', function(){
   store.commit('chOnline', false);
-})
+});
 // window.addEventListener('focus', function(e){
 //   if(e.target === window){
 
@@ -27,13 +26,11 @@ $win.on('offline', function(){
 // });
 
 
-window.APP = {
-  contextMenuTransferData: null
-}
+window.APP = Object.create(null);
 
-import { TypeOf } from '../lib/util';
+import { TypeOf, noop } from '../lib/util';
 import language from './module/language';
-import termMap from '../sys-app/terminal/map';
+import { termWrite, termExit } from '../sys-app/terminal/map';
 import block from './module/block';
 import upload from './module/upload';
 import error from './module/error';
@@ -68,6 +65,10 @@ function _isNeedCheckSessionAlive(){
   return false;
 }
 */
+function _def$rootEmit(){
+  console.error('unroot emit', arguments);
+};
+let $rootEmit = _def$rootEmit;
 
 const store = new window.Vuex.Store({
   modules: {
@@ -95,26 +96,12 @@ const store = new window.Vuex.Store({
     hostname: '',
     isOnLine: true,
     wsIsConnected: false,
+    nsIsConnected: false,
 
     username:'',
     homedir: '',
-    
-    // wsCloseCode: -1,
-    // wsCloseReason: '',
 
-    groups: [],
-    
-    
-
-    quickLaunchItems: [],
-
-    recycleBinEvent: null,
-
-
-    onDustbinRecycle: null,
     sessError: null,
-    openWidthData: null,
-    confirmData: null,
     sysAppMap
   },
   mutations: {
@@ -123,6 +110,12 @@ const store = new window.Vuex.Store({
     },
     chOnline(state, bool){
       state.isOnLine = bool;
+    },
+    setRootEmit(state, emitFn){
+      $rootEmit = emitFn;
+    },
+    removeRootEmit(){
+      $rootEmit = _def$rootEmit;
     },
     wsConnect(state, callback){
       if(state.wsIsConnected){
@@ -141,68 +134,12 @@ const store = new window.Vuex.Store({
         ws.onopen = () => {
           console.log('WS Connected!');
 
-          const pako = window.APP._staticPako;
+          
           wsCloseTime = 0;
-          sr = new SocketRequest(ws, {
-            isWs: true, 
-            isCompress: true,
-            inflateFn: (data, cb) => {
-              var reader = new FileReader();
-              reader.onload = (e) => {
-                  var strData = pako.inflate(e.target.result, { to: 'string' });
-                  cb(strData);
-              }
-              reader.readAsArrayBuffer(data);
-            },
-            deflateFn: (data) => {
-              return pako.deflate(data);
-            }
-          });
-          sr.onRequest = (data) => {
-            if(Array.isArray(data)){
-              const key = data[0];
-              if(key === termWriteKey){
-                const pid = data[1];
-                const strData = data[2];
-                const term = termMap[pid];
-                if(typeof term === 'object'){
-                  term.write(strData);
-                } else {
-                  if(typeof term !== 'string'){
-                    termMap[pid] = '';
-                  }
-                  termMap[pid] = termMap[pid] + strData;
-                }
-              }
-            } else {
-              if(data.method === 'termExit'){
-                const pid = data.data;
-                const term = termMap[pid];
-                if(term){
-                  delete(termMap[pid]);
-                  term.close();
-                }
-              }
-            } 
 
-            // if(data.type === 'term'){
-            //   const term = termMap[data.id];
-            //   if(data.data){
-            //     if(typeof term === 'object'){
-            //       term.write(data.data);
-            //     } else {
-            //       if(typeof termMap[data.id] !== 'string'){
-            //         termMap[data.id] = '';
-            //       }
-            //       termMap[data.id] = term + data.data;
-            //     }
-            //   } else if(data.method === 'exit'){
-            //     delete(termMap[data.id]);
-            //     term.close();
-            //   }
+          sr = new SocketRequest(ws, srOpts);
 
-            // }
-          }
+          sr.onRequest = handleSrRequest;
           // keepAliveTimer = setInterval(() => {
           //   sr.request([aliveKey]);
           // }, keepAliveInterval);
@@ -223,7 +160,9 @@ const store = new window.Vuex.Store({
           if(state.isExit){
             return;
           }
-          
+          if(e.code === 1000){
+            return;
+          }
           // if(e.code !== 1000){
             
             if(wsCloseTime){
@@ -374,30 +313,23 @@ const store = new window.Vuex.Store({
     },
     set (state, data) {
       if(TypeOf(data)  !== 'Object'){
-        throw new Error('data must be a object.')
+        throw new Error('data must be a object.');
       }
       Object.assign(state, data);
     },
+    chNsStatus(state, bool){
+      state.nsIsConnected = bool;
+      if(bool){
+        console.log('chNsStatus: nsConnected')
+        $rootEmit('nsConnected');
+      } else {
+        $rootEmit('nsDisconnected');
+      }
+    },
     clearDesktop(){
-      state.quickLaunchItems = [];
       store.commit('task/closeAll');
       store.commit('users/clear');
       store.commit('fsClipBoard/clear');
-    },
-    openWith(state, data){
-      state.openWidthData = data;
-    },
-    hiddenOpenWith(state){
-      state.openWidthData = null;
-    },
-    confirm(state, data){
-      if(state.confirmData){
-        return;
-      }
-      state.confirmData = data;
-    },
-    hiddenConfirm(state){
-      state.confirmData = null;
     }
   }
 });
@@ -407,4 +339,47 @@ const store = new window.Vuex.Store({
 function globalWsErrorHandle({status, method, message}){
   console.error(method, status, message);
 }
+
+const pako = window.APP._staticPako;
+const srOpts = {
+  isWs: true, 
+  isCompress: true,
+  inflateFn: (data, cb) => {
+    var reader = new FileReader();
+    reader.onload = (e) => {
+        var strData = pako.inflate(e.target.result, { to: 'string' });
+        cb(strData);
+    }
+    reader.readAsArrayBuffer(data);
+  },
+  deflateFn: (data) => {
+    return pako.deflate(data);
+  }
+}
+
+function handleSrRequest(data){
+  if(Array.isArray(data)){
+    const key = data[0];
+    switch(key){
+      case termWriteKey:
+        termWrite(data);
+        break;
+      case 'termExit':
+        termExit(data);
+        break;
+      case 'nsOpen':
+        console.log('nsOpen')
+        store.commit('chNsStatus', true);
+        break;
+      case 'nsClose':
+        store.commit('chNsStatus', false);
+        break;
+      default:
+        console.error('un handle onRequest key: ' + key);
+    }
+  } else {
+    console.error('un handle onRequest data', data);
+  }
+}
+
 export default store;
