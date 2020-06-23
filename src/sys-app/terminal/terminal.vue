@@ -143,7 +143,7 @@ export default {
       window.require(['xterm', 
       'xterm-addon-fit',
       // 'xterm-addon-web-links', 
-      'xterm.css'], (FemTerminal, FemFit) => {
+      'xterm.css'], (err, [FemTerminal, FemFit]) => {
         this.$el.removeChild(span);
         // Terminal.loadAddon(attach);
         // Terminal.loadAddon(fit);

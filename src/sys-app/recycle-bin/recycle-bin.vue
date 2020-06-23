@@ -51,6 +51,8 @@ export default {
     Table
   },
   data(){
+    const RECYCLE_BIN_PATH = this.$store.state.homedir + '/.linux-remote/recycle-bin';
+    this.$options._RECYCLE_BIN_PATH = RECYCLE_BIN_PATH;
     return {
       thead: [
         {
@@ -77,7 +79,7 @@ export default {
       isRequest: false,
       isDeling: false,
       list: [],
-      info: getOrInit(window.APP.RECYCLE_BIN_PATH),
+      info: getOrInit(RECYCLE_BIN_PATH),
       maxLen: 100,
       totalCount: 0,
       isShowPreDelModal: false,
@@ -237,7 +239,7 @@ export default {
         return;
       }
       info.isRequest = true;
-      let cwd = window.APP.RECYCLE_BIN_PATH;
+      let cwd = this.$options._RECYCLE_BIN_PATH;
       let data = {
         cwd,
         all: false
@@ -275,7 +277,7 @@ export default {
       this.$store.commit('wsRequest', {
         method: 'ls',
         data: {
-          cwd: window.APP.RECYCLE_BIN_PATH,
+          cwd: this.$options._RECYCLE_BIN_PATH,
           filenames
         },
         success: (stdout) => {

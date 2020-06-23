@@ -15,20 +15,12 @@ $win.on('online', function(){
 $win.on('offline', function(){
   store.commit('chOnline', false);
 });
-// window.addEventListener('focus', function(e){
-//   if(e.target === window){
-
-//   }
-//   e.preventDefault();
-//   e.stopPropagation();
-// }, {
-//   capture: true
-// });
 
 
 window.APP = Object.create(null);
 
 import { TypeOf, noop } from '../lib/util';
+import { SR_KEY_TERM_WRITE, WS_RECONNECT_TIME, AFR_TIMEOUT} from '../lib/constant';
 import language from './module/language';
 import { termWrite, termExit } from '../sys-app/terminal/map';
 import block from './module/block';
@@ -42,29 +34,11 @@ import users from './module/users';
 import fs from './module/fs';
 import desktop from './module/desktop';
 const SocketRequest = require('@hezedu/socket-request');
-// let _tmp = null;
-const AFRTimeout = 15 * 60 * 1000;
+
 let ws, sr;
 let wsCloseTime = 0;
 
-// let keepAliveTimer;
-// const keepAliveInterval = AFRTimeout - 60 * 1000;
-const wsReconnectTime = 3000;
-const termWriteKey = 2;
-// const exitKey = 0;
-// const aliveKey = 1;
 
-/*
-let checkSessionAliveTime = 0;
-function _isNeedCheckSessionAlive(){
-  const now = Date.now();
-  if(now - checkSessionAliveTime >= AFRTimeout){
-    checkSessionAliveTime = now;
-    return true;
-  }
-  return false;
-}
-*/
 function _def$rootEmit(){
   console.error('unroot emit', arguments);
 };
@@ -170,7 +144,7 @@ const store = new window.Vuex.Store({
             }
             
             if(wsCloseTime){
-              if((Date.now() - wsCloseTime) >= AFRTimeout){
+              if((Date.now() - wsCloseTime) >= AFR_TIMEOUT){
                 this.commit('onExit', 'clientTimeout');
                 return;
               }
@@ -186,7 +160,7 @@ const store = new window.Vuex.Store({
               const _reconent = () => {
                 setTimeout(() => {
                   store.commit('wsConnect');
-                }, wsReconnectTime);
+                }, WS_RECONNECT_TIME);
               }
               this.request({
                 type: 'get',
@@ -228,7 +202,7 @@ const store = new window.Vuex.Store({
               // } else {
               //   setTimeout(() => {
               //     store.commit('wsConnect');
-              //   }, wsReconnectTime);
+              //   }, WS_RECONNECT_TIME);
               // }
             }
           // }
@@ -361,7 +335,7 @@ function handleSrRequest(data){
   if(Array.isArray(data)){
     const key = data[0];
     switch(key){
-      case termWriteKey:
+      case SR_KEY_TERM_WRITE:
         termWrite(data);
         break;
       case 'termExit':

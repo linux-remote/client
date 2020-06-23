@@ -134,18 +134,10 @@ export default {
         homedir: data.homedir,
         hostname: data.hostname
       });
-      window.APP.RECYCLE_BIN_PATH = data.homedir + '/.linux-remote/recycle-bin';
     },
     getPako(cb){
-      if(window.APP._staticPako){
-        cb(window.APP._staticPako);
-        return;
-      }
-      // if(this.isAMDRequest){
-      //   return;
-      // }
       this.isAMDRequest = true;
-      window.require(['pako'], (pako) => {
+      window.require(['pako'], (err, [pako]) => {
         this.isAMDRequest = false;
         window.APP._staticPako = pako;
         cb(pako)
