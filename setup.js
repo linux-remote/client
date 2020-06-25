@@ -1,10 +1,7 @@
 const path = require('path');
 
-const favicon = require('serve-favicon');
 const eStatic = require('express').static;
 const clientMount = require('../client-mount/index.js');
-
-const faviconPath = path.join(__dirname,  'logo_def.png');
 
 function setup(app /*, webpackDevServer */){
   
@@ -28,8 +25,13 @@ function setup(app /*, webpackDevServer */){
   //   // server.listeningApp eq http server.
   //   wsHandle(webpackDevServer.listeningApp);
   // });
-  
-  app.use(favicon(faviconPath));
+  app.get('/favicon.ico', (req, res) => {
+    res.set({
+      'Cache-Control': 'public, max-age=91104000'
+    });
+    res.status(410).end('Gone');
+  });
+
   // dev
   app.use('/dist', eStatic(path.join(__dirname, 'dist')));
 };

@@ -70,7 +70,6 @@
     "pug": "^3.0.0",
     "pug-plain-loader": "^1.0.0",
     "sass-loader": "^7.3.1",
-    "serve-favicon": "^2.5.0",
     "style-loader": "^0.23.1",
     "terser-webpack-plugin": "^2.3.5",
     "vue": "2.6.11",
@@ -85,8 +84,7 @@
     "xterm-addon-fit": "0.3.0"
   },
   "browserslist": [
-    "defaults",
-    "not ie > 0",
-    "not ie_mob > 0"
+    "chrome >= 80",
+    "firefox >= 74"
   ]
 }
