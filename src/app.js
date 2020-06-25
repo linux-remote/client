@@ -1,5 +1,18 @@
-// https://developer.mozilla.org/en-US/docs/Web/API/Document/hasFocus
-// Chrome > 45;
+
+const dom = document.getElementById('lr-root');
+let preLoadHtml = `<div id="lr-pre-load" class="lr-pre-load">Loading...</div>`;
+dom.innerHTML = preLoadHtml;
+const preLoad = document.getElementById('lr-pre-load');
+
+import browserCheck from './lib/browser-check';
+let errMsg = browserCheck(navigator.userAgent);
+if(errMsg){
+  preLoad.innerHTML = `<span class="lr-err-color">${errMsg}</span>`;
+  throw errMsg;
+} else {
+  errMsg = null;
+}
+
 import './css/style.scss';
 // import './ui/css/style.scss';
 // import './css/login.scss';
@@ -11,11 +24,10 @@ import router from './router';
 
 import Root from './root.vue';
 
-const dom = document.getElementById('lr-root');
-let preLoadHtml = `<div id="lr-pre-load" class="lr-pre-load">Loading...</div>`;
-dom.innerHTML = preLoadHtml;
+
+
 const Vue = window.Vue;
-const preLoad = document.getElementById('lr-pre-load');
+
 var app = new Vue({
   store,
   router,

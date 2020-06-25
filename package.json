@@ -82,9 +82,5 @@
     "webpack-dev-server": "^3.11.0",
     "xterm": "^4.7.0",
     "xterm-addon-fit": "0.3.0"
-  },
-  "browserslist": [
-    "chrome >= 80",
-    "firefox >= 74"
-  ]
+  }
 }
