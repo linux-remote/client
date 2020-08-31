@@ -24,7 +24,7 @@
             :isShowName="true")
   .lr-groove
   .lr-ridge
-  Resizable(direction="r", @resizeStart="handleResizeStart", @resizing="handleResizing", @resized="handleResized", :minWidth="69", :maxWidth="460")
+  Resizable(direction="r", @resizeStart="handleResizeStart", @resizing="handleResizing", @resized="handleResized", :maxWidth="460")
 </template>
 <script>
 import Resizable from '../../unit/resizable.vue';
@@ -32,7 +32,6 @@ import FocusMenu from '../focus-menu/base.vue';
 import LRIcon from '../../cmpt/icon/icon.vue';
 import Item from './item.vue';
 const ITEM_WIDTH = 23;
-const MIN_WIDTH = ITEM_WIDTH * 3;
 export default {
   components: {
     Resizable,
@@ -44,9 +43,7 @@ export default {
     return {
       rawList: [],
       isDragenterSelf: false,
-      // list: [],
-      // moreList: [],
-      width: MIN_WIDTH
+      width: 0
     }
   },
 

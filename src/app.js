@@ -3,14 +3,12 @@ const dom = document.getElementById('lr-root');
 let preLoadHtml = `<div id="lr-pre-load" class="lr-pre-load">Loading...</div>`;
 dom.innerHTML = preLoadHtml;
 const preLoad = document.getElementById('lr-pre-load');
-
-import browserCheck from './lib/browser-check';
-let errMsg = browserCheck(navigator.userAgent);
-if(errMsg){
-  preLoad.innerHTML = `<span class="lr-err-color">${errMsg}</span>`;
-  throw errMsg;
-} else {
-  errMsg = null;
+if(window.CLIENT_CONFIG.IS_PRO && 
+  window.CLIENT_CONFIG.CORS && 
+  window.CLIENT_CONFIG.CORS.indexOf('https') !== 0){
+    const msg = 'CORS mode required https';
+    preLoad.innerHTML = `<span style="color:red">${msg}</span>`;
+    throw new Error(msg);
 }
 
 import './css/style.scss';
@@ -22,9 +20,10 @@ import './lib/vue-filter';
 import store from './store/index.js';
 import router from './router';
 
+
+
+
 import Root from './root.vue';
-
-
 
 const Vue = window.Vue;
 

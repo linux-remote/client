@@ -125,6 +125,22 @@ body, button{
   color: rgba(#fff, .4);
   // cursor: wait;
 }
+
+.lr-desktop-load pre{
+
+  font-size: 12px;
+  font-family: 'Courier New', Courier, monospace;
+  white-space: pre-wrap;
+  max-width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  user-select: text;
+}
+.lr-desktop-load > div{
+  position: relative;
+  z-index: 2;
+}
 .lr-err-color{
   color: red;
   user-select: text;

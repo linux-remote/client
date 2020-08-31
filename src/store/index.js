@@ -1,5 +1,5 @@
 import { composeUserWsUrl } from '../sys-app/util';
-
+import { pako } from '../lib/constant';
 const $win = window.$(window);
 $win.on('resize', function(){
   store.commit('set', {
@@ -63,15 +63,15 @@ const store = new window.Vuex.Store({
     winW: $win.width(),
     // sess
     isExit: false,
+    // ptyList: [],
     // desktop
+    loginOut: '',
     deskTopW: 0,
     deskTopH: 0,
-
     hostname: '',
     isOnLine: true,
     wsIsConnected: false,
     nsIsConnected: false,
-
     username:'',
     homedir: '',
 
@@ -79,6 +79,22 @@ const store = new window.Vuex.Store({
     sysAppMap
   },
   mutations: {
+    // ptyListPush(state, str){
+    //   // let arr = str.split('\n');
+    //   // let arr2 = state.ptyList;
+    //   // const MAX = 30;
+    //   const arr = state.ptyList;
+    //   arr.push(str);
+    //   if(arr.length > 10){
+    //     arr.shift();
+    //   }
+    //   // arr.forEach(line => {
+    //   //   arr2.push(line);
+    //   //   if(arr2.length > 30){
+    //   //     arr2.shift();
+    //   //   }
+    //   // });
+    // },
     setUsername(state, username){
       state.username = username;
     },
@@ -103,7 +119,7 @@ const store = new window.Vuex.Store({
       }
       // getPako((pako) => {
         const url = composeUserWsUrl(state.username);
-        const ws = new WebSocket(url);
+        ws = new WebSocket(url);
         
         ws.onopen = () => {
           console.log('WS Connected!');
@@ -211,9 +227,10 @@ const store = new window.Vuex.Store({
       // });
     },
     onExit(state, msg){
-      this.commit('set', {
-        isExit: true
-      });
+      state.isExit = true;
+      if(ws.readyState <= 1){
+        ws.close();
+      }
       
       if(msg){
         // window.alert('exit' + msg);
@@ -314,7 +331,6 @@ function globalWsErrorHandle({status, method, message}){
   console.error(method, status, message);
 }
 
-const pako = window.APP._staticPako;
 const srOpts = {
   isWs: true, 
   isCompress: true,
@@ -347,6 +363,9 @@ function handleSrRequest(data){
         break;
       case 'nsClose':
         store.commit('chNsStatus', false);
+        break;
+      case 'USP_UNCAUGH_EXCEPTION':
+        store.commit('onExit', data[1]);
         break;
       default:
         console.error('un handle onRequest key: ' + key);

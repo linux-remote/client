@@ -13,8 +13,9 @@
         Watch
     DeskTopBody#lr-desktop
   .lr-desktop-load(v-else)
-    span(v-if="isAMDRequest") Loading static resource...
-    span(v-else) Connecting user server...
+    pre {{loginOut}}
+    //- Pty
+    div Connecting...
   template(v-if="sessError")
     .lr-window_mask(@mousedown.prevent, style="z-index: 3")
     Block(type="confirm", ref="confirm", title="Invalid session", :text="'Server: ' + sessError.message + '. Invalid session, Please login again. '", status="warn", :okFn="afterLogout", :close="closeSessErrorModal")
@@ -37,7 +38,6 @@ import safeBind from '../lib/mixins/safe-bind';
 import termMap from '../sys-app/terminal/map';
 import Block from '../ui/desktop-cmpt/block/base.vue';
 // import TasksBar from '__ROOT__/cmpt/task/bar.vue';
-
 import {Start, QuickLaunch, TaskItem, Watch, DeskTopBody} from '../ui/index.js';
 export default {
   mixins: [safeBind],
@@ -56,7 +56,6 @@ export default {
     return {
       icons: null,
       isFirstConnected: false,
-      isAMDRequest: false,
       error: null
     }
   },
@@ -74,7 +73,10 @@ export default {
       return this.$store.state.isExit;
     },
     username(){
-      return this.$store.state.username
+      return this.$store.state.username;
+    },
+    loginOut(){
+      return this.$store.state.loginOut;
     }
   },
   watch: {
@@ -135,13 +137,17 @@ export default {
         hostname: data.hostname
       });
     },
-    getPako(cb){
-      this.isAMDRequest = true;
-      window.require(['pako'], (err, [pako]) => {
-        this.isAMDRequest = false;
-        window.APP._staticPako = pako;
-        cb(pako)
-      });
+    handleUnload(){
+      if(navigator.sendBeacon){
+        navigator.sendBeacon(this.request.wrapUrl('~/unload'));
+      } else {
+        // $compatible
+        this.request({
+          url: '~/unload',
+          type: 'post',
+          sync: true
+        })
+      }
     }
   },
 
@@ -157,18 +163,8 @@ export default {
       });
     });
     this.safeBind(window, 'unload', () => {
-
-      if(navigator.sendBeacon){
-        navigator.sendBeacon(this.request.wrapUrl('~/pageUnload'));
-      } else {
-        // $compatible
-        this.request({
-          url: '~/pageUnload',
-          type: 'post',
-          sync: true
-        })
-      }
-    })
+      this.handleUnload();
+    });
   },
 
   destroyed(){
@@ -178,15 +174,12 @@ export default {
     
     const username = this.$route.params.username;
     this.$store.commit('setUsername', username);
-    this.getPako(() => {
       this.$store.commit('wsConnect', () => {
         this.safeBind(this.$root, 'nsConnected', () => {
-          this.isFirstConnected = true;
-          console.log('-------------[desktop.vue]: nsConnected---------------------')
-          this.getData();
+          // this.isFirstConnected = true;
+          // this.getData();
         }, 'once');
       });
-    })
 
     
   }

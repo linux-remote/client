@@ -17,8 +17,8 @@
     "build": "webpack --colors --hide-modules",
     "_pro_build": "webpack --colors",
     "pro": "node script/pro",
-    "prepublishOnly": "echo 'prepublishOnly'",
-    "publish": "node ../linux-remote/up-version-map.js"
+    "publish": "node ../linux-remote/up-version-map.js",
+    "minBC": "terser  ./src/lib/browser-check.js -o ./src/lib/browser-check.min.js --compress --mangle"
   },
   "files": [
     "dist",
@@ -71,6 +71,7 @@
     "pug-plain-loader": "^1.0.0",
     "sass-loader": "^7.3.1",
     "style-loader": "^0.23.1",
+    "terser": "^4.8.0",
     "terser-webpack-plugin": "^2.3.5",
     "vue": "2.6.11",
     "vue-loader": "^15.9.1",
