@@ -176,8 +176,8 @@ export default {
     this.$store.commit('setUsername', username);
       this.$store.commit('wsConnect', () => {
         this.safeBind(this.$root, 'nsConnected', () => {
-          // this.isFirstConnected = true;
-          // this.getData();
+          this.isFirstConnected = true;
+          this.getData();
         }, 'once');
       });
 

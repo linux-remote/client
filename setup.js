@@ -11,7 +11,7 @@ function setup(app /*, webpackDevServer */){
               {
                 cdn: false,
                 clientVersion: 'dev',
-                CORS: 'http://192.168.56.101:3000',
+                CORS: 'https://192.168.56.101:3000',
                 _devlrClientJs: '/dist/lr-client.js',
                 localunpkgdir: path.join(__dirname, 'node_modules'),
                 _devFilePkgMask: {

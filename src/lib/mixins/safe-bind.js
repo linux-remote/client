@@ -53,7 +53,7 @@ export default {
     }
   },
   created() {
-    this.$options_safeBindIndex = 1;
+    this.$options._safeBindIndex = 1;
     this.$options._safeBindedMap = Object.create(null);
   },
   destroyed() {
