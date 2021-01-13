@@ -31,6 +31,7 @@ const map = {
     },
     sys_app_users: {
       name: "Users Manager",
+      hidden: true,
       iconUrl: 'nuvola/Nuvola_apps_kdmconfig.png',
       window: {
         autoFocus: false

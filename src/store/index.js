@@ -19,7 +19,7 @@ $win.on('offline', function(){
 
 window.APP = Object.create(null);
 
-import { TypeOf, noop } from '../lib/util';
+import { TypeOf } from '../lib/util';
 import { SR_KEY_TERM_WRITE, WS_RECONNECT_TIME, AFR_TIMEOUT} from '../lib/constant';
 import language from './module/language';
 import { termWrite, termExit } from '../sys-app/terminal/map';

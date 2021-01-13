@@ -1,6 +1,6 @@
 {
   "name": "@linux-remote/client",
-  "version": "4.0.5",
+  "version": "4.7.0",
   "author": {
     "name": "Du Wei",
     "email": "hezedu@hotmail.com"
@@ -17,6 +17,7 @@
     "build": "webpack --colors --hide-modules",
     "_pro_build": "webpack --colors",
     "pro": "node script/pro",
+    "p": "npm publish --access public",
     "publish": "node ../linux-remote/up-version-map.js",
     "minBC": "terser  ./src/lib/browser-check.js -o ./src/lib/browser-check.min.js --compress --mangle"
   },
